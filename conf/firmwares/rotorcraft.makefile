@@ -179,6 +179,16 @@ LISA_M_BARO ?= BARO_BOARD_BMP085
   endif
   ap.CFLAGS += -D$(LISA_M_BARO)
 
+# Lisa/S baro
+else ifeq ($(BOARD), lisa_s)
+# defaults to SPI baro MS5611 on the board
+  include $(CFG_SHARED)/spi_master.makefile
+  ap.CFLAGS += -DUSE_SPI1 -DUSE_SPI_SLAVE1
+  ap.CFLAGS += -DMS5611_SPI_DEV=spi1
+  ap.CFLAGS += -DMS5611_SLAVE_DEV=SPI_SLAVE1
+  ap.srcs += boards/lisa_m/baro_ms5611_spi.c
+  ap.CFLAGS += -DBARO_MS5611_SPI
+
 # Lia baro (no bmp onboard)
 else ifeq ($(BOARD), lia)
 # fixme, reuse the baro drivers in lisa_m dir
@@ -199,6 +209,10 @@ include $(CFG_SHARED)/spi_master.makefile
 ap.CFLAGS += -DUSE_SPI_SLAVE0
 ap.CFLAGS += -DUSE_SPI1
 ap.srcs += peripherals/mcp355x.c
+ap.srcs += $(SRC_BOARD)/baro_board.c
+
+# krooz baro
+else ifeq ($(BOARD), krooz)
 ap.srcs += $(SRC_BOARD)/baro_board.c
 
 # apogee baro
