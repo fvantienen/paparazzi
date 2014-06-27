@@ -67,6 +67,7 @@ char *ivy_bus                   = "127.255.255.255:2010";
 /** Sample frequency and derevitive defaults */
 uint32_t freq_transmit          = 30;     ///< Transmitting frequency in Hz
 uint16_t min_velocity_samples   = 4;      ///< The amount of position samples needed for a valid velocity
+bool small_packets              = FALSE;
 
 /** Connection timeout when not receiving **/
 #define CONNECTION_TIMEOUT          .5
@@ -493,24 +494,36 @@ gboolean timeout_transmit_callback(gpointer data) {
     printf_debug("[%d -> %d]Samples: %d\t%d\t\tTiming: %3.3f latency\n", rigidBodies[i].id, aircrafts[rigidBodies[i].id].ac_id
       , rigidBodies[i].nSamples, rigidBodies[i].nVelocitySamples, natnet_latency);
     printf_debug("    Heading: %f\t\tPosition: %f\t%f\t%f\t\tVelocity: %f\t%f\t%f\n", DegOfRad(heading),
-      rigidBodies[i].x, rigidBodies[i].y, rigidBodies[i].z,
-      rigidBodies[i].ecef_vel.x, rigidBodies[i].ecef_vel.y, rigidBodies[i].ecef_vel.z);
+      pos.x, pos.y, pos.z,
+      speed.x, speed.y, speed.z);
 
-    // Transmit the REMOTE_GPS packet on the ivy bus
-    IvySendMsg("0 REMOTE_GPS %d %d %d %d %d %d %d %d %d %d %d %d %d %d", aircrafts[rigidBodies[i].id].ac_id,
-      rigidBodies[i].nMarkers,                //uint8 Number of markers (sv_num)
-      (int)(ecef_pos.x*100.0),                //int32 ECEF X in CM
-      (int)(ecef_pos.y*100.0),                //int32 ECEF Y in CM
-      (int)(ecef_pos.z*100.0),                //int32 ECEF Z in CM
-      (int)(lla_pos.lat*10000000.0),          //int32 LLA latitude in rad*1e7
-      (int)(lla_pos.lon*10000000.0),          //int32 LLA longitude in rad*1e7
-      (int)(rigidBodies[i].z*1000.0),         //int32 LLA altitude in mm above elipsoid
-      (int)(rigidBodies[i].z*1000.0),         //int32 HMSL height above mean sea level in mm
-      (int)(rigidBodies[i].ecef_vel.x*100.0), //int32 ECEF velocity X in m/s
-      (int)(rigidBodies[i].ecef_vel.y*100.0), //int32 ECEF velocity Y in m/s
-      (int)(rigidBodies[i].ecef_vel.z*100.0), //int32 ECEF velocity Z in m/s
-      0,
-      (int)(heading*10000000.0));             //int32 Course in rad*1e7
+    // Transmit the REMOTE_GPS packet on the ivy bus (either small or big)
+    if(small_packets) {
+      IvySendMsg("0 REMOTE_GPS_SMALL %d %d %d %d %d %d %d",
+        (int16_t)(pos.x*100.0),                     //int16 ENU X in CM
+        (int16_t)(pos.y*100.0),                     //int16 ENU Y in CM
+        (int16_t)(pos.z*100.0),                     //int16 ENU Z in CM
+        (int16_t)(speed.x*100.0),                   //int16 ENU velocity X in cm/s
+        (int16_t)(speed.y*100.0),                   //int16 ENU velocity Y in cm/s
+        (int16_t)(heading*10000.0),                 //int16 Course in rad*1e4
+        aircrafts[rigidBodies[i].id].ac_id);
+    }
+    else {
+      IvySendMsg("0 REMOTE_GPS %d %d %d %d %d %d %d %d %d %d %d %d %d %d", aircrafts[rigidBodies[i].id].ac_id,
+        rigidBodies[i].nMarkers,                //uint8 Number of markers (sv_num)
+        (int)(ecef_pos.x*100.0),                //int32 ECEF X in CM
+        (int)(ecef_pos.y*100.0),                //int32 ECEF Y in CM
+        (int)(ecef_pos.z*100.0),                //int32 ECEF Z in CM
+        (int)(lla_pos.lat*10000000.0),          //int32 LLA latitude in rad*1e7
+        (int)(lla_pos.lon*10000000.0),          //int32 LLA longitude in rad*1e7
+        (int)(rigidBodies[i].z*1000.0),         //int32 LLA altitude in mm above elipsoid
+        (int)(rigidBodies[i].z*1000.0),         //int32 HMSL height above mean sea level in mm
+        (int)(rigidBodies[i].ecef_vel.x*100.0), //int32 ECEF velocity X in m/s
+        (int)(rigidBodies[i].ecef_vel.y*100.0), //int32 ECEF velocity Y in m/s
+        (int)(rigidBodies[i].ecef_vel.z*100.0), //int32 ECEF velocity Z in m/s
+        0,
+        (int)(heading*10000000.0));             //int32 Course in rad*1e7
+    }
 
     // Reset the velocity differentiator if we calculated the velocity
     if(rigidBodies[i].nVelocitySamples >= min_velocity_samples) {
@@ -567,7 +580,8 @@ void print_help(char* filename) {
     "   -offset_angle <degree>    Tracking system angle offset compared to the North in degrees\n\n"
 
     "   -tf <freq>                Transmit frequency to the ivy bus in hertz (60)\n"
-    "   -vel_samples <samples>    Minimum amount of samples for the velocity differentiator (4)\n\n"
+    "   -vel_samples <samples>    Minimum amount of samples for the velocity differentiator (4)\n"
+    "   -small                    Send small packets instead of bigger (FALSE)\n\n"
 
     "   -ivy_bus <address:port>   Ivy bus address and port (127.255.255.255:2010)\n";
   fprintf(stderr, usage, filename);
@@ -688,6 +702,10 @@ static void parse_options(int argc, char** argv) {
       check_argcount(argc, argv, i, 1);
 
       min_velocity_samples = atoi(argv[++i]);
+    }
+    // Set to use small packets
+    else if(strcmp(argv[i], "-small") == 0) {
+      small_packets = TRUE;
     }
 
     // Set the ivy bus
