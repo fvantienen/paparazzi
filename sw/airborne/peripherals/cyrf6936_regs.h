@@ -208,4 +208,7 @@ enum {
 };
 #define CYRF_DATA_CODE_LENGTH   (1<<5)
 
+// CYRF_RX_ABORT
+#define CYRF_ABORT_EN           (1<<5)
+
 #endif // CYRF6936_REGS_H

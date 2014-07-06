@@ -1,0 +1,18 @@
+<!DOCTYPE module SYSTEM "module.dtd">
+
+<module name="debug_gpio" dir="debug">
+  <doc>
+    <description>Enables debugging by using gpio outputs</description>
+    <define name="DEBUG_GPIO_SEL" value="GPIOB,GPIO5" description="select which gpio output to use for the selection pin"/>
+    <define name="DEBUG_GPIO_DATA" value="GPIOA,GPIO10" description="select which gpio output to use for the data pin"/>
+  </doc>
+  <header>
+    <file name="debug_gpio.h"/>
+  </header>
+  <init fun="debug_gpio_init()"/>
+  <makefile>
+    <define name="MODULE_DEBUG_GPIO" value="TRUE"/>
+    <file name="debug_gpio.c"/>
+  </makefile>
+</module>
+

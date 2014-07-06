@@ -200,17 +200,22 @@ void cyrf6936_event(struct Cyrf6936 *cyrf) {
       break;
     case 3: // Set the packet length
       cyrf->rx_status = cyrf->input_buf[1];
+      if(!(cyrf->rx_irq_status & (CYRF_RXC_IRQ | CYRF_RXB16_IRQ | CYRF_RXB8_IRQ))) {
+        cyrf->buffer_idx = 6;
+        break;
+      }
+      
       cyrf6936_read_register(cyrf, CYRF_RX_COUNT);
       break;
     case 4: // Read the receive packet
       cyrf->rx_count = cyrf->input_buf[1];
-      cyrf6936_read_block(cyrf, CYRF_RX_BUFFER, 16);
+      cyrf6936_read_block(cyrf, CYRF_RX_BUFFER, cyrf->rx_count);
       break;
-    default:
+    case 5:
       // Copy the receive packet
-      for(i = 0; i < 16; i++)
+      for(i = 0; i < cyrf->rx_count; i++)
         cyrf->rx_packet[i] = cyrf->input_buf[i+1];
-
+    default:
       cyrf->has_irq = TRUE;
       cyrf->status = CYRF6936_IDLE;
       break;

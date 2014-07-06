@@ -92,7 +92,8 @@ static inline void radio_control_periodic_task ( void ) {
     radio_control.time_since_last_frame++;
   }
 
-#if defined RADIO_CONTROL_LED
+/* Set the radio control LED except for SuperbitRF, because that one has more advance LED blinks */
+#if defined RADIO_CONTROL_LED && !defined RADIO_CONTROL_TYPE_SUPERBITRF
   if (radio_control.status == RC_OK) {
     LED_ON(RADIO_CONTROL_LED);
   }

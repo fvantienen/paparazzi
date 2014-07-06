@@ -33,10 +33,10 @@
 <airframe name="quadrotor_lisa_s">
 
   <servos driver="Pwm">
-    <servo name="LEFT" no="4" min="1000" neutral="1100" max="1900"/>
-    <servo name="FRONT" no="5" min="1000" neutral="1100" max="1900"/>
-    <servo name="RIGHT" no="1" min="1000" neutral="1100" max="1900"/>
-    <servo name="BACK" no="0" min="1000" neutral="1100" max="1900"/>
+    <servo name="LEFT" no="4" min="0" neutral="1100" max="1900"/>
+    <servo name="FRONT" no="5" min="0" neutral="1100" max="1900"/>
+    <servo name="RIGHT" no="1" min="0" neutral="1100" max="1900"/>
+    <servo name="BACK" no="0" min="0" neutral="1100" max="1900"/>
   </servos>
 
   <commands>
@@ -197,16 +197,21 @@
  </section>
 
  <modules main_freq="512">
-   <load name="gps_ubx_ucenter.xml"/>
+   <!-- load name="gps_ubx_ucenter.xml"/ -->
    <load name="send_imu_mag_current.xml"/>
+   <load name="debug_gpio.xml">
+    <define name="DEBUG_GPIO_SEL" value="GPIOA,GPIO9"/>
+    <define name="DEBUG_GPIO_DATA" value="GPIOA,GPIO10"/>
+   </load>
  </modules>
 
   <firmware name="rotorcraft">
     <target name="ap" board="lisa_s_1.0">
       <subsystem name="radio_control" type="superbitrf_rc">
-        <define name="RADIO_TRANSMITTER_ID" value="2008496626"/> <!-- TUDelft Dx6i: TX 4 -->
-        <define name="RADIO_TRANSMITTER_CHAN" value="6"/>
-        <define name="RADIO_TRANSMITTER_PROTOCOL" value="0x01"/>
+        <define name="RADIO_TRANSMITTER_ID" value="0X42AA5519"/> <!-- TUDelft Dx6i: TX 4 -->
+        <define name="RADIO_TRANSMITTER_CHAN" value="8"/>
+        <define name="RADIO_TRANSMITTER_PROTOCOL" value="0xB2"/>
+        <define name="DEBUG_SUPERBITRF" value="1"/>
       </subsystem>
 
       <configure name="AHRS_PROPAGATE_FREQUENCY" value="500"/>
@@ -226,7 +231,7 @@
 
     <subsystem name="telemetry" type="superbitrf"/>
     <subsystem name="imu" type="lisa_s_v1.0"/>
-    <subsystem name="gps" type="ublox"/>
+    <subsystem name="gps" type="datalink"/>
     <subsystem name="stabilization" type="int_quat"/>
     <subsystem name="ahrs" type="int_cmpl_quat"/>
     <subsystem name="ins"/>

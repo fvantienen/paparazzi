@@ -32,13 +32,16 @@
 #include "subsystems/datalink/datalink.h"
 #include "subsystems/datalink/pprz_transport.h"
 
-/* The timings in microseconds */
-#define SUPERBITRF_BIND_RECV_TIME       10000       /**< The time to wait for a bind packet on a channel in microseconds */
-#define SUPERBITRF_SYNC_RECV_TIME       7000        /**< The time to wait for a sync packet on a channel in microseconds */
-#define SUPERBITRF_RECV_TIME            20000       /**< The time to wait for a transfer packet on a channel in microseconds */
-#define SUPERBITRF_RECV_SHORT_TIME      6000        /**< The time to wait for a transfer packet short on a channel in microseconds */
-#define SUPERBITRF_DATARECV_TIME        10000       /**< The time to wait for a data packet on a channel in microseconds */
-#define SUPERBITRF_DATARECVB_TIME       6000        /**< The time to wait for a data packet on a channel during bind in microseconds */
+/* The timings in microseconds (for 22MS sync) */
+#define SUPERBITRF_BIND_RECV_TIME       11000       /**< The time to wait for a bind packet on a channel in microseconds */
+
+#define SUPERBITRF_SYNC_DATA_TIME       9000        /**< The amount of time to wait for uplink data during sync (just after channel switch) */
+#define SUPERBITRF_SYNC_RECV_TIME       10000       /**< The time to wait for a sync packet on a channel in microseconds (together with previous don exceed 11/22ms) */
+
+#define SUPERBITRF_RECV_TIME            22000       /**< The amount of time it takes to receive in the long channel switch */
+#define SUPERBITRF_RECV_SHORT_TIME      4000        /**< The amount of time it takes to receive in the short channel switch */
+#define SUPERBITRF_RECV_EXTRA_TIME      2000        /**< The extra amount of time added to the SUPERBITRF_RECV_TIME and SUPERBITRF_RECV_SHORT_TIME */
+#define SUPERBITRF_RECV_SEND_TIME       2500        /**< The amount of time it usally costs to change and send a packet */
 
 /* The different statuses the superbitRF can be in */
 enum SuperbitRFStatus {
@@ -75,7 +78,6 @@ struct SuperbitRF {
   volatile enum SuperbitRFStatus status;    /**< The status of the superbitRF */
   uint8_t state;                            /**< The states each status can be in */
   uint32_t timer;                           /**< The timer in microseconds */
-  bool_t timer_overflow;                    /**< When the timer overflows */
   uint8_t timeouts;                         /**< The amount of timeouts */
   uint32_t transfer_timeouts;               /**< The amount of timeouts during transfer */
   uint32_t resync_count;                    /**< The amount of resyncs needed during transfer */
