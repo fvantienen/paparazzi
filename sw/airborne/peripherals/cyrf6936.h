@@ -63,6 +63,9 @@ struct Cyrf6936 {
   uint8_t rx_status;                        /**< The last receive status */
   uint8_t rx_count;                         /**< The length of the received packet */
   uint8_t rx_packet[16];                    /**< The last received packet */
+
+  uint8_t rx_ctrl_reg;                      /**< The last RX ctrl registers */
+  uint8_t tx_ctrl_reg;                      /**< The last TX ctrol registers */
 };
 
 extern void cyrf6936_init(struct Cyrf6936 *cyrf, struct spi_periph *spi_p, const uint8_t slave_idx, const uint32_t rst_port, const uint16_t rst_pin);

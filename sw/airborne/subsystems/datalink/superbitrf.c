@@ -40,16 +40,12 @@
 
 #define DEBUG_GPIO_VAL(_v) debug_gpio(DEBUG_SUPERBITRF, _v);
 #define DEBUG_GPIO(_v) DEBUG_GPIO_VAL(DEBUG_SUPERBITRF_ ## _v);
-#define DEBUG_SUPERBITRF_INIT       1
-#define DEBUG_SUPERBITRF_BINDING    2
-#define DEBUG_SUPERBITRF_SYNCING    3
-#define DEBUG_SUPERBITRF_INTRPT     4
-#define DEBUG_SUPERBITRF_RECV       5
-#define DEBUG_SUPERBITRF_SEND       6
-#define DEBUG_SUPERBITRF_SYNC_B     7
-#define DEBUG_SUPERBITRF_BAD_MFGID  8
-#define DEBUG_SUPERBITRF_BAD_CRC    9
-#define DEBUG_SUPERBITRF_BAD_SUM    10
+#define DEBUG_SUPERBITRF_TIMEOUT            1
+#define DEBUG_SUPERBITRF_RECV_RC            2
+#define DEBUG_SUPERBITRF_RECV_DATA          3
+#define DEBUG_SUPERBITRF_RECV_OTHER         4
+#define DEBUG_SUPERBITRF_CHANA              5
+#define DEBUG_SUPERBITRF_CHANB              6
 #else
 #define DEBUG_GPIO(_v)
 #define DEBUG_GPIO_VAL(_v)
@@ -247,7 +243,6 @@ void superbitrf_init(void) {
 #if PERIODIC_TELEMETRY
   register_periodic_telemetry(DefaultPeriodic, "SUPERBIT", send_superbit);
 #endif
-  DEBUG_GPIO(INIT);
 }
 
 /**
@@ -268,17 +263,18 @@ static void superbitrf_initialize(void) {
  * Start the timer
  */
 static void superbitrf_start_timer(void) {
-  // Add the mxaimum timeout of 0xFFFF
-  superbitrf.timer = (get_sys_time_usec() + 0xFFFF) % 0xFFFFFFFF;
+  superbitrf.timer = get_sys_time_usec() % 0xFFFFFFFF;
 }
 
 /**
  * Check if the timer is finished
  */
 static bool_t superbitrf_timeout(uint16_t timeout) {
-  // Fix overflow problems
-  uint16_t timer = 0xFFFF - (superbitrf.timer - get_sys_time_usec() + 0xFFFFFFFF) %0xFFFF;
-  if(timer >= timeout) {
+  uint32_t time_diff = superbitrf.timer - (get_sys_time_usec()%0xFFFFFFFF);
+
+  // Fix overflow problem
+  if((time_diff > superbitrf.timer && (0xFFFFFFFF - time_diff) >= timeout)
+      || (time_diff < superbitrf.timer && time_diff >= timeout)) {
     return TRUE;
   }
 
@@ -307,10 +303,10 @@ static void superbitrf_send_packet(void) {
   // Set the header
   if(IS_DSM2(superbitrf.protocol) || SUPERBITRF_FORCE_DSM2) {
     tx_packet[0] = (~superbitrf.bind_mfg_id[2]) % 0xFF;
-    tx_packet[1] = ((~superbitrf.bind_mfg_id[3])+1+superbitrf.packet_loss_bit) % 0xFF;
+    tx_packet[1] = (~superbitrf.bind_mfg_id[3]+1+superbitrf.packet_loss_bit) % 0xFF;
   } else {
     tx_packet[0] = superbitrf.bind_mfg_id[2];
-    tx_packet[1] = ((superbitrf.bind_mfg_id[3])+1+superbitrf.packet_loss_bit) % 0xFF;
+    tx_packet[1] = (superbitrf.bind_mfg_id[3]+1+superbitrf.packet_loss_bit) % 0xFF;
   }
 
   // Send a packet
@@ -341,7 +337,6 @@ static void superbitrf_init_binding(void) {
     cyrf6936_write_chan_sop_data_crc(&superbitrf.cyrf6936, 1, pn_codes[0][0], data_code, 0x0000);
 
     superbitrf.status = SUPERBITRF_BINDING;
-    DEBUG_GPIO(BINDING);
     break;
   default:
     // Should not happen
@@ -364,7 +359,6 @@ static void superbitrf_init_transfer(void) {
     superbitrf.packet_loss_bit = 0;
     superbitrf.status = SUPERBITRF_SYNCING_A;
     superbitrf.state = 1;
-    DEBUG_GPIO(SYNCING);
   }
 }
 
@@ -457,8 +451,10 @@ static void superbitrf_syncing(void) {
   switch (superbitrf.state) {
   case 0: /* Timeout when no RC packet is received */
     // When there is a timeout
-    if(superbitrf_timeout(SUPERBITRF_SYNC_RECV_TIME))
+    if(superbitrf_timeout(SUPERBITRF_SYNC_RECV_TIME)) {
       superbitrf.state++;
+      DEBUG_GPIO(TIMEOUT);
+    }
     break;
   case 1: /* Abort the receive */
     // Abort the receive
@@ -541,11 +537,12 @@ static void superbitrf_transfer(void) {
   switch (superbitrf.state) {
   case 0: /* Wait for a timeout */
     // When there is a timeout`(TODO FIX remove of extra time when missed packet)
-    if((superbitrf.crc_seed != ((superbitrf.bind_mfg_id[0] << 8) + superbitrf.bind_mfg_id[1]) 
+    if((superbitrf.crc_seed == ((superbitrf.bind_mfg_id[0] << 8) + superbitrf.bind_mfg_id[1]) 
         && superbitrf_timeout(SUPERBITRF_RECV_SHORT_TIME + SUPERBITRF_RECV_EXTRA_TIME)
       ) 
       || superbitrf_timeout(SUPERBITRF_RECV_TIME + SUPERBITRF_RECV_EXTRA_TIME))
     {
+      DEBUG_GPIO(TIMEOUT);
       superbitrf.transfer_timeouts++;
       superbitrf.timeouts++;
       superbitrf.state++;
@@ -577,10 +574,10 @@ static void superbitrf_transfer(void) {
         superbitrf.crc_seed);
 
      // Only send on channel 2
-    if(superbitrf.crc_seed == ((superbitrf.bind_mfg_id[0] << 8) + superbitrf.bind_mfg_id[1]))
+    //if(superbitrf.crc_seed == ((superbitrf.bind_mfg_id[0] << 8) + superbitrf.bind_mfg_id[1]))
       superbitrf.state = 5;
-    else
-      superbitrf.state++;
+    //else
+    //  superbitrf.state++;
     break;
   case 3: /* Send a packet */
     superbitrf_send_packet();
@@ -618,7 +615,6 @@ void superbitrf_event(void) {
   if(superbitrf.status != SUPERBITRF_UNINIT) {
     // First handle the IRQ
     if(gpio_get(SUPERBITRF_DRDY_PORT, SUPERBITRF_DRDY_PIN) == 0) {
-      //DEBUG_GPIO(INTRPT);
       // Receive the packet
       cyrf6936_read_rx_irq_status_packet(&superbitrf.cyrf6936);
       superbitrf.irq_count++;
@@ -744,7 +740,6 @@ static inline void superbitrf_receive_packet_cb(bool_t error, uint8_t status, ui
   int i;
   uint16_t sum;
   static uint16_t count_bind = 0;
-  DEBUG_GPIO(RECV);
 
   /* Switch on the status of the superbitRF */
   switch (superbitrf.status) {
@@ -757,7 +752,6 @@ static inline void superbitrf_receive_packet_cb(bool_t error, uint8_t status, ui
         superbitrf.state = 3;
       }
       count_bind = (count_bind+1) % 16;
-      DEBUG_GPIO(BAD_MFGID);
       break;
     }
 
@@ -773,7 +767,6 @@ static inline void superbitrf_receive_packet_cb(bool_t error, uint8_t status, ui
         superbitrf.state = 3;
       }
       count_bind = (count_bind+1) % 16;
-      DEBUG_GPIO(BAD_SUM);
       break;
     }
 
@@ -788,8 +781,6 @@ static inline void superbitrf_receive_packet_cb(bool_t error, uint8_t status, ui
         superbitrf.state = 3;
       }
       count_bind = (count_bind+1) % 16;
-      DEBUG_GPIO(BAD_SUM);
-      DEBUG_GPIO(BAD_SUM);
       break;
     }
 
@@ -820,11 +811,10 @@ static inline void superbitrf_receive_packet_cb(bool_t error, uint8_t status, ui
     if(error && !(status & CYRF_BAD_CRC)) {
       // Start receiving TODO: Fix nicely
       cyrf6936_multi_write(&superbitrf.cyrf6936, cyrf_start_receive, 3);
-      DEBUG_GPIO(BAD_CRC);
       break;
     }
-    // Check if we received a data packet
-    if(superbitrf_parse_data(packet)) {
+    // Check if we received a data packet (or aren't expecting RC)
+    if(superbitrf_parse_data(packet) || superbitrf.state != 0) {
       break;
     }
     // Check MFG ID for DSM2
@@ -832,7 +822,6 @@ static inline void superbitrf_receive_packet_cb(bool_t error, uint8_t status, ui
         (packet[0] != (~superbitrf.bind_mfg_id[2]&0xFF) || packet[1] != (~superbitrf.bind_mfg_id[3]&0xFF))) {
       // Start receiving TODO: Fix nicely
       cyrf6936_multi_write(&superbitrf.cyrf6936, cyrf_start_receive, 3);
-      DEBUG_GPIO(BAD_MFGID);
       break;
     }
     // Check MFG ID for DSMX
@@ -840,7 +829,6 @@ static inline void superbitrf_receive_packet_cb(bool_t error, uint8_t status, ui
             (packet[0] != superbitrf.bind_mfg_id[2] || packet[1] != superbitrf.bind_mfg_id[3])) {
       // Start receiving TODO: Fix nicely
       cyrf6936_multi_write(&superbitrf.cyrf6936, cyrf_start_receive, 3);
-      DEBUG_GPIO(BAD_MFGID);
       break;
     }
 
@@ -852,13 +840,14 @@ static inline void superbitrf_receive_packet_cb(bool_t error, uint8_t status, ui
       superbitrf.channels[0] = superbitrf.channel;
       superbitrf.channels[1] = superbitrf.channel;
 
-      superbitrf.state = 1;
       superbitrf.status = SUPERBITRF_SYNCING_B;
-      DEBUG_GPIO(SYNC_B);
+      DEBUG_GPIO(CHANA);
     } else {
       superbitrf.timeouts = 0;
       superbitrf.state = 1;
       superbitrf.status = SUPERBITRF_TRANSFER;
+      DEBUG_GPIO(CHANA);
+      DEBUG_GPIO(CHANB);
     }
     break;
 
@@ -870,8 +859,8 @@ static inline void superbitrf_receive_packet_cb(bool_t error, uint8_t status, ui
       cyrf6936_multi_write(&superbitrf.cyrf6936, cyrf_start_receive, 3);
       break;
     }
-    // Check if we received a data packet
-    if(superbitrf_parse_data(packet)) {
+    // Check if we received a data packet (or aren't expecting RC)
+    if(superbitrf_parse_data(packet) || superbitrf.state != 0) {
       break;
     }
     // Check MFG ID for DSM2
@@ -879,7 +868,6 @@ static inline void superbitrf_receive_packet_cb(bool_t error, uint8_t status, ui
         (packet[0] != (~superbitrf.bind_mfg_id[2]&0xFF) || packet[1] != (~superbitrf.bind_mfg_id[3]&0xFF))) {
       // Start receiving TODO: Fix nicely
       cyrf6936_multi_write(&superbitrf.cyrf6936, cyrf_start_receive, 3);
-      DEBUG_GPIO(BAD_MFGID);
       break;
     }
     // Check MFG ID for DSMX
@@ -887,7 +875,6 @@ static inline void superbitrf_receive_packet_cb(bool_t error, uint8_t status, ui
             (packet[0] != superbitrf.bind_mfg_id[2] || packet[1] != superbitrf.bind_mfg_id[3])) {
       // Start receiving TODO: Fix nicely
       cyrf6936_multi_write(&superbitrf.cyrf6936, cyrf_start_receive, 3);
-      DEBUG_GPIO(BAD_MFGID);
       break;
     }
 
@@ -907,6 +894,8 @@ static inline void superbitrf_receive_packet_cb(bool_t error, uint8_t status, ui
 
     // When the channels aren't the same go to transfer mode
     if(superbitrf.channels[1] != superbitrf.channels[0]) {
+      DEBUG_GPIO_VAL(superbitrf.state);
+      DEBUG_GPIO(CHANB);
       superbitrf.state = 1;
       superbitrf.status = SUPERBITRF_TRANSFER;
       superbitrf.timeouts = 0;
@@ -923,14 +912,15 @@ static inline void superbitrf_receive_packet_cb(bool_t error, uint8_t status, ui
     }
     // Check if we received a data packet
     if(superbitrf_parse_data(packet)) {
+      DEBUG_GPIO(RECV_DATA);
       break;
     }
+    //DEBUG_GPIO(RECV_OTHER);
     // Check MFG ID for DSM2
     if((IS_DSM2(superbitrf.protocol) || SUPERBITRF_FORCE_DSM2) &&
         (packet[0] != (~superbitrf.bind_mfg_id[2]&0xFF) || packet[1] != (~superbitrf.bind_mfg_id[3]&0xFF))) {
       // Start receiving TODO: Fix nicely
       cyrf6936_multi_write(&superbitrf.cyrf6936, cyrf_start_receive, 3);
-      DEBUG_GPIO(BAD_MFGID);
       break;
     }
     // Check MFG ID for DSMX
@@ -938,7 +928,6 @@ static inline void superbitrf_receive_packet_cb(bool_t error, uint8_t status, ui
             (packet[0] != superbitrf.bind_mfg_id[2] || packet[1] != superbitrf.bind_mfg_id[3])) {
       // Start receiving TODO: Fix nicely
       cyrf6936_multi_write(&superbitrf.cyrf6936, cyrf_start_receive, 3);
-      DEBUG_GPIO(BAD_MFGID);
       break;
     }
 
@@ -958,6 +947,7 @@ static inline void superbitrf_receive_packet_cb(bool_t error, uint8_t status, ui
     // Go to next receive
     superbitrf.state = 1;
     superbitrf.timeouts = 0;
+    //DEBUG_GPIO(RECV_RC);
     break;
 
   /* Should not come here */
@@ -967,7 +957,6 @@ static inline void superbitrf_receive_packet_cb(bool_t error, uint8_t status, ui
 }
 
 static inline void superbitrf_send_packet_cb(bool_t error __attribute__((unused))) {
-  //DEBUG_GPIO(SEND);
 
   /* Switch on the status of the superbitRF */
   switch (superbitrf.status) {

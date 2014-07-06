@@ -54,7 +54,7 @@ void cyrf6936_init(struct Cyrf6936 *cyrf, struct spi_periph *spi_p, const uint8_
   cyrf->spi_t.cpha = SPICphaEdge1;
   cyrf->spi_t.dss = SPIDss8bit;
   cyrf->spi_t.bitorder = SPIMSBFirst;
-  cyrf->spi_t.cdiv = SPIDiv64;
+  cyrf->spi_t.cdiv = SPIDiv16;
 
   cyrf->spi_t.input_length = 0;
   cyrf->spi_t.output_length = 0;

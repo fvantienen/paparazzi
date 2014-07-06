@@ -39,7 +39,7 @@
 #define SUPERBITRF_SYNC_RECV_TIME       10000       /**< The time to wait for a sync packet on a channel in microseconds (together with previous don exceed 11/22ms) */
 
 #define SUPERBITRF_RECV_TIME            22000       /**< The amount of time it takes to receive in the long channel switch */
-#define SUPERBITRF_RECV_SHORT_TIME      4000        /**< The amount of time it takes to receive in the short channel switch */
+#define SUPERBITRF_RECV_SHORT_TIME      6000        /**< The amount of time it takes to receive in the short channel switch */
 #define SUPERBITRF_RECV_EXTRA_TIME      2000        /**< The extra amount of time added to the SUPERBITRF_RECV_TIME and SUPERBITRF_RECV_SHORT_TIME */
 #define SUPERBITRF_RECV_SEND_TIME       2500        /**< The amount of time it usally costs to change and send a packet */
 
