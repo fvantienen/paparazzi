@@ -30,7 +30,7 @@
 #include "cyrf6936_regs.h"
 #include "mcu_periph/spi.h"
 
-#define CYRF6936_MAX_BUFFER     80 /**< The max buffer size in the cyrf6936 structure */
+#define CYRF6936_MAX_BUFFER     80  /**< The max buffer size in the cyrf6936 structure */
 
 /* The different statuses the cyrf6936 chip can be in */
 enum Cyrf6936Status {
@@ -38,7 +38,6 @@ enum Cyrf6936Status {
   CYRF6936_IDLE,                    /**< The chip is idle and can be used */
   CYRF6936_GET_MFG_ID,              /**< The chip is busy with getting the manufacturer ID */
   CYRF6936_MULTIWRITE,              /**< The chip is writing multiple registers */
-  CYRF6936_DATA_CODE,               /**< The chip is writing a data code */
   CYRF6936_CHAN_SOP_DATA_CRC,       /**< The chip is setting the channel, SOP code, DATA code and the CRC seed */
   CYRF6936_RX_IRQ_STATUS_PACKET,    /**< The chip is getting the receive irq status, receive status and the receive packet */
   CYRF6936_SEND                     /**< The chip is busy sending a packet */
@@ -46,26 +45,27 @@ enum Cyrf6936Status {
 
 /* The structure for the cyrf6936 chip that handles all the buffers and requests */
 struct Cyrf6936 {
-  struct spi_periph *spi_p;                 /**< The SPI peripheral for the connection */
-  struct spi_transaction spi_t;             /**< The SPI transaction used for the writing and reading of registers */
-  volatile enum Cyrf6936Status status;      /**< The status of the CYRF6936 chip */
-  uint8_t input_buf[17];                    /**< The input buffer for the SPI transaction */
-  uint8_t output_buf[17];                   /**< The output buffer for the SPI transaction */
+  struct spi_periph *spi_p;                           /**< The SPI peripheral for the connection */
+  struct spi_transaction spi_t;                       /**< The SPI transaction used for the writing and reading of registers */
 
-  uint8_t buffer[CYRF6936_MAX_BUFFER];      /**< The buffer used to write/read multiple registers */
-  uint8_t buffer_length;                    /**< The length of the buffer used for MULTIWRITE */
-  uint8_t buffer_idx;                       /**< The index of the buffer used for MULTIWRITE and used as sub-status for other statuses */
+  volatile enum Cyrf6936Status status;                /**< The status of the CYRF6936 chip */
+  uint8_t input_buf[17];                              /**< The input buffer for the SPI transaction */
+  uint8_t output_buf[17];                             /**< The output buffer for the SPI transaction */
 
-  bool_t has_irq;                           /**< When the CYRF6936 is done reading the irq */
-  uint8_t mfg_id[6];                        /**< The manufacturer id of the CYRF6936 chip */
-  uint8_t tx_irq_status;                    /**< The last send interrupt status */
-  uint8_t rx_irq_status;                    /**< The last receive interrupt status */
-  uint8_t rx_status;                        /**< The last receive status */
-  uint8_t rx_count;                         /**< The length of the received packet */
-  uint8_t rx_packet[16];                    /**< The last received packet */
+  uint8_t buffer[CYRF6936_MAX_BUFFER];                /**< The buffer used to write/read multiple registers */
+  uint8_t buffer_length;                              /**< The length of the buffer used for MULTIWRITE */
+  uint8_t buffer_idx;                                 /**< The index of the buffer used for MULTIWRITE and used as sub-status for other statuses */
 
-  uint8_t rx_ctrl_reg;                      /**< The last RX ctrl registers */
-  uint8_t tx_ctrl_reg;                      /**< The last TX ctrol registers */
+  bool_t has_irq;                                     /**< When the CYRF6936 is done reading the irq */
+  uint8_t mfg_id[6];                                  /**< The manufacturer id of the CYRF6936 chip */
+  uint8_t tx_irq_status;                              /**< The last send interrupt status */
+  uint8_t rx_irq_status;                              /**< The last receive interrupt status */
+  uint8_t rx_status;                                  /**< The last receive status */
+  uint8_t rx_count;                                   /**< The length of the received packet */
+  uint8_t rx_packet[16];                              /**< The last received packet */
+  
+  uint8_t rx_ctrl_reg;                                /**< The last RX ctrl registers */
+  uint8_t tx_ctrl_reg;                                /**< The last TX ctrol registers */
 };
 
 extern void cyrf6936_init(struct Cyrf6936 *cyrf, struct spi_periph *spi_p, const uint8_t slave_idx, const uint32_t rst_port, const uint16_t rst_pin);

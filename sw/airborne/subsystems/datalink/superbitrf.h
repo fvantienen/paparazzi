@@ -39,9 +39,9 @@
 #define SUPERBITRF_SYNC_RECV_TIME       10000       /**< The time to wait for a sync packet on a channel in microseconds (together with previous don exceed 11/22ms) */
 
 #define SUPERBITRF_RECV_TIME            22000       /**< The amount of time it takes to receive in the long channel switch */
-#define SUPERBITRF_RECV_SHORT_TIME      6000        /**< The amount of time it takes to receive in the short channel switch */
+#define SUPERBITRF_RECV_SHORT_TIME      22000        /**< The amount of time it takes to receive in the short channel switch */
 #define SUPERBITRF_RECV_EXTRA_TIME      2000        /**< The extra amount of time added to the SUPERBITRF_RECV_TIME and SUPERBITRF_RECV_SHORT_TIME */
-#define SUPERBITRF_RECV_SEND_TIME       2500        /**< The amount of time it usally costs to change and send a packet */
+#define SUPERBITRF_RECV_SEND_TIME       6000        /**< The amount of time it usally costs to change and send a packet */
 
 /* The different statuses the superbitRF can be in */
 enum SuperbitRFStatus {
@@ -78,6 +78,7 @@ struct SuperbitRF {
   volatile enum SuperbitRFStatus status;    /**< The status of the superbitRF */
   uint8_t state;                            /**< The states each status can be in */
   uint32_t timer;                           /**< The timer in microseconds */
+  uint8_t chan_timeouts[23];                /**< The amount of timeouts per channel */
   uint8_t timeouts;                         /**< The amount of timeouts */
   uint32_t transfer_timeouts;               /**< The amount of timeouts during transfer */
   uint32_t resync_count;                    /**< The amount of resyncs needed during transfer */

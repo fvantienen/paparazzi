@@ -81,7 +81,7 @@ void cyrf6936_init(struct Cyrf6936 *cyrf, struct spi_periph *spi_p, const uint8_
  * The on event call for the CYRF6936 chip
  */
 void cyrf6936_event(struct Cyrf6936 *cyrf) {
-  int i;
+  uint8_t i;
   // Check if cyrf is initialized
   if(cyrf->status == CYRF6936_UNINIT)
     return;
@@ -90,17 +90,17 @@ void cyrf6936_event(struct Cyrf6936 *cyrf) {
   if(cyrf->spi_t.status == SPITransPending || cyrf->spi_t.status == SPITransRunning)
     return;
 
+  // When the last transaction isn't failed send the next
+  if(cyrf->spi_t.status != SPITransFailed)
+    cyrf->buffer_idx++;
+
+  cyrf->spi_t.status = SPITransDone;
+
   /* Check the status of the cyrf */
   switch (cyrf->status) {
 
   /* Getting the MFG id */
   case CYRF6936_GET_MFG_ID:
-    // When the last transaction isn't failed send the next
-    if(cyrf->spi_t.status != SPITransFailed)
-      cyrf->buffer_idx++;
-
-    cyrf->spi_t.status = SPITransDone;
-
     // Switch for the different states
     switch (cyrf->buffer_idx) {
     case 0:
@@ -124,12 +124,6 @@ void cyrf6936_event(struct Cyrf6936 *cyrf) {
 
   /* Do a multi write */
   case CYRF6936_MULTIWRITE:
-    // When the last transaction isn't failed send the next
-    if(cyrf->spi_t.status != SPITransFailed)
-      cyrf->buffer_idx++;
-
-    cyrf->spi_t.status = SPITransDone;
-
     // When we are done writing
     if(cyrf->buffer_idx == cyrf->buffer_length) {
       cyrf->status = CYRF6936_IDLE;
@@ -142,18 +136,8 @@ void cyrf6936_event(struct Cyrf6936 *cyrf) {
         ((uint8_t (*)[2])cyrf->buffer)[cyrf->buffer_idx][1]);
     break;
 
-  /* Do a write of the data code */
-  case CYRF6936_DATA_CODE:
-    break;
-
   /* Do a write of channel, sop, data and crc */
   case CYRF6936_CHAN_SOP_DATA_CRC:
-    // When the last transaction isn't failed send the next
-    if(cyrf->spi_t.status != SPITransFailed)
-      cyrf->buffer_idx++;
-
-    cyrf->spi_t.status = SPITransDone;
-
     // Switch for the different states
     switch (cyrf->buffer_idx) {
     case 0: // Write the CRC LSB
@@ -179,23 +163,17 @@ void cyrf6936_event(struct Cyrf6936 *cyrf) {
 
   /* Do a read of the receive irq status, receive status and the receive packet */
   case CYRF6936_RX_IRQ_STATUS_PACKET:
-    // When the last transaction isn't failed send the next
-    if(cyrf->spi_t.status != SPITransFailed)
-      cyrf->buffer_idx++;
-
-    cyrf->spi_t.status = SPITransDone;
-
     // Switch for the different states
     switch (cyrf->buffer_idx) {
     case 0: // Read the receive IRQ status
       cyrf6936_read_register(cyrf, CYRF_RX_IRQ_STATUS);
       break;
     case 1: // Read the send IRQ status
-      cyrf->rx_irq_status = cyrf->input_buf[1];
+      cyrf->rx_irq_status = cyrf->input_buf[1] & cyrf->rx_ctrl_reg;
       cyrf6936_read_register(cyrf, CYRF_TX_IRQ_STATUS);
       break;
     case 2: // Read the receive status
-      cyrf->tx_irq_status = cyrf->input_buf[1];
+      cyrf->tx_irq_status = cyrf->input_buf[1];// & cyrf->tx_ctrl_reg;
       cyrf6936_read_register(cyrf, CYRF_RX_STATUS);
       break;
     case 3: // Set the packet length
@@ -224,12 +202,6 @@ void cyrf6936_event(struct Cyrf6936 *cyrf) {
 
   /* The CYRF6936 is busy sending a packet */
   case CYRF6936_SEND:
-    // When the last transaction isn't failed send the next
-    if(cyrf->spi_t.status != SPITransFailed)
-      cyrf->buffer_idx++;
-
-    cyrf->spi_t.status = SPITransDone;
-
     // Switch for the different states
     switch (cyrf->buffer_idx) {
     case 0: // Set the packet length
@@ -315,6 +287,12 @@ bool_t cyrf6936_write(struct Cyrf6936 *cyrf, const uint8_t addr, const uint8_t d
   const uint8_t data_multi[][2] = {
       {addr, data}
   };
+
+  if(addr == CYRF_RX_CTRL)
+    cyrf->rx_ctrl_reg = data | 0xC0;
+  if(addr == CYRF_TX_CTRL)
+    cyrf->tx_ctrl_reg = data | 0xC0;
+
   return cyrf6936_multi_write(cyrf, data_multi, 1);
 }
 
@@ -338,6 +316,11 @@ bool_t cyrf6936_multi_write(struct Cyrf6936 *cyrf, const uint8_t data[][2], cons
   for(i = 0; i< length; i++) {
     cyrf->buffer[i*2] = data[i][0];
     cyrf->buffer[i*2+1] = data[i][1];
+
+    if(data[i][0] == CYRF_RX_CTRL)
+      cyrf->rx_ctrl_reg = data[i][1] | 0xC0;
+    if(data[i][0] == CYRF_TX_CTRL)
+      cyrf->tx_ctrl_reg = data[i][1] | 0xC0;
   }
 
   /* Write the first regiter */

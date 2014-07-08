@@ -208,9 +208,9 @@
   <firmware name="rotorcraft">
     <target name="ap" board="lisa_s_1.0">
       <subsystem name="radio_control" type="superbitrf_rc">
-        <define name="RADIO_TRANSMITTER_ID" value="0X42AA5519"/> <!-- TUDelft Dx6i: TX 4 -->
-        <define name="RADIO_TRANSMITTER_CHAN" value="8"/>
-        <define name="RADIO_TRANSMITTER_PROTOCOL" value="0xB2"/>
+        <define name="RADIO_TRANSMITTER_ID" value="0x6374442C"/> <!-- TUDelft Dx6i: TX 4 -->
+        <define name="RADIO_TRANSMITTER_CHAN" value="6"/>
+        <define name="RADIO_TRANSMITTER_PROTOCOL" value="0x01"/>
         <define name="DEBUG_SUPERBITRF" value="1"/>
       </subsystem>
 
