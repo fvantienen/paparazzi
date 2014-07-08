@@ -375,10 +375,10 @@ void superbitrf_event(void) {
       #ifdef RADIO_TRANSMITTER_ID
         PRINT_CONFIG_VAR(RADIO_TRANSMITTER_ID);
         superbitrf.bind_mfg_id32 = RADIO_TRANSMITTER_ID;
-        superbitrf.bind_mfg_id[0] = (superbitrf.bind_mfg_id32 &0xFF);
-        superbitrf.bind_mfg_id[1] = (superbitrf.bind_mfg_id32 >>8 &0xFF);
-        superbitrf.bind_mfg_id[2] = (superbitrf.bind_mfg_id32 >>16 &0xFF);
-        superbitrf.bind_mfg_id[3] = (superbitrf.bind_mfg_id32 >>24 &0xFF);
+        superbitrf.bind_mfg_id[0] = (superbitrf.bind_mfg_id32 >>24 &0xFF);
+        superbitrf.bind_mfg_id[1] = (superbitrf.bind_mfg_id32 >>16 &0xFF);
+        superbitrf.bind_mfg_id[2] = (superbitrf.bind_mfg_id32 >>8 &0xFF);
+        superbitrf.bind_mfg_id[3] = (superbitrf.bind_mfg_id32 &0xFF);
 
         // Calculate some values based on the bind MFG id
         superbitrf.crc_seed = ~((superbitrf.bind_mfg_id[0] << 8) + superbitrf.bind_mfg_id[1]);
@@ -446,7 +446,7 @@ void superbitrf_event(void) {
       break;
     case 3:
       // Create a new packet when no packet loss
-      if(!superbitrf.packet_loss) {
+      //if(!superbitrf.packet_loss) {
         superbitrf.packet_loss_bit = !superbitrf.packet_loss_bit;
         if(IS_DSM2(superbitrf.protocol) || SUPERBITRF_FORCE_DSM2) {
           tx_packet[0] = ~superbitrf.bind_mfg_id[2];
@@ -462,7 +462,7 @@ void superbitrf_event(void) {
 
         for(i = 0; i < packet_size; i++)
           tx_packet[i+2] = superbitrf.tx_buffer[(superbitrf.tx_extract_idx+i) %128];
-      }
+      //}
 
       // Send a packet
       cyrf6936_send(&superbitrf.cyrf6936, tx_packet, packet_size+2);
@@ -572,7 +572,7 @@ void superbitrf_event(void) {
       break;
     case 3:
       // Create a new packet when no packet loss
-      if(!superbitrf.packet_loss) {
+      //if(!superbitrf.packet_loss) {
         superbitrf.packet_loss_bit = !superbitrf.packet_loss_bit;
         if(IS_DSM2(superbitrf.protocol) || SUPERBITRF_FORCE_DSM2) {
           tx_packet[0] = ~superbitrf.bind_mfg_id[2];
@@ -588,7 +588,7 @@ void superbitrf_event(void) {
 
         for(i = 0; i < packet_size; i++)
           tx_packet[i+2] = superbitrf.tx_buffer[(superbitrf.tx_extract_idx+i) %128];
-      }
+      //}
 
       // Send a packet
       cyrf6936_send(&superbitrf.cyrf6936, tx_packet, packet_size+2);
@@ -709,8 +709,8 @@ static inline void superbitrf_receive_packet_cb(bool_t error, uint8_t status, ui
     superbitrf.bind_mfg_id[1] = ~packet[1];
     superbitrf.bind_mfg_id[2] = ~packet[2];
     superbitrf.bind_mfg_id[3] = ~packet[3];
-    superbitrf.bind_mfg_id32 = ((superbitrf.bind_mfg_id[3] &0xFF) << 24 | (superbitrf.bind_mfg_id[2] &0xFF) << 16 |
-        (superbitrf.bind_mfg_id[1] &0xFF) << 8 | (superbitrf.bind_mfg_id[0] &0xFF));
+    superbitrf.bind_mfg_id32 = ((superbitrf.bind_mfg_id[0] &0xFF) << 24 | (superbitrf.bind_mfg_id[1] &0xFF) << 16 |
+        (superbitrf.bind_mfg_id[2] &0xFF) << 8 | (superbitrf.bind_mfg_id[3] &0xFF));
     superbitrf.num_channels = packet[11];
     superbitrf.protocol = packet[12];
     superbitrf.resolution = (superbitrf.protocol & 0x10)>>4;
@@ -763,7 +763,7 @@ static inline void superbitrf_receive_packet_cb(bool_t error, uint8_t status, ui
         superbitrf.packet_loss = FALSE;
 
       // When it is a data packet, parse the packet if not busy already
-      if(!dl_msg_available && !superbitrf.packet_loss) {
+      if(!dl_msg_available) {
         for(i = 2; i < superbitrf.cyrf6936.rx_count; i++) {
           parse_pprz(&superbitrf.rx_transport, packet[i]);
 
@@ -906,7 +906,7 @@ static inline void superbitrf_receive_packet_cb(bool_t error, uint8_t status, ui
       superbitrf.packet_loss = FALSE;
 
       // When it is a data packet, parse the packet if not busy already
-      if(!dl_msg_available && !superbitrf.packet_loss) {
+      if(!dl_msg_available) {
         for(i = 2; i < superbitrf.cyrf6936.rx_count; i++) {
           parse_pprz(&superbitrf.rx_transport, packet[i]);
 

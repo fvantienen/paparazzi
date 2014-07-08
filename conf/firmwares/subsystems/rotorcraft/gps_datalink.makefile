@@ -7,6 +7,7 @@ ap.CFLAGS += -DGPS_TYPE_H=\"subsystems/gps/gps_datalink.h\"
 ap.srcs += $(SRC_SUBSYSTEMS)/gps/gps_datalink.c
 
 ap.CFLAGS += -DUSE_GPS -DGPS_DATALINK
+ap.CFLAGS += -DUSE_$(GPS_PORT) -D$(GPS_PORT)_BAUD=$(GPS_BAUD)
 
 ifneq ($(GPS_LED),none)
   ap.CFLAGS += -DGPS_LED=$(GPS_LED)
