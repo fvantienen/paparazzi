@@ -38,6 +38,8 @@ void gps_impl_init(void) {
   gps_available = FALSE;
   gps.gspeed = 700; // To enable course setting
   gps.cacc = 0; // To enable course setting
+  gps.num_sv = 0;
+  gps.tow = 0;
 }
 
 /** Parse the REMOTE_GPS datalink packet */
@@ -81,7 +83,7 @@ void parse_gps_datalink(uint8_t numsv, int32_t ecef_x, int32_t ecef_y, int32_t e
 }
 
 /** Parse the REMOTE_GPS datalink packet */
-void parse_gps_datalink_small(int16_t enu_x, int16_t enu_y, int16_t enu_z, int16_t enu_xd, int16_t enu_yd, int16_t course) {
+void parse_gps_datalink_small_pos(int16_t enu_x, int16_t enu_y, int16_t enu_z) {
 
   struct EnuCoor_i enu_coord;
   enu_coord.x = (int32_t) enu_x;
@@ -94,15 +96,16 @@ void parse_gps_datalink_small(int16_t enu_x, int16_t enu_y, int16_t enu_z, int16
   gps.ecef_pos.y = ecef_coord.y;
   gps.ecef_pos.z = ecef_coord.z;
 
-  gps.ecef_vel.x = enu_xd;
-  gps.ecef_vel.y = enu_yd;
-  gps.ecef_vel.z = 0;
-
-  gps.course = ((int32_t) course) * 1e3;
-  gps.num_sv = 0;
-  gps.tow = 0;
-  gps.fix = GPS_FIX_3D;
-  gps_available = TRUE;
+  if(gps.num_sv == 2) {
+    gps.num_sv = 0;
+    gps.tow = 0;
+    gps.fix = GPS_FIX_3D;
+    gps_available = TRUE;
+  }
+  else {
+    gps.num_sv = 1;
+    gps.tow++;
+  }
 
   struct LlaCoor_i lla_coord;
   lla_of_ecef_i(&lla_coord, &ecef_coord);
@@ -111,6 +114,43 @@ void parse_gps_datalink_small(int16_t enu_x, int16_t enu_y, int16_t enu_z, int16
   gps.lla_pos.lon = lla_coord.lon;
   gps.lla_pos.alt = lla_coord.alt;
   gps.hmsl        = 0;
+
+#if GPS_USE_LATLONG
+  // Computes from (lat, long) in the referenced UTM zone
+  struct LlaCoor_f lla_f;
+  lla_f.lat = ((float) gps.lla_pos.lat) / 1e7;
+  lla_f.lon = ((float) gps.lla_pos.lon) / 1e7;
+  struct UtmCoor_f utm_f;
+  utm_f.zone = nav_utm_zone0;
+  // convert to utm
+  utm_of_lla_f(&utm_f, &lla_f);
+  // copy results of utm conversion
+  gps.utm_pos.east = utm_f.east*100;
+  gps.utm_pos.north = utm_f.north*100;
+  gps.utm_pos.alt = gps.lla_pos.alt;
+  gps.utm_pos.zone = nav_utm_zone0;
+#endif
+}
+
+void parse_gps_datalink_small_speed(int16_t enu_xd, int16_t enu_yd, int16_t course) {
+
+  gps.ecef_vel.x = enu_xd;
+  gps.ecef_vel.y = enu_yd;
+  gps.ecef_vel.z = 0;
+
+  gps.course = ((int32_t) course) * 1e3;
+
+  if(gps.num_sv == 1) {
+    gps.num_sv = 0;
+    gps.tow = 0;
+    gps.fix = GPS_FIX_3D;
+    gps_available = TRUE;
+  }
+  else {
+    gps.num_sv = 2;
+    gps.tow++;
+  }
+
 
 #if GPS_USE_LATLONG
   // Computes from (lat, long) in the referenced UTM zone

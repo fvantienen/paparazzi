@@ -499,10 +499,20 @@ gboolean timeout_transmit_callback(gpointer data) {
 
     // Transmit the REMOTE_GPS packet on the ivy bus (either small or big)
     if(small_packets) {
-      IvySendMsg("0 REMOTE_GPS_SMALL %d %d %d %d %d %d %d",
+      /*IvySendMsg("0 REMOTE_GPS_SMALL %d %d %d %d %d %d %d",
         (int16_t)(pos.x*100.0),                     //int16 ENU X in CM
         (int16_t)(pos.y*100.0),                     //int16 ENU Y in CM
         (int16_t)(pos.z*100.0),                     //int16 ENU Z in CM
+        (int16_t)(speed.x*100.0),                   //int16 ENU velocity X in cm/s
+        (int16_t)(speed.y*100.0),                   //int16 ENU velocity Y in cm/s
+        (int16_t)(heading*10000.0),                 //int16 Course in rad*1e4
+        aircrafts[rigidBodies[i].id].ac_id);*/
+        IvySendMsg("0 REMOTE_GPS_SMALL_POS %d %d %d %d",
+        (int16_t)(pos.x*100.0),                     //int16 ENU X in CM
+        (int16_t)(pos.y*100.0),                     //int16 ENU Y in CM
+        (int16_t)(pos.z*100.0),                     //int16 ENU Z in CM
+        aircrafts[rigidBodies[i].id].ac_id);
+        IvySendMsg("0 REMOTE_GPS_SMALL_SPEED %d %d %d %d",
         (int16_t)(speed.x*100.0),                   //int16 ENU velocity X in cm/s
         (int16_t)(speed.y*100.0),                   //int16 ENU velocity Y in cm/s
         (int16_t)(heading*10000.0),                 //int16 Course in rad*1e4

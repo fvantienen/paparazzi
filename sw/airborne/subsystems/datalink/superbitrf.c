@@ -191,6 +191,7 @@ static void send_superbit(void) {
       &superbitrf.timing1,
       &superbitrf.timing2,
       &superbitrf.bind_mfg_id32,
+      &superbitrf.rx_transport.trans.error,
       6,
       superbitrf.cyrf6936.mfg_id);
 }
