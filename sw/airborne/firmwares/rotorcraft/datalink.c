@@ -160,6 +160,40 @@ void dl_parse_msg(void) {
       DL_REMOTE_GPS_tow(dl_buffer),
       DL_REMOTE_GPS_course(dl_buffer));
     break;
+  case DL_REMOTE_GPS_SMALL :
+    // Check if the GPS is for this AC
+    if (DL_REMOTE_GPS_SMALL_ac_id(dl_buffer) != AC_ID) break;
+
+    // Parse the GPS
+    parse_gps_datalink_small_pos(
+      DL_REMOTE_GPS_SMALL_enu_x(dl_buffer),
+      DL_REMOTE_GPS_SMALL_enu_y(dl_buffer),
+      DL_REMOTE_GPS_SMALL_enu_z(dl_buffer));
+    parse_gps_datalink_small_speed(
+     DL_REMOTE_GPS_SMALL_enu_xd(dl_buffer),
+     DL_REMOTE_GPS_SMALL_enu_yd(dl_buffer),
+     DL_REMOTE_GPS_SMALL_course(dl_buffer));
+    break;
+  case DL_REMOTE_GPS_SMALL_POS :
+   // Check if the GPS is for this AC
+    if (DL_REMOTE_GPS_SMALL_POS_ac_id(dl_buffer) != AC_ID) break;
+ 
+    // Parse the GPS
+    parse_gps_datalink_small_pos(
+      DL_REMOTE_GPS_SMALL_POS_enu_x(dl_buffer),
+      DL_REMOTE_GPS_SMALL_POS_enu_y(dl_buffer),
+      DL_REMOTE_GPS_SMALL_POS_enu_z(dl_buffer));
+    break;
+  case DL_REMOTE_GPS_SMALL_SPEED :
+    // Check if the GPS is for this AC
+    if (DL_REMOTE_GPS_SMALL_SPEED_ac_id(dl_buffer) != AC_ID) break;
+ 
+    // Parse the GPS
+    parse_gps_datalink_small_speed(
+      DL_REMOTE_GPS_SMALL_SPEED_enu_xd(dl_buffer),
+      DL_REMOTE_GPS_SMALL_SPEED_enu_yd(dl_buffer),
+      DL_REMOTE_GPS_SMALL_SPEED_course(dl_buffer));
+    break;
 #endif
   default:
     break;

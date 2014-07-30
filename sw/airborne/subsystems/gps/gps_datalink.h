@@ -35,7 +35,9 @@
 
 extern bool_t gps_available;
 extern void parse_gps_datalink(uint8_t numsv, int32_t ecef_x, int32_t ecef_y, int32_t ecef_z, int32_t lat, int32_t lon, int32_t alt,
-	int32_t hmsl, int32_t ecef_xd, int32_t ecef_yd, int32_t ecef_zd, uint32_t tow, int32_t course);
+  int32_t hmsl, int32_t ecef_xd, int32_t ecef_yd, int32_t ecef_zd, uint32_t tow, int32_t course);
+extern void parse_gps_datalink_small_pos(int16_t enu_x, int16_t enu_y, int16_t enu_z);
+extern void parse_gps_datalink_small_speed(int16_t enu_xd, int16_t enu_yd, int16_t course);
 
 
 #define GpsEvent(_sol_available_callback) {         \

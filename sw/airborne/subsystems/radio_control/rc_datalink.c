@@ -28,6 +28,7 @@ volatile bool_t rc_dl_frame_available;
 
 void radio_control_impl_init(void) {
   rc_dl_frame_available = FALSE;
+  superbitrf_init();
 }
 
 

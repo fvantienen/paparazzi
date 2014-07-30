@@ -23,6 +23,7 @@
 #define RC_DATALINK_H
 
 #include "std.h"
+#include "subsystems/datalink/superbitrf.h"
 
 #define RC_DL_NB_CHANNEL 5
 #define RADIO_CONTROL_NB_CHANNEL RC_DL_NB_CHANNEL
@@ -79,6 +80,8 @@ extern void parse_rc_4ch_datalink(
  * Event macro with handler callback
  */
 #define RadioControlEvent(_received_frame_handler) {  \
+  cyrf6936_event(&superbitrf.cyrf6936);                             \
+  superbitrf_event();                                               \
   if (rc_dl_frame_available) {                        \
     radio_control.frame_cpt++;                        \
     radio_control.time_since_last_frame = 0;          \

@@ -43,15 +43,23 @@
 #define SUPERBITRF_RECV_EXTRA_TIME      2000        /**< The extra amount of time added to the SUPERBITRF_RECV_TIME and SUPERBITRF_RECV_SHORT_TIME */
 #define SUPERBITRF_RECV_SEND_TIME       6000        /**< The amount of time it usally costs to change and send a packet */
 
+#define SUPERBITRF_FRECEIVE             30000
+#define SUPERBITRF_FTRANSMIT            6000
+
+
 /* The different statuses the superbitRF can be in */
 enum SuperbitRFStatus {
   SUPERBITRF_UNINIT,                /**< The chip isn't initialized */
   SUPERBITRF_INIT_BINDING,          /**< The chip is initializing binding mode */
   SUPERBITRF_INIT_TRANSFER,         /**< The chip is initializing transfer mode */
   SUPERBITRF_BINDING,               /**< The chip is in binding mode */
+#ifdef RADIO_CONTROL_TYPE_SUPERBITRF
   SUPERBITRF_SYNCING_A,             /**< The chip is in synchronizing mode for channel A */
   SUPERBITRF_SYNCING_B,             /**< The chip is in synchronizing mode for channel B */
   SUPERBITRF_TRANSFER,              /**< The chip is in transfer mode */
+#else
+  SUPERBITRF_FTRANSFER,
+#endif
 };
 
 /* The different resolutions a transmitter can be in */
