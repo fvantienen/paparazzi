@@ -30,7 +30,9 @@
 #include "firmwares/rotorcraft/stabilization.h"
 #include "firmwares/rotorcraft/stabilization/stabilization_attitude_rc_setpoint.h"
 #include "firmwares/rotorcraft/navigation.h"
+#include "firmwares/rotorcraft/autopilot.h"
 #include "subsystems/radio_control.h"
+#include "subsystems/imu.h"
 
 /* for guidance_v_thrust_coeff */
 #include "firmwares/rotorcraft/guidance/guidance_v.h"
@@ -91,6 +93,9 @@ int32_t guidance_h_igain;
 int32_t guidance_h_again;
 int32_t guidance_h_vgain;
 
+uint32_t flip_counter;
+bool_t flip_rollout;
+
 int32_t transition_percentage;
 int32_t transition_theta_offset;
 
@@ -132,6 +137,15 @@ static void send_hover_loop(void) {
                            &guidance_h_cmd_earth.x,
                            &guidance_h_cmd_earth.y,
                            &guidance_h_heading_sp);
+}
+
+static void send_flip(void) {
+  DOWNLINK_SEND_FLIP(DefaultChannel, DefaultDevice,
+                     &flip_counter,
+                     &flip_rollout,
+                     &(stateGetNedToBodyEulers_i()->phi),
+                     &stabilization_cmd[COMMAND_THRUST],
+                     &stabilization_cmd[COMMAND_ROLL]);
 }
 
 static void send_href(void) {
@@ -177,12 +191,15 @@ void guidance_h_init(void) {
   guidance_h_vgain = GUIDANCE_H_VGAIN;
   transition_percentage = 0;
   transition_theta_offset = 0;
+  flip_counter = 0;
+  flip_rollout = false;
 
 #if PERIODIC_TELEMETRY
   register_periodic_telemetry(DefaultPeriodic, "GUIDANCE_H_INT", send_gh);
   register_periodic_telemetry(DefaultPeriodic, "HOVER_LOOP", send_hover_loop);
   register_periodic_telemetry(DefaultPeriodic, "GUIDANCE_H_REF", send_href);
   register_periodic_telemetry(DefaultPeriodic, "ROTORCRAFT_TUNE_HOVER", send_tune_hover);
+  register_periodic_telemetry(DefaultPeriodic, "FLIP", send_flip);
 #endif
 }
 
@@ -225,6 +242,11 @@ void guidance_h_mode_changed(uint8_t new_mode) {
           guidance_h_mode == GUIDANCE_H_MODE_RC_DIRECT)
 #endif
         stabilization_attitude_enter();
+      break;
+
+    case GUIDANCE_H_MODE_FLIP:
+      flip_counter = 0;
+      flip_rollout = false;
       break;
 
     case GUIDANCE_H_MODE_HOVER:
@@ -282,6 +304,9 @@ void guidance_h_read_rc(bool_t  in_flight) {
     case GUIDANCE_H_MODE_ATTITUDE:
       stabilization_attitude_read_rc(in_flight, FALSE, FALSE);
       break;
+    case GUIDANCE_H_MODE_FLIP:
+      stabilization_attitude_read_rc(in_flight, FALSE, FALSE);
+      break;
     case GUIDANCE_H_MODE_HOVER:
       stabilization_attitude_read_rc_setpoint_eulers(&guidance_h_rc_sp, in_flight, FALSE, FALSE);
 #if GUIDANCE_H_USE_SPEED_REF
@@ -323,7 +348,9 @@ void guidance_h_run(bool_t  in_flight) {
     case GUIDANCE_H_MODE_ATTITUDE:
       stabilization_attitude_run(in_flight);
       break;
-
+    case GUIDANCE_H_MODE_FLIP:
+      ardrone_flip();
+      break;
     case GUIDANCE_H_MODE_HOVER:
       if (!in_flight)
         guidance_h_hover_enter();
@@ -373,6 +400,51 @@ void guidance_h_run(bool_t  in_flight) {
 
     default:
       break;
+  }
+}
+
+void ardrone_flip(void) {
+  uint32_t timer;
+  int32_t phi;
+
+  timer = (flip_counter++ << 12)/PERIODIC_FREQUENCY;
+  phi = stateGetNedToBodyEulers_i()->phi;
+
+  // First state of the roll is to give a stabalized thrust for 0.4 seconds
+  if(timer < BFP_OF_REAL(0.4, 12)) {
+    stabilization_attitude_run(autopilot_in_flight);
+    stabilization_cmd[COMMAND_THRUST] = 8000; //Thrust to go up first
+  }
+
+  // After that it will give an open loop roll command until the angle of 60.0 degress
+  else if(phi < ANGLE_BFP_OF_REAL(RadOfDeg(60.0)) && !flip_rollout){
+    stabilization_cmd[COMMAND_ROLL]   = 8000; // Rolling command
+    stabilization_cmd[COMMAND_PITCH]  = 0;
+    stabilization_cmd[COMMAND_YAW]    = 0;
+    stabilization_cmd[COMMAND_THRUST] = 1000; //Min thrust?
+  }
+
+  // As last it will leave the roll when the angle is between -100.0 and 50.0 degress
+  else if(phi > ANGLE_BFP_OF_REAL(RadOfDeg(-100.0)) && phi < ANGLE_BFP_OF_REAL(RadOfDeg(50.0))) {
+    autopilot_mode_auto2 = autopilot_mode_old;
+    autopilot_set_mode(autopilot_mode_old);
+
+    flip_rollout = false;
+    flip_counter = 0;
+
+    stabilization_cmd[COMMAND_ROLL]   = 0;
+    stabilization_cmd[COMMAND_PITCH]  = 0;
+    stabilization_cmd[COMMAND_YAW]    = 0;
+    stabilization_cmd[COMMAND_THRUST] = 8000; //Some thrust to come out of the roll?
+  }
+
+  // After the full roll command it will rollout of the flip
+  else {
+    flip_rollout = true;
+    stabilization_cmd[COMMAND_ROLL]   = 0;
+    stabilization_cmd[COMMAND_PITCH]  = 0;
+    stabilization_cmd[COMMAND_YAW]    = 0;
+    stabilization_cmd[COMMAND_THRUST] = 1000; //Min thrust?
   }
 }
 

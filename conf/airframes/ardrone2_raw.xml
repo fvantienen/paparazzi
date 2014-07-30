@@ -22,7 +22,9 @@
     <subsystem name="imu" type="ardrone2"/>
     <subsystem name="gps" type="ublox"/>
     <subsystem name="stabilization" type="int_quat"/>
-    <subsystem name="ahrs" type="int_cmpl_quat"/>
+    <subsystem name="ahrs" type="int_cmpl_quat">
+      <configure name="USE_MAGNETOMETER" value="0"/>
+    </subsystem>
     <subsystem name="ins" type="extended"/>
   </firmware>
 
@@ -140,7 +142,7 @@
     <!-- setpoints -->
     <define name="SP_MAX_PHI" value="45" unit="deg"/>
     <define name="SP_MAX_THETA" value="45" unit="deg"/>
-    <define name="SP_MAX_R" value="600" unit="deg/s"/>
+    <define name="SP_MAX_R" value="100" unit="deg/s"/>
     <define name="DEADBAND_A" value="0"/>
     <define name="DEADBAND_E" value="0"/>
     <define name="DEADBAND_R" value="250"/>
@@ -209,7 +211,7 @@
     <define name="MODE_STARTUP" value="AP_MODE_NAV"/>
     <define name="MODE_MANUAL" value="AP_MODE_ATTITUDE_DIRECT"/>
     <define name="MODE_AUTO1" value="AP_MODE_ATTITUDE_Z_HOLD"/>
-    <define name="MODE_AUTO2" value="AP_MODE_NAV"/>
+    <define name="MODE_AUTO2" value="AP_MODE_FLIP"/>
   </section>
 
   <section name="BAT">

@@ -45,6 +45,7 @@
 #endif
 
 uint8_t  autopilot_mode;
+uint8_t  autopilot_mode_old;
 uint8_t  autopilot_mode_auto2;
 
 bool_t   autopilot_in_flight;
@@ -371,6 +372,9 @@ void autopilot_set_mode(uint8_t new_autopilot_mode) {
       case AP_MODE_NAV:
         guidance_h_mode_changed(GUIDANCE_H_MODE_NAV);
         break;
+      case AP_MODE_FLIP:
+        guidance_h_mode_changed(GUIDANCE_H_MODE_FLIP);
+        break;
       default:
         break;
     }
@@ -412,9 +416,13 @@ void autopilot_set_mode(uint8_t new_autopilot_mode) {
       case AP_MODE_NAV:
         guidance_v_mode_changed(GUIDANCE_V_MODE_NAV);
         break;
+      case AP_MODE_FLIP:
+        guidance_v_mode_changed(GUIDANCE_V_MODE_FLIP);
+        break;
       default:
         break;
     }
+    autopilot_mode_old = autopilot_mode;
     autopilot_mode = new_autopilot_mode;
   }
 

@@ -1172,8 +1172,14 @@
     <field name="status" type="uint8" values="UNINIT|RUNNING|LOCKED"/>
   </message>
 
-  <!-- 138 is free -->
-
+  <message name="FLIP" id="138">
+    <field name="counter"       type="uint32"/>
+    <field name="rollout"       type="uint8" unit="bool"/>
+    <field name="phi"           type="int32" alt_unit="deg" alt_unit_coef="0.0139882"/>
+    <field name="thrust"        type="int32"/>
+    <field name="roll"          type="int32"/>
+  </message>
+  
   <message name="FILTER_COR" id="139">
     <field name="mphi"   type="int32"/>
     <field name="mtheta" type="int32"/>
@@ -1975,7 +1981,7 @@
     <field name="rc_status"    type="uint8" values="OK|LOST|REALLY_LOST"/>
     <field name="frame_rate"   type="uint8" unit="Hz"/>
     <field name="gps_status"   type="uint8" values="NO_FIX|NA|NA|3Dfix"/>
-    <field name="ap_mode"      type="uint8" values="KILL|FAILSAFE|HOME|RATE_DIRECT|ATTITUDE_DIRECT|RATE_RC_CLIMB|ATTITUDE_RC_CLIMB|ATTITUDE_CLIMB|RATE_Z_HOLD|ATTITUDE_Z_HOLD|HOVER_DIRECT|HOVER_CLIMB|HOVER_Z_HOLD|NAV|RC_DIRECT|CARE_FREE|FORWARD"/>
+    <field name="ap_mode"      type="uint8" values="KILL|FAILSAFE|HOME|RATE_DIRECT|ATTITUDE_DIRECT|RATE_RC_CLIMB|ATTITUDE_RC_CLIMB|ATTITUDE_CLIMB|RATE_Z_HOLD|ATTITUDE_Z_HOLD|HOVER_DIRECT|HOVER_CLIMB|HOVER_Z_HOLD|NAV|RC_DIRECT|CARE_FREE|FORWARD|FLIP"/>
     <field name="ap_in_flight" type="uint8" values="ON_GROUND|IN_FLIGHT"/>
     <field name="ap_motors_on" type="uint8" values="MOTORS_OFF|MOTORS_ON"/>
     <field name="ap_h_mode"    type="uint8" values="KILL|RATE|ATTITUDE|HOVER|NAV|CF"/>

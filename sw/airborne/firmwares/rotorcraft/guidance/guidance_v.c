@@ -229,7 +229,8 @@ void guidance_v_mode_changed(uint8_t new_mode) {
     guidance_v_z_sum_err = 0;
     GuidanceVSetRef(stateGetPositionNed_i()->z, stateGetSpeedNed_i()->z, 0);
     break;
-
+  case GUIDANCE_V_MODE_FLIP:
+    break;
   default:
     break;
 
@@ -329,6 +330,10 @@ void guidance_v_run(bool_t in_flight) {
         stabilization_cmd[COMMAND_THRUST] = guidance_v_delta_t;
       break;
     }
+
+  case GUIDANCE_V_MODE_FLIP:
+    break;
+    
   default:
     break;
   }

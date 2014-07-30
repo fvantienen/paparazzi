@@ -57,7 +57,7 @@
 #define GUIDANCE_H_MODE_RC_DIRECT   5
 #define GUIDANCE_H_MODE_CARE_FREE   6
 #define GUIDANCE_H_MODE_FORWARD     7
-
+#define GUIDANCE_H_MODE_FLIP        8
 
 extern uint8_t guidance_h_mode;
 extern bool_t guidance_h_use_ref;
@@ -92,6 +92,9 @@ extern int32_t guidance_h_igain;
 extern int32_t guidance_h_vgain;
 extern int32_t guidance_h_again;
 
+extern uint32_t flip_counter;
+extern bool_t flip_rollout;
+
 extern int32_t transition_percentage;
 extern int32_t transition_theta_offset;
 
@@ -99,6 +102,7 @@ extern void guidance_h_init(void);
 extern void guidance_h_mode_changed(uint8_t new_mode);
 extern void guidance_h_read_rc(bool_t in_flight);
 extern void guidance_h_run(bool_t in_flight);
+extern void ardrone_flip(void);
 
 
 #define guidance_h_SetKi(_val) {            \

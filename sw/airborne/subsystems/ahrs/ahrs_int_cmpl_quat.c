@@ -56,7 +56,7 @@ PRINT_CONFIG_MSG("LOW PASS FILTER ON GYRO RATES")
 #endif
 
 #if !USE_MAGNETOMETER && !AHRS_USE_GPS_HEADING
-#error "Please use either USE_MAGNETOMETER or AHRS_USE_GPS_HEADING."
+#warning "Please use either USE_MAGNETOMETER or AHRS_USE_GPS_HEADING."
 #endif
 
 #if AHRS_USE_GPS_HEADING && !USE_GPS
@@ -284,7 +284,6 @@ void ahrs_propagate(void) {
   INT32_QUAT_NORMALIZE(ahrs_impl.ltp_to_imu_quat);
 
   set_body_state_from_quat();
-
 }
 
 
