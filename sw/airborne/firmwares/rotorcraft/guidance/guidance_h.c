@@ -98,6 +98,7 @@ bool_t flip_rollout;
 
 int32_t transition_percentage;
 int32_t transition_theta_offset;
+int32_t heading_save;
 
 
 static void guidance_h_update_reference(void);
@@ -193,6 +194,7 @@ void guidance_h_init(void) {
   transition_theta_offset = 0;
   flip_counter = 0;
   flip_rollout = false;
+  heading_save = 0;
 
 #if PERIODIC_TELEMETRY
   register_periodic_telemetry(DefaultPeriodic, "GUIDANCE_H_INT", send_gh);
@@ -247,6 +249,7 @@ void guidance_h_mode_changed(uint8_t new_mode) {
     case GUIDANCE_H_MODE_FLIP:
       flip_counter = 0;
       flip_rollout = false;
+      heading_save = stabilization_attitude_get_heading_i();
       break;
 
     case GUIDANCE_H_MODE_HOVER:
@@ -424,11 +427,10 @@ void ardrone_flip(void) {
     stabilization_cmd[COMMAND_THRUST] = 1000; //Min thrust?
   }
 
-  // As last it will leave the roll when the angle is between -100.0 and 50.0 degress
+  // As last it will leave the roll when the angle is between -100.0 and 50.0 degress and goes to the previous AP mode
   else if(phi > ANGLE_BFP_OF_REAL(RadOfDeg(-100.0)) && phi < ANGLE_BFP_OF_REAL(RadOfDeg(50.0))) {
     autopilot_mode_auto2 = autopilot_mode_old;
     autopilot_set_mode(autopilot_mode_old);
-
     flip_rollout = false;
     flip_counter = 0;
 
