@@ -16,6 +16,15 @@
       <dl_setting var="stabilization_gains.d.z" min="1" step="1" max="4000"   module="stabilization/stabilization_attitude_common_int" shortname="dgain r" param="STABILIZATION_ATTITUDE_PSI_DGAIN"/>
       <dl_setting var="stabilization_gains.i.z" min="0"  step="1" max="400"    module="stabilization/stabilization_attitude_common_int" shortname="igain psi" param="STABILIZATION_ATTITUDE_PSI_IGAIN"/>
       <dl_setting var="stabilization_gains.dd.z" min="0" step="1" max="1000"  module="stabilization/stabilization_attitude_common_int" shortname="ddgain r" param="STABILIZATION_ATTITUDE_PSI_DDGAIN"/>
+      <dl_setting var="reference_acceleration.err_p" min="0" step="1" max="500"  module="stabilization/stabilization_attitude_quat_indi" shortname="kp_p"/>
+      <dl_setting var="reference_acceleration.rate_p" min="0" step="0.1" max="100"  module="stabilization/stabilization_attitude_quat_indi" shortname="kd_p"/>
+      <dl_setting var="inv_control_effectiveness.p" min="0" step="1" max="500"  module="stabilization/stabilization_attitude_quat_indi" shortname="ctl_eff_p"/>
+      <dl_setting var="reference_acceleration.err_q" min="0" step="1" max="500"  module="stabilization/stabilization_attitude_quat_indi" shortname="kp_q"/>
+      <dl_setting var="reference_acceleration.rate_q" min="0" step="0.1" max="100"  module="stabilization/stabilization_attitude_quat_indi" shortname="kd_q"/>
+      <dl_setting var="inv_control_effectiveness.q" min="0" step="1" max="500"  module="stabilization/stabilization_attitude_quat_indi" shortname="ctl_eff_q"/>
+      <dl_setting var="reference_acceleration.err_r" min="0" step="1" max="500"  module="stabilization/stabilization_attitude_quat_indi" shortname="kp_r"/>
+      <dl_setting var="reference_acceleration.rate_r" min="0" step="0.1" max="100"  module="stabilization/stabilization_attitude_quat_indi" shortname="kd_r"/>
+      <dl_setting var="inv_control_effectiveness.r" min="0" step="1" max="500"  module="stabilization/stabilization_attitude_quat_indi" shortname="ctl_eff_r"/>
     </dl_settings>
 
   </dl_settings>

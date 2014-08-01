@@ -1172,7 +1172,17 @@
     <field name="status" type="uint8" values="UNINIT|RUNNING|LOCKED"/>
   </message>
 
-  <!-- 138 is free -->
+ <message name="STAB_ATTITUDE_INDI" id="138">
+   <field name="pdot"    type="float"/>
+   <field name="qdot"    type="float"/>
+   <field name="rdot"    type="float"/>
+   <field name="ref_pdot"    type="float"/>
+   <field name="ref_qdot"    type="float"/>
+   <field name="ref_rdot"    type="float"/>
+   <field name="u_p"    type="float"/>
+   <field name="u_q"    type="float"/>
+   <field name="u_r"    type="float"/>
+ </message>
 
   <message name="FILTER_COR" id="139">
     <field name="mphi"   type="int32"/>
