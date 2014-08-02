@@ -415,6 +415,10 @@ void ardrone_flip(void) {
 
   // First state of the roll is to give a stabalized thrust for 0.4 seconds
   if(timer < BFP_OF_REAL(0.4, 12)) {
+    guidance_h_cmd_earth.x = 0;
+    guidance_h_cmd_earth.y = 0;
+    stabilization_attitude_set_earth_cmd_i(&guidance_h_cmd_earth,
+                                               guidance_h_heading_sp);
     stabilization_attitude_run(autopilot_in_flight);
     stabilization_cmd[COMMAND_THRUST] = 8000; //Thrust to go up first
   }
