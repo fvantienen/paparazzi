@@ -512,6 +512,11 @@ gboolean timeout_transmit_callback(gpointer data) {
       0,
       (int)(heading*10000000.0));             //int32 Course in rad*1e7
 
+    IvySendMsg("0 REMOTE_TRACK %d %f %f %f", aircrafts[rigidBodies[i].id].ac_id,
+     pos.x,
+     pos.y,
+     pos.z);
+
     // Reset the velocity differentiator if we calculated the velocity
     if(rigidBodies[i].nVelocitySamples >= min_velocity_samples) {
       rigidBodies[i].vel_x = 0;
