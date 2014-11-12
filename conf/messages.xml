@@ -1923,17 +1923,17 @@
     <field name="wn"          type="float"/>
   </message>
 
-<message name="STAB_ATTITUDE_INDI" id="215">
-<field name="e_phi" type="float"/>
-<field name="e_theta" type="float"/>
-<field name="e_psi" type="float"/>
-<field name="pdot" type="float"/>
-<field name="qdot" type="float"/>
-<field name="rdot" type="float"/>
-<field name="s_p" type="float"/>
-<field name="s_q" type="float"/>
-<field name="s_r" type="float"/>
-</message>
+  <message name="STAB_ATTITUDE_INDI" id="215">
+    <field name="e_phi" type="float"/>
+    <field name="e_theta" type="float"/>
+    <field name="e_psi" type="float"/>
+    <field name="pdot" type="float"/>
+    <field name="qdot" type="float"/>
+    <field name="rdot" type="float"/>
+    <field name="s_p" type="float"/>
+    <field name="s_q" type="float"/>
+    <field name="s_r" type="float"/>
+  </message>
 
  <!--216 is free -->
  <!--217 is free -->
