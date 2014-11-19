@@ -199,6 +199,15 @@ static void attitude_run_indi(int32_t indi_commands[], struct Int32Quat *att_err
   indi_du.q = inv_control_effectiveness.q * (angular_accel_ref.q - filtered_rate_deriv.q);
   indi_du.r = inv_control_effectiveness.r * (angular_accel_ref.r - filtered_rate_deriv.r);
 
+#ifdef INDI_RPM_FEEDBACK
+  indi_u.p = -actuators_bebop.rpm_obs[0] + actuators_bebop.rpm_obs[1] + actuators_bebop.rpm_obs[2] - actuators_bebop.rpm_obs[3];
+  indi_u.q =  actuators_bebop.rpm_obs[0] + actuators_bebop.rpm_obs[1] - actuators_bebop.rpm_obs[2] - actuators_bebop.rpm_obs[3];
+  indi_u.r =  actuators_bebop.rpm_obs[0] - actuators_bebop.rpm_obs[1] + actuators_bebop.rpm_obs[2] - actuators_bebop.rpm_obs[3];
+#else
+  //Propagate input filters
+  stabilization_indi_filter_inputs();
+#endif
+
   u_in.p = indi_u.p + indi_du.p;
   u_in.q = indi_u.q + indi_du.q;
   u_in.r = indi_u.r + indi_du.r;
@@ -207,9 +216,6 @@ static void attitude_run_indi(int32_t indi_commands[], struct Int32Quat *att_err
   BOUND_CONTROLS(u_in.q, -4500, 4500);
   float half_thrust = ((float) stabilization_cmd[COMMAND_THRUST]/2);
   BOUND_CONTROLS(u_in.r, -half_thrust, half_thrust);
-
-  //Propagate input filters
-  stabilization_indi_filter_inputs();
 
   //Don't increment if thrust is off
   if(stabilization_cmd[COMMAND_THRUST]<300) {
