@@ -20,7 +20,7 @@
     <subsystem name="actuators" type="bebop"/>
     <subsystem name="imu" type="bebop"/>
     <subsystem name="gps" type="furuno"/>
-    <subsystem name="stabilization" type="int_quat"/>
+    <subsystem name="stabilization" type="indi"/>
     <subsystem name="ahrs" type="int_cmpl_quat"/>
     <subsystem name="ins" type="extended"/>
   </firmware>
@@ -104,6 +104,40 @@
   <section name="INS" prefix="INS_">
     <define name="SONAR_MAX_RANGE" value="2.2"/>
     <define name="SONAR_UPDATE_ON_AGL" value="TRUE"/>
+  </section>
+
+  <section name="STABILIZATION_ATTITUDE_INDI" prefix="STABILIZATION_INDI_">
+    <!-- setpoints -->
+    <define name="SP_MAX_PHI" value="60." unit="deg"/>
+    <define name="SP_MAX_THETA" value="60." unit="deg"/>
+    <define name="SP_MAX_R" value="180." unit="deg/s"/>
+    <define name="DEADBAND_R" value="250"/>
+    <define name="DEADBAND_A" value="250"/>
+    <define name="SP_PSI_DELTA_LIMIT" value="90" unit="deg"/>
+
+    <!-- control effectiveness -->
+    <define name="CONTROL_EFFECTIVENESS_P" value="20.0"/>
+    <define name="CONTROL_EFFECTIVENESS_Q" value="20.0"/>
+    <define name="CONTROL_EFFECTIVENESS_R" value="370.0"/>
+
+    <!-- reference acceleration for attitude control -->
+    <define name="REF_ERR_P" value="130.0"/>
+    <define name="REF_ERR_Q" value="130.0"/>
+    <define name="REF_ERR_R" value="110.0"/>
+    <define name="REF_RATE_P" value="13.5"/>
+    <define name="REF_RATE_Q" value="13.5"/>
+    <define name="REF_RATE_R" value="12.0"/>
+
+    <!-- second order filter parameters -->
+    <define name="FILT_OMEGA" value="50.0"/>
+    <define name="FILT_ZETA" value="0.37"/>
+    <define name="FILT_OMEGA_R" value="20.0"/>
+    <define name="FILT_ZETA_R" value="0.5"/>
+
+    <!-- first order actuator dynamics -->
+    <define name="ACT_DYN_P" value="0.1"/>
+    <define name="ACT_DYN_Q" value="0.1"/>
+    <define name="ACT_DYN_R" value="0.1"/>
   </section>
 
   <section name="STABILIZATION_RATE" prefix="STABILIZATION_RATE_">
