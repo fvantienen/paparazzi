@@ -32,6 +32,7 @@
 #include "firmwares/rotorcraft/stabilization.h"
 #include "firmwares/rotorcraft/stabilization/stabilization_attitude_quat_indi.h"
 #include "state.h"
+#include "boards/bebop/actuators.h"
 
 /** Set the default File logger path to the USB drive */
 #ifndef FILE_LOGGER_PATH
@@ -60,7 +61,7 @@ void file_logger_start(void) {
   if (file_logger != NULL) {
     fprintf(
       file_logger,
-      "counter,gyro_unscaled_p,gyro_unscaled_q,gyro_unscaled_r,gyro_deriv_p,gyro_deriv_q,gyro_deriv_r,motor_0,motor_1,motor_2,motor_4,COMMAND_THRUST,COMMAND_ROLL,COMMAND_PITCH,COMMAND_YAW,qi,qx,qy,qz\n"
+      "counter,gyro_unscaled_p,gyro_unscaled_q,gyro_unscaled_r,accel_unscaled_x,accel_unscaled_y,accel_unscaled_z,mag_unscaled_x,mag_unscaled_y,mag_unscaled_z,COMMAND_THRUST,COMMAND_ROLL,COMMAND_PITCH,COMMAND_YAW,qi,qx,qy,qz,rpm_lf,rpm_rf,rpm_rb,rpm_lb\n"
     );
   }
 }
@@ -80,18 +81,17 @@ void file_logger_periodic(void)
   static uint32_t counter;
   struct Int32Quat* quat = stateGetNedToBodyQuat_i();
 
-  fprintf(file_logger, "%d,%d,%d,%d,%f,%f,%f,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d\n",
+  fprintf(file_logger, "%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d\n",
     counter,
-    imu.gyro_unscaled.p,
-    imu.gyro_unscaled.q,
-    imu.gyro_unscaled.r,
-    filtered_rate_deriv.p,
-    filtered_rate_deriv.q,
-    filtered_rate_deriv.r,
-    motor_mixing.commands[0],
-    motor_mixing.commands[1],
-    motor_mixing.commands[2],
-    motor_mixing.commands[3],
+    imu.gyro.p,
+    imu.gyro.q,
+    imu.gyro.r,
+    imu.accel.x,
+    imu.accel.y,
+    imu.accel.z,
+    imu.mag.x,
+    imu.mag.y,
+    imu.mag.z,
     stabilization_cmd[COMMAND_THRUST],
     stabilization_cmd[COMMAND_ROLL],
     stabilization_cmd[COMMAND_PITCH],
@@ -99,7 +99,11 @@ void file_logger_periodic(void)
     quat->qi,
     quat->qx,
     quat->qy,
-    quat->qz
+    quat->qz,
+    actuators_bebop.rpm_obs[0],
+    actuators_bebop.rpm_obs[1],
+    actuators_bebop.rpm_obs[2],
+    actuators_bebop.rpm_obs[3]
   );
   counter++;
 }
