@@ -20,7 +20,9 @@
     <subsystem name="actuators" type="bebop"/>
     <subsystem name="imu" type="bebop"/>
     <subsystem name="gps" type="furuno"/>
-    <subsystem name="stabilization" type="indi"/>
+    <subsystem name="stabilization" type="indi">
+      <define name="INDI_RPM_FEEDBACK" value="1"/>
+    </subsystem>
     <subsystem name="ahrs" type="int_cmpl_quat"/>
     <subsystem name="ins" type="extended"/>
   </firmware>

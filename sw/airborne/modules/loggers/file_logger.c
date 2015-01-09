@@ -81,7 +81,7 @@ void file_logger_periodic(void)
   static uint32_t counter;
   struct Int32Quat* quat = stateGetNedToBodyQuat_i();
 
-  fprintf(file_logger, "%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d\n",
+  fprintf(file_logger, "%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%lf,%lf,%lf\n",
     counter,
     imu.gyro.p,
     imu.gyro.q,
@@ -103,7 +103,10 @@ void file_logger_periodic(void)
     actuators_bebop.rpm_obs[0],
     actuators_bebop.rpm_obs[1],
     actuators_bebop.rpm_obs[2],
-    actuators_bebop.rpm_obs[3]
+    actuators_bebop.rpm_obs[3],
+    indi_u.p,
+    indi_du.p,
+    u_in.p
   );
   counter++;
 }
