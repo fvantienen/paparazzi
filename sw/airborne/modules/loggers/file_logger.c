@@ -106,7 +106,9 @@ void file_logger_periodic(void)
     actuators_bebop.rpm_obs[3],
     indi_u.p,
     indi_du.p,
-    u_in.p
+    u_in.p,
+    indi_u.q,
+    indi_u.r
   );
   counter++;
 }

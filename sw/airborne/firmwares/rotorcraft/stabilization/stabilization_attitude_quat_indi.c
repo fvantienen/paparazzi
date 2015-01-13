@@ -205,24 +205,11 @@ static void attitude_run_indi(int32_t indi_commands[], struct Int32Quat *att_err
   actuators_bebop.rpm_obs[2] &= ~(1<<15);
   actuators_bebop.rpm_obs[3] &= ~(1<<15);
 
-  float act_obs[4];
-  act_obs[0] = ((float)actuators_bebop.rpm_obs[0] - 3000);
-  act_obs[1] = ((float)actuators_bebop.rpm_obs[1] - 3000);
-  act_obs[2] = ((float)actuators_bebop.rpm_obs[2] - 3000);
-  act_obs[3] = ((float)actuators_bebop.rpm_obs[3] - 3000);
-
-#ifdef INDI_RPM_FEEDBACK
-  indi_u.p = (-act_obs[0] + act_obs[1] + act_obs[2] - act_obs[3]) / 4.0 * 1.2;
-  indi_u.q = 0*( actuators_bebop.rpm_obs[0] + actuators_bebop.rpm_obs[1] - actuators_bebop.rpm_obs[2] - actuators_bebop.rpm_obs[3])/4;
-  indi_u.r = 0*( actuators_bebop.rpm_obs[0] - actuators_bebop.rpm_obs[1] + actuators_bebop.rpm_obs[2] - actuators_bebop.rpm_obs[3])/4;
-#else
-  //Propagate input filters
   stabilization_indi_filter_inputs();
-#endif
 
   u_in.p = indi_u.p + indi_du.p;
-  u_in.q = 0*(indi_u.q + indi_du.q);
-  u_in.r = 0*(indi_u.r + indi_du.r);
+  u_in.q = indi_u.q + indi_du.q;
+  u_in.r = indi_u.r + indi_du.r;
 
   BOUND_CONTROLS(u_in.p, -4500, 4500);
   BOUND_CONTROLS(u_in.q, -4500, 4500);
@@ -304,10 +291,22 @@ void stabilization_indi_filter_gyro(void) {
 
 void stabilization_indi_filter_inputs(void) {
 
+  float act_obs[4]; //0 is top right, 1 is top left, 2 is bottom left, 3 is bottom right
+  act_obs[0] = ((float)actuators_bebop.rpm_obs[0] - 3000);
+  act_obs[1] = ((float)actuators_bebop.rpm_obs[1] - 3000);
+  act_obs[2] = ((float)actuators_bebop.rpm_obs[2] - 3000);
+  act_obs[3] = ((float)actuators_bebop.rpm_obs[3] - 3000);
+
+#ifdef INDI_RPM_FEEDBACK
+  u_act_dyn.p = (-act_obs[0] + act_obs[1] + act_obs[2] - act_obs[3]) / 4.0 * 1.2;
+  u_act_dyn.q = ( act_obs[0] + act_obs[1] - act_obs[2] - act_obs[3])/4.0*1.2;
+  u_act_dyn.r = ( act_obs[0] - act_obs[1] + act_obs[2] - act_obs[3])/4.0*1.2;
+#else
   //actuator dynamics
   u_act_dyn.p = u_act_dyn.p + STABILIZATION_INDI_ACT_DYN_P*( u_in.p - u_act_dyn.p);
   u_act_dyn.q = u_act_dyn.q + STABILIZATION_INDI_ACT_DYN_Q*( u_in.q - u_act_dyn.q);
   u_act_dyn.r = u_act_dyn.r + STABILIZATION_INDI_ACT_DYN_R*( u_in.r - u_act_dyn.r);
+#endif
 
   //Sensor dynamics (same filter as on gyro measurements)
   indi_u.p = indi_u.p + udot.p/512.0;
