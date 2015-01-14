@@ -199,6 +199,14 @@ static void attitude_run_indi(int32_t indi_commands[], struct Int32Quat *att_err
   indi_du.q = inv_control_effectiveness.q * (angular_accel_ref.q - filtered_rate_deriv.q);
   indi_du.r = inv_control_effectiveness.r * (angular_accel_ref.r - filtered_rate_deriv.r);
 
+
+  actuators_bebop.rpm_obs[0] &= ~(1<<15);
+  actuators_bebop.rpm_obs[1] &= ~(1<<15);
+  actuators_bebop.rpm_obs[2] &= ~(1<<15);
+  actuators_bebop.rpm_obs[3] &= ~(1<<15);
+
+  stabilization_indi_filter_inputs();
+
   u_in.p = indi_u.p + indi_du.p;
   u_in.q = indi_u.q + indi_du.q;
   u_in.r = indi_u.r + indi_du.r;
@@ -207,9 +215,6 @@ static void attitude_run_indi(int32_t indi_commands[], struct Int32Quat *att_err
   BOUND_CONTROLS(u_in.q, -4500, 4500);
   float half_thrust = ((float) stabilization_cmd[COMMAND_THRUST]/2);
   BOUND_CONTROLS(u_in.r, -half_thrust, half_thrust);
-
-  //Propagate input filters
-  stabilization_indi_filter_inputs();
 
   //Don't increment if thrust is off
   if(stabilization_cmd[COMMAND_THRUST]<300) {
@@ -274,11 +279,11 @@ void stabilization_indi_filter_gyro(void) {
   filtered_rate.p = filtered_rate.p + filtered_rate_deriv.p/512.0;
   filtered_rate.q = filtered_rate.q + filtered_rate_deriv.q/512.0;
   filtered_rate.r = filtered_rate.r + filtered_rate_deriv.r/512.0;
-  
+
   filtered_rate_deriv.p = filtered_rate_deriv.p + filtered_rate_2deriv.p/512.0;
   filtered_rate_deriv.q = filtered_rate_deriv.q + filtered_rate_2deriv.q/512.0;
   filtered_rate_deriv.r = filtered_rate_deriv.r + filtered_rate_2deriv.r/512.0;
-  
+
   filtered_rate_2deriv.p = -filtered_rate_deriv.p * 2*STABILIZATION_INDI_FILT_ZETA*STABILIZATION_INDI_FILT_OMEGA + ( stateGetBodyRates_f()->p - filtered_rate.p)*STABILIZATION_INDI_FILT_OMEGA2;
   filtered_rate_2deriv.q = -filtered_rate_deriv.q * 2*STABILIZATION_INDI_FILT_ZETA*STABILIZATION_INDI_FILT_OMEGA + ( stateGetBodyRates_f()->q - filtered_rate.q)*STABILIZATION_INDI_FILT_OMEGA2;
   filtered_rate_2deriv.r = -filtered_rate_deriv.r * 2*STABILIZATION_INDI_FILT_ZETA_R*STABILIZATION_INDI_FILT_OMEGA_R + ( stateGetBodyRates_f()->r - filtered_rate.r)*STABILIZATION_INDI_FILT_OMEGA2_R;
@@ -286,20 +291,32 @@ void stabilization_indi_filter_gyro(void) {
 
 void stabilization_indi_filter_inputs(void) {
 
+  float act_obs[4]; //0 is top right, 1 is top left, 2 is bottom left, 3 is bottom right
+  act_obs[0] = ((float)actuators_bebop.rpm_obs[0] - 3000);
+  act_obs[1] = ((float)actuators_bebop.rpm_obs[1] - 3000);
+  act_obs[2] = ((float)actuators_bebop.rpm_obs[2] - 3000);
+  act_obs[3] = ((float)actuators_bebop.rpm_obs[3] - 3000);
+
+#ifdef INDI_RPM_FEEDBACK
+  u_act_dyn.p = (-act_obs[0] + act_obs[1] + act_obs[2] - act_obs[3]) / 4.0 * 1.2;
+  u_act_dyn.q = ( act_obs[0] + act_obs[1] - act_obs[2] - act_obs[3])/4.0*1.2;
+  u_act_dyn.r = ( act_obs[0] - act_obs[1] + act_obs[2] - act_obs[3])/4.0*1.2;
+#else
   //actuator dynamics
   u_act_dyn.p = u_act_dyn.p + STABILIZATION_INDI_ACT_DYN_P*( u_in.p - u_act_dyn.p);
   u_act_dyn.q = u_act_dyn.q + STABILIZATION_INDI_ACT_DYN_Q*( u_in.q - u_act_dyn.q);
   u_act_dyn.r = u_act_dyn.r + STABILIZATION_INDI_ACT_DYN_R*( u_in.r - u_act_dyn.r);
+#endif
 
   //Sensor dynamics (same filter as on gyro measurements)
   indi_u.p = indi_u.p + udot.p/512.0;
   indi_u.q = indi_u.q + udot.q/512.0;
   indi_u.r = indi_u.r + udot.r/512.0;
-  
+
   udot.p = udot.p + udotdot.p/512.0;
   udot.q = udot.q + udotdot.q/512.0;
   udot.r = udot.r + udotdot.r/512.0;
-  
+
   udotdot.p = -udot.p * 2*STABILIZATION_INDI_FILT_ZETA*STABILIZATION_INDI_FILT_OMEGA + (u_act_dyn.p - indi_u.p)*STABILIZATION_INDI_FILT_OMEGA2;
   udotdot.q = -udot.q * 2*STABILIZATION_INDI_FILT_ZETA*STABILIZATION_INDI_FILT_OMEGA + (u_act_dyn.q - indi_u.q)*STABILIZATION_INDI_FILT_OMEGA2;
   udotdot.r = -udot.r * 2*STABILIZATION_INDI_FILT_ZETA_R*STABILIZATION_INDI_FILT_OMEGA_R + (u_act_dyn.r - indi_u.r)*STABILIZATION_INDI_FILT_OMEGA2_R;
