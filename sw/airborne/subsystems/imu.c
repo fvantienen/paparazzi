@@ -127,11 +127,6 @@ struct ImuFloat imuf;
 void imu_init(void)
 {
 
-#ifdef IMU_POWER_GPIO
-  gpio_setup_output(IMU_POWER_GPIO);
-  IMU_POWER_GPIO_ON(IMU_POWER_GPIO);
-#endif
-
   /* initialises neutrals */
   RATES_ASSIGN(imu.gyro_neutral,  IMU_GYRO_P_NEUTRAL,  IMU_GYRO_Q_NEUTRAL,  IMU_GYRO_R_NEUTRAL);
 

@@ -124,6 +124,7 @@ tid_t failsafe_tid;      ///< id for failsafe_check() timer
 tid_t radio_control_tid; ///< id for radio_control_periodic_task() timer
 tid_t electrical_tid;    ///< id for electrical_periodic() timer
 tid_t telemetry_tid;     ///< id for telemetry_periodic() timer
+tid_t esc_timer; ///< id for main_periodic() timer
 #if USE_BARO_BOARD
 tid_t baro_tid;          ///< id for baro_periodic() timer
 #endif
@@ -143,6 +144,11 @@ int main(void)
 
 STATIC_INLINE void main_init(void)
 {
+  #ifdef IMU_POWER_GPIO
+  gpio_setup_output(IMU_POWER_GPIO);
+  gpio_set(IMU_POWER_GPIO);
+#endif
+
   mcu_init();
 
   electrical_init();
@@ -187,6 +193,7 @@ STATIC_INLINE void main_init(void)
   failsafe_tid = sys_time_register_timer(0.05, NULL);
   electrical_tid = sys_time_register_timer(0.1, NULL);
   telemetry_tid = sys_time_register_timer((1. / TELEMETRY_FREQUENCY), NULL);
+  esc_timer = sys_time_register_timer((1. / 400), NULL);
 #if USE_BARO_BOARD
   baro_tid = sys_time_register_timer(1. / BARO_PERIODIC_FREQUENCY, NULL);
 #endif
@@ -196,6 +203,9 @@ STATIC_INLINE void handle_periodic_tasks(void)
 {
   if (sys_time_check_and_ack_timer(main_periodic_tid)) {
     main_periodic();
+  }
+  if (sys_time_check_and_ack_timer(esc_timer)) {
+    SetActuatorsFromCommands(commands, autopilot_mode);
   }
   if (sys_time_check_and_ack_timer(modules_tid)) {
     modules_periodic_task();
@@ -228,7 +238,7 @@ STATIC_INLINE void main_periodic(void)
   autopilot_periodic();
   /* set actuators     */
   //actuators_set(autopilot_motors_on);
-  SetActuatorsFromCommands(commands, autopilot_mode);
+
 
   if (autopilot_in_flight) {
     RunOnceEvery(PERIODIC_FREQUENCY, { autopilot_flight_time++;

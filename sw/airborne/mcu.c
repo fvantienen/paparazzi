@@ -71,6 +71,9 @@ void mcu_init(void)
 #ifdef USE_LED
   led_init();
 #endif
+
+  uint32_t test_delay_time;
+  while (SysTimeTimer(test_delay_time) < USEC_OF_SEC(5)) ;
   /* for now this means using spektrum */
 #if defined RADIO_CONTROL & defined RADIO_CONTROL_SPEKTRUM_PRIMARY_PORT & defined RADIO_CONTROL_BIND_IMPL_FUNC
   RADIO_CONTROL_BIND_IMPL_FUNC();
