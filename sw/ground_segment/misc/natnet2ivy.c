@@ -38,6 +38,9 @@
 #include <Ivy/ivy.h>
 #include <Ivy/ivyglibloop.h>
 #include <time.h>
+#include <unistd.h>
+#include <fcntl.h>
+#include <termios.h>
 
 #include "std.h"
 #include "fms/fms_network.h"
@@ -109,6 +112,7 @@ struct RigidBody rigidBodies[MAX_RIGIDBODIES];    ///< All rigid bodies which ar
 /** Mapping between rigid body and aircraft */
 struct Aircraft {
   uint8_t ac_id;
+  int tty_port;
   float lastSample;
   bool connected;
 };
@@ -407,6 +411,27 @@ void natnet_parse(unsigned char *in) {
   }
 }
 
+static void writet(int fd, uint16_t data, uint8_t cnt) {
+  write(fd, &data, cnt);
+}
+
+static void write_3chan(int fd, uint16_t chan1, uint16_t chan2, bool_t skip_chan) {
+  // Write first 10 bytes of chan1
+  writet(fd, (chan1 >> 5) & 0x3FF, 2);
+
+  // Write common channel
+  uint16_t common = ((chan1 & 0x1F) << 5) | ((chan2 >> 10) & 0x1F);
+  writet(fd, common & 0x3FF, 2);
+
+  // If we got the mode switch
+  if(skip_chan) {
+    writet(fd, 1900, 2);
+  }
+
+  // Write 10 last bytes of chan2
+  writet(fd, chan2 & 0x3FF, 2);
+}
+
 /** The transmitter periodic function */
 gboolean timeout_transmit_callback(gpointer data) {
   int i;
@@ -420,11 +445,11 @@ gboolean timeout_transmit_callback(gpointer data) {
     }
 
     // Check if we want to transmit (follow) this rigid
-    if(aircrafts[rigidBodies[i].id].ac_id == 0)
+    if(aircrafts[rigidBodies[i].id].ac_id == 0 && aircrafts[rigidBodies[i].id].tty_port == 0)
       continue;
 
     // When we don track anymore and timeout or start tracking
-    if(rigidBodies[i].nSamples < 1
+    if(rigidBodies[i].nSamples < -1 /// FIXMEE
       && aircrafts[rigidBodies[i].id].connected
       && (natnet_latency - aircrafts[rigidBodies[i].id].lastSample) > CONNECTION_TIMEOUT) {
       aircrafts[rigidBodies[i].id].connected = FALSE;
@@ -437,7 +462,7 @@ gboolean timeout_transmit_callback(gpointer data) {
     }
 
     // Check if we still track the rigid
-    if(rigidBodies[i].nSamples < 1)
+    if(rigidBodies[i].nSamples < -1) // FIXMEE
       continue;
 
     // Update the last tracked
@@ -490,27 +515,47 @@ gboolean timeout_transmit_callback(gpointer data) {
     double heading = -orient_eulers.psi-tracking_offset_angle;
     NormRadAngle(heading);
 
-    printf_debug("[%d -> %d]Samples: %d\t%d\t\tTiming: %3.3f latency\n", rigidBodies[i].id, aircrafts[rigidBodies[i].id].ac_id
-      , rigidBodies[i].nSamples, rigidBodies[i].nVelocitySamples, natnet_latency);
-    printf_debug("    Heading: %f\t\tPosition: %f\t%f\t%f\t\tVelocity: %f\t%f\t%f\n", DegOfRad(heading),
-      rigidBodies[i].x, rigidBodies[i].y, rigidBodies[i].z,
-      rigidBodies[i].ecef_vel.x, rigidBodies[i].ecef_vel.y, rigidBodies[i].ecef_vel.z);
+    // Send using ivy
+    if(aircrafts[rigidBodies[i].id].ac_id != 0) {
+      printf_debug("[%d -> %d]Samples: %d\t%d\t\tTiming: %3.3f latency\n", rigidBodies[i].id, aircrafts[rigidBodies[i].id].ac_id
+        , rigidBodies[i].nSamples, rigidBodies[i].nVelocitySamples, natnet_latency);
+      printf_debug("    Heading: %f\t\tPosition: %f\t%f\t%f\t\tVelocity: %f\t%f\t%f\n", DegOfRad(heading),
+        rigidBodies[i].x, rigidBodies[i].y, rigidBodies[i].z,
+        rigidBodies[i].ecef_vel.x, rigidBodies[i].ecef_vel.y, rigidBodies[i].ecef_vel.z);
 
-    // Transmit the REMOTE_GPS packet on the ivy bus
-    IvySendMsg("0 REMOTE_GPS %d %d %d %d %d %d %d %d %d %d %d %d %d %d", aircrafts[rigidBodies[i].id].ac_id,
-      rigidBodies[i].nMarkers,                //uint8 Number of markers (sv_num)
-      (int)(ecef_pos.x*100.0),                //int32 ECEF X in CM
-      (int)(ecef_pos.y*100.0),                //int32 ECEF Y in CM
-      (int)(ecef_pos.z*100.0),                //int32 ECEF Z in CM
-      (int)(DegOfRad(lla_pos.lat)*1e7),       //int32 LLA latitude in deg*1e7
-      (int)(DegOfRad(lla_pos.lon)*1e7),       //int32 LLA longitude in deg*1e7
-      (int)(rigidBodies[i].z*1000.0),         //int32 LLA altitude in mm above elipsoid
-      (int)(rigidBodies[i].z*1000.0),         //int32 HMSL height above mean sea level in mm
-      (int)(rigidBodies[i].ecef_vel.x*100.0), //int32 ECEF velocity X in cm/s
-      (int)(rigidBodies[i].ecef_vel.y*100.0), //int32 ECEF velocity Y in cm/s
-      (int)(rigidBodies[i].ecef_vel.z*100.0), //int32 ECEF velocity Z in cm/s
-      0,
-      (int)(heading*10000000.0));             //int32 Course in rad*1e7
+      // Transmit the REMOTE_GPS packet on the ivy bus
+      IvySendMsg("0 REMOTE_GPS %d %d %d %d %d %d %d %d %d %d %d %d %d %d", aircrafts[rigidBodies[i].id].ac_id,
+        rigidBodies[i].nMarkers,                //uint8 Number of markers (sv_num)
+        (int)(ecef_pos.x*100.0),                //int32 ECEF X in CM
+        (int)(ecef_pos.y*100.0),                //int32 ECEF Y in CM
+        (int)(ecef_pos.z*100.0),                //int32 ECEF Z in CM
+        (int)(DegOfRad(lla_pos.lat)*1e7),       //int32 LLA latitude in deg*1e7
+        (int)(DegOfRad(lla_pos.lon)*1e7),       //int32 LLA longitude in deg*1e7
+        (int)(rigidBodies[i].z*1000.0),         //int32 LLA altitude in mm above elipsoid
+        (int)(rigidBodies[i].z*1000.0),         //int32 HMSL height above mean sea level in mm
+        (int)(rigidBodies[i].ecef_vel.x*100.0), //int32 ECEF velocity X in cm/s
+        (int)(rigidBodies[i].ecef_vel.y*100.0), //int32 ECEF velocity Y in cm/s
+        (int)(rigidBodies[i].ecef_vel.z*100.0), //int32 ECEF velocity Z in cm/s
+        0,
+        (int)(heading*10000000.0));             //int32 Course in rad*1e7
+    }
+
+    // Send using tty
+    else {
+      uint8_t c = 0x24;
+      write(aircrafts[rigidBodies[i].id].tty_port, &c, 1);
+
+      pos.x = 10.1;
+      uint16_t p = 100*pow(2,9);
+      write_3chan(aircrafts[rigidBodies[i].id].tty_port, pos.x*p, pos.y*p, FALSE);
+      write_3chan(aircrafts[rigidBodies[i].id].tty_port, pos.z*p, speed.x*p, TRUE);
+      write_3chan(aircrafts[rigidBodies[i].id].tty_port, speed.y*p, speed.z*p, FALSE);
+
+      writet(aircrafts[rigidBodies[i].id].tty_port, ((uint16_t)heading >> 5) & 0x3FF, 2);
+      writet(aircrafts[rigidBodies[i].id].tty_port, (uint16_t)heading & 0x1F, 1);
+      writet(aircrafts[rigidBodies[i].id].tty_port, 0x0, 2);
+      fprintf(stderr, "test\n");
+    }
 
     // Reset the velocity differentiator if we calculated the velocity
     if(rigidBodies[i].nVelocitySamples >= min_velocity_samples) {
@@ -555,6 +600,7 @@ void print_help(char* filename) {
     "   -v, --verbose <level>     Verbosity level 0-2 (0)\n\n"
 
     "   -ac <rigid_id> <ac_id>    Use rigid ID for GPS of ac_id (multiple possible)\n\n"
+    "   -act <rigid_id> <tty_port>  Use rigid ID for GPS of tty_port\n\n"
 
     "   -multicast_addr <ip>      NatNet server multicast address (239.255.42.99)\n"
     "   -server <ip>              NatNet server IP address (255.255.255.255)\n"
@@ -612,6 +658,34 @@ static void parse_options(int argc, char** argv) {
         exit(EXIT_FAILURE);
       }
       aircrafts[rigid_id].ac_id = ac_id;
+      count_ac++;
+    }
+
+    // Set an rigid body to tty
+    else if(strcmp(argv[i], "-act") == 0) {
+      check_argcount(argc, argv, i, 2);
+
+      int rigid_id = atoi(argv[++i]);
+      char *tty_port = argv[++i];
+
+      if(rigid_id >= MAX_RIGIDBODIES) {
+        fprintf(stderr, "Rigid body ID must be less then %d (MAX_RIGIDBODIES)\n\n", MAX_RIGIDBODIES);
+        print_help(argv[0]);
+        exit(EXIT_FAILURE);
+      }
+      aircrafts[rigid_id].tty_port = open(tty_port, O_RDWR | O_NOCTTY | O_NDELAY);
+      fprintf(stderr, "Open tty %d %s\n", aircrafts[rigid_id].tty_port, tty_port);
+
+      struct termios options;
+      fcntl(aircrafts[rigid_id].tty_port, F_SETFL, 0);
+      tcgetattr(aircrafts[rigid_id].tty_port, &options);
+      cfsetispeed(&options, B115200);
+      cfsetospeed(&options, B115200);
+
+      options.c_cflag |= (CLOCAL | CREAD);
+      tcsetattr(aircrafts[rigid_id].tty_port, TCSANOW, &options);
+
+
       count_ac++;
     }
 
@@ -722,6 +796,8 @@ int main(int argc, char** argv)
   tracking_ecef.z = 5002162;
   tracking_offset_angle = 123.0 / 57.6;
   ltp_def_from_ecef_d(&tracking_ltp, &tracking_ecef);
+
+  rigidBodies[0].id = 3;
 
   // Parse the options from cmdline
   parse_options(argc, argv);

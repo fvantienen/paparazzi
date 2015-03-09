@@ -29,6 +29,11 @@
 
 #include "subsystems/gps.h"
 
+#ifdef GPS_RC
+#include "state.h"
+#include "subsystems/radio_control/spektrum_arch.h"
+#endif
+
 bool_t gps_available;   ///< Is set to TRUE when a new REMOTE_GPS packet is received and parsed
 
 /** GPS initialization */
@@ -81,3 +86,73 @@ void parse_gps_datalink(uint8_t numsv, int32_t ecef_x, int32_t ecef_y, int32_t e
 #endif
 }
 
+/** Parse the GPS RC channels */
+void parse_gps_rc(int16_t channels[])
+{
+  uint16_t gps_data[8];
+  uint8_t i;
+
+  for(i = 0; i < 8; i++)
+    gps_data[i] = 0;
+
+  for(i = 0; i < 14; i++) {
+    uint8_t chan_num = (channels[i] >> 10) & 0x0F;
+    /* Skip radio mode RADIO_MODE */
+    if(chan_num >= SPEKTRUM_NB_CHANNEL || chan_num == RADIO_MODE)
+      continue;
+
+    /* Because the channel can be in between correct for it here */
+    if(chan_num > RADIO_MODE)
+      chan_num--;
+
+    /* Check if it is even or odd */
+    if(chan_num%2 == 0) {
+      /* Even allways contains 10 full bits (The even of that contain 10 first, the odd the 10 last) */
+      gps_data[chan_num/2] |= ((chan_num/2)%2 == 0)? ((channels[i]&0x3FF) << 5) : (channels[i]&0x3FF);
+    } else {
+      /* Odd contains 5 bytes of the previous, and the 5 bytes of the last */
+      gps_data[chan_num/2] |= (channels[i] >> 5) & 0x1F;
+      gps_data[(chan_num+1)/2] |= (channels[i] & 0x1F) << 10;
+    }
+  }
+
+  /* Convert the position */
+  struct EnuCoor_i enu_coord;
+  enu_coord.x = gps_data[0] >> 3;
+  enu_coord.y = gps_data[1] >> 3;
+  enu_coord.z = gps_data[2] >> 3;
+  ecef_of_enu_pos_i(&gps.ecef_pos, &state.ned_origin_i, &enu_coord);
+  lla_of_ecef_i(&gps.lla_pos, &gps.ecef_pos);
+
+  /* Maybe should convert this? */
+  gps.ecef_vel.x = gps_data[3] >> 3;
+  gps.ecef_vel.y = gps_data[4] >> 3;
+  gps.ecef_vel.z = gps_data[5] >> 3;
+
+  /* Set course */
+  gps.course = gps_data[6];
+
+  /* Fake some values */
+  gps.num_sv = 0;
+  gps.tow = 0;
+  gps.fix = GPS_FIX_3D;
+  gps.hmsl = 0; // TODO??
+  gps_available = TRUE;
+
+
+#if GPS_USE_LATLONG
+  // Computes from (lat, long) in the referenced UTM zone
+  struct LlaCoor_f lla_f;
+  lla_f.lat = ((float) gps.lla_pos.lat) / 1e7;
+  lla_f.lon = ((float) gps.lla_pos.lon) / 1e7;
+  struct UtmCoor_f utm_f;
+  utm_f.zone = nav_utm_zone0;
+  // convert to utm
+  utm_of_lla_f(&utm_f, &lla_f);
+  // copy results of utm conversion
+  gps.utm_pos.east = utm_f.east*100;
+  gps.utm_pos.north = utm_f.north*100;
+  gps.utm_pos.alt = gps.lla_pos.alt;
+  gps.utm_pos.zone = nav_utm_zone0;
+#endif
+}

@@ -482,18 +482,35 @@ void RadioControlEventImp(void (*frame_handler)(void))
       radio_control.frame_cpt++;
       radio_control.time_since_last_frame = 0;
       radio_control.status = RC_OK;
-      /* since it is possible for the user use less than the actually available channels,
-       * we only transfer only Min(RADIO_CONTROL_NB_CHANNEL, available_channels)
-       */
-      for (int i = 0; i < Min(RADIO_CONTROL_NB_CHANNEL, (MaxChannelNum + 1)); i++) {
-        radio_control.values[i] = SpektrumBuf[i];
-        if (i == RADIO_THROTTLE) {
-          radio_control.values[i] += MAX_PPRZ;
-          radio_control.values[i] /= 2;
+
+#ifdef GPS_RC
+      /* If we are in auto2 */
+      if(SpektrumBuf[RADIO_MODE] >= MAX_PPRZ*0.8) {
+        for (int i = 0; i < Min(RADIO_CONTROL_NB_CHANNEL, (MaxChannelNum + 1)); i++) {
+          if(i == RADIO_MODE)
+            radio_control.values[i] = SpektrumBuf[i];
+          else
+            radio_control.values[i] = 0;
         }
-        radio_control.values[i] *= SpektrumSigns[i];
+        parse_gps_rc(PrimarySpektrumState.values);
       }
-      (*frame_handler)();
+      else {
+#else
+      if(TRUE) {
+#endif
+        /* since it is possible for the user use less than the actually available channels,
+         * we only transfer only Min(RADIO_CONTROL_NB_CHANNEL, available_channels)
+         */
+        for (int i = 0; i < Min(RADIO_CONTROL_NB_CHANNEL, (MaxChannelNum + 1)); i++) {
+          radio_control.values[i] = SpektrumBuf[i];
+          if (i == RADIO_THROTTLE) {
+            radio_control.values[i] += MAX_PPRZ;
+            radio_control.values[i] /= 2;
+          }
+          radio_control.values[i] *= SpektrumSigns[i];
+        }
+        (*frame_handler)();
+      }
     }
   }
 }

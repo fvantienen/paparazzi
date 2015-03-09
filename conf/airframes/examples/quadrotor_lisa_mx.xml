@@ -21,68 +21,42 @@
 
     <subsystem name="radio_control" type="spektrum">
       <define name="RADIO_MODE" value="RADIO_AUX1"/>
-      <configure name="USE_SECONDARY_SPEKTRUM_RECEIVER" value="1"/>
     </subsystem>
 
     <subsystem name="motor_mixing"/>
     <subsystem name="actuators"     type="pwm">
       <define name="SERVO_HZ" value="400"/>
+      <define name="USE_SERVOS_7AND8"/>
     </subsystem>
 
-    <subsystem name="telemetry"     type="transparent"/>
+    <subsystem name="telemetry"     type="xbee_api"/>
     <subsystem name="imu"           type="lisa_mx_v2.1"/>
-    <subsystem name="gps"           type="ublox"/>
+    <subsystem name="gps"           type="rc"/>
     <subsystem name="stabilization" type="int_quat"/>
-    <subsystem name="ahrs"          type="float_mlkf">
+    <subsystem name="ahrs"          type="int_cmpl_quat">
 	    <!-- Uncomment to enable all axis update from the Magnetometer. Do
 		 it only if you have a very well calibrated and tested
 		 magnetometer otherwise your attitude will drift. -->
 	    <!--define name="AHRS_MAG_UPDATE_ALL_AXES" value="1"/-->
     </subsystem>
-    <subsystem name="ins" type="hff"/>
+    <subsystem name="ins"/>
 
     <!--define name="KILL_ON_GROUND_DETECT" value="TRUE"/-->
   </firmware>
 
-  <firmware name="test_progs">
-    <target name="test_sys_time_timer" board="lisa_mx_2.1"/>
-    <target name="test_adc" board="lisa_mx_2.1"/>
-    <target name="test_telemetry" board="lisa_mx_2.1"/>
-    <target name="test_baro_board" board="lisa_mx_2.1">
-      <configure name="BARO_LED" value="5"/>
-    </target>
-    <target name="test_radio_control" board="lisa_mx_2.1">
-      <subsystem name="radio_control" type="spektrum">
-        <define name="RADIO_MODE" value="RADIO_AUX1"/>
-        <configure name="USE_SECONDARY_SPEKTRUM_RECEIVER" value="0"/>
-      </subsystem>
-    </target>
-    <target name="test_imu" board="lisa_mx_2.1">
-      <subsystem name="imu" type="lisa_mx_v2.1"/>
-    </target>
-    <target name="test_ahrs" board="lisa_mx_2.1">
-      <subsystem name="imu" type="lisa_mx_v2.1"/>
-      <subsystem name="ahrs" type="float_mlkf"/>
-    </target>
-  </firmware>
-
-  <autopilot name="rotorcraft_autopilot.xml" freq="512"/>
-
   <modules>
-    <load name="adc_generic.xml">
-      <configure name="ADC_CHANNEL_GENERIC1" value="ADC_1"/>
-      <configure name="ADC_CHANNEL_GENERIC2" value="ADC_2"/>
-    </load>
-    <load name="gps_ubx_ucenter.xml"/>
     <load name="geo_mag.xml"/>
-    <load name="air_data.xml"/>
   </modules>
 
   <servos driver="Pwm">
-    <servo name="FRONT"   no="0" min="1000" neutral="1100" max="1900"/>
-    <servo name="BACK"    no="1" min="1000" neutral="1100" max="1900"/>
-    <servo name="RIGHT"   no="2" min="1000" neutral="1100" max="1900"/>
-    <servo name="LEFT"    no="3" min="1000" neutral="1100" max="1900"/>
+    <servo name="NE0"   no="0" min="1000" neutral="1100" max="1900"/>
+    <servo name="SE0"   no="1" min="1000" neutral="1100" max="1900"/>
+    <servo name="SW0"   no="2" min="1000" neutral="1100" max="1900"/>
+    <servo name="NW0"   no="3" min="1000" neutral="1100" max="1900"/>
+    <servo name="NE45"  no="4" min="1000" neutral="1100" max="1900"/>
+    <servo name="SE45"  no="5" min="1000" neutral="1100" max="1900"/>
+    <servo name="SW45"  no="6" min="1000" neutral="1100" max="1900"/>
+    <servo name="NW45"  no="7" min="1000" neutral="1100" max="1900"/>
   </servos>
 
   <commands>
@@ -98,19 +72,29 @@
     <define name="TRIM_YAW" value="0"/>
     <define name="NB_MOTOR" value="4"/>
     <define name="SCALE" value="256"/>
-    <!-- order (and rotation direction) : NE (CW), SE (CCW), SW (CW), NW (CCW) -->
+    <!-- order (and rotation direction) : NE (CCW), SE (CW), SW (CCW), NW (CW) -->
     <define name="ROLL_COEF"   value="{ -256, -256,  256,  256 }"/>
     <define name="PITCH_COEF"  value="{  256, -256, -256,  256 }"/>
-    <define name="YAW_COEF"    value="{ -256,  256, -256,  256 }"/>
+    <define name="YAW_COEF"    value="{  256, -256,  256, -256 }"/>
     <define name="THRUST_COEF" value="{  256,  256,  256,  256 }"/>
   </section>
 
   <command_laws>
     <call fun="motor_mixing_run(autopilot_motors_on,FALSE,values)"/>
-    <set servo="FRONT"  value="motor_mixing.commands[0]"/>
-    <set servo="BACK"   value="motor_mixing.commands[1]"/>
-    <set servo="RIGHT"  value="motor_mixing.commands[2]"/>
-    <set servo="LEFT"   value="motor_mixing.commands[3]"/>
+
+    <let var="flight_angle" value="45."/>
+
+    <!-- For hovering under 0 degreees -->
+    <set servo="NE0"  value="motor_mixing.commands[0] * (1 - ($flight_angle / 45.))"/>
+    <set servo="SE0"  value="motor_mixing.commands[1] * (1 - ($flight_angle / 45.))"/>
+    <set servo="SW0"  value="motor_mixing.commands[2] * (1 - ($flight_angle / 45.))"/>
+    <set servo="NW0"  value="motor_mixing.commands[3] * (1 - ($flight_angle / 45.))"/>
+
+    <!-- For hovering under 45 degrees -->
+    <set servo="NE45" value="motor_mixing.commands[0] * ($flight_angle / 45. )"/>
+    <set servo="SE45" value="motor_mixing.commands[1] * ($flight_angle / 45. )"/>
+    <set servo="SW45" value="motor_mixing.commands[2] * ($flight_angle / 45. )"/>
+    <set servo="NW45" value="motor_mixing.commands[3] * ($flight_angle / 45. )"/>
   </command_laws>
 
   <section name="IMU" prefix="IMU_">
@@ -128,7 +112,7 @@
 
     <define name="BODY_TO_IMU_PHI"   value="0." unit="deg"/>
     <define name="BODY_TO_IMU_THETA" value="0." unit="deg"/>
-    <define name="BODY_TO_IMU_PSI"   value="0." unit="deg"/>
+    <define name="BODY_TO_IMU_PSI"   value="180." unit="deg"/>
   </section>
 
   <section name="AHRS" prefix="AHRS_">
@@ -165,47 +149,41 @@
 
 
   <section name="STABILIZATION_ATTITUDE" prefix="STABILIZATION_ATTITUDE_">
-    <!-- setpoints -->
-    <define name="SP_MAX_PHI"     value="45." unit="deg"/>
-    <define name="SP_MAX_THETA"   value="45." unit="deg"/>
-    <define name="SP_MAX_R"       value="90." unit="deg/s"/>
-    <define name="DEADBAND_A"     value="0"/>
-    <define name="DEADBAND_E"     value="0"/>
-    <define name="DEADBAND_R"     value="250"/>
+     <!-- setpoints -->
+    <define name="SP_MAX_PHI" value="45." unit="deg"/>
+    <define name="SP_MAX_THETA" value="45." unit="deg"/>
+    <define name="SP_MAX_R" value="90." unit="deg/s"/>
+    <define name="DEADBAND_R" value="250"/>
 
     <!-- reference -->
-    <define name="REF_OMEGA_P"  value="400" unit="deg/s"/>
-    <define name="REF_ZETA_P"   value="0.85"/>
-    <define name="REF_MAX_P"    value="400." unit="deg/s"/>
-    <define name="REF_MAX_PDOT" value="RadOfDeg(8000.)"/>
-
-    <define name="REF_OMEGA_Q"  value="400" unit="deg/s"/>
-    <define name="REF_ZETA_Q"   value="0.85"/>
-    <define name="REF_MAX_Q"    value="400." unit="deg/s"/>
-    <define name="REF_MAX_QDOT" value="RadOfDeg(8000.)"/>
-
-    <define name="REF_OMEGA_R"  value="250" unit="deg/s"/>
-    <define name="REF_ZETA_R"   value="0.85"/>
-    <define name="REF_MAX_R"    value="180." unit="deg/s"/>
+    <define name="REF_OMEGA_P" value="800" unit="deg/s"/>
+    <define name="REF_ZETA_P" value="0.85"/>
+    <define name="REF_MAX_P" value="300." unit="deg/s"/>
+    <define name="REF_MAX_PDOT" value="RadOfDeg(7000.)"/>
+    <define name="REF_OMEGA_Q" value="800" unit="deg/s"/>
+    <define name="REF_ZETA_Q" value="0.85"/>
+    <define name="REF_MAX_Q" value="300." unit="deg/s"/>
+    <define name="REF_MAX_QDOT" value="RadOfDeg(7000.)"/>
+    <define name="REF_OMEGA_R" value="500" unit="deg/s"/>
+    <define name="REF_ZETA_R" value="0.85"/>
+    <define name="REF_MAX_R" value="180." unit="deg/s"/>
     <define name="REF_MAX_RDOT" value="RadOfDeg(1800.)"/>
 
     <!-- feedback -->
-    <define name="PHI_PGAIN"  value="1000"/>
-    <define name="PHI_DGAIN"  value="400"/>
-    <define name="PHI_IGAIN"  value="200"/>
-
-    <define name="THETA_PGAIN"  value="1000"/>
-    <define name="THETA_DGAIN"  value="400"/>
-    <define name="THETA_IGAIN"  value="200"/>
-
-    <define name="PSI_PGAIN"  value="500"/>
-    <define name="PSI_DGAIN"  value="300"/>
-    <define name="PSI_IGAIN"  value="10"/>
+    <define name="PHI_PGAIN" value="900"/>
+    <define name="PHI_DGAIN" value="200"/>
+    <define name="PHI_IGAIN" value="200"/>
+    <define name="THETA_PGAIN" value="900"/>
+    <define name="THETA_DGAIN" value="200"/>
+    <define name="THETA_IGAIN" value="200"/>
+    <define name="PSI_PGAIN" value="900"/>
+    <define name="PSI_DGAIN" value="200"/>
+    <define name="PSI_IGAIN" value="10"/>
 
     <!-- feedforward -->
-    <define name="PHI_DDGAIN"   value="300"/>
-    <define name="THETA_DDGAIN" value="300"/>
-    <define name="PSI_DDGAIN"   value="300"/>
+    <define name="PHI_DDGAIN" value=" 200"/>
+    <define name="THETA_DDGAIN" value=" 200"/>
+    <define name="PSI_DDGAIN" value=" 200"/>
   </section>
 
   <section name="GUIDANCE_V" prefix="GUIDANCE_V_">
