@@ -90,11 +90,14 @@
   </section>
 
   <command_laws>
-    <call fun="motor_mixing_run(autopilot_motors_on,FALSE,values)"/>
+    <call fun="motor_mixing_run(autopilot_motors_on,FALSE,_values)"/>
 
-    <let var="flight_angle" value="@ANGLE"/>
+    <let var="flight_angle" value="radio_control.values[RADIO_AUX2]"/>
     <let var="flight_angle0" value="($flight_angle <= 0)? MAX_PPRZ : MAX_PPRZ-$flight_angle"/>
     <let var="flight_angle45" value="($flight_angle >= 0)? MAX_PPRZ : MAX_PPRZ+$flight_angle"/>
+
+    <call fun="Bound(_var_flight_angle0, 0, MAX_PPRZ)"/>
+    <call fun="Bound(_var_flight_angle45, 0, MAX_PPRZ)"/>
 
     <!-- For hovering under 0 degreees -->
     <set servo="NE0"  value="motor_mixing.commands[0] * $flight_angle0 / MAX_PPRZ"/>

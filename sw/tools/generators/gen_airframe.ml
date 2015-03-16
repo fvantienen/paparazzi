@@ -175,7 +175,7 @@ let parse_command_laws = fun command ->
       "set" ->
         let servo = a "servo"
         and value = a "value" in
-        let v = preprocess_value value "values" "COMMAND" in
+        let v = preprocess_value value "_values" "COMMAND" in
         printf "  command_value = %s; \\\n" v;
         printf "  command_value *= command_value>0 ? SERVO_%s_TRAVEL_UP_NUM : SERVO_%s_TRAVEL_DOWN_NUM; \\\n" servo servo;
         printf "  command_value /= command_value>0 ? SERVO_%s_TRAVEL_UP_DEN : SERVO_%s_TRAVEL_DOWN_DEN; \\\n" servo servo;
@@ -184,7 +184,7 @@ let parse_command_laws = fun command ->
     | "let" ->
       let var = a "var"
       and value = a "value" in
-      let v = preprocess_value value "values" "COMMAND" in
+      let v = preprocess_value value "_values" "COMMAND" in
       printf "  int16_t _var_%s = %s; \\\n" var v
     | "call" ->
       let f = a "fun" in
@@ -194,7 +194,7 @@ let parse_command_laws = fun command ->
       and value = a "value"
       and rate_min = a "rate_min"
       and rate_max = a "rate_max" in
-      let v = preprocess_value value "values" "COMMAND" in
+      let v = preprocess_value value "_values" "COMMAND" in
       printf "  static int16_t _var_%s = 0; _var_%s += Chop((%s) - (_var_%s), (%s), (%s)); \\\n" var var v var rate_min rate_max
     | "define" ->
       parse_element "" command
@@ -278,7 +278,7 @@ let rec parse_section = fun ac_id s ->
       List.iter (fun d -> printf "  Actuators%sCommit();\\\n" d) drivers;
       printf "}\n\n";
       (* print actuators from commands macro *)
-      printf "#define SetActuatorsFromCommands(values, AP_MODE) { \\\n";
+      printf "#define SetActuatorsFromCommands(_values, AP_MODE) { \\\n";
       printf "  int32_t servo_value;\\\n";
       printf "  int32_t command_value;\\\n\\\n";
       List.iter parse_command_laws (Xml.children s);
