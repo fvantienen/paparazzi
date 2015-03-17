@@ -66,6 +66,13 @@
     <define name="__USE_GNU"/>
     <flag name="LDFLAGS" value="lrt"/>
     <flag name="LDFLAGS" value="static-libgcc"/>
+
+    <!-- Stuff for the bebop -->
+    <!--file name="opengl.c" dir="modules/computer_vision/lib/opengl"/>
+    <flag name="LDFLAGS" value="L../ext/libopengles/lib/arm"/>
+    <flag name="LDFLAGS" value="lGLESv2"/>
+    <flag name="LDFLAGS" value="lEGL"/>
+    <flag name="CFLAGS" value="I../ext/libopengles/inc"/-->
   </makefile>
   <makefile target="nps">
     <file name="viewvideo_nps.c"/>

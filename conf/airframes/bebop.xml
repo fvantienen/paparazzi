@@ -39,6 +39,8 @@
       <define name="VIEWVIDEO_DEVICE_SIZE" value="320,240"/>
       <define name="VIEWVIDEO_DEVICE_BUFFERS" value="60"/>
       <define name="VIEWVIDEO_SHOT_PATH" value="\\\"/data/ftp/internal_000/images\\\""/>
+      <configure name="VIEWVIDEO_USE_NC" value="TRUE"/>
+      <configure name="VIEWVIDEO_HOST" value="192.168.42.2"/>
     </load-->
   </modules>
 
