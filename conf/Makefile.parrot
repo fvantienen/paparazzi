@@ -1,6 +1,6 @@
 # Hey Emacs, this is a -*- makefile -*-
 #
-# Copyright (C) 2014 Freek van Tienen <freek.v.tienen@gmail.com>
+# Copyright (C) 2013 The Paparazzi Team
 #
 # This file is part of paparazzi.
 #
@@ -20,16 +20,17 @@
 #
 
 #
-# This Makefile uses the generic Makefile.arm-linux and adds upload rules for the ARDrone2
+# This Makefile uses the generic Makefile.arm-linux and adds upload rules for the Parrot drones
 #
 
 include $(PAPARAZZI_SRC)/conf/Makefile.arm-linux
 
-DRONE = $(PAPARAZZI_SRC)/sw/tools/parrot/bebop.py
+DRONE = $(PAPARAZZI_SRC)/sw/tools/parrot/$(BOARD)$(BOARD_VERSION).py
 
 # Program the device and start it.
 upload program: $(OBJDIR)/$(TARGET).elf
-	$(Q)$(DRONE) --host=$(HOST) upload_file_and_run $(OBJDIR)/$(TARGET).elf $(SUB_DIR)
+	$(Q)$(DRONE) --host=$(HOST) upload_and_run $(OBJDIR)/$(TARGET).elf $(SUB_DIR)
+	$(Q)$(DRONE) --host=$(HOST) status
 
 # Listing of phony targets.
 .PHONY : upload program

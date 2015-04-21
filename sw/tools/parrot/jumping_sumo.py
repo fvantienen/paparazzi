@@ -22,9 +22,9 @@
 
 from parrot_utils import ParrotUtils
 
-class Bebop(ParrotUtils):
-    uav_name = 'Bebop'
-    address = '192.168.42.1'
+class JumpingSumo(ParrotUtils):
+    uav_name = 'Jumping Sumo'
+    address = '192.168.2.1'
     version_file = '/version.txt'
     upload_path = '/data/ftp/'
 
@@ -35,6 +35,6 @@ class Bebop(ParrotUtils):
 
 
 if __name__ == "__main__":
-    bebop = Bebop()
-    bebop.parse_args()
+    js = JumpingSumo()
+    js.parse_args()
     exit(0)

@@ -12,8 +12,8 @@ BOARD_CFG=\"boards/$(BOARD)$(BOARD_VERSION)_$(BOARD_TYPE).h\"
 
 ARCH=linux
 $(TARGET).ARCHDIR = $(ARCH)
-# include conf/Makefile.ardrone2 (with specific upload rules) instead of only Makefile.linux:
-ap.MAKEFILE = ardrone2
+# include conf/Makefile.parrot (with specific upload rules) instead of only Makefile.linux:
+ap.MAKEFILE = parrot
 
 # -----------------------------------------------------------------------
 USER=foobar

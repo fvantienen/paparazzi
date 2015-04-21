@@ -22,11 +22,11 @@
 
 from parrot_utils import ParrotUtils
 
-class Bebop(ParrotUtils):
-    uav_name = 'Bebop'
-    address = '192.168.42.1'
+class RollingSpider(ParrotUtils):
+    uav_name = 'Rolling Spider'
+    address = '192.168.1.1'
     version_file = '/version.txt'
-    upload_path = '/data/ftp/'
+    upload_path = '/data/video/'
 
     def uav_status(self):
         print('Parrot version:\t\t' + self.check_version())
@@ -35,6 +35,6 @@ class Bebop(ParrotUtils):
 
 
 if __name__ == "__main__":
-    bebop = Bebop()
-    bebop.parse_args()
+    js = RollingSpider()
+    js.parse_args()
     exit(0)

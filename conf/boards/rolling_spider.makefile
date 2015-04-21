@@ -1,42 +1,31 @@
 # Hey Emacs, this is a -*- makefile -*-
 #
-# bebop.makefile
+# rolling_spider.makefile
 #
-# http://wiki.paparazziuav.org/wiki/Bebop
+# http://wiki.paparazziuav.org/wiki/Rolling_Spider
 #
 
-BOARD=bebop
+BOARD=rolling_spider
 BOARD_CFG=\"boards/$(BOARD).h\"
 
 ARCH=linux
 $(TARGET).ARCHDIR = $(ARCH)
-# include conf/Makefile.bebop (with specific upload rules) instead of only Makefile.linux:
+# include conf/Makefile.parrot (with specific upload rules) instead of only Makefile.linux:
 ap.MAKEFILE = parrot
 
 # -----------------------------------------------------------------------
 USER=foobar
-HOST?=192.168.42.1
+HOST?=192.168.1.1
 SUB_DIR=internal_000/paparazzi
 FTP_DIR=/data/ftp
 TARGET_DIR=$(FTP_DIR)/$(SUB_DIR)
 # -----------------------------------------------------------------------
 
 # The datalink default uses UDP
-MODEM_HOST         ?= 192.168.42.255
-
-# The GPS sensor is connected internally
-GPS_PORT           ?= UART1
-GPS_BAUD           ?= B230400
+MODEM_HOST         ?= 192.168.1.255
 
 # handle linux signals by hand
 $(TARGET).CFLAGS += -DUSE_LINUX_SIGNAL
-
-# Compile the video specific parts
-$(TARGET).srcs +=  $(SRC_BOARD)/video.c
-
-# Link static (Done for GLIBC)
-$(TARGET).CFLAGS += -DLINUX_LINK_STATIC
-$(TARGET).LDFLAGS += -static
 
 # -----------------------------------------------------------------------
 
