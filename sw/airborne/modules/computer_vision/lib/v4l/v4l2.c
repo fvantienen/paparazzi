@@ -215,7 +215,7 @@ struct v4l2_device *v4l2_init(char *device_name, uint16_t width, uint16_t height
   fmt.type = V4L2_BUF_TYPE_VIDEO_CAPTURE;
   fmt.fmt.pix.width = width;
   fmt.fmt.pix.height = height;
-  fmt.fmt.pix.pixelformat = V4L2_PIX_FMT_UYVY;
+  fmt.fmt.pix.pixelformat = V4L2_PIX_FMT_SGBRG10;
   fmt.fmt.pix.field = V4L2_FIELD_NONE;
 
   if (ioctl(fd, VIDIOC_S_FMT, &fmt) < 0) {

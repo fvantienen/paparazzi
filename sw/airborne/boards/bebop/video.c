@@ -26,12 +26,16 @@
 
 #include "video.h"
 #include "std.h"
+#include "mt9f002.h"
 
 #include <stdio.h>
 #include <time.h>
 #include <fcntl.h>
 #include <unistd.h>
 #include <sys/ioctl.h>
+#include <mcu_periph/i2c.h>
+#include <linux/i2c-dev.h>
+#include <linux/types.h>
 
 static bool_t write_reg(int fd, char *addr_val, uint8_t cnt)
 {
@@ -216,222 +220,266 @@ void mt9v117_init(void)
   close(fd_i2c);
 }
 
+int mt9f002_i2c_port;
+
+void mt9f002_open(void)
+{
+  mt9f002_i2c_port = open("/dev/i2c-0", O_RDWR);
+  if(mt9f002_i2c_port < 0) {
+    printf("mt9f002_open");
+    // exit(1);
+  }
+}
+
+void mt9f002_close(void)
+{
+  close(mt9f002_i2c_port);
+}
+
+void mt9f002_set_address(uint8_t address)
+{
+  if(ioctl(mt9f002_i2c_port, I2C_SLAVE_FORCE, address) < 0) {
+    printf("mt9f002_set_address");
+    // exit(1);
+  }
+}
+
+void mt9f002_write_reg8(uint16_t reg, uint8_t value)
+{
+  mt9f002_open();
+  mt9f002_set_address(0x10);
+
+  uint8_t data[3];
+  data[0] = (uint8_t)(reg >> 8) ;
+  data[1] = (uint8_t)reg & 0xFF;
+  data[2] = value;
+  // if(i2c_smbus_write_byte_data(mt9f002_i2c_port,reg,value) < 0) {
+  if(write(mt9f002_i2c_port, data, 3) < 0) {
+    printf("mt9f002_write_reg8");
+    // exit(1);
+  }
+
+  mt9f002_close();
+
+  usleep(100);
+}
+
+void mt9f002_write_reg16(uint16_t reg, uint16_t value)
+{
+  mt9f002_open();
+  mt9f002_set_address(0x10);
+
+  uint8_t data[4];
+  data[0] = (uint8_t)(reg >> 8);
+  data[1] = (uint8_t)reg & 0xFF;
+  data[2] = (uint8_t)(value >> 8);
+  data[3] = value & 0xFF;
+  if(write(mt9f002_i2c_port, data, 4) < 0) {
+    printf("mt9f002_write_reg16");
+    // exit(1);
+  }
+
+  mt9f002_close();
+
+  usleep(100);
+}
+
+uint8_t mt9f002_read_reg8(uint16_t reg)
+{
+  mt9f002_open();
+  mt9f002_set_address(0x10);
+
+  uint8_t data[2];
+  data[0] = (uint8_t)(reg >> 8);
+  data[1] = (uint8_t)reg & 0xFF;
+  write(mt9f002_i2c_port, data, 2);
+  usleep(10);
+  read(mt9f002_i2c_port, data, 1);
+
+  mt9f002_close();
+
+  return data[0];
+}
+
+
+uint16_t mt9f002_read_reg16(uint16_t reg)
+{
+  mt9f002_open();
+  mt9f002_set_address(0x10);
+
+  uint8_t data[2];
+  data[0] = (uint8_t)(reg >> 8);
+  data[1] = (uint8_t)reg & 0xFF;
+  write(mt9f002_i2c_port, data, 2);
+  usleep(10);
+  read(mt9f002_i2c_port, data, 2);
+
+  mt9f002_close();
+
+  return data[1] | (data[0] << 8);
+}
+
 /**
  * Initialisation of the Aptina MT9F002 CMOS sensor
  */
 void mt9f002_init(void)
 {
-  /* We open the i2c-0 (because else I needed to convert the strace) */
-  int fd_i2c = open("/dev/i2c-0", O_RDWR);
-  if (fd_i2c < 0) {
-    printf("[MT9F002] Could not open i2c-0\n");
-    return;
-  }
-  if (ioctl(fd_i2c, 0x706, 0x10) < 0) {
-    printf("[MT9V117] Could not change the i2c address to 0x10\n");
-    return;
-  }
+  /* Change to standby mode */
+  mt9f002_write_reg8(MT9F002_MODE_SELECT, 0x00);
 
-  /* First reset the device */
-  write(fd_i2c, "\1\3\1", 3);
-  //usleep(1);
+  /* Change registers */
+  mt9f002_write_reg16(MT9F002_P_GR_P0Q0,0);
+  mt9f002_write_reg16(MT9F002_P_GR_P0Q2,0);
+  mt9f002_write_reg16(MT9F002_P_GR_P0Q3,0);
+  mt9f002_write_reg16(MT9F002_P_GR_P0Q4,0);
+  mt9f002_write_reg16(MT9F002_P_RD_P0Q0,0);
+  mt9f002_write_reg16(MT9F002_P_RD_P0Q1,0);
+  mt9f002_write_reg16(MT9F002_P_RD_P0Q2,0);
+  mt9f002_write_reg16(MT9F002_P_RD_P0Q3,0);
+  mt9f002_write_reg16(MT9F002_P_RD_P0Q4,0);
+  mt9f002_write_reg16(MT9F002_P_BL_P0Q0,0);
+  mt9f002_write_reg16(MT9F002_P_BL_P0Q1,0);
+  mt9f002_write_reg16(MT9F002_P_BL_P0Q2,0);
+  mt9f002_write_reg16(MT9F002_P_BL_P0Q3,0);
+  mt9f002_write_reg16(MT9F002_P_BL_P0Q4,0);
+  mt9f002_write_reg16(MT9F002_P_GB_P0Q0,0);
+  mt9f002_write_reg16(MT9F002_P_GB_P0Q1,0);
+  mt9f002_write_reg16(MT9F002_P_GB_P0Q2,0);
+  mt9f002_write_reg16(MT9F002_P_GB_P0Q3,0);
+  mt9f002_write_reg16(MT9F002_P_GB_P0Q4,0);
+  mt9f002_write_reg16(MT9F002_P_GR_P1Q0,0);
+  mt9f002_write_reg16(MT9F002_P_GR_P1Q1,0);
+  mt9f002_write_reg16(MT9F002_P_GR_P1Q2,0);
+  mt9f002_write_reg16(MT9F002_P_GR_P1Q3,0);
+  mt9f002_write_reg16(MT9F002_P_GR_P1Q4,0);
+  mt9f002_write_reg16(MT9F002_P_RD_P1Q0,0);
+  mt9f002_write_reg16(MT9F002_P_RD_P1Q1,0);
+  mt9f002_write_reg16(MT9F002_P_RD_P1Q2,0);
+  mt9f002_write_reg16(MT9F002_P_RD_P1Q3,0);
+  mt9f002_write_reg16(MT9F002_P_RD_P1Q4,0);
+  mt9f002_write_reg16(MT9F002_P_BL_P1Q0,0);
+  mt9f002_write_reg16(MT9F002_P_BL_P1Q1,0);
+  mt9f002_write_reg16(MT9F002_P_BL_P1Q2,0);
+  mt9f002_write_reg16(MT9F002_P_BL_P1Q3,0);
+  mt9f002_write_reg16(MT9F002_P_BL_P1Q4,0);
+  mt9f002_write_reg16(MT9F002_P_GB_P1Q0,0);
+  mt9f002_write_reg16(MT9F002_P_GB_P1Q1,0);
+  mt9f002_write_reg16(MT9F002_P_GB_P1Q2,0);
+  mt9f002_write_reg16(MT9F002_P_GB_P1Q3,0);
+  mt9f002_write_reg16(MT9F002_P_GB_P1Q4,0);
+  mt9f002_write_reg16(MT9F002_P_GR_P2Q0,0);
+  mt9f002_write_reg16(MT9F002_P_GR_P2Q1,0);
+  mt9f002_write_reg16(MT9F002_P_GR_P2Q2,0);
+  mt9f002_write_reg16(MT9F002_P_GR_P2Q3,0);
+  mt9f002_write_reg16(MT9F002_P_GR_P2Q4,0);
+  mt9f002_write_reg16(MT9F002_P_RD_P2Q0,0);
+  mt9f002_write_reg16(MT9F002_P_RD_P2Q1,0);
+  mt9f002_write_reg16(MT9F002_P_RD_P2Q2,0);
+  mt9f002_write_reg16(MT9F002_P_RD_P2Q3,0);
+  mt9f002_write_reg16(MT9F002_P_RD_P2Q4,0);
+  mt9f002_write_reg16(MT9F002_P_BL_P2Q0,0);
+  mt9f002_write_reg16(MT9F002_P_BL_P2Q1,0);
+  mt9f002_write_reg16(MT9F002_P_BL_P2Q2,0);
+  mt9f002_write_reg16(MT9F002_P_BL_P2Q3,0);
+  mt9f002_write_reg16(MT9F002_P_BL_P2Q4,0);
+  mt9f002_write_reg16(MT9F002_P_GB_P2Q0,0);
+  mt9f002_write_reg16(MT9F002_P_GB_P2Q1,0);
+  mt9f002_write_reg16(MT9F002_P_GB_P2Q2,0);
+  mt9f002_write_reg16(MT9F002_P_GB_P2Q3,0);
+  mt9f002_write_reg16(MT9F002_P_GB_P2Q4,0);
+  mt9f002_write_reg16(MT9F002_P_GR_P3Q0,0);
+  mt9f002_write_reg16(MT9F002_P_GR_P3Q1,0);
+  mt9f002_write_reg16(MT9F002_P_GR_P3Q2,0);
+  mt9f002_write_reg16(MT9F002_P_GR_P3Q3,0);
+  mt9f002_write_reg16(MT9F002_P_GR_P3Q4,0);
+  mt9f002_write_reg16(MT9F002_P_RD_P3Q0,0);
+  mt9f002_write_reg16(MT9F002_P_RD_P3Q1,0);
+  mt9f002_write_reg16(MT9F002_P_RD_P3Q2,0);
+  mt9f002_write_reg16(MT9F002_P_RD_P3Q3,0);
+  mt9f002_write_reg16(MT9F002_P_RD_P3Q4,0);
+  mt9f002_write_reg16(MT9F002_P_BL_P3Q0,0);
+  mt9f002_write_reg16(MT9F002_P_BL_P3Q1,0);
+  mt9f002_write_reg16(MT9F002_P_BL_P3Q2,0);
+  mt9f002_write_reg16(MT9F002_P_BL_P3Q3,0);
+  mt9f002_write_reg16(MT9F002_P_BL_P3Q4,0);
+  mt9f002_write_reg16(MT9F002_P_GB_P3Q0,0);
+  mt9f002_write_reg16(MT9F002_P_GB_P3Q1,0);
+  mt9f002_write_reg16(MT9F002_P_GB_P3Q2,0);
+  mt9f002_write_reg16(MT9F002_P_GB_P3Q3,0);
+  mt9f002_write_reg16(MT9F002_P_GB_P3Q4,0);
+  mt9f002_write_reg16(MT9F002_P_GR_P4Q0,0);
+  mt9f002_write_reg16(MT9F002_P_GR_P4Q1,0);
+  mt9f002_write_reg16(MT9F002_P_GR_P4Q2,0);
+  mt9f002_write_reg16(MT9F002_P_GR_P4Q3,0);
+  mt9f002_write_reg16(MT9F002_P_GR_P4Q4,0);
+  mt9f002_write_reg16(MT9F002_P_RD_P4Q0,0);
+  mt9f002_write_reg16(MT9F002_P_RD_P4Q1,0);
+  mt9f002_write_reg16(MT9F002_P_RD_P4Q2,0);
+  mt9f002_write_reg16(MT9F002_P_RD_P4Q3,0);
+  mt9f002_write_reg16(MT9F002_P_RD_P4Q4,0);
+  mt9f002_write_reg16(MT9F002_P_BL_P4Q0,0);
+  mt9f002_write_reg16(MT9F002_P_BL_P4Q1,0);
+  mt9f002_write_reg16(MT9F002_P_BL_P4Q2,0);
+  mt9f002_write_reg16(MT9F002_P_BL_P4Q3,0);
+  mt9f002_write_reg16(MT9F002_P_BL_P4Q4,0);
+  mt9f002_write_reg16(MT9F002_P_GB_P4Q0,0);
+  mt9f002_write_reg16(MT9F002_P_GB_P4Q1,0);
+  mt9f002_write_reg16(MT9F002_P_GB_P4Q2,0);
+  mt9f002_write_reg16(MT9F002_P_GB_P4Q3,0);
+  mt9f002_write_reg16(MT9F002_P_GB_P4Q4,0);
 
-  write(fd_i2c, "0\32\0\20", 4);
-  write(fd_i2c, "0^\0240", 4);
-  write(fd_i2c, "0\32\0\20", 4);
-  write(fd_i2c, "0\32\0\20", 4);
-  write(fd_i2c, "0\32\0\20", 4);
-  write(fd_i2c, ">\332\345%", 4);
-  write(fd_i2c, "0\350\0\0", 4);
-  write(fd_i2c, "0\352\370s", 4);
-  write(fd_i2c, "0\352\10\252", 4);
-  write(fd_i2c, "0\3522\31", 4);
-  write(fd_i2c, "0\3522\31", 4);
-  write(fd_i2c, "0\3522\31", 4);
-  write(fd_i2c, "0\3522\0", 4);
-  write(fd_i2c, "0\3522\0", 4);
-  write(fd_i2c, "0\3522\0", 4);
-  write(fd_i2c, "0\3522\0", 4);
-  write(fd_i2c, "0\3522\0", 4);
-  write(fd_i2c, "0\352\27i", 4);
-  write(fd_i2c, "0\352\246\363", 4);
-  write(fd_i2c, "0\352\246\363", 4);
-  write(fd_i2c, "0\352\246\363", 4);
-  write(fd_i2c, "0\352\246\363", 4);
-  write(fd_i2c, "0\352\246\363", 4);
-  write(fd_i2c, "0\352\246\363", 4);
-  write(fd_i2c, "0\352\246\363", 4);
-  write(fd_i2c, "0\352\257\363", 4);
-  write(fd_i2c, "0\352\372d", 4);
-  write(fd_i2c, "0\352\372d", 4);
-  write(fd_i2c, "0\352\372d", 4);
-  write(fd_i2c, "0\352\361d", 4);
-  write(fd_i2c, "0\352\372d", 4);
-  write(fd_i2c, "0\352\372d", 4);
-  write(fd_i2c, "0\352\372d", 4);
-  write(fd_i2c, "0\352\361d", 4);
-  write(fd_i2c, "0\352'n", 4);
-  write(fd_i2c, "0\352\30\317", 4);
-  write(fd_i2c, "0\352\30\317", 4);
-  write(fd_i2c, "0\352\30\317", 4);
-  write(fd_i2c, "0\352(\317", 4);
-  write(fd_i2c, "0\352\30\317", 4);
-  write(fd_i2c, "0\352\30\317", 4);
-  write(fd_i2c, "0\352\30\317", 4);
-  write(fd_i2c, "0\352\30\317", 4);
-  write(fd_i2c, "0\352#c", 4);
-  write(fd_i2c, "0\352#c", 4);
-  write(fd_i2c, "0\352#R", 4);
-  write(fd_i2c, "0\352#c", 4);
-  write(fd_i2c, "0\352#c", 4);
-  write(fd_i2c, "0\352#c", 4);
-  write(fd_i2c, "0\352#R", 4);
-  write(fd_i2c, "0\352#R", 4);
-  write(fd_i2c, "0\352\243\224", 4);
-  write(fd_i2c, "0\352\243\224", 4);
-  write(fd_i2c, "0\352\217\217", 4);
-  write(fd_i2c, "0\352\243\324", 4);
-  write(fd_i2c, "0\352\243\224", 4);
-  write(fd_i2c, "0\352\243\224", 4);
-  write(fd_i2c, "0\352\217\217", 4);
-  write(fd_i2c, "0\352\217\317", 4);
-  write(fd_i2c, "0\352\334#", 4);
-  write(fd_i2c, "0\352\334c", 4);
-  write(fd_i2c, "0\352\334c", 4);
-  write(fd_i2c, "0\352\334#", 4);
-  write(fd_i2c, "0\352\334#", 4);
-  write(fd_i2c, "0\352\334c", 4);
-  write(fd_i2c, "0\352\334c", 4);
-  write(fd_i2c, "0\352\334#", 4);
-  write(fd_i2c, "0\352\17s", 4);
-  write(fd_i2c, "0\352\205\300", 4);
-  write(fd_i2c, "0\352\205\300", 4);
-  write(fd_i2c, "0\352\205\300", 4);
-  write(fd_i2c, "0\352\205\300", 4);
-  write(fd_i2c, "0\352\205\300", 4);
-  write(fd_i2c, "0\352\205\300", 4);
-  write(fd_i2c, "0\352\205\300", 4);
-  write(fd_i2c, "0\352\205\304", 4);
-  write(fd_i2c, "0\352\0\0", 4);
-  write(fd_i2c, "1v\200\0", 4);
-  write(fd_i2c, ">\332\345%", 4);
-  write(fd_i2c, "0\36\0\250", 4);
-  write(fd_i2c, "0\32\0\220", 4);
-  write(fd_i2c, "1\256\3\1", 4);
-  write(fd_i2c, "0\32\20\220", 4);
-  write(fd_i2c, "0d\10E", 4);
-  write(fd_i2c, "0\32\20\200", 4);
-  write(fd_i2c, "0n\330\200", 4);
-  write(fd_i2c, "0\32\220\200", 4);
-  write(fd_i2c, "0n\330\200", 4);
-  write(fd_i2c, "0\32\20\310", 4);
-  write(fd_i2c, "0n\330\200", 4);
-  write(fd_i2c, "\3\0\0\7", 4);
-  write(fd_i2c, "\3\2\0\1", 4);
-  write(fd_i2c, "\3\4\0\1", 4);
-  write(fd_i2c, "\3\6\0;", 4);
-  write(fd_i2c, "\3\10\0\10", 4);
-  write(fd_i2c, "\3\n\0\1", 4);
+  mt9f002_write_reg16(MT9F002_GREEN1_GAIN,4176);
+  mt9f002_write_reg16(MT9F002_BLUE_GAIN,4176);
+  mt9f002_write_reg16(MT9F002_RED_GAIN,4176);
+  mt9f002_write_reg16(MT9F002_GREEN2_GAIN,4176);
+  mt9f002_write_reg16(MT9F002_GLOBAL_GAIN,4176);
+  mt9f002_write_reg16(MT9F002_ANALOG_GAIN_CODE_GLOBAL,10);
+  mt9f002_write_reg16(MT9F002_ANALOG_GAIN_CODE_GREENR,10);
+  mt9f002_write_reg16(MT9F002_ANALOG_GAIN_CODE_RED,10);
+  mt9f002_write_reg16(MT9F002_ANALOG_GAIN_CODE_BLUE,10);
+  mt9f002_write_reg16(MT9F002_ANALOG_GAIN_CODE_GREENB,10);
+  mt9f002_write_reg16(MT9F002_CALIB_GREEN1_ASC1,4224);
+  mt9f002_write_reg16(MT9F002_CALIB_BLUE_ASC1,4224);
+  mt9f002_write_reg16(MT9F002_CALIB_RED_ASC1,4224);
+  mt9f002_write_reg16(MT9F002_CALIB_GREEN2_ASC1,4224);
+  mt9f002_write_reg16(MT9F002_CALIB_GREEN1,4224);
+  mt9f002_write_reg16(MT9F002_CALIB_BLUE,4224);
+  mt9f002_write_reg16(MT9F002_CALIB_RED,4224);
+  mt9f002_write_reg16(MT9F002_CALIB_GREEN2,4224);
+  mt9f002_write_reg16(MT9F002_POLY_ORIGIN_C,0);
+  mt9f002_write_reg16(MT9F002_POLY_ORIGIN_R,0);
+  mt9f002_write_reg16(MT9F002_P_GR_Q5,0);
+  mt9f002_write_reg16(MT9F002_P_RD_Q5,0);
+  mt9f002_write_reg16(MT9F002_P_BL_Q5,0);
+  mt9f002_write_reg16(MT9F002_P_GB_Q5,0);
+  mt9f002_write_reg16(MT9F002_DAC_ID_FBIAS,57568);
+
+  mt9f002_write_reg16(MT9F002_FRAME_LENGTH_LINES,3434);
+  mt9f002_write_reg16(MT9F002_LINE_LENGTH_PCK,2504);
+  mt9f002_write_reg16(MT9F002_ROW_SPEED,273);
+  mt9f002_write_reg16(MT9F002_MIPI_TIMING_2,61452);
+  mt9f002_write_reg16(MT9F002_HISPI_TIMING,0);
+
+  mt9f002_write_reg16(MT9F002_VT_PIX_CLK_DIV,6);
+  mt9f002_write_reg16(MT9F002_PRE_PLL_CLK_DIV,6);
+  mt9f002_write_reg16(MT9F002_PLL_MULTIPLIER,165);
+  mt9f002_write_reg16(MT9F002_OP_PIX_CLK_DIV,12);
+
+  mt9f002_write_reg16(MT9F002_X_ADDR_START_,144);
+  mt9f002_write_reg16(MT9F002_Y_ADDR_START_,32);
+  mt9f002_write_reg16(MT9F002_X_ADDR_END_,4527);
+  mt9f002_write_reg16(MT9F002_Y_ADDR_END_,3319);
+  mt9f002_write_reg16(MT9F002_READ_MODE,0x06E7);
+  mt9f002_write_reg16(MT9F002_X_ODD_INC,7);
+  mt9f002_write_reg16(MT9F002_Y_ODD_INC,7);
+
+  mt9f002_write_reg16(MT9F002_SCALING_MODE,2);
+  mt9f002_write_reg16(MT9F002_SCALE_M,48);
 
 
-  ioctl(fd_i2c, 0x707, 0xd0);
-  write(fd_i2c, "0d\10E", 4);
+  /* Stream mode */
+  mt9f002_write_reg8(MT9F002_MODE_SELECT, 0x01); // Stream mode on
 
-  ioctl(fd_i2c, 0x707, 0xd0);
-  write(fd_i2c, "0\26\1!", 4);
-  write(fd_i2c, "1v\200\0", 4);
-  write(fd_i2c, "0@\0A", 4);
-  write(fd_i2c, "0@\4\303", 4);
-  write(fd_i2c, "0@\4\303", 4);
-  write(fd_i2c, "1x\0\0", 4);
-  write(fd_i2c, "1x\0\0", 4);
-  write(fd_i2c, "1x\0\0", 4);
-  write(fd_i2c, "1x\0\0", 4);
-  write(fd_i2c, ">\350\0G", 4);
-  write(fd_i2c, "0\324\260\200", 4);
-  write(fd_i2c, "0\324\261\0", 4);
-  write(fd_i2c, "0\356\0 ", 4);
-  write(fd_i2c, ">\344cI", 4);
-  write(fd_i2c, "1|\200\n", 4);
-  write(fd_i2c, "0\32\220\310", 4);
-  write(fd_i2c, "0\350\200\5", 4);
-  write(fd_i2c, "1|\200\n", 4);
-  write(fd_i2c, ">\350\0G", 4);
-  write(fd_i2c, ">\352\25\360", 4);
-  write(fd_i2c, ">\352\25\360", 4);
-  write(fd_i2c, ">\352\25\360", 4);
-  write(fd_i2c, ">\350\0G", 4);
-  write(fd_i2c, ">\350\0G", 4);
-  write(fd_i2c, "0\32\20\310", 4);
-  write(fd_i2c, "\2\2\10\303", 4);
-  write(fd_i2c, "0\260\0\0", 4);
-  write(fd_i2c, "0n\330\200", 4);
-  write(fd_i2c, "0@\0A", 4);
-  write(fd_i2c, "\1\5\1", 3);
-  write(fd_i2c, "\3L\2\200", 4);
-  write(fd_i2c, "\3N\1\340", 4);
-  write(fd_i2c, "\4\0\0\0", 4);
-  write(fd_i2c, "0@\0A", 4);
-  write(fd_i2c, "\3\202\0\1", 4);
-  write(fd_i2c, "\3\206\0\1", 4);
-  write(fd_i2c, "\3D\0\0", 4);
-  write(fd_i2c, "\3H\2\177", 4);
-  write(fd_i2c, "\3F\0\0", 4);
-  write(fd_i2c, "\3J\1\337", 4);
-
-  write(fd_i2c, "\3B&\340", 4);
-  write(fd_i2c, "\3@\2\336", 4);
-  write(fd_i2c, "\2\2\2\224", 4);
-  write(fd_i2c, "0\24\27M", 4);
-  write(fd_i2c, "0V\24@", 4);
-  write(fd_i2c, "0X\24@", 4);
-  write(fd_i2c, "0Z\24@", 4);
-  write(fd_i2c, "0\\\24@", 4);
-  write(fd_i2c, "\1\4\1", 3);
-  write(fd_i2c, "\3L\2\200", 4);
-  write(fd_i2c, "\3N\1h", 4);
-  write(fd_i2c, "\4\0\0\0", 4);
-  write(fd_i2c, "0@\0A", 4);
-  write(fd_i2c, "\3\202\0\1", 4);
-  write(fd_i2c, "\3\206\0\1", 4);
-  write(fd_i2c, "\3D\0\0", 4);
-  write(fd_i2c, "\3H\2\177", 4);
-  write(fd_i2c, "\3F\0\0", 4);
-  write(fd_i2c, "\3J\1g", 4);
-
-  write(fd_i2c, "\3B&\340", 4);
-  write(fd_i2c, "\3@\2\336", 4);
-  write(fd_i2c, "\2\2\2\224", 4);
-  write(fd_i2c, "0\24\27M", 4);
-  write(fd_i2c, "\1\4\0", 3);
-
-  write(fd_i2c, "\1\4\1", 3);
-  write(fd_i2c, "\3B&\340", 4);
-  write(fd_i2c, "\3@\2\336", 4);
-  write(fd_i2c, "\2\2\2\224", 4);
-  write(fd_i2c, "0\24\27M", 4);
-  write(fd_i2c, "\1\4\0", 3);
-  write(fd_i2c, "\1\4\1", 3);
-  write(fd_i2c, "\2\2\0\334", 4);
-  write(fd_i2c, "0\24\7\304", 4);
-  write(fd_i2c, "\1\4\0", 3);
-  write(fd_i2c, "0VL@", 4);
-  write(fd_i2c, "0XL@", 4);
-  write(fd_i2c, "0ZL@", 4);
-  write(fd_i2c, "0\\L@", 4);
-  write(fd_i2c, "\3N\0\0", 4);
-  write(fd_i2c, "\1\0\1", 3);
-  write(fd_i2c, "\1\4\1", 3);
-  write(fd_i2c, "\3D\7\320", 4);
-  write(fd_i2c, "\3H\nO", 4);
-  write(fd_i2c, "\3F\5\310", 4);
-  write(fd_i2c, "\3J\7/", 4);
-  write(fd_i2c, "\1\4\0", 3);
-
-  //usleep(1);
-  write(fd_i2c, "\3N\1h", 4);
-  write(fd_i2c, "\1\0\1", 3);
-  close(fd_i2c);
 }
 
 #pragma GCC diagnostic pop /* end disable -Wunused-result */
