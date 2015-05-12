@@ -35,7 +35,7 @@ $(TARGET).CFLAGS += -DUSE_LINUX_SIGNAL
 $(TARGET).srcs +=  $(SRC_BOARD)/video.c
 
 # Link static (Done for GLIBC)
-$(TARGET).CFLAGS += -DLINUX_LINK_STATIC
+$(TARGET).CFLAGS += -DLINUX_LINK_STATIC -D_GNU_SOURCE
 $(TARGET).LDFLAGS += -static
 
 # -----------------------------------------------------------------------

@@ -1,0 +1,2049 @@
+907   execve("/usr/bin/test-libHAL-P7_us", ["test-libHAL-P7_us", "--verbose", "3", "-s", "7"], [/* 7 vars */]) = 0
+907   brk(0)                            = 0x497000
+907   uname({sys="Linux", node="Bebop4-TUDelft", ...}) = 0
+907   mmap2(NULL, 4096, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0xb6fda000
+907   access("/etc/ld.so.preload", R_OK) = 0
+907   open("/etc/ld.so.preload", O_RDONLY|O_CLOEXEC) = 3</etc/ld.so.preload>
+907   fstat64(3</etc/ld.so.preload>, {st_mode=S_IFREG|0664, st_size=29, ...}) = 0
+907   mmap2(NULL, 29, PROT_READ|PROT_WRITE, MAP_PRIVATE, 3</etc/ld.so.preload>, 0) = 0xb6fd9000
+907   close(3</etc/ld.so.preload>)      = 0
+907   open("/lib/libc-arm-2012-03-fix.so", O_RDONLY|O_CLOEXEC) = 3</lib/libc-arm-2012-03-fix.so>
+907   read(3</lib/libc-arm-2012-03-fix.so>, "\x7f\x45\x4c\x46\x01\x01\x01\x00\x00\x00\x00\x00\x00\x00\x00\x00\x03\x00\x28\x00\x01\x00\x00\x00\xe8\x04\x00\x00\x34\x00\x00\x00"..., 512) = 512
+907   fstat64(3</lib/libc-arm-2012-03-fix.so>, {st_mode=S_IFREG|0775, st_size=6224, ...}) = 0
+907   mmap2(NULL, 37672, PROT_READ|PROT_EXEC, MAP_PRIVATE|MAP_DENYWRITE, 3</lib/libc-arm-2012-03-fix.so>, 0) = 0xb6fa8000
+907   mprotect(0xb6faa000, 28672, PROT_NONE) = 0
+907   mmap2(0xb6fb1000, 4096, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_FIXED|MAP_DENYWRITE, 3</lib/libc-arm-2012-03-fix.so>, 0x1000) = 0xb6fb1000
+907   close(3</lib/libc-arm-2012-03-fix.so>) = 0
+907   munmap(0xb6fd9000, 29)            = 0
+907   open("/etc/ld.so.cache", O_RDONLY|O_CLOEXEC) = 3</etc/ld.so.cache>
+907   fstat64(3</etc/ld.so.cache>, {st_mode=S_IFREG|0644, st_size=10533, ...}) = 0
+907   mmap2(NULL, 10533, PROT_READ, MAP_PRIVATE, 3</etc/ld.so.cache>, 0) = 0xb6fd7000
+907   close(3</etc/ld.so.cache>)        = 0
+907   open("/usr/lib/libgps.so", O_RDONLY|O_CLOEXEC) = 3</usr/lib/libgps.so>
+907   read(3</usr/lib/libgps.so>, "\x7f\x45\x4c\x46\x01\x01\x01\x00\x00\x00\x00\x00\x00\x00\x00\x00\x03\x00\x28\x00\x01\x00\x00\x00\x80\x2f\x00\x00\x34\x00\x00\x00"..., 512) = 512
+907   fstat64(3</usr/lib/libgps.so>, {st_mode=S_IFREG|0775, st_size=86456, ...}) = 0
+907   mmap2(NULL, 121052, PROT_READ|PROT_EXEC, MAP_PRIVATE|MAP_DENYWRITE, 3</usr/lib/libgps.so>, 0) = 0xb6f8a000
+907   mprotect(0xb6f9f000, 28672, PROT_NONE) = 0
+907   mmap2(0xb6fa6000, 4096, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_FIXED|MAP_DENYWRITE, 3</usr/lib/libgps.so>, 0x14000) = 0xb6fa6000
+907   mmap2(0xb6fa7000, 2268, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_FIXED|MAP_ANONYMOUS, -1, 0) = 0xb6fa7000
+907   close(3</usr/lib/libgps.so>)      = 0
+907   open("/lib/librt.so.1", O_RDONLY|O_CLOEXEC) = 3</lib/librt-2.15.so>
+907   read(3</lib/librt-2.15.so>, "\x7f\x45\x4c\x46\x01\x01\x01\x00\x00\x00\x00\x00\x00\x00\x00\x00\x03\x00\x28\x00\x01\x00\x00\x00\xf0\x16\x00\x00\x34\x00\x00\x00"..., 512) = 512
+907   fstat64(3</lib/librt-2.15.so>, {st_mode=S_IFREG|0644, st_size=30600, ...}) = 0
+907   mmap2(NULL, 61980, PROT_READ|PROT_EXEC, MAP_PRIVATE|MAP_DENYWRITE, 3</lib/librt-2.15.so>, 0) = 0xb6f7a000
+907   mprotect(0xb6f81000, 28672, PROT_NONE) = 0
+907   mmap2(0xb6f88000, 8192, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_FIXED|MAP_DENYWRITE, 3</lib/librt-2.15.so>, 0x6000) = 0xb6f88000
+907   close(3</lib/librt-2.15.so>)      = 0
+907   open("/usr/lib/libstdc++.so.6", O_RDONLY|O_CLOEXEC) = 3</usr/lib/libstdc++.so.6.0.16>
+907   read(3</usr/lib/libstdc++.so.6.0.16>, "\x7f\x45\x4c\x46\x01\x01\x01\x00\x00\x00\x00\x00\x00\x00\x00\x00\x03\x00\x28\x00\x01\x00\x00\x00\xf0\x59\x04\x00\x34\x00\x00\x00"..., 512) = 512
+907   fstat64(3</usr/lib/libstdc++.so.6.0.16>, {st_mode=S_IFREG|0644, st_size=825308, ...}) = 0
+907   mmap2(NULL, 4096, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0xb6fd6000
+907   mmap2(NULL, 883928, PROT_READ|PROT_EXEC, MAP_PRIVATE|MAP_DENYWRITE, 3</usr/lib/libstdc++.so.6.0.16>, 0) = 0xb6ea2000
+907   mprotect(0xb6f67000, 28672, PROT_NONE) = 0
+907   mmap2(0xb6f6e000, 24576, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_FIXED|MAP_DENYWRITE, 3</usr/lib/libstdc++.so.6.0.16>, 0xc4000) = 0xb6f6e000
+907   mmap2(0xb6f74000, 23768, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_FIXED|MAP_ANONYMOUS, -1, 0) = 0xb6f74000
+907   close(3</usr/lib/libstdc++.so.6.0.16>) = 0
+907   open("/lib/libm.so.6", O_RDONLY|O_CLOEXEC) = 3</lib/libm-2.15.so>
+907   read(3</lib/libm-2.15.so>, "\x7f\x45\x4c\x46\x01\x01\x01\x00\x00\x00\x00\x00\x00\x00\x00\x00\x03\x00\x28\x00\x01\x00\x00\x00\xe0\x3c\x00\x00\x34\x00\x00\x00"..., 512) = 512
+907   fstat64(3</lib/libm-2.15.so>, {st_mode=S_IFREG|0644, st_size=644684, ...}) = 0
+907   mmap2(NULL, 676004, PROT_READ|PROT_EXEC, MAP_PRIVATE|MAP_DENYWRITE, 3</lib/libm-2.15.so>, 0) = 0xb6dfc000
+907   mprotect(0xb6e98000, 32768, PROT_NONE) = 0
+907   mmap2(0xb6ea0000, 8192, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_FIXED|MAP_DENYWRITE, 3</lib/libm-2.15.so>, 0x9c000) = 0xb6ea0000
+907   close(3</lib/libm-2.15.so>)       = 0
+907   open("/lib/libgcc_s.so.1", O_RDONLY|O_CLOEXEC) = 3</lib/libgcc_s.so.1>
+907   read(3</lib/libgcc_s.so.1>, "\x7f\x45\x4c\x46\x01\x01\x01\x00\x00\x00\x00\x00\x00\x00\x00\x00\x03\x00\x28\x00\x01\x00\x00\x00\xa0\xce\x00\x00\x34\x00\x00\x00"..., 512) = 512
+907   fstat64(3</lib/libgcc_s.so.1>, {st_mode=S_IFREG|0644, st_size=130188, ...}) = 0
+907   mmap2(NULL, 161608, PROT_READ|PROT_EXEC, MAP_PRIVATE|MAP_DENYWRITE, 3</lib/libgcc_s.so.1>, 0) = 0xb6dd4000
+907   mprotect(0xb6df4000, 28672, PROT_NONE) = 0
+907   mmap2(0xb6dfb000, 4096, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_FIXED|MAP_DENYWRITE, 3</lib/libgcc_s.so.1>, 0x1f000) = 0xb6dfb000
+907   close(3</lib/libgcc_s.so.1>)      = 0
+907   open("/lib/libpthread.so.0", O_RDONLY|O_CLOEXEC) = 3</lib/libpthread-2.15.so>
+907   read(3</lib/libpthread-2.15.so>, "\x7f\x45\x4c\x46\x01\x01\x01\x00\x00\x00\x00\x00\x00\x00\x00\x00\x03\x00\x28\x00\x01\x00\x00\x00\x90\x59\x00\x00\x34\x00\x00\x00"..., 512) = 512
+907   fstat64(3</lib/libpthread-2.15.so>, {st_mode=S_IFREG|0755, st_size=87980, ...}) = 0
+907   mmap2(NULL, 127528, PROT_READ|PROT_EXEC, MAP_PRIVATE|MAP_DENYWRITE, 3</lib/libpthread-2.15.so>, 0) = 0xb6db4000
+907   mprotect(0xb6dc9000, 28672, PROT_NONE) = 0
+907   mmap2(0xb6dd0000, 8192, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_FIXED|MAP_DENYWRITE, 3</lib/libpthread-2.15.so>, 0x14000) = 0xb6dd0000
+907   mmap2(0xb6dd2000, 4648, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_FIXED|MAP_ANONYMOUS, -1, 0) = 0xb6dd2000
+907   close(3</lib/libpthread-2.15.so>) = 0
+907   open("/lib/libc.so.6", O_RDONLY|O_CLOEXEC) = 3</lib/libc-2.15.so>
+907   read(3</lib/libc-2.15.so>, "\x7f\x45\x4c\x46\x01\x01\x01\x00\x00\x00\x00\x00\x00\x00\x00\x00\x03\x00\x28\x00\x01\x00\x00\x00\x88\x7c\x01\x00\x34\x00\x00\x00"..., 512) = 512
+907   fstat64(3</lib/libc-2.15.so>, {st_mode=S_IFREG|0755, st_size=1336444, ...}) = 0
+907   mmap2(NULL, 1377656, PROT_READ|PROT_EXEC, MAP_PRIVATE|MAP_DENYWRITE, 3</lib/libc-2.15.so>, 0) = 0xb6c63000
+907   mprotect(0xb6da7000, 28672, PROT_NONE) = 0
+907   mmap2(0xb6dae000, 12288, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_FIXED|MAP_DENYWRITE, 3</lib/libc-2.15.so>, 0x143000) = 0xb6dae000
+907   mmap2(0xb6db1000, 9592, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_FIXED|MAP_ANONYMOUS, -1, 0) = 0xb6db1000
+907   close(3</lib/libc-2.15.so>)       = 0
+907   mmap2(NULL, 4096, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0xb6fd5000
+907   mmap2(NULL, 4096, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0xb6fd4000
+907   set_tls(0xb6fd44c0, 0xb6fd4ba8, 0xb6fdc050, 0xb6fd44c0, 0xb6fdc050) = 0
+907   mprotect(0xb6dae000, 8192, PROT_READ) = 0
+907   mprotect(0xb6dd0000, 4096, PROT_READ) = 0
+907   mprotect(0xb6ea0000, 4096, PROT_READ) = 0
+907   mprotect(0xb6f6e000, 16384, PROT_READ) = 0
+907   mprotect(0xb6f88000, 4096, PROT_READ) = 0
+907   mprotect(0xb6fdb000, 4096, PROT_READ) = 0
+907   munmap(0xb6fd7000, 10533)         = 0
+907   set_tid_address(0xb6fd4068)       = 907
+907   set_robust_list(0xb6fd4070, 12)   = 0
+907   futex(0xbeb80df0, FUTEX_WAKE_PRIVATE, 1) = 0
+907   futex(0xbeb80df0, FUTEX_WAIT_BITSET_PRIVATE|FUTEX_CLOCK_REALTIME, 1, NULL, b6fd44c0) = -1 EAGAIN (Resource temporarily unavailable)
+907   rt_sigaction(SIGRTMIN, {0xb6db93f0, [], SA_RESTORER|SA_SIGINFO, 0xb6c93bc0}, NULL, 8) = 0
+907   rt_sigaction(SIGRT_1, {0xb6db9288, [], SA_RESTORER|SA_RESTART|SA_SIGINFO, 0xb6c93bc0}, NULL, 8) = 0
+907   rt_sigprocmask(SIG_UNBLOCK, [RTMIN RT_1], NULL, 8) = 0
+907   getrlimit(RLIMIT_STACK, {rlim_cur=8192*1024, rlim_max=RLIM_INFINITY}) = 0
+907   futex(0xb6f73e84, FUTEX_WAKE_PRIVATE, 2147483647) = 0
+907   fstat64(2</dev/pts/0>, {st_mode=S_IFCHR|0620, st_rdev=makedev(136, 0), ...}) = 0
+907   mmap2(NULL, 4096, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0xb6fd9000
+907   write(2</dev/pts/0>, "posix init start build on : Jan "..., 49) = 49
+907   write(2</dev/pts/0>, "Use ctrl+\\ (SIGQUIT) to end the "..., 44) = 44
+907   brk(0)                            = 0x497000
+907   brk(0x4b8000)                     = 0x4b8000
+907   open("/etc/PAL/priority.map", O_RDONLY) = 3</etc/PAL/priority.map>
+907   fstat64(3</etc/PAL/priority.map>, {st_mode=S_IFREG|0664, st_size=1244, ...}) = 0
+907   mmap2(NULL, 4096, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0xb6fd8000
+907   fstat64(3</etc/PAL/priority.map>, {st_mode=S_IFREG|0664, st_size=1244, ...}) = 0
+907   _llseek(3</etc/PAL/priority.map>, 0, [0], SEEK_SET) = 0
+907   read(3</etc/PAL/priority.map>, "# Parrot Real-time Optimizer Ult"..., 1244) = 1244
+907   _llseek(3</etc/PAL/priority.map>, 1244, [1244], SEEK_SET) = 0
+907   _llseek(3</etc/PAL/priority.map>, 1244, [1244], SEEK_SET) = 0
+907   close(3</etc/PAL/priority.map>)   = 0
+907   munmap(0xb6fd8000, 4096)          = 0
+907   sched_getparam(907, { 0 })        = 0
+907   sched_getscheduler(907)           = 0 (SCHED_OTHER)
+907   sched_get_priority_min(SCHED_RR)  = 1
+907   sched_get_priority_max(SCHED_RR)  = 99
+907   sched_rr_get_interval(0, {0, 10000000}) = 0
+907   epoll_create1(EPOLL_CLOEXEC)      = 3
+907   open("/dev/ulog_main", O_WRONLY|O_CLOEXEC) = 4</dev/ulog_main>
+907   access("/tmp", R_OK|W_OK|X_OK)    = 0
+907   fstat64(1</dev/pts/0>, {st_mode=S_IFCHR|0620, st_rdev=makedev(136, 0), ...}) = 0
+907   mmap2(NULL, 4096, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0xb6fd8000
+907   write(1</dev/pts/0>, "sup_system_startup\n", 19) = 19
+907   writev(4</dev/ulog_main>, [{"\x06\x00\x00\x00", 4}, {"\x50\x4f\x53\x00", 4}, {"victor changing 'thread_us' task"..., 64}], 3) = 72
+907   sched_get_priority_min(SCHED_RR)  = 1
+907   sched_get_priority_min(SCHED_RR)  = 1
+907   sched_get_priority_min(SCHED_RR)  = 1
+907   sched_get_priority_max(SCHED_RR)  = 99
+907   mmap2(NULL, 263728, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0xb6c22000
+907   mprotect(0xb6c22000, 65536, PROT_NONE) = 0
+907   sched_get_priority_min(SCHED_RR)  = 1
+907   sched_get_priority_max(SCHED_RR)  = 99
+907   clone(child_stack=0xb6c615c8, flags=CLONE_VM|CLONE_FS|CLONE_FILES|CLONE_SIGHAND|CLONE_THREAD|CLONE_SYSVSEM|CLONE_SETTLS|CLONE_PARENT_SETTID|CLONE_CHILD_CLEARTID, parent_tidptr=0xb6c61af8, tls=0xb6c61f50, child_tidptr=0xb6c61af8) = 908
+908   set_robust_list(0xb6c61b00, 12)   = 0
+907   sched_setscheduler(908, SCHED_RR, { 14 } <unfinished ...>
+908   futex(0xb6c61ca4, FUTEX_WAIT_PRIVATE, 2, NULL <unfinished ...>
+907   <... sched_setscheduler resumed> ) = 0
+907   futex(0xb6c61ca4, FUTEX_WAKE_PRIVATE, 1 <unfinished ...>
+908   <... futex resumed> )             = 0
+907   <... futex resumed> )             = 1
+908   futex(0xb6c61ca4, FUTEX_WAKE_PRIVATE, 1) = 0
+907   nanosleep({0, 100000000},  <unfinished ...>
+908   setpriority(PRIO_PROCESS, 0, 0)   = 0
+908   gettid()                          = 908
+908   gettimeofday({402, 119292}, NULL) = 0
+908   open("/sys/devices/system/cpu/online", O_RDONLY|O_CLOEXEC) = 5</sys/devices/system/cpu/online>
+908   read(5</sys/devices/system/cpu/online>, "0-1\n", 8192) = 4
+908   close(5</sys/devices/system/cpu/online>) = 0
+908   mmap2(NULL, 2097152, PROT_NONE, MAP_PRIVATE|MAP_ANONYMOUS|MAP_NORESERVE, -1, 0) = 0xb6a22000
+908   munmap(0xb6a22000, 909312)        = 0
+908   munmap(0xb6c00000, 139264)        = 0
+908   mprotect(0xb6b00000, 135168, PROT_READ|PROT_WRITE) = 0
+908   open("/dev/cpuctl/others/tasks", O_WRONLY|O_CREAT|O_TRUNC, 0666) = 5</dev/cpuctl/others/tasks>
+908   fstat64(5</dev/cpuctl/others/tasks>, {st_mode=S_IFREG|0644, st_size=0, ...}) = 0
+908   mmap2(NULL, 4096, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0xb6c21000
+908   write(5</dev/cpuctl/others/tasks>, "908\n", 4) = 4
+908   close(5</dev/cpuctl/others/tasks>) = 0
+908   munmap(0xb6c21000, 4096)          = 0
+908   writev(4</dev/ulog_main>, [{"\x06\x00\x00\x00", 4}, {"\x50\x4f\x53\x00", 4}, {"victor putting task 'thread_us' "..., 54}], 3) = 62
+908   prctl(PR_SET_NAME, 0x2fca0, 0, 0, 0) = 0
+908   futex(0x4876c, FUTEX_WAIT_PRIVATE, 1, NULL <unfinished ...>
+907   <... nanosleep resumed> 0xbeb80cd0) = 0
+907   writev(4</dev/ulog_main>, [{"\x06\x00\x00\x00", 4}, {"\x50\x4f\x53\x00", 4}, {"victor changing 'PAL_TIMER' task"..., 62}], 3) = 70
+907   sched_setscheduler(907, SCHED_OTHER, { 0 }) = 0
+907   setpriority(PRIO_PROCESS, 907, -15) = 0
+907   open("/dev/cpuctl/others/tasks", O_WRONLY|O_CREAT|O_TRUNC, 0666) = 5</dev/cpuctl/others/tasks>
+907   fstat64(5</dev/cpuctl/others/tasks>, {st_mode=S_IFREG|0644, st_size=0, ...}) = 0
+907   mmap2(NULL, 4096, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0xb6c21000
+907   write(5</dev/cpuctl/others/tasks>, "907\n", 4) = 4
+907   close(5</dev/cpuctl/others/tasks>) = 0
+907   munmap(0xb6c21000, 4096)          = 0
+907   writev(4</dev/ulog_main>, [{"\x06\x00\x00\x00", 4}, {"\x50\x4f\x53\x00", 4}, {"victor putting task 'PAL_TIMER' "..., 54}], 3) = 62
+907   futex(0x4876c, FUTEX_CMP_REQUEUE_PRIVATE, 1, 2147483647, 0x487b8, 2) = 1
+908   <... futex resumed> )             = 0
+907   epoll_wait(3<anon_inode:[eventpoll]>,  <unfinished ...>
+908   futex(0x487b8, FUTEX_WAKE_PRIVATE, 1) = 0
+908   write(1</dev/pts/0>, "\ntest configuration:\n-----------"..., 41) = 41
+908   write(1</dev/pts/0>, "  verbose:3 scenario:7 tests:0 f"..., 65) = 65
+908   openat(AT_FDCWD, "/sys/bus/iio/devices/", O_RDONLY|O_NONBLOCK|O_LARGEFILE|O_DIRECTORY|O_CLOEXEC) = 5</sys/bus/iio/devices>
+908   fcntl64(5</sys/bus/iio/devices>, F_GETFD) = 0x1 (flags FD_CLOEXEC)
+908   getdents(5</sys/bus/iio/devices>, /* 4 entries */, 32768) = 80
+908   open("/sys/bus/iio/devices/iio:device0/name", O_RDONLY) = 6</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/name>
+908   fstat64(6</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/name>, {st_mode=S_IFREG|0444, st_size=4096, ...}) = 0
+908   mmap2(NULL, 4096, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0xb6c21000
+908   read(6</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/name>, "p7mu-adc_2\n", 4096) = 11
+908   write(1</dev/pts/0>, "iio device number being used is "..., 34) = 34
+908   openat(AT_FDCWD, "/sys/bus/iio/devices/iio:device0/scan_elements", O_RDONLY|O_NONBLOCK|O_LARGEFILE|O_DIRECTORY|O_CLOEXEC) = 7</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/scan_elements>
+908   getdents(7</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/scan_elements>, /* 5 entries */, 32768) = 120
+908   open("/sys/bus/iio/devices/iio:device0/scan_elements/in_voltage2_en", O_RDONLY) = 8</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/scan_elements/in_voltage2_en>
+908   fstat64(8</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/scan_elements/in_voltage2_en>, {st_mode=S_IFREG|0644, st_size=4096, ...}) = 0
+908   mmap2(NULL, 4096, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0xb6c20000
+908   read(8</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/scan_elements/in_voltage2_en>, "1\n", 4096) = 2
+908   close(8</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/scan_elements/in_voltage2_en>) = 0
+908   munmap(0xb6c20000, 4096)          = 0
+908   getdents(7</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/scan_elements>, /* 0 entries */, 32768) = 0
+908   lseek(7</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/scan_elements>, 0, SEEK_SET) = 0
+908   getdents(7</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/scan_elements>, /* 5 entries */, 32768) = 120
+908   open("/sys/bus/iio/devices/iio:device0/scan_elements/in_voltage2_en", O_RDONLY) = 8</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/scan_elements/in_voltage2_en>
+908   fstat64(8</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/scan_elements/in_voltage2_en>, {st_mode=S_IFREG|0644, st_size=4096, ...}) = 0
+908   mmap2(NULL, 4096, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0xb6c20000
+908   read(8</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/scan_elements/in_voltage2_en>, "1\n", 4096) = 2
+908   close(8</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/scan_elements/in_voltage2_en>) = 0
+908   munmap(0xb6c20000, 4096)          = 0
+908   open("/sys/bus/iio/devices/iio:device0/scan_elements/in_voltage2_index", O_RDONLY) = 8</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/scan_elements/in_voltage2_index>
+908   fstat64(8</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/scan_elements/in_voltage2_index>, {st_mode=S_IFREG|0444, st_size=4096, ...}) = 0
+908   mmap2(NULL, 4096, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0xb6c20000
+908   read(8</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/scan_elements/in_voltage2_index>, "2\n", 4096) = 2
+908   close(8</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/scan_elements/in_voltage2_index>) = 0
+908   munmap(0xb6c20000, 4096)          = 0
+908   openat(AT_FDCWD, "/sys/bus/iio/devices/iio:device0", O_RDONLY|O_NONBLOCK|O_LARGEFILE|O_DIRECTORY|O_CLOEXEC) = 8</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0>
+908   getdents(8</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0>, /* 9 entries */, 32768) = 184
+908   getdents(8</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0>, /* 0 entries */, 32768) = 0
+908   close(8</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0>) = 0
+908   openat(AT_FDCWD, "/sys/bus/iio/devices/iio:device0", O_RDONLY|O_NONBLOCK|O_LARGEFILE|O_DIRECTORY|O_CLOEXEC) = 8</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0>
+908   getdents(8</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0>, /* 9 entries */, 32768) = 184
+908   getdents(8</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0>, /* 0 entries */, 32768) = 0
+908   close(8</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0>) = 0
+908   openat(AT_FDCWD, "/sys/bus/iio/devices/iio:device0/scan_elements", O_RDONLY|O_NONBLOCK|O_LARGEFILE|O_DIRECTORY|O_CLOEXEC) = 8</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/scan_elements>
+908   getdents(8</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/scan_elements>, /* 5 entries */, 32768) = 120
+908   open("/sys/bus/iio/devices/iio:device0/scan_elements/in_voltage2_type", O_RDONLY) = 9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/scan_elements/in_voltage2_type>
+908   fstat64(9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/scan_elements/in_voltage2_type>, {st_mode=S_IFREG|0444, st_size=4096, ...}) = 0
+908   mmap2(NULL, 4096, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0xb6c20000
+908   read(9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/scan_elements/in_voltage2_type>, "le:u12/16>>4\n", 4096) = 13
+908   close(9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/scan_elements/in_voltage2_type>) = 0
+908   munmap(0xb6c20000, 4096)          = 0
+908   getdents(8</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/scan_elements>, /* 0 entries */, 32768) = 0
+908   close(8</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/scan_elements>) = 0
+908   getdents(7</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/scan_elements>, /* 0 entries */, 32768) = 0
+908   close(7</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/scan_elements>) = 0
+908   write(1</dev/pts/0>, "------> num channels: 1\n", 24) = 24
+908   write(1</dev/pts/0>, "set length(/sys/bus/iio/devices/"..., 67) = 67
+908   open("/sys/bus/iio/devices/iio:device0/buffer/length", O_WRONLY|O_CREAT|O_TRUNC, 0666) = 7</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/length>
+908   fstat64(7</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/length>, {st_mode=S_IFREG|0644, st_size=4096, ...}) = 0
+908   mmap2(NULL, 4096, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0xb6c20000
+908   write(7</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/length>, "8192", 4) = 4
+908   close(7</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/length>) = 0
+908   munmap(0xb6c20000, 4096)          = 0
+908   open("/sys/bus/iio/devices/iio:device0/buffer/enable", O_WRONLY|O_CREAT|O_TRUNC, 0666) = 7</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>
+908   fstat64(7</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>, {st_mode=S_IFREG|0644, st_size=4096, ...}) = 0
+908   mmap2(NULL, 4096, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0xb6c20000
+908   write(7</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>, "0", 1) = 1
+908   close(7</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>) = 0
+908   munmap(0xb6c20000, 4096)          = 0
+908   open("/dev/iio:device0", O_RDONLY|O_NONBLOCK) = 7</dev/iio:device0>
+908   open("/dev/spidev1.0", O_RDWR)    = 8</dev/spidev1.0>
+908   ioctl(8</dev/spidev1.0>, 0x40016b01SPI_IOC_WR_MODE, mode: SPI_MODE_0 (0|0)], 0xb6c6139e) = 0
+908   ioctl(8</dev/spidev1.0>, 0x40016b03SPI_IOC_WR_BITS_PER_WORD, bits: 8, 0xb6c6139f) = 0
+908   ioctl(8</dev/spidev1.0>, 0x40046b04SPI_IOC_WR_MAX_SPEED_HZ, hz: 320000, 0xb6c6137c) = 0
+908   clock_gettime(CLOCK_THREAD_CPUTIME_ID, {0, 6999434}) = 0
+908   open("/sys/bus/iio/devices/iio:device0/buffer/enable", O_WRONLY|O_CREAT|O_TRUNC, 0666) = 9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>
+908   fstat64(9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>, {st_mode=S_IFREG|0644, st_size=4096, ...}) = 0
+908   mmap2(NULL, 4096, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0xb6c20000
+908   write(9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>, "1", 1) = 1
+908   close(9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>) = 0
+908   munmap(0xb6c20000, 4096)          = 0
+908   clock_gettime(CLOCK_THREAD_CPUTIME_ID, {0, 7555661}) = 0
+908   clock_gettime(CLOCK_MONOTONIC, {402, 245625427}) = 0
+908   ioctl(8</dev/spidev1.0>, 0x40206b00SPI_IOC_MESSAGE(1), [{tx_buf: "\xf0\xf0\xf0\xf0\xf0\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00", rx_buf: NULL, len: 16, speed_hz: 320000, delay_usecs: 0, bits_per_word: 8, cs_change: 1, pad: 3064988936}, ]) = 16
+908   write(1</dev/pts/0>, "402246 enable (took: 556227)\n", 29) = 29
+908   poll([{fd=7</dev/iio:device0>, events=POLLIN}], 1, -1) = 1 ([{fd=7, revents=POLLIN}])
+908   clock_gettime(CLOCK_MONOTONIC, {402, 273505070}) = 0
+908   clock_gettime(CLOCK_THREAD_CPUTIME_ID, {0, 7909119}) = 0
+908   read(7</dev/iio:device0>, "\x22\x02\x12\x02\x32\x02\x02\x02\x12\x02\x22\x02\x02\x02\x12\x02\x32\x02\x22\x02\x22\x02\x12\x02\x02\x02\x12\x02\x12\x02\x02\x02"..., 16384) = 8688
+908   clock_gettime(CLOCK_THREAD_CPUTIME_ID, {0, 8140611}) = 0
+908   write(1</dev/pts/0>, "402274 total_read(8688 octets) t"..., 44) = 44
+908   open("/tmp/data_0000.txt", O_WRONLY|O_CREAT|O_TRUNC, 0666) = 9</tmp/data_0000.txt>
+908   fstat64(9</tmp/data_0000.txt>, {st_mode=S_IFREG|0644, st_size=0, ...}) = 0
+908   mmap2(NULL, 4096, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0xb6c20000
+908   write(9</tmp/data_0000.txt>, "34\n33\n35\n32\n33\n34\n32\n33\n35\n34\n34"..., 4096) = 4096
+908   write(9</tmp/data_0000.txt>, "\n36\n35\n33\n34\n35\n31\n36\n37\n34\n35\n3"..., 4096) = 4096
+908   write(9</tmp/data_0000.txt>, "34\n32\n34\n35\n34\n34\n35\n32\n33\n34\n33"..., 4096) = 4096
+908   write(9</tmp/data_0000.txt>, "2\n30\n33\n34\n32\n34\n35\n34\n34\n34\n31\n"..., 1985) = 1985
+908   close(9</tmp/data_0000.txt>)      = 0
+908   munmap(0xb6c20000, 4096)          = 0
+908   clock_gettime(CLOCK_THREAD_CPUTIME_ID, {0, 12051233}) = 0
+908   open("/sys/bus/iio/devices/iio:device0/buffer/enable", O_WRONLY|O_CREAT|O_TRUNC, 0666) = 9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>
+908   fstat64(9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>, {st_mode=S_IFREG|0644, st_size=4096, ...}) = 0
+908   mmap2(NULL, 4096, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0xb6c20000
+908   write(9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>, "0", 1) = 1
+908   close(9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>) = 0
+908   munmap(0xb6c20000, 4096)          = 0
+908   clock_gettime(CLOCK_THREAD_CPUTIME_ID, {0, 12534638}) = 0
+908   clock_gettime(CLOCK_MONOTONIC, {402, 282074106}) = 0
+908   write(1</dev/pts/0>, "402282 disable (took: 483405) af"..., 55) = 55
+908   clock_gettime(CLOCK_THREAD_CPUTIME_ID, {0, 12672179}) = 0
+908   open("/sys/bus/iio/devices/iio:device0/buffer/enable", O_WRONLY|O_CREAT|O_TRUNC, 0666) = 9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>
+908   fstat64(9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>, {st_mode=S_IFREG|0644, st_size=4096, ...}) = 0
+908   mmap2(NULL, 4096, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0xb6c20000
+908   write(9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>, "1", 1) = 1
+908   close(9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>) = 0
+908   munmap(0xb6c20000, 4096)          = 0
+908   clock_gettime(CLOCK_THREAD_CPUTIME_ID, {0, 13221790}) = 0
+908   clock_gettime(CLOCK_MONOTONIC, {402, 286810080}) = 0
+908   ioctl(8</dev/spidev1.0>, 0x40206b00SPI_IOC_MESSAGE(1), [{tx_buf: "\xf0\xf0\xf0\xf0\xf0\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00", rx_buf: NULL, len: 16, speed_hz: 320000, delay_usecs: 0, bits_per_word: 8, cs_change: 1, pad: 3064988936}, ]) = 16
+908   write(1</dev/pts/0>, "402287 enable (took: 549611)\n", 29) = 29
+908   poll([{fd=7</dev/iio:device0>, events=POLLIN}], 1, -1) = 1 ([{fd=7, revents=POLLIN}])
+908   clock_gettime(CLOCK_MONOTONIC, {402, 313573570}) = 0
+908   clock_gettime(CLOCK_THREAD_CPUTIME_ID, {0, 13508808}) = 0
+908   read(7</dev/iio:device0>, "\x12\x02\x32\x02\x12\x02\x12\x02\x12\x02\xf2\x01\x12\x02\x32\x02\x02\x02\x22\x02\x42\x02\xf2\x01\x12\x02\x32\x02\x02\x02\x12\x02"..., 16384) = 8314
+908   clock_gettime(CLOCK_THREAD_CPUTIME_ID, {0, 13597521}) = 0
+908   write(1</dev/pts/0>, "402314 total_read(8314 octets) t"..., 43) = 43
+908   open("/tmp/data_0001.txt", O_WRONLY|O_CREAT|O_TRUNC, 0666) = 9</tmp/data_0001.txt>
+908   fstat64(9</tmp/data_0001.txt>, {st_mode=S_IFREG|0644, st_size=0, ...}) = 0
+908   mmap2(NULL, 4096, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0xb6c20000
+908   write(9</tmp/data_0001.txt>, "33\n35\n33\n33\n33\n31\n33\n35\n32\n34\n36"..., 4096) = 4096
+908   write(9</tmp/data_0001.txt>, "34\n32\n34\n34\n32\n35\n42\n32\n37\n35\n32"..., 4096) = 4096
+908   write(9</tmp/data_0001.txt>, "3\n33\n35\n33\n34\n33\n31\n33\n33\n33\n34\n"..., 4096) = 4096
+908   write(9</tmp/data_0001.txt>, "\n33\n33\n35\n34\n33\n35\n34\n28\n33\n33\n3"..., 1402) = 1402
+908   close(9</tmp/data_0001.txt>)      = 0
+908   munmap(0xb6c20000, 4096)          = 0
+908   clock_gettime(CLOCK_THREAD_CPUTIME_ID, {0, 17343763}) = 0
+908   open("/sys/bus/iio/devices/iio:device0/buffer/enable", O_WRONLY|O_CREAT|O_TRUNC, 0666) = 9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>
+908   fstat64(9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>, {st_mode=S_IFREG|0644, st_size=4096, ...}) = 0
+908   mmap2(NULL, 4096, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0xb6c20000
+908   write(9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>, "0", 1) = 1
+908   close(9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>) = 0
+908   munmap(0xb6c20000, 4096)          = 0
+908   clock_gettime(CLOCK_THREAD_CPUTIME_ID, {0, 17816786}) = 0
+908   clock_gettime(CLOCK_MONOTONIC, {402, 321792411}) = 0
+908   write(1</dev/pts/0>, "402322 disable (took: 473023) af"..., 55) = 55
+908   clock_gettime(CLOCK_THREAD_CPUTIME_ID, {0, 17954131}) = 0
+908   open("/sys/bus/iio/devices/iio:device0/buffer/enable", O_WRONLY|O_CREAT|O_TRUNC, 0666) = 9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>
+908   fstat64(9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>, {st_mode=S_IFREG|0644, st_size=4096, ...}) = 0
+908   mmap2(NULL, 4096, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0xb6c20000
+908   write(9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>, "1", 1) = 1
+908   close(9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>) = 0
+908   munmap(0xb6c20000, 4096)          = 0
+908   clock_gettime(CLOCK_THREAD_CPUTIME_ID, {0, 18495266}) = 0
+908   clock_gettime(CLOCK_MONOTONIC, {402, 326506791}) = 0
+908   ioctl(8</dev/spidev1.0>, 0x40206b00SPI_IOC_MESSAGE(1), [{tx_buf: "\xf0\xf0\xf0\xf0\xf0\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00", rx_buf: NULL, len: 16, speed_hz: 320000, delay_usecs: 0, bits_per_word: 8, cs_change: 1, pad: 3064988936}, ]) = 16
+908   write(1</dev/pts/0>, "402327 enable (took: 541135)\n", 29) = 29
+908   poll([{fd=7</dev/iio:device0>, events=POLLIN}], 1, -1) = 1 ([{fd=7, revents=POLLIN}])
+908   clock_gettime(CLOCK_MONOTONIC, {402, 353659027}) = 0
+908   clock_gettime(CLOCK_THREAD_CPUTIME_ID, {0, 18775400}) = 0
+908   read(7</dev/iio:device0>, "\x22\x02\x02\x02\x12\x02\x32\x02\x12\x02\x02\x02\x22\x02\xf2\x01\x22\x02\x12\x02\x02\x02\x02\x02\x22\x02\x22\x02\xf2\x01\x12\x02"..., 16384) = 8446
+908   clock_gettime(CLOCK_THREAD_CPUTIME_ID, {0, 18858534}) = 0
+908   write(1</dev/pts/0>, "402354 total_read(8446 octets) t"..., 43) = 43
+908   open("/tmp/data_0002.txt", O_WRONLY|O_CREAT|O_TRUNC, 0666) = 9</tmp/data_0002.txt>
+908   fstat64(9</tmp/data_0002.txt>, {st_mode=S_IFREG|0644, st_size=0, ...}) = 0
+908   mmap2(NULL, 4096, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0xb6c20000
+908   write(9</tmp/data_0002.txt>, "34\n32\n33\n35\n33\n32\n34\n31\n34\n33\n32"..., 4096) = 4096
+908   write(9</tmp/data_0002.txt>, "2\n34\n36\n32\n33\n34\n35\n34\n36\n33\n35\n"..., 4096) = 4096
+908   write(9</tmp/data_0002.txt>, "\n39\n33\n34\n34\n36\n33\n32\n34\n40\n34\n3"..., 4096) = 4096
+908   write(9</tmp/data_0002.txt>, "32\n33\n34\n32\n34\n34\n31\n34\n35\n32\n33"..., 1587) = 1587
+908   close(9</tmp/data_0002.txt>)      = 0
+908   munmap(0xb6c20000, 4096)          = 0
+908   clock_gettime(CLOCK_THREAD_CPUTIME_ID, {0, 22623617}) = 0
+908   open("/sys/bus/iio/devices/iio:device0/buffer/enable", O_WRONLY|O_CREAT|O_TRUNC, 0666) = 9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>
+908   fstat64(9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>, {st_mode=S_IFREG|0644, st_size=4096, ...}) = 0
+908   mmap2(NULL, 4096, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0xb6c20000
+908   write(9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>, "0", 1) = 1
+908   close(9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>) = 0
+908   munmap(0xb6c20000, 4096)          = 0
+908   clock_gettime(CLOCK_THREAD_CPUTIME_ID, {0, 23118098}) = 0
+908   clock_gettime(CLOCK_MONOTONIC, {402, 361739722}) = 0
+908   write(1</dev/pts/0>, "402362 disable (took: 494481) af"..., 55) = 55
+908   clock_gettime(CLOCK_THREAD_CPUTIME_ID, {0, 23252412}) = 0
+908   open("/sys/bus/iio/devices/iio:device0/buffer/enable", O_WRONLY|O_CREAT|O_TRUNC, 0666) = 9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>
+908   fstat64(9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>, {st_mode=S_IFREG|0644, st_size=4096, ...}) = 0
+908   mmap2(NULL, 4096, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0xb6c20000
+908   write(9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>, "1", 1) = 1
+908   close(9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>) = 0
+908   munmap(0xb6c20000, 4096)          = 0
+908   clock_gettime(CLOCK_THREAD_CPUTIME_ID, {0, 23802838}) = 0
+908   clock_gettime(CLOCK_MONOTONIC, {402, 366540580}) = 0
+908   ioctl(8</dev/spidev1.0>, 0x40206b00SPI_IOC_MESSAGE(1), [{tx_buf: "\xf0\xf0\xf0\xf0\xf0\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00", rx_buf: NULL, len: 16, speed_hz: 320000, delay_usecs: 0, bits_per_word: 8, cs_change: 1, pad: 3064988936}, ]) = 16
+908   write(1</dev/pts/0>, "402367 enable (took: 550426)\n", 29) = 29
+908   poll([{fd=7</dev/iio:device0>, events=POLLIN}], 1, -1) = 1 ([{fd=7, revents=POLLIN}])
+908   clock_gettime(CLOCK_MONOTONIC, {402, 393720963}) = 0
+908   clock_gettime(CLOCK_THREAD_CPUTIME_ID, {0, 24082241}) = 0
+908   read(7</dev/iio:device0>, "\x12\x02\x22\x02\x02\x02\x62\x02\x22\x02\x02\x02\x02\x02\x32\x02\xf2\x01\x22\x02\x22\x02\x02\x02\x12\x02\x32\x02\x22\x02\x22\x02"..., 16384) = 8462
+908   clock_gettime(CLOCK_THREAD_CPUTIME_ID, {0, 24165218}) = 0
+908   write(1</dev/pts/0>, "402394 total_read(8462 octets) t"..., 43) = 43
+908   open("/tmp/data_0003.txt", O_WRONLY|O_CREAT|O_TRUNC, 0666) = 9</tmp/data_0003.txt>
+908   fstat64(9</tmp/data_0003.txt>, {st_mode=S_IFREG|0644, st_size=0, ...}) = 0
+908   mmap2(NULL, 4096, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0xb6c20000
+908   write(9</tmp/data_0003.txt>, "33\n34\n32\n38\n34\n32\n32\n35\n31\n34\n34"..., 4096) = 4096
+908   write(9</tmp/data_0003.txt>, "36\n33\n33\n35\n33\n30\n33\n31\n33\n34\n32"..., 4096) = 4096
+908   write(9</tmp/data_0003.txt>, "1\n35\n31\n34\n36\n30\n34\n35\n31\n34\n34\n"..., 4096) = 4096
+908   write(9</tmp/data_0003.txt>, "\n32\n34\n31\n34\n33\n32\n33\n34\n32\n30\n3"..., 1621) = 1621
+908   close(9</tmp/data_0003.txt>)      = 0
+908   munmap(0xb6c20000, 4096)          = 0
+908   clock_gettime(CLOCK_THREAD_CPUTIME_ID, {0, 28006355}) = 0
+908   open("/sys/bus/iio/devices/iio:device0/buffer/enable", O_WRONLY|O_CREAT|O_TRUNC, 0666) = 9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>
+908   fstat64(9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>, {st_mode=S_IFREG|0644, st_size=4096, ...}) = 0
+908   mmap2(NULL, 4096, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0xb6c20000
+908   write(9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>, "0", 1) = 1
+908   close(9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>) = 0
+908   munmap(0xb6c20000, 4096)          = 0
+908   clock_gettime(CLOCK_THREAD_CPUTIME_ID, {0, 28453556}) = 0
+908   clock_gettime(CLOCK_MONOTONIC, {402, 402116209}) = 0
+908   write(1</dev/pts/0>, "402402 disable (took: 447201) af"..., 55) = 55
+908   clock_gettime(CLOCK_THREAD_CPUTIME_ID, {0, 28587783}) = 0
+908   open("/sys/bus/iio/devices/iio:device0/buffer/enable", O_WRONLY|O_CREAT|O_TRUNC, 0666) = 9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>
+908   fstat64(9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>, {st_mode=S_IFREG|0644, st_size=4096, ...}) = 0
+908   mmap2(NULL, 4096, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0xb6c20000
+908   write(9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>, "1", 1) = 1
+908   close(9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>) = 0
+908   munmap(0xb6c20000, 4096)          = 0
+908   clock_gettime(CLOCK_THREAD_CPUTIME_ID, {0, 29111163}) = 0
+908   clock_gettime(CLOCK_MONOTONIC, {402, 406993047}) = 0
+908   ioctl(8</dev/spidev1.0>, 0x40206b00SPI_IOC_MESSAGE(1), [{tx_buf: "\xf0\xf0\xf0\xf0\xf0\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00", rx_buf: NULL, len: 16, speed_hz: 320000, delay_usecs: 0, bits_per_word: 8, cs_change: 1, pad: 3064988936}, ]) = 16
+908   write(1</dev/pts/0>, "402407 enable (took: 523380)\n", 29) = 29
+908   poll([{fd=7</dev/iio:device0>, events=POLLIN}], 1, -1) = 1 ([{fd=7, revents=POLLIN}])
+908   clock_gettime(CLOCK_MONOTONIC, {402, 433877483}) = 0
+908   clock_gettime(CLOCK_THREAD_CPUTIME_ID, {0, 29401189}) = 0
+908   read(7</dev/iio:device0>, "\x32\x02\x02\x02\x12\x02\x22\x02\x02\x02\x22\x02\x22\x02\xe2\x01\x22\x02\x32\x02\xf2\x01\x42\x02\x42\x02\x12\x02\xa2\x02\x22\x02"..., 16384) = 8376
+908   clock_gettime(CLOCK_THREAD_CPUTIME_ID, {0, 29502702}) = 0
+908   write(1</dev/pts/0>, "402434 total_read(8376 octets) t"..., 44) = 44
+908   open("/tmp/data_0004.txt", O_WRONLY|O_CREAT|O_TRUNC, 0666) = 9</tmp/data_0004.txt>
+908   fstat64(9</tmp/data_0004.txt>, {st_mode=S_IFREG|0644, st_size=0, ...}) = 0
+908   mmap2(NULL, 4096, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0xb6c20000
+908   write(9</tmp/data_0004.txt>, "35\n32\n33\n34\n32\n34\n34\n30\n34\n35\n31"..., 4096) = 4096
+908   write(9</tmp/data_0004.txt>, "8\n33\n33\n35\n28\n35\n35\n33\n34\n36\n35\n"..., 4096) = 4096
+908   write(9</tmp/data_0004.txt>, "\n34\n33\n34\n34\n37\n35\n33\n32\n35\n33\n3"..., 4096) = 4096
+908   write(9</tmp/data_0004.txt>, "33\n34\n32\n33\n35\n31\n30\n34\n30\n32\n36"..., 1476) = 1476
+908   close(9</tmp/data_0004.txt>)      = 0
+908   munmap(0xb6c20000, 4096)          = 0
+908   clock_gettime(CLOCK_THREAD_CPUTIME_ID, {0, 33368069}) = 0
+908   open("/sys/bus/iio/devices/iio:device0/buffer/enable", O_WRONLY|O_CREAT|O_TRUNC, 0666) = 9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>
+908   fstat64(9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>, {st_mode=S_IFREG|0644, st_size=4096, ...}) = 0
+908   mmap2(NULL, 4096, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0xb6c20000
+908   write(9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>, "0", 1) = 1
+908   close(9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>) = 0
+908   munmap(0xb6c20000, 4096)          = 0
+908   clock_gettime(CLOCK_THREAD_CPUTIME_ID, {0, 33811119}) = 0
+908   clock_gettime(CLOCK_MONOTONIC, {402, 442526901}) = 0
+908   write(1</dev/pts/0>, "402443 disable (took: 443050) af"..., 55) = 55
+908   clock_gettime(CLOCK_THREAD_CPUTIME_ID, {0, 33944886}) = 0
+908   open("/sys/bus/iio/devices/iio:device0/buffer/enable", O_WRONLY|O_CREAT|O_TRUNC, 0666) = 9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>
+908   fstat64(9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>, {st_mode=S_IFREG|0644, st_size=4096, ...}) = 0
+908   mmap2(NULL, 4096, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0xb6c20000
+908   write(9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>, "1", 1) = 1
+908   close(9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>) = 0
+908   munmap(0xb6c20000, 4096)          = 0
+908   clock_gettime(CLOCK_THREAD_CPUTIME_ID, {0, 34468311}) = 0
+908   clock_gettime(CLOCK_MONOTONIC, {402, 447356988}) = 0
+908   ioctl(8</dev/spidev1.0>, 0x40206b00SPI_IOC_MESSAGE(1), [{tx_buf: "\xf0\xf0\xf0\xf0\xf0\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00", rx_buf: NULL, len: 16, speed_hz: 320000, delay_usecs: 0, bits_per_word: 8, cs_change: 1, pad: 3064988936}, ]) = 16
+908   write(1</dev/pts/0>, "402447 enable (took: 523425)\n", 29) = 29
+908   poll([{fd=7</dev/iio:device0>, events=POLLIN}], 1, -1) = 1 ([{fd=7, revents=POLLIN}])
+908   clock_gettime(CLOCK_MONOTONIC, {402, 473964847}) = 0
+908   clock_gettime(CLOCK_THREAD_CPUTIME_ID, {0, 34731656}) = 0
+908   read(7</dev/iio:device0>, "\x32\x02\x22\x02\x02\x02\x22\x02\x02\x02\x02\x02\x22\x02\x12\x02\x22\x02\x22\x02\x22\x02\x12\x02\x42\x02\x02\x02\x22\x02\x12\x02"..., 16384) = 8288
+908   clock_gettime(CLOCK_THREAD_CPUTIME_ID, {0, 34813915}) = 0
+908   write(1</dev/pts/0>, "402474 total_read(8288 octets) t"..., 43) = 43
+908   open("/tmp/data_0005.txt", O_WRONLY|O_CREAT|O_TRUNC, 0666) = 9</tmp/data_0005.txt>
+908   fstat64(9</tmp/data_0005.txt>, {st_mode=S_IFREG|0644, st_size=0, ...}) = 0
+908   mmap2(NULL, 4096, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0xb6c20000
+908   write(9</tmp/data_0005.txt>, "35\n34\n32\n34\n32\n32\n34\n33\n34\n34\n34"..., 4096) = 4096
+908   write(9</tmp/data_0005.txt>, "1\n35\n34\n33\n35\n33\n34\n34\n33\n34\n34\n"..., 4096) = 4096
+908   write(9</tmp/data_0005.txt>, "\n33\n35\n34\n33\n34\n35\n32\n34\n35\n33\n3"..., 4096) = 4096
+908   write(9</tmp/data_0005.txt>, "33\n33\n36\n35\n32\n32\n35\n34\n33\n34\n33"..., 1362) = 1362
+908   close(9</tmp/data_0005.txt>)      = 0
+908   munmap(0xb6c20000, 4096)          = 0
+908   clock_gettime(CLOCK_THREAD_CPUTIME_ID, {0, 38542091}) = 0
+908   open("/sys/bus/iio/devices/iio:device0/buffer/enable", O_WRONLY|O_CREAT|O_TRUNC, 0666) = 9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>
+908   fstat64(9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>, {st_mode=S_IFREG|0644, st_size=4096, ...}) = 0
+908   mmap2(NULL, 4096, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0xb6c20000
+908   write(9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>, "0", 1) = 1
+908   close(9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>) = 0
+908   munmap(0xb6c20000, 4096)          = 0
+908   clock_gettime(CLOCK_THREAD_CPUTIME_ID, {0, 38994559}) = 0
+908   clock_gettime(CLOCK_MONOTONIC, {402, 482513914}) = 0
+908   write(1</dev/pts/0>, "402483 disable (took: 452468) af"..., 55) = 55
+908   clock_gettime(CLOCK_THREAD_CPUTIME_ID, {0, 39136593}) = 0
+908   open("/sys/bus/iio/devices/iio:device0/buffer/enable", O_WRONLY|O_CREAT|O_TRUNC, 0666) = 9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>
+908   fstat64(9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>, {st_mode=S_IFREG|0644, st_size=4096, ...}) = 0
+908   mmap2(NULL, 4096, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0xb6c20000
+908   write(9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>, "1", 1) = 1
+908   close(9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>) = 0
+908   munmap(0xb6c20000, 4096)          = 0
+908   clock_gettime(CLOCK_THREAD_CPUTIME_ID, {0, 39660893}) = 0
+908   clock_gettime(CLOCK_MONOTONIC, {402, 487331726}) = 0
+908   ioctl(8</dev/spidev1.0>, 0x40206b00SPI_IOC_MESSAGE(1), [{tx_buf: "\xf0\xf0\xf0\xf0\xf0\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00", rx_buf: NULL, len: 16, speed_hz: 320000, delay_usecs: 0, bits_per_word: 8, cs_change: 1, pad: 3064988936}, ]) = 16
+908   write(1</dev/pts/0>, "402487 enable (took: 524300)\n", 29) = 29
+908   poll([{fd=7</dev/iio:device0>, events=POLLIN}], 1, -1) = 1 ([{fd=7, revents=POLLIN}])
+908   clock_gettime(CLOCK_MONOTONIC, {402, 514056224}) = 0
+908   clock_gettime(CLOCK_THREAD_CPUTIME_ID, {0, 39918650}) = 0
+908   read(7</dev/iio:device0>, "\x12\x02\x02\x02\x12\x02\x12\x02\xf2\x01\x22\x02\x32\x02\x02\x02\x12\x02\x22\x02\xe2\x01\x32\x02\x12\x02\xe2\x01\x22\x02\x22\x02"..., 16384) = 8320
+908   clock_gettime(CLOCK_THREAD_CPUTIME_ID, {0, 40001105}) = 0
+908   write(1</dev/pts/0>, "402514 total_read(8320 octets) t"..., 43) = 43
+908   open("/tmp/data_0006.txt", O_WRONLY|O_CREAT|O_TRUNC, 0666) = 9</tmp/data_0006.txt>
+908   fstat64(9</tmp/data_0006.txt>, {st_mode=S_IFREG|0644, st_size=0, ...}) = 0
+908   mmap2(NULL, 4096, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0xb6c20000
+908   write(9</tmp/data_0006.txt>, "33\n32\n33\n33\n31\n34\n35\n32\n33\n34\n30"..., 4096) = 4096
+908   write(9</tmp/data_0006.txt>, "3\n35\n33\n31\n34\n34\n32\n33\n32\n29\n34\n"..., 4096) = 4096
+908   write(9</tmp/data_0006.txt>, "\n35\n32\n34\n40\n33\n33\n34\n33\n34\n34\n3"..., 4096) = 4096
+908   write(9</tmp/data_0006.txt>, "36\n34\n34\n33\n31\n34\n35\n33\n35\n33\n32"..., 1374) = 1374
+908   close(9</tmp/data_0006.txt>)      = 0
+908   munmap(0xb6c20000, 4096)          = 0
+908   clock_gettime(CLOCK_THREAD_CPUTIME_ID, {0, 43695478}) = 0
+908   open("/sys/bus/iio/devices/iio:device0/buffer/enable", O_WRONLY|O_CREAT|O_TRUNC, 0666) = 9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>
+908   fstat64(9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>, {st_mode=S_IFREG|0644, st_size=4096, ...}) = 0
+908   mmap2(NULL, 4096, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0xb6c20000
+908   write(9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>, "0", 1) = 1
+908   close(9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>) = 0
+908   munmap(0xb6c20000, 4096)          = 0
+908   clock_gettime(CLOCK_THREAD_CPUTIME_ID, {0, 44140964}) = 0
+908   clock_gettime(CLOCK_MONOTONIC, {402, 522694088}) = 0
+908   write(1</dev/pts/0>, "402523 disable (took: 445486) af"..., 55) = 55
+908   clock_gettime(CLOCK_THREAD_CPUTIME_ID, {0, 44284056}) = 0
+908   open("/sys/bus/iio/devices/iio:device0/buffer/enable", O_WRONLY|O_CREAT|O_TRUNC, 0666) = 9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>
+908   fstat64(9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>, {st_mode=S_IFREG|0644, st_size=4096, ...}) = 0
+908   mmap2(NULL, 4096, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0xb6c20000
+908   write(9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>, "1", 1) = 1
+908   close(9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>) = 0
+908   munmap(0xb6c20000, 4096)          = 0
+908   clock_gettime(CLOCK_THREAD_CPUTIME_ID, {0, 44805800}) = 0
+908   clock_gettime(CLOCK_MONOTONIC, {402, 527481165}) = 0
+908   ioctl(8</dev/spidev1.0>, 0x40206b00SPI_IOC_MESSAGE(1), [{tx_buf: "\xf0\xf0\xf0\xf0\xf0\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00", rx_buf: NULL, len: 16, speed_hz: 320000, delay_usecs: 0, bits_per_word: 8, cs_change: 1, pad: 3064988936}, ]) = 16
+908   write(1</dev/pts/0>, "402527 enable (took: 521744)\n", 29) = 29
+908   poll([{fd=7</dev/iio:device0>, events=POLLIN}], 1, -1) = 1 ([{fd=7, revents=POLLIN}])
+908   clock_gettime(CLOCK_MONOTONIC, {402, 554113306}) = 0
+908   clock_gettime(CLOCK_THREAD_CPUTIME_ID, {0, 45061436}) = 0
+908   read(7</dev/iio:device0>, "\x02\x02\x22\x02\x72\x02\xf2\x01\x32\x02\x42\x02\x12\x02\x32\x02\x32\x02\x02\x02\x12\x02\x22\x02\x02\x02\x12\x02\x32\x02\x02\x02"..., 16384) = 8296
+908   clock_gettime(CLOCK_THREAD_CPUTIME_ID, {0, 45144914}) = 0
+908   write(1</dev/pts/0>, "402554 total_read(8296 octets) t"..., 43) = 43
+908   open("/tmp/data_0007.txt", O_WRONLY|O_CREAT|O_TRUNC, 0666) = 9</tmp/data_0007.txt>
+908   fstat64(9</tmp/data_0007.txt>, {st_mode=S_IFREG|0644, st_size=0, ...}) = 0
+908   mmap2(NULL, 4096, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0xb6c20000
+908   write(9</tmp/data_0007.txt>, "32\n34\n39\n31\n35\n36\n33\n35\n35\n32\n33"..., 4096) = 4096
+908   write(9</tmp/data_0007.txt>, "1\n34\n33\n32\n33\n34\n29\n36\n34\n31\n31\n"..., 4096) = 4096
+908   write(9</tmp/data_0007.txt>, "\n34\n32\n33\n34\n33\n34\n35\n33\n35\n34\n3"..., 4096) = 4096
+908   write(9</tmp/data_0007.txt>, "34\n35\n34\n34\n35\n32\n35\n37\n32\n35\n33"..., 1359) = 1359
+908   close(9</tmp/data_0007.txt>)      = 0
+908   munmap(0xb6c20000, 4096)          = 0
+908   clock_gettime(CLOCK_THREAD_CPUTIME_ID, {0, 48857218}) = 0
+908   open("/sys/bus/iio/devices/iio:device0/buffer/enable", O_WRONLY|O_CREAT|O_TRUNC, 0666) = 9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>
+908   fstat64(9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>, {st_mode=S_IFREG|0644, st_size=4096, ...}) = 0
+908   mmap2(NULL, 4096, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0xb6c20000
+908   write(9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>, "0", 1) = 1
+908   close(9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>) = 0
+908   munmap(0xb6c20000, 4096)          = 0
+908   clock_gettime(CLOCK_THREAD_CPUTIME_ID, {0, 49293379}) = 0
+908   clock_gettime(CLOCK_MONOTONIC, {402, 562872937}) = 0
+908   write(1</dev/pts/0>, "402563 disable (took: 436161) af"..., 55) = 55
+908   clock_gettime(CLOCK_THREAD_CPUTIME_ID, {0, 49434152}) = 0
+908   open("/sys/bus/iio/devices/iio:device0/buffer/enable", O_WRONLY|O_CREAT|O_TRUNC, 0666) = 9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>
+908   fstat64(9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>, {st_mode=S_IFREG|0644, st_size=4096, ...}) = 0
+908   mmap2(NULL, 4096, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0xb6c20000
+908   write(9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>, "1", 1) = 1
+908   close(9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>) = 0
+908   munmap(0xb6c20000, 4096)          = 0
+908   clock_gettime(CLOCK_THREAD_CPUTIME_ID, {0, 49958488}) = 0
+908   clock_gettime(CLOCK_MONOTONIC, {402, 567970111}) = 0
+908   ioctl(8</dev/spidev1.0>, 0x40206b00SPI_IOC_MESSAGE(1), [{tx_buf: "\xf0\xf0\xf0\xf0\xf0\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00", rx_buf: NULL, len: 16, speed_hz: 320000, delay_usecs: 0, bits_per_word: 8, cs_change: 1, pad: 3064988936}, ]) = 16
+908   write(1</dev/pts/0>, "402568 enable (took: 524336)\n", 29) = 29
+908   poll([{fd=7</dev/iio:device0>, events=POLLIN}], 1, -1) = 1 ([{fd=7, revents=POLLIN}])
+908   clock_gettime(CLOCK_MONOTONIC, {402, 594482393}) = 0
+908   clock_gettime(CLOCK_THREAD_CPUTIME_ID, {0, 50220289}) = 0
+908   read(7</dev/iio:device0>, "\x52\x02\xf2\x01\x22\x02\x32\x02\x02\x02\x22\x02\x52\x02\x12\x02\x12\x02\x12\x02\x12\x02\x12\x02\x22\x02\x12\x02\x22\x02\x32\x02"..., 16384) = 8254
+908   clock_gettime(CLOCK_THREAD_CPUTIME_ID, {0, 50303200}) = 0
+908   write(1</dev/pts/0>, "402594 total_read(8254 octets) t"..., 43) = 43
+908   open("/tmp/data_0008.txt", O_WRONLY|O_CREAT|O_TRUNC, 0666) = 9</tmp/data_0008.txt>
+908   fstat64(9</tmp/data_0008.txt>, {st_mode=S_IFREG|0644, st_size=0, ...}) = 0
+908   mmap2(NULL, 4096, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0xb6c20000
+908   write(9</tmp/data_0008.txt>, "37\n31\n34\n35\n32\n34\n37\n33\n33\n33\n33"..., 4096) = 4096
+908   write(9</tmp/data_0008.txt>, "\n34\n36\n36\n34\n35\n33\n32\n35\n33\n32\n3"..., 4096) = 4096
+908   write(9</tmp/data_0008.txt>, "32\n33\n36\n35\n34\n34\n33\n37\n34\n32\n33"..., 4096) = 4096
+908   write(9</tmp/data_0008.txt>, "4\n32\n33\n34\n33\n34\n33\n34\n33\n34\n32\n"..., 1292) = 1292
+908   close(9</tmp/data_0008.txt>)      = 0
+908   munmap(0xb6c20000, 4096)          = 0
+908   clock_gettime(CLOCK_THREAD_CPUTIME_ID, {0, 54004704}) = 0
+908   open("/sys/bus/iio/devices/iio:device0/buffer/enable", O_WRONLY|O_CREAT|O_TRUNC, 0666) = 9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>
+908   fstat64(9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>, {st_mode=S_IFREG|0644, st_size=4096, ...}) = 0
+908   mmap2(NULL, 4096, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0xb6c20000
+908   write(9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>, "0", 1) = 1
+908   close(9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>) = 0
+908   munmap(0xb6c20000, 4096)          = 0
+908   clock_gettime(CLOCK_THREAD_CPUTIME_ID, {0, 54449991}) = 0
+908   clock_gettime(CLOCK_MONOTONIC, {402, 602969424}) = 0
+908   write(1</dev/pts/0>, "402603 disable (took: 445287) af"..., 55) = 55
+908   clock_gettime(CLOCK_THREAD_CPUTIME_ID, {0, 54585011}) = 0
+908   open("/sys/bus/iio/devices/iio:device0/buffer/enable", O_WRONLY|O_CREAT|O_TRUNC, 0666) = 9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>
+908   fstat64(9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>, {st_mode=S_IFREG|0644, st_size=4096, ...}) = 0
+908   mmap2(NULL, 4096, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0xb6c20000
+908   write(9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>, "1", 1) = 1
+908   close(9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>) = 0
+908   munmap(0xb6c20000, 4096)          = 0
+908   clock_gettime(CLOCK_THREAD_CPUTIME_ID, {0, 55097293}) = 0
+908   clock_gettime(CLOCK_MONOTONIC, {402, 607929162}) = 0
+908   ioctl(8</dev/spidev1.0>, 0x40206b00SPI_IOC_MESSAGE(1), [{tx_buf: "\xf0\xf0\xf0\xf0\xf0\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00", rx_buf: NULL, len: 16, speed_hz: 320000, delay_usecs: 0, bits_per_word: 8, cs_change: 1, pad: 3064988936}, ]) = 16
+908   write(1</dev/pts/0>, "402608 enable (took: 512282)\n", 29) = 29
+908   poll([{fd=7</dev/iio:device0>, events=POLLIN}], 1, -1) = 1 ([{fd=7, revents=POLLIN}])
+908   clock_gettime(CLOCK_MONOTONIC, {402, 634589332}) = 0
+908   clock_gettime(CLOCK_THREAD_CPUTIME_ID, {0, 55356802}) = 0
+908   read(7</dev/iio:device0>, "\x12\x02\x32\x02\x12\x02\x22\x02\x12\x02\x12\x02\x22\x02\x32\x02\x22\x02\x22\x02\xf2\x01\x02\x02\x12\x02\x22\x02\xa2\x01\x22\x02"..., 16384) = 8342
+908   clock_gettime(CLOCK_THREAD_CPUTIME_ID, {0, 55442720}) = 0
+908   write(1</dev/pts/0>, "402635 total_read(8342 octets) t"..., 43) = 43
+908   open("/tmp/data_0009.txt", O_WRONLY|O_CREAT|O_TRUNC, 0666) = 9</tmp/data_0009.txt>
+908   fstat64(9</tmp/data_0009.txt>, {st_mode=S_IFREG|0644, st_size=0, ...}) = 0
+908   mmap2(NULL, 4096, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0xb6c20000
+908   write(9</tmp/data_0009.txt>, "33\n35\n33\n34\n33\n33\n34\n35\n34\n34\n31"..., 4096) = 4096
+908   write(9</tmp/data_0009.txt>, "2\n34\n36\n34\n34\n37\n37\n33\n35\n33\n32\n"..., 4096) = 4096
+908   write(9</tmp/data_0009.txt>, "\n35\n31\n36\n35\n32\n34\n38\n32\n33\n33\n3"..., 4096) = 4096
+908   write(9</tmp/data_0009.txt>, "35\n32\n35\n37\n31\n33\n32\n31\n33\n35\n38"..., 1383) = 1383
+908   close(9</tmp/data_0009.txt>)      = 0
+908   munmap(0xb6c20000, 4096)          = 0
+908   clock_gettime(CLOCK_THREAD_CPUTIME_ID, {0, 59196027}) = 0
+908   open("/sys/bus/iio/devices/iio:device0/buffer/enable", O_WRONLY|O_CREAT|O_TRUNC, 0666) = 9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>
+908   fstat64(9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>, {st_mode=S_IFREG|0644, st_size=4096, ...}) = 0
+908   mmap2(NULL, 4096, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0xb6c20000
+908   write(9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>, "0", 1) = 1
+908   close(9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>) = 0
+908   munmap(0xb6c20000, 4096)          = 0
+908   clock_gettime(CLOCK_THREAD_CPUTIME_ID, {0, 59640309}) = 0
+908   clock_gettime(CLOCK_MONOTONIC, {402, 643137409}) = 0
+908   write(1</dev/pts/0>, "402643 disable (took: 444282) af"..., 55) = 55
+908   clock_gettime(CLOCK_THREAD_CPUTIME_ID, {0, 59774341}) = 0
+908   open("/sys/bus/iio/devices/iio:device0/buffer/enable", O_WRONLY|O_CREAT|O_TRUNC, 0666) = 9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>
+908   fstat64(9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>, {st_mode=S_IFREG|0644, st_size=4096, ...}) = 0
+908   mmap2(NULL, 4096, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0xb6c20000
+908   write(9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>, "1", 1) = 1
+908   close(9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>) = 0
+908   munmap(0xb6c20000, 4096)          = 0
+908   clock_gettime(CLOCK_THREAD_CPUTIME_ID, {0, 60303922}) = 0
+908   clock_gettime(CLOCK_MONOTONIC, {402, 648009626}) = 0
+908   ioctl(8</dev/spidev1.0>, 0x40206b00SPI_IOC_MESSAGE(1), [{tx_buf: "\xf0\xf0\xf0\xf0\xf0\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00", rx_buf: NULL, len: 16, speed_hz: 320000, delay_usecs: 0, bits_per_word: 8, cs_change: 1, pad: 3064988936}, ]) = 16
+908   write(1</dev/pts/0>, "402648 enable (took: 529581)\n", 29) = 29
+908   poll([{fd=7</dev/iio:device0>, events=POLLIN}], 1, -1) = 1 ([{fd=7, revents=POLLIN}])
+908   clock_gettime(CLOCK_MONOTONIC, {402, 674691096}) = 0
+908   clock_gettime(CLOCK_THREAD_CPUTIME_ID, {0, 60570044}) = 0
+908   read(7</dev/iio:device0>, "\xf2\x01\x22\x02\x12\x02\x12\x02\x22\x02\x22\x02\xf2\x01\x22\x02\xf2\x01\xe2\x01\x22\x02\x12\x02\x02\x02\x12\x02\x12\x02\x02\x02"..., 16384) = 8322
+908   clock_gettime(CLOCK_THREAD_CPUTIME_ID, {0, 60658933}) = 0
+908   write(1</dev/pts/0>, "402675 total_read(8322 octets) t"..., 43) = 43
+908   open("/tmp/data_0010.txt", O_WRONLY|O_CREAT|O_TRUNC, 0666) = 9</tmp/data_0010.txt>
+908   fstat64(9</tmp/data_0010.txt>, {st_mode=S_IFREG|0644, st_size=0, ...}) = 0
+908   mmap2(NULL, 4096, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0xb6c20000
+908   write(9</tmp/data_0010.txt>, "31\n34\n33\n33\n34\n34\n31\n34\n31\n30\n34"..., 4096) = 4096
+908   write(9</tmp/data_0010.txt>, "\n33\n34\n35\n33\n33\n34\n31\n32\n35\n30\n3"..., 4096) = 4096
+908   write(9</tmp/data_0010.txt>, "33\n33\n32\n33\n33\n33\n34\n31\n33\n34\n32"..., 4096) = 4096
+908   write(9</tmp/data_0010.txt>, "2\n39\n32\n33\n32\n32\n33\n36\n28\n35\n35\n"..., 1361) = 1361
+908   close(9</tmp/data_0010.txt>)      = 0
+908   munmap(0xb6c20000, 4096)          = 0
+908   clock_gettime(CLOCK_THREAD_CPUTIME_ID, {0, 64414373}) = 0
+908   open("/sys/bus/iio/devices/iio:device0/buffer/enable", O_WRONLY|O_CREAT|O_TRUNC, 0666) = 9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>
+908   fstat64(9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>, {st_mode=S_IFREG|0644, st_size=4096, ...}) = 0
+908   mmap2(NULL, 4096, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0xb6c20000
+908   write(9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>, "0", 1) = 1
+908   close(9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>) = 0
+908   munmap(0xb6c20000, 4096)          = 0
+908   clock_gettime(CLOCK_THREAD_CPUTIME_ID, {0, 64852363}) = 0
+908   clock_gettime(CLOCK_MONOTONIC, {402, 683284658}) = 0
+908   write(1</dev/pts/0>, "402683 disable (took: 437990) af"..., 55) = 55
+908   clock_gettime(CLOCK_THREAD_CPUTIME_ID, {0, 64995655}) = 0
+908   open("/sys/bus/iio/devices/iio:device0/buffer/enable", O_WRONLY|O_CREAT|O_TRUNC, 0666) = 9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>
+908   fstat64(9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>, {st_mode=S_IFREG|0644, st_size=4096, ...}) = 0
+908   mmap2(NULL, 4096, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0xb6c20000
+908   write(9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>, "1", 1) = 1
+908   close(9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>) = 0
+908   munmap(0xb6c20000, 4096)          = 0
+908   clock_gettime(CLOCK_THREAD_CPUTIME_ID, {0, 65515868}) = 0
+908   clock_gettime(CLOCK_MONOTONIC, {402, 688119619}) = 0
+908   ioctl(8</dev/spidev1.0>, 0x40206b00SPI_IOC_MESSAGE(1), [{tx_buf: "\xf0\xf0\xf0\xf0\xf0\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00", rx_buf: NULL, len: 16, speed_hz: 320000, delay_usecs: 0, bits_per_word: 8, cs_change: 1, pad: 3064988936}, ]) = 16
+908   write(1</dev/pts/0>, "402688 enable (took: 520213)\n", 29) = 29
+908   poll([{fd=7</dev/iio:device0>, events=POLLIN}], 1, -1) = 1 ([{fd=7, revents=POLLIN}])
+908   clock_gettime(CLOCK_MONOTONIC, {402, 714760019}) = 0
+908   clock_gettime(CLOCK_THREAD_CPUTIME_ID, {0, 65778726}) = 0
+908   read(7</dev/iio:device0>, "\xd2\x01\x02\x02\x42\x02\x22\x02\x12\x02\x12\x02\x22\x02\x02\x02\xe2\x01\x32\x02\x02\x02\x12\x02\x12\x02\x02\x02\x22\x02\x32\x02"..., 16384) = 8306
+908   clock_gettime(CLOCK_THREAD_CPUTIME_ID, {0, 65862211}) = 0
+908   write(1</dev/pts/0>, "402715 total_read(8306 octets) t"..., 43) = 43
+908   open("/tmp/data_0011.txt", O_WRONLY|O_CREAT|O_TRUNC, 0666) = 9</tmp/data_0011.txt>
+908   fstat64(9</tmp/data_0011.txt>, {st_mode=S_IFREG|0644, st_size=0, ...}) = 0
+908   mmap2(NULL, 4096, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0xb6c20000
+908   write(9</tmp/data_0011.txt>, "29\n32\n36\n34\n33\n33\n34\n32\n30\n35\n32"..., 4096) = 4096
+908   write(9</tmp/data_0011.txt>, "\n34\n34\n30\n33\n36\n31\n33\n35\n31\n33\n3"..., 4096) = 4096
+908   write(9</tmp/data_0011.txt>, "32\n33\n31\n28\n32\n35\n37\n33\n35\n33\n32"..., 4096) = 4096
+908   write(9</tmp/data_0011.txt>, "3\n35\n33\n34\n33\n34\n35\n33\n35\n33\n32\n"..., 1388) = 1388
+908   close(9</tmp/data_0011.txt>)      = 0
+908   munmap(0xb6c20000, 4096)          = 0
+908   clock_gettime(CLOCK_THREAD_CPUTIME_ID, {0, 69595967}) = 0
+908   open("/sys/bus/iio/devices/iio:device0/buffer/enable", O_WRONLY|O_CREAT|O_TRUNC, 0666) = 9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>
+908   fstat64(9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>, {st_mode=S_IFREG|0644, st_size=4096, ...}) = 0
+908   mmap2(NULL, 4096, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0xb6c20000
+908   write(9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>, "0", 1) = 1
+908   close(9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>) = 0
+908   munmap(0xb6c20000, 4096)          = 0
+908   clock_gettime(CLOCK_THREAD_CPUTIME_ID, {0, 70037004}) = 0
+908   clock_gettime(CLOCK_MONOTONIC, {402, 723356940}) = 0
+908   write(1</dev/pts/0>, "402723 disable (took: 441037) af"..., 55) = 55
+908   clock_gettime(CLOCK_THREAD_CPUTIME_ID, {0, 70180124}) = 0
+908   open("/sys/bus/iio/devices/iio:device0/buffer/enable", O_WRONLY|O_CREAT|O_TRUNC, 0666) = 9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>
+908   fstat64(9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>, {st_mode=S_IFREG|0644, st_size=4096, ...}) = 0
+908   mmap2(NULL, 4096, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0xb6c20000
+908   write(9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>, "1", 1) = 1
+908   close(9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>) = 0
+908   munmap(0xb6c20000, 4096)          = 0
+908   clock_gettime(CLOCK_THREAD_CPUTIME_ID, {0, 70694633}) = 0
+908   clock_gettime(CLOCK_MONOTONIC, {402, 728347852}) = 0
+908   ioctl(8</dev/spidev1.0>, 0x40206b00SPI_IOC_MESSAGE(1), [{tx_buf: "\xf0\xf0\xf0\xf0\xf0\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00", rx_buf: NULL, len: 16, speed_hz: 320000, delay_usecs: 0, bits_per_word: 8, cs_change: 1, pad: 3064988936}, ]) = 16
+908   write(1</dev/pts/0>, "402728 enable (took: 514509)\n", 29) = 29
+908   poll([{fd=7</dev/iio:device0>, events=POLLIN}], 1, -1) = 1 ([{fd=7, revents=POLLIN}])
+908   clock_gettime(CLOCK_MONOTONIC, {402, 755030680}) = 0
+908   clock_gettime(CLOCK_THREAD_CPUTIME_ID, {0, 70954992}) = 0
+908   read(7</dev/iio:device0>, "\x22\x02\x12\x02\x22\x02\x32\x02\x02\x02\x22\x02\x22\x02\x12\x02\x22\x02\x42\x02\x02\x02\x22\x02\x32\x02\x02\x02\xf2\x01\x22\x02"..., 16384) = 8306
+908   clock_gettime(CLOCK_THREAD_CPUTIME_ID, {0, 71038870}) = 0
+908   write(1</dev/pts/0>, "402755 total_read(8306 octets) t"..., 43) = 43
+908   open("/tmp/data_0012.txt", O_WRONLY|O_CREAT|O_TRUNC, 0666) = 9</tmp/data_0012.txt>
+908   fstat64(9</tmp/data_0012.txt>, {st_mode=S_IFREG|0644, st_size=0, ...}) = 0
+908   mmap2(NULL, 4096, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0xb6c20000
+908   write(9</tmp/data_0012.txt>, "34\n33\n34\n35\n32\n34\n34\n33\n34\n36\n32"..., 4096) = 4096
+908   write(9</tmp/data_0012.txt>, "2\n32\n34\n38\n33\n34\n33\n32\n34\n32\n34\n"..., 4096) = 4096
+908   write(9</tmp/data_0012.txt>, "\n33\n34\n34\n32\n32\n34\n36\n34\n35\n32\n3"..., 4096) = 4096
+908   write(9</tmp/data_0012.txt>, "34\n32\n34\n31\n33\n33\n31\n32\n32\n33\n33"..., 1374) = 1374
+908   close(9</tmp/data_0012.txt>)      = 0
+908   munmap(0xb6c20000, 4096)          = 0
+908   clock_gettime(CLOCK_THREAD_CPUTIME_ID, {0, 74792850}) = 0
+908   open("/sys/bus/iio/devices/iio:device0/buffer/enable", O_WRONLY|O_CREAT|O_TRUNC, 0666) = 9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>
+908   fstat64(9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>, {st_mode=S_IFREG|0644, st_size=4096, ...}) = 0
+908   mmap2(NULL, 4096, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0xb6c20000
+908   write(9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>, "0", 1) = 1
+908   close(9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>) = 0
+908   munmap(0xb6c20000, 4096)          = 0
+908   clock_gettime(CLOCK_THREAD_CPUTIME_ID, {0, 75237277}) = 0
+908   clock_gettime(CLOCK_MONOTONIC, {402, 763703081}) = 0
+908   write(1</dev/pts/0>, "402764 disable (took: 444427) af"..., 55) = 55
+908   clock_gettime(CLOCK_THREAD_CPUTIME_ID, {0, 75373121}) = 0
+908   open("/sys/bus/iio/devices/iio:device0/buffer/enable", O_WRONLY|O_CREAT|O_TRUNC, 0666) = 9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>
+908   fstat64(9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>, {st_mode=S_IFREG|0644, st_size=4096, ...}) = 0
+908   mmap2(NULL, 4096, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0xb6c20000
+908   write(9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>, "1", 1) = 1
+908   close(9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>) = 0
+908   munmap(0xb6c20000, 4096)          = 0
+908   clock_gettime(CLOCK_THREAD_CPUTIME_ID, {0, 75894809}) = 0
+908   clock_gettime(CLOCK_MONOTONIC, {402, 768588426}) = 0
+908   ioctl(8</dev/spidev1.0>, 0x40206b00SPI_IOC_MESSAGE(1), [{tx_buf: "\xf0\xf0\xf0\xf0\xf0\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00", rx_buf: NULL, len: 16, speed_hz: 320000, delay_usecs: 0, bits_per_word: 8, cs_change: 1, pad: 3064988936}, ]) = 16
+908   write(1</dev/pts/0>, "402769 enable (took: 521688)\n", 29) = 29
+908   poll([{fd=7</dev/iio:device0>, events=POLLIN}], 1, -1) = 1 ([{fd=7, revents=POLLIN}])
+908   clock_gettime(CLOCK_MONOTONIC, {402, 795179296}) = 0
+908   clock_gettime(CLOCK_THREAD_CPUTIME_ID, {0, 76159323}) = 0
+908   read(7</dev/iio:device0>, "\x22\x02\xf2\x01\x12\x02\x32\x02\x12\x02\x12\x02\x12\x02\x02\x02\x02\x02\x12\x02\x12\x02\x02\x02\x42\x02\x12\x02\x22\x02\x22\x02"..., 16384) = 8286
+908   clock_gettime(CLOCK_THREAD_CPUTIME_ID, {0, 76242403}) = 0
+908   write(1</dev/pts/0>, "402795 total_read(8286 octets) t"..., 43) = 43
+908   open("/tmp/data_0013.txt", O_WRONLY|O_CREAT|O_TRUNC, 0666) = 9</tmp/data_0013.txt>
+908   fstat64(9</tmp/data_0013.txt>, {st_mode=S_IFREG|0644, st_size=0, ...}) = 0
+908   mmap2(NULL, 4096, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0xb6c20000
+908   write(9</tmp/data_0013.txt>, "34\n31\n33\n35\n33\n33\n33\n32\n32\n33\n33"..., 4096) = 4096
+908   write(9</tmp/data_0013.txt>, "2\n33\n34\n33\n33\n33\n30\n33\n34\n31\n33\n"..., 4096) = 4096
+908   write(9</tmp/data_0013.txt>, "\n33\n35\n32\n32\n33\n30\n33\n36\n32\n32\n3"..., 4096) = 4096
+908   write(9</tmp/data_0013.txt>, "34\n35\n32\n34\n31\n34\n36\n35\n31\n33\n39"..., 1362) = 1362
+908   close(9</tmp/data_0013.txt>)      = 0
+908   munmap(0xb6c20000, 4096)          = 0
+908   clock_gettime(CLOCK_THREAD_CPUTIME_ID, {0, 79984763}) = 0
+908   open("/sys/bus/iio/devices/iio:device0/buffer/enable", O_WRONLY|O_CREAT|O_TRUNC, 0666) = 9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>
+908   fstat64(9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>, {st_mode=S_IFREG|0644, st_size=4096, ...}) = 0
+908   mmap2(NULL, 4096, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0xb6c20000
+908   write(9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>, "0", 1) = 1
+908   close(9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>) = 0
+908   munmap(0xb6c20000, 4096)          = 0
+908   clock_gettime(CLOCK_THREAD_CPUTIME_ID, {0, 80425990}) = 0
+908   clock_gettime(CLOCK_MONOTONIC, {402, 803634081}) = 0
+908   write(1</dev/pts/0>, "402804 disable (took: 441227) af"..., 55) = 55
+908   clock_gettime(CLOCK_THREAD_CPUTIME_ID, {0, 80558539}) = 0
+908   open("/sys/bus/iio/devices/iio:device0/buffer/enable", O_WRONLY|O_CREAT|O_TRUNC, 0666) = 9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>
+908   fstat64(9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>, {st_mode=S_IFREG|0644, st_size=4096, ...}) = 0
+908   mmap2(NULL, 4096, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0xb6c20000
+908   write(9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>, "1", 1) = 1
+908   close(9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>) = 0
+908   munmap(0xb6c20000, 4096)          = 0
+908   clock_gettime(CLOCK_THREAD_CPUTIME_ID, {0, 81072870}) = 0
+908   clock_gettime(CLOCK_MONOTONIC, {402, 808713503}) = 0
+908   ioctl(8</dev/spidev1.0>, 0x40206b00SPI_IOC_MESSAGE(1), [{tx_buf: "\xf0\xf0\xf0\xf0\xf0\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00", rx_buf: NULL, len: 16, speed_hz: 320000, delay_usecs: 0, bits_per_word: 8, cs_change: 1, pad: 3064988936}, ]) = 16
+908   write(1</dev/pts/0>, "402809 enable (took: 514331)\n", 29) = 29
+908   poll([{fd=7</dev/iio:device0>, events=POLLIN}], 1, -1) = 1 ([{fd=7, revents=POLLIN}])
+908   clock_gettime(CLOCK_MONOTONIC, {402, 835455701}) = 0
+908   clock_gettime(CLOCK_THREAD_CPUTIME_ID, {0, 81330669}) = 0
+908   read(7</dev/iio:device0>, "\xf2\x01\x12\x02\x42\x02\x12\x02\x32\x02\x02\x02\x52\x02\x22\x02\x22\x02\x02\x02\x32\x02\x22\x02\x02\x02\x22\x02\xf2\x01\x12\x02"..., 16384) = 8338
+908   clock_gettime(CLOCK_THREAD_CPUTIME_ID, {0, 81416036}) = 0
+908   write(1</dev/pts/0>, "402835 total_read(8338 octets) t"..., 43) = 43
+908   open("/tmp/data_0014.txt", O_WRONLY|O_CREAT|O_TRUNC, 0666) = 9</tmp/data_0014.txt>
+908   fstat64(9</tmp/data_0014.txt>, {st_mode=S_IFREG|0644, st_size=0, ...}) = 0
+908   mmap2(NULL, 4096, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0xb6c20000
+908   write(9</tmp/data_0014.txt>, "31\n33\n36\n33\n35\n32\n37\n34\n34\n32\n35"..., 4096) = 4096
+908   write(9</tmp/data_0014.txt>, "6\n35\n32\n36\n31\n34\n36\n29\n31\n34\n34\n"..., 4096) = 4096
+908   write(9</tmp/data_0014.txt>, "\n34\n33\n32\n33\n30\n31\n36\n34\n32\n32\n3"..., 4096) = 4096
+908   write(9</tmp/data_0014.txt>, "33\n34\n34\n29\n35\n34\n30\n33\n34\n34\n35"..., 1440) = 1440
+908   close(9</tmp/data_0014.txt>)      = 0
+908   munmap(0xb6c20000, 4096)          = 0
+908   clock_gettime(CLOCK_THREAD_CPUTIME_ID, {0, 85164590}) = 0
+908   open("/sys/bus/iio/devices/iio:device0/buffer/enable", O_WRONLY|O_CREAT|O_TRUNC, 0666) = 9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>
+908   fstat64(9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>, {st_mode=S_IFREG|0644, st_size=4096, ...}) = 0
+908   mmap2(NULL, 4096, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0xb6c20000
+908   write(9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>, "0", 1) = 1
+908   close(9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>) = 0
+908   munmap(0xb6c20000, 4096)          = 0
+908   clock_gettime(CLOCK_THREAD_CPUTIME_ID, {0, 85607205}) = 0
+908   clock_gettime(CLOCK_MONOTONIC, {402, 844323916}) = 0
+908   write(1</dev/pts/0>, "402844 disable (took: 442615) af"..., 55) = 55
+908   clock_gettime(CLOCK_THREAD_CPUTIME_ID, {0, 85747840}) = 0
+908   open("/sys/bus/iio/devices/iio:device0/buffer/enable", O_WRONLY|O_CREAT|O_TRUNC, 0666) = 9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>
+908   fstat64(9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>, {st_mode=S_IFREG|0644, st_size=4096, ...}) = 0
+908   mmap2(NULL, 4096, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0xb6c20000
+908   write(9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>, "1", 1) = 1
+908   close(9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>) = 0
+908   munmap(0xb6c20000, 4096)          = 0
+908   clock_gettime(CLOCK_THREAD_CPUTIME_ID, {0, 86279218}) = 0
+908   clock_gettime(CLOCK_MONOTONIC, {402, 849156908}) = 0
+908   ioctl(8</dev/spidev1.0>, 0x40206b00SPI_IOC_MESSAGE(1), [{tx_buf: "\xf0\xf0\xf0\xf0\xf0\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00", rx_buf: NULL, len: 16, speed_hz: 320000, delay_usecs: 0, bits_per_word: 8, cs_change: 1, pad: 3064988936}, ]) = 16
+908   write(1</dev/pts/0>, "402849 enable (took: 531378)\n", 29) = 29
+908   poll([{fd=7</dev/iio:device0>, events=POLLIN}], 1, -1) = 1 ([{fd=7, revents=POLLIN}])
+908   clock_gettime(CLOCK_MONOTONIC, {402, 875521557}) = 0
+908   clock_gettime(CLOCK_THREAD_CPUTIME_ID, {0, 86552097}) = 0
+908   read(7</dev/iio:device0>, "\x22\x02\x22\x02\x32\x02\x22\x02\x12\x02\x32\x02\x22\x02\x12\x02\x22\x02\x62\x02\x12\x02\x02\x02\x22\x02\xd2\x01\x02\x02\x42\x02"..., 16384) = 8220
+908   clock_gettime(CLOCK_THREAD_CPUTIME_ID, {0, 86637833}) = 0
+908   write(1</dev/pts/0>, "402876 total_read(8220 octets) t"..., 43) = 43
+908   open("/tmp/data_0015.txt", O_WRONLY|O_CREAT|O_TRUNC, 0666) = 9</tmp/data_0015.txt>
+908   fstat64(9</tmp/data_0015.txt>, {st_mode=S_IFREG|0644, st_size=0, ...}) = 0
+908   mmap2(NULL, 4096, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0xb6c20000
+908   write(9</tmp/data_0015.txt>, "34\n34\n35\n34\n33\n35\n34\n33\n34\n38\n33"..., 4096) = 4096
+908   write(9</tmp/data_0015.txt>, "34\n33\n32\n33\n34\n32\n34\n33\n30\n33\n34"..., 4096) = 4096
+908   write(9</tmp/data_0015.txt>, "4\n36\n32\n33\n34\n31\n35\n34\n33\n33\n35\n"..., 4096) = 4096
+908   write(9</tmp/data_0015.txt>, "\n34\n33\n34\n32\n34\n35\n34\n33\n31\n32\n3"..., 1255) = 1255
+908   close(9</tmp/data_0015.txt>)      = 0
+908   munmap(0xb6c20000, 4096)          = 0
+908   clock_gettime(CLOCK_THREAD_CPUTIME_ID, {0, 90393097}) = 0
+908   open("/sys/bus/iio/devices/iio:device0/buffer/enable", O_WRONLY|O_CREAT|O_TRUNC, 0666) = 9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>
+908   fstat64(9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>, {st_mode=S_IFREG|0644, st_size=4096, ...}) = 0
+908   mmap2(NULL, 4096, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0xb6c20000
+908   write(9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>, "0", 1) = 1
+908   close(9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>) = 0
+908   munmap(0xb6c20000, 4096)          = 0
+908   clock_gettime(CLOCK_THREAD_CPUTIME_ID, {0, 90836231}) = 0
+908   clock_gettime(CLOCK_MONOTONIC, {402, 884109734}) = 0
+908   write(1</dev/pts/0>, "402884 disable (took: 443134) af"..., 55) = 55
+908   clock_gettime(CLOCK_THREAD_CPUTIME_ID, {0, 90981695}) = 0
+908   open("/sys/bus/iio/devices/iio:device0/buffer/enable", O_WRONLY|O_CREAT|O_TRUNC, 0666) = 9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>
+908   fstat64(9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>, {st_mode=S_IFREG|0644, st_size=4096, ...}) = 0
+908   mmap2(NULL, 4096, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0xb6c20000
+908   write(9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>, "1", 1) = 1
+908   close(9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>) = 0
+908   munmap(0xb6c20000, 4096)          = 0
+908   clock_gettime(CLOCK_THREAD_CPUTIME_ID, {0, 91495371}) = 0
+908   clock_gettime(CLOCK_MONOTONIC, {402, 888984349}) = 0
+908   ioctl(8</dev/spidev1.0>, 0x40206b00SPI_IOC_MESSAGE(1), [{tx_buf: "\xf0\xf0\xf0\xf0\xf0\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00", rx_buf: NULL, len: 16, speed_hz: 320000, delay_usecs: 0, bits_per_word: 8, cs_change: 1, pad: 3064988936}, ]) = 16
+908   write(1</dev/pts/0>, "402889 enable (took: 513676)\n", 29) = 29
+908   poll([{fd=7</dev/iio:device0>, events=POLLIN}], 1, -1) = 1 ([{fd=7, revents=POLLIN}])
+908   clock_gettime(CLOCK_MONOTONIC, {402, 915631088}) = 0
+908   clock_gettime(CLOCK_THREAD_CPUTIME_ID, {0, 91757422}) = 0
+908   read(7</dev/iio:device0>, "\x02\x02\x22\x02\x22\x02\x02\x02\x32\x02\x22\x02\x12\x02\x22\x02\x32\x02\x12\x02\x12\x02\x22\x02\x12\x02\x12\x02\x22\x02\x22\x02"..., 16384) = 8304
+908   clock_gettime(CLOCK_THREAD_CPUTIME_ID, {0, 91843419}) = 0
+908   write(1</dev/pts/0>, "402916 total_read(8304 octets) t"..., 43) = 43
+908   open("/tmp/data_0016.txt", O_WRONLY|O_CREAT|O_TRUNC, 0666) = 9</tmp/data_0016.txt>
+908   fstat64(9</tmp/data_0016.txt>, {st_mode=S_IFREG|0644, st_size=0, ...}) = 0
+908   mmap2(NULL, 4096, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0xb6c20000
+908   write(9</tmp/data_0016.txt>, "32\n34\n34\n32\n35\n34\n33\n34\n35\n33\n33"..., 4096) = 4096
+908   write(9</tmp/data_0016.txt>, "\n33\n34\n33\n32\n34\n36\n31\n32\n32\n32\n3"..., 4096) = 4096
+908   write(9</tmp/data_0016.txt>, "36\n32\n33\n33\n35\n33\n34\n34\n31\n35\n33"..., 4096) = 4096
+908   write(9</tmp/data_0016.txt>, "6\n33\n34\n33\n29\n29\n32\n34\n34\n40\n34\n"..., 1379) = 1379
+908   close(9</tmp/data_0016.txt>)      = 0
+908   munmap(0xb6c20000, 4096)          = 0
+908   clock_gettime(CLOCK_THREAD_CPUTIME_ID, {0, 95615816}) = 0
+908   open("/sys/bus/iio/devices/iio:device0/buffer/enable", O_WRONLY|O_CREAT|O_TRUNC, 0666) = 9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>
+908   fstat64(9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>, {st_mode=S_IFREG|0644, st_size=4096, ...}) = 0
+908   mmap2(NULL, 4096, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0xb6c20000
+908   write(9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>, "0", 1) = 1
+908   close(9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>) = 0
+908   munmap(0xb6c20000, 4096)          = 0
+908   clock_gettime(CLOCK_THREAD_CPUTIME_ID, {0, 96059012}) = 0
+908   clock_gettime(CLOCK_MONOTONIC, {402, 924349629}) = 0
+908   write(1</dev/pts/0>, "402924 disable (took: 443196) af"..., 55) = 55
+908   clock_gettime(CLOCK_THREAD_CPUTIME_ID, {0, 96194261}) = 0
+908   open("/sys/bus/iio/devices/iio:device0/buffer/enable", O_WRONLY|O_CREAT|O_TRUNC, 0666) = 9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>
+908   fstat64(9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>, {st_mode=S_IFREG|0644, st_size=4096, ...}) = 0
+908   mmap2(NULL, 4096, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0xb6c20000
+908   write(9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>, "1", 1) = 1
+908   close(9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>) = 0
+908   munmap(0xb6c20000, 4096)          = 0
+908   clock_gettime(CLOCK_THREAD_CPUTIME_ID, {0, 96713973}) = 0
+908   clock_gettime(CLOCK_MONOTONIC, {402, 929184134}) = 0
+908   ioctl(8</dev/spidev1.0>, 0x40206b00SPI_IOC_MESSAGE(1), [{tx_buf: "\xf0\xf0\xf0\xf0\xf0\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00", rx_buf: NULL, len: 16, speed_hz: 320000, delay_usecs: 0, bits_per_word: 8, cs_change: 1, pad: 3064988936}, ]) = 16
+908   write(1</dev/pts/0>, "402929 enable (took: 519712)\n", 29) = 29
+908   poll([{fd=7</dev/iio:device0>, events=POLLIN}], 1, -1) = 1 ([{fd=7, revents=POLLIN}])
+908   clock_gettime(CLOCK_MONOTONIC, {402, 955736093}) = 0
+908   clock_gettime(CLOCK_THREAD_CPUTIME_ID, {0, 96982899}) = 0
+908   read(7</dev/iio:device0>, "\x32\x02\x02\x02\x12\x02\xf2\x01\xe2\x01\x32\x02\x12\x02\xf2\x01\x22\x02\xf2\x01\x02\x02\x42\x02\x22\x02\x02\x02\x32\x02\x12\x02"..., 16384) = 8268
+908   clock_gettime(CLOCK_THREAD_CPUTIME_ID, {0, 97066505}) = 0
+908   write(1</dev/pts/0>, "402956 total_read(8268 octets) t"..., 43) = 43
+908   open("/tmp/data_0017.txt", O_WRONLY|O_CREAT|O_TRUNC, 0666) = 9</tmp/data_0017.txt>
+908   fstat64(9</tmp/data_0017.txt>, {st_mode=S_IFREG|0644, st_size=0, ...}) = 0
+908   mmap2(NULL, 4096, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0xb6c20000
+908   write(9</tmp/data_0017.txt>, "35\n32\n33\n31\n30\n35\n33\n31\n34\n31\n32"..., 4096) = 4096
+908   write(9</tmp/data_0017.txt>, "35\n33\n35\n34\n33\n35\n35\n33\n34\n35\n36"..., 4096) = 4096
+908   write(9</tmp/data_0017.txt>, "7\n35\n34\n33\n34\n33\n34\n35\n32\n34\n32\n"..., 4096) = 4096
+908   write(9</tmp/data_0017.txt>, "\n36\n34\n34\n32\n35\n33\n34\n34\n33\n33\n3"..., 1306) = 1306
+908   close(9</tmp/data_0017.txt>)      = 0
+908   munmap(0xb6c20000, 4096)          = 0
+908   clock_gettime(CLOCK_THREAD_CPUTIME_ID, {0, 100816407}) = 0
+908   open("/sys/bus/iio/devices/iio:device0/buffer/enable", O_WRONLY|O_CREAT|O_TRUNC, 0666) = 9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>
+908   fstat64(9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>, {st_mode=S_IFREG|0644, st_size=4096, ...}) = 0
+908   mmap2(NULL, 4096, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0xb6c20000
+908   write(9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>, "0", 1) = 1
+908   close(9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>) = 0
+908   munmap(0xb6c20000, 4096)          = 0
+908   clock_gettime(CLOCK_THREAD_CPUTIME_ID, {0, 101262912}) = 0
+908   clock_gettime(CLOCK_MONOTONIC, {402, 964675665}) = 0
+908   write(1</dev/pts/0>, "402965 disable (took: 446505) af"..., 55) = 55
+908   clock_gettime(CLOCK_THREAD_CPUTIME_ID, {0, 101406874}) = 0
+908   open("/sys/bus/iio/devices/iio:device0/buffer/enable", O_WRONLY|O_CREAT|O_TRUNC, 0666) = 9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>
+908   fstat64(9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>, {st_mode=S_IFREG|0644, st_size=4096, ...}) = 0
+908   mmap2(NULL, 4096, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0xb6c20000
+908   write(9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>, "1", 1) = 1
+908   close(9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>) = 0
+908   munmap(0xb6c20000, 4096)          = 0
+908   clock_gettime(CLOCK_THREAD_CPUTIME_ID, {0, 101932555}) = 0
+908   clock_gettime(CLOCK_MONOTONIC, {402, 969450462}) = 0
+908   ioctl(8</dev/spidev1.0>, 0x40206b00SPI_IOC_MESSAGE(1), [{tx_buf: "\xf0\xf0\xf0\xf0\xf0\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00", rx_buf: NULL, len: 16, speed_hz: 320000, delay_usecs: 0, bits_per_word: 8, cs_change: 1, pad: 3064988936}, ]) = 16
+908   write(1</dev/pts/0>, "402969 enable (took: 525681)\n", 29) = 29
+908   poll([{fd=7</dev/iio:device0>, events=POLLIN}], 1, -1) = 1 ([{fd=7, revents=POLLIN}])
+908   clock_gettime(CLOCK_MONOTONIC, {402, 995802483}) = 0
+908   clock_gettime(CLOCK_THREAD_CPUTIME_ID, {0, 102198678}) = 0
+908   read(7</dev/iio:device0>, "\x12\x02\xf2\x01\x12\x02\x12\x02\xf2\x01\x22\x02\x12\x02\x12\x02\x22\x02\x42\x02\x12\x02\x12\x02\x12\x02\xd2\x01\x12\x02\x12\x02"..., 16384) = 8194
+908   clock_gettime(CLOCK_THREAD_CPUTIME_ID, {0, 102281029}) = 0
+908   write(1</dev/pts/0>, "402996 total_read(8194 octets) t"..., 43) = 43
+908   open("/tmp/data_0018.txt", O_WRONLY|O_CREAT|O_TRUNC, 0666) = 9</tmp/data_0018.txt>
+908   fstat64(9</tmp/data_0018.txt>, {st_mode=S_IFREG|0644, st_size=0, ...}) = 0
+908   mmap2(NULL, 4096, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0xb6c20000
+908   write(9</tmp/data_0018.txt>, "33\n31\n33\n33\n31\n34\n33\n33\n34\n36\n33"..., 4096) = 4096
+908   write(9</tmp/data_0018.txt>, "\n34\n34\n33\n33\n34\n32\n34\n35\n31\n35\n3"..., 4096) = 4096
+908   write(9</tmp/data_0018.txt>, "34\n33\n33\n34\n32\n34\n35\n32\n33\n34\n31"..., 4096) = 4096
+908   write(9</tmp/data_0018.txt>, "7\n33\n34\n34\n32\n35\n34\n32\n37\n32\n33\n"..., 1172) = 1172
+908   close(9</tmp/data_0018.txt>)      = 0
+908   munmap(0xb6c20000, 4096)          = 0
+908   clock_gettime(CLOCK_THREAD_CPUTIME_ID, {0, 106032604}) = 0
+908   open("/sys/bus/iio/devices/iio:device0/buffer/enable", O_WRONLY|O_CREAT|O_TRUNC, 0666) = 9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>
+908   fstat64(9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>, {st_mode=S_IFREG|0644, st_size=4096, ...}) = 0
+908   mmap2(NULL, 4096, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0xb6c20000
+908   write(9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>, "0", 1) = 1
+908   close(9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>) = 0
+908   munmap(0xb6c20000, 4096)          = 0
+908   clock_gettime(CLOCK_THREAD_CPUTIME_ID, {0, 106483420}) = 0
+908   clock_gettime(CLOCK_MONOTONIC, {403, 4434314}) = 0
+908   write(1</dev/pts/0>, "403004 disable (took: 450816) af"..., 55) = 55
+908   clock_gettime(CLOCK_THREAD_CPUTIME_ID, {0, 106627571}) = 0
+908   open("/sys/bus/iio/devices/iio:device0/buffer/enable", O_WRONLY|O_CREAT|O_TRUNC, 0666) = 9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>
+908   fstat64(9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>, {st_mode=S_IFREG|0644, st_size=4096, ...}) = 0
+908   mmap2(NULL, 4096, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0xb6c20000
+908   write(9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>, "1", 1) = 1
+908   close(9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>) = 0
+908   munmap(0xb6c20000, 4096)          = 0
+908   clock_gettime(CLOCK_THREAD_CPUTIME_ID, {0, 107159323}) = 0
+908   clock_gettime(CLOCK_MONOTONIC, {403, 9335378}) = 0
+908   ioctl(8</dev/spidev1.0>, 0x40206b00SPI_IOC_MESSAGE(1), [{tx_buf: "\xf0\xf0\xf0\xf0\xf0\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00", rx_buf: NULL, len: 16, speed_hz: 320000, delay_usecs: 0, bits_per_word: 8, cs_change: 1, pad: 3064988936}, ]) = 16
+908   write(1</dev/pts/0>, "403009 enable (took: 531752)\n", 29) = 29
+908   poll([{fd=7</dev/iio:device0>, events=POLLIN}], 1, -1) = 1 ([{fd=7, revents=POLLIN}])
+908   clock_gettime(CLOCK_MONOTONIC, {403, 35876770}) = 0
+908   clock_gettime(CLOCK_THREAD_CPUTIME_ID, {0, 107449667}) = 0
+908   read(7</dev/iio:device0>, "\x32\x02\xd2\x02\x02\x02\x22\x02\xf2\x01\x12\x02\x32\x02\x32\x02\x12\x02\x22\x02\x32\x02\x02\x02\x32\x02\x52\x02\x02\x02\x62\x02"..., 16384) = 8298
+908   clock_gettime(CLOCK_THREAD_CPUTIME_ID, {0, 107533126}) = 0
+908   write(1</dev/pts/0>, "403036 total_read(8298 octets) t"..., 43) = 43
+908   open("/tmp/data_0019.txt", O_WRONLY|O_CREAT|O_TRUNC, 0666) = 9</tmp/data_0019.txt>
+908   fstat64(9</tmp/data_0019.txt>, {st_mode=S_IFREG|0644, st_size=0, ...}) = 0
+908   mmap2(NULL, 4096, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0xb6c20000
+908   write(9</tmp/data_0019.txt>, "35\n45\n32\n34\n31\n33\n35\n35\n33\n34\n35"..., 4096) = 4096
+908   write(9</tmp/data_0019.txt>, "\n32\n34\n34\n32\n34\n35\n33\n33\n35\n32\n3"..., 4096) = 4096
+908   write(9</tmp/data_0019.txt>, "34\n32\n35\n32\n34\n33\n33\n36\n33\n31\n33"..., 4096) = 4096
+908   write(9</tmp/data_0019.txt>, "3\n34\n33\n33\n35\n33\n34\n34\n32\n35\n34\n"..., 1343) = 1343
+908   close(9</tmp/data_0019.txt>)      = 0
+908   munmap(0xb6c20000, 4096)          = 0
+908   clock_gettime(CLOCK_THREAD_CPUTIME_ID, {0, 111207883}) = 0
+908   open("/sys/bus/iio/devices/iio:device0/buffer/enable", O_WRONLY|O_CREAT|O_TRUNC, 0666) = 9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>
+908   fstat64(9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>, {st_mode=S_IFREG|0644, st_size=4096, ...}) = 0
+908   mmap2(NULL, 4096, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0xb6c20000
+908   write(9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>, "0", 1) = 1
+908   close(9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>) = 0
+908   munmap(0xb6c20000, 4096)          = 0
+908   clock_gettime(CLOCK_THREAD_CPUTIME_ID, {0, 111648567}) = 0
+908   clock_gettime(CLOCK_MONOTONIC, {403, 44229516}) = 0
+908   write(1</dev/pts/0>, "403044 disable (took: 440684) af"..., 55) = 55
+908   clock_gettime(CLOCK_THREAD_CPUTIME_ID, {0, 111791432}) = 0
+908   open("/sys/bus/iio/devices/iio:device0/buffer/enable", O_WRONLY|O_CREAT|O_TRUNC, 0666) = 9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>
+908   fstat64(9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>, {st_mode=S_IFREG|0644, st_size=4096, ...}) = 0
+908   mmap2(NULL, 4096, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0xb6c20000
+908   write(9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>, "1", 1) = 1
+908   close(9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>) = 0
+908   munmap(0xb6c20000, 4096)          = 0
+908   clock_gettime(CLOCK_THREAD_CPUTIME_ID, {0, 112308690}) = 0
+908   clock_gettime(CLOCK_MONOTONIC, {403, 49170483}) = 0
+908   ioctl(8</dev/spidev1.0>, 0x40206b00SPI_IOC_MESSAGE(1), [{tx_buf: "\xf0\xf0\xf0\xf0\xf0\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00", rx_buf: NULL, len: 16, speed_hz: 320000, delay_usecs: 0, bits_per_word: 8, cs_change: 1, pad: 3064988936}, ]) = 16
+908   write(1</dev/pts/0>, "403049 enable (took: 517258)\n", 29) = 29
+908   poll([{fd=7</dev/iio:device0>, events=POLLIN}], 1, -1) = 1 ([{fd=7, revents=POLLIN}])
+908   clock_gettime(CLOCK_MONOTONIC, {403, 76042401}) = 0
+908   clock_gettime(CLOCK_THREAD_CPUTIME_ID, {0, 112606381}) = 0
+908   read(7</dev/iio:device0>, "\x02\x02\x12\x02\x02\x02\x12\x02\x32\x02\x12\x02\x12\x02\x22\x02\xf2\x01\x22\x02\x12\x02\xf2\x01\x22\x02\x42\x02\x02\x02\x12\x02"..., 16384) = 8376
+908   clock_gettime(CLOCK_THREAD_CPUTIME_ID, {0, 112700594}) = 0
+908   write(1</dev/pts/0>, "403076 total_read(8376 octets) t"..., 43) = 43
+908   open("/tmp/data_0020.txt", O_WRONLY|O_CREAT|O_TRUNC, 0666) = 9</tmp/data_0020.txt>
+908   fstat64(9</tmp/data_0020.txt>, {st_mode=S_IFREG|0644, st_size=0, ...}) = 0
+908   mmap2(NULL, 4096, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0xb6c20000
+908   write(9</tmp/data_0020.txt>, "32\n33\n32\n33\n35\n33\n33\n34\n31\n34\n33"..., 4096) = 4096
+908   write(9</tmp/data_0020.txt>, "\n33\n37\n32\n33\n35\n35\n32\n34\n30\n34\n3"..., 4096) = 4096
+908   write(9</tmp/data_0020.txt>, "35\n33\n34\n34\n32\n33\n31\n32\n33\n34\n33"..., 4096) = 4096
+908   write(9</tmp/data_0020.txt>, "3\n32\n34\n32\n34\n34\n32\n33\n37\n33\n32\n"..., 1427) = 1427
+908   close(9</tmp/data_0020.txt>)      = 0
+908   munmap(0xb6c20000, 4096)          = 0
+908   clock_gettime(CLOCK_THREAD_CPUTIME_ID, {0, 116500502}) = 0
+908   open("/sys/bus/iio/devices/iio:device0/buffer/enable", O_WRONLY|O_CREAT|O_TRUNC, 0666) = 9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>
+908   fstat64(9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>, {st_mode=S_IFREG|0644, st_size=4096, ...}) = 0
+908   mmap2(NULL, 4096, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0xb6c20000
+908   write(9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>, "0", 1) = 1
+908   close(9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>) = 0
+908   munmap(0xb6c20000, 4096)          = 0
+908   clock_gettime(CLOCK_THREAD_CPUTIME_ID, {0, 116944820}) = 0
+908   clock_gettime(CLOCK_MONOTONIC, {403, 84646039}) = 0
+908   write(1</dev/pts/0>, "403085 disable (took: 444318) af"..., 55) = 55
+908   clock_gettime(CLOCK_THREAD_CPUTIME_ID, {0, 117088483}) = 0
+908   open("/sys/bus/iio/devices/iio:device0/buffer/enable", O_WRONLY|O_CREAT|O_TRUNC, 0666) = 9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>
+908   fstat64(9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>, {st_mode=S_IFREG|0644, st_size=4096, ...}) = 0
+908   mmap2(NULL, 4096, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0xb6c20000
+908   write(9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>, "1", 1) = 1
+908   close(9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>) = 0
+908   munmap(0xb6c20000, 4096)          = 0
+908   clock_gettime(CLOCK_THREAD_CPUTIME_ID, {0, 117606721}) = 0
+908   clock_gettime(CLOCK_MONOTONIC, {403, 89571055}) = 0
+908   ioctl(8</dev/spidev1.0>, 0x40206b00SPI_IOC_MESSAGE(1), [{tx_buf: "\xf0\xf0\xf0\xf0\xf0\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00", rx_buf: NULL, len: 16, speed_hz: 320000, delay_usecs: 0, bits_per_word: 8, cs_change: 1, pad: 3064988936}, ]) = 16
+908   write(1</dev/pts/0>, "403090 enable (took: 518238)\n", 29) = 29
+908   poll([{fd=7</dev/iio:device0>, events=POLLIN}], 1, -1) = 1 ([{fd=7, revents=POLLIN}])
+908   clock_gettime(CLOCK_MONOTONIC, {403, 116252873}) = 0
+908   clock_gettime(CLOCK_THREAD_CPUTIME_ID, {0, 117875001}) = 0
+908   read(7</dev/iio:device0>, "\xf2\x01\xc2\x01\x32\x02\x12\x02\x12\x02\x12\x02\x12\x02\x22\x02\x62\x02\x02\x02\x12\x02\x32\x02\x02\x02\x42\x02\x32\x02\x02\x02"..., 16384) = 8306
+908   clock_gettime(CLOCK_THREAD_CPUTIME_ID, {0, 117960467}) = 0
+908   write(1</dev/pts/0>, "403116 total_read(8306 octets) t"..., 43) = 43
+908   open("/tmp/data_0021.txt", O_WRONLY|O_CREAT|O_TRUNC, 0666) = 9</tmp/data_0021.txt>
+908   fstat64(9</tmp/data_0021.txt>, {st_mode=S_IFREG|0644, st_size=0, ...}) = 0
+908   mmap2(NULL, 4096, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0xb6c20000
+908   write(9</tmp/data_0021.txt>, "31\n28\n35\n33\n33\n33\n33\n34\n38\n32\n33"..., 4096) = 4096
+908   write(9</tmp/data_0021.txt>, "2\n35\n33\n32\n34\n30\n32\n34\n31\n33\n34\n"..., 4096) = 4096
+908   write(9</tmp/data_0021.txt>, "\n32\n35\n33\n32\n34\n37\n32\n33\n28\n32\n3"..., 4096) = 4096
+908   write(9</tmp/data_0021.txt>, "31\n32\n33\n31\n33\n35\n31\n34\n36\n31\n30"..., 1377) = 1377
+908   close(9</tmp/data_0021.txt>)      = 0
+908   munmap(0xb6c20000, 4096)          = 0
+908   clock_gettime(CLOCK_THREAD_CPUTIME_ID, {0, 121714153}) = 0
+908   open("/sys/bus/iio/devices/iio:device0/buffer/enable", O_WRONLY|O_CREAT|O_TRUNC, 0666) = 9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>
+908   fstat64(9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>, {st_mode=S_IFREG|0644, st_size=4096, ...}) = 0
+908   mmap2(NULL, 4096, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0xb6c20000
+908   write(9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>, "0", 1) = 1
+908   close(9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>) = 0
+908   munmap(0xb6c20000, 4096)          = 0
+908   clock_gettime(CLOCK_THREAD_CPUTIME_ID, {0, 122153258}) = 0
+908   clock_gettime(CLOCK_MONOTONIC, {403, 124733578}) = 0
+908   write(1</dev/pts/0>, "403125 disable (took: 439105) af"..., 55) = 55
+908   clock_gettime(CLOCK_THREAD_CPUTIME_ID, {0, 122297740}) = 0
+908   open("/sys/bus/iio/devices/iio:device0/buffer/enable", O_WRONLY|O_CREAT|O_TRUNC, 0666) = 9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>
+908   fstat64(9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>, {st_mode=S_IFREG|0644, st_size=4096, ...}) = 0
+908   mmap2(NULL, 4096, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0xb6c20000
+908   write(9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>, "1", 1) = 1
+908   close(9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>) = 0
+908   munmap(0xb6c20000, 4096)          = 0
+908   clock_gettime(CLOCK_THREAD_CPUTIME_ID, {0, 122808029}) = 0
+908   clock_gettime(CLOCK_MONOTONIC, {403, 129581778}) = 0
+908   ioctl(8</dev/spidev1.0>, 0x40206b00SPI_IOC_MESSAGE(1), [{tx_buf: "\xf0\xf0\xf0\xf0\xf0\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00", rx_buf: NULL, len: 16, speed_hz: 320000, delay_usecs: 0, bits_per_word: 8, cs_change: 1, pad: 3064988936}, ]) = 16
+908   write(1</dev/pts/0>, "403130 enable (took: 510289)\n", 29) = 29
+908   poll([{fd=7</dev/iio:device0>, events=POLLIN}], 1, -1) = 1 ([{fd=7, revents=POLLIN}])
+908   clock_gettime(CLOCK_MONOTONIC, {403, 156357547}) = 0
+908   clock_gettime(CLOCK_THREAD_CPUTIME_ID, {0, 123071735}) = 0
+908   read(7</dev/iio:device0>, "\x42\x02\x32\x02\x02\x02\x12\x02\x22\x02\x12\x02\x02\x02\x22\x02\x02\x02\x22\x02\x22\x02\xf2\x01\x22\x02\x02\x02\x02\x02\x02\x02"..., 16384) = 8344
+908   clock_gettime(CLOCK_THREAD_CPUTIME_ID, {0, 123154772}) = 0
+908   write(1</dev/pts/0>, "403156 total_read(8344 octets) t"..., 43) = 43
+908   open("/tmp/data_0022.txt", O_WRONLY|O_CREAT|O_TRUNC, 0666) = 9</tmp/data_0022.txt>
+908   fstat64(9</tmp/data_0022.txt>, {st_mode=S_IFREG|0644, st_size=0, ...}) = 0
+908   mmap2(NULL, 4096, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0xb6c20000
+908   write(9</tmp/data_0022.txt>, "36\n35\n32\n33\n34\n33\n32\n34\n32\n34\n34"..., 4096) = 4096
+908   write(9</tmp/data_0022.txt>, "31\n34\n33\n30\n34\n35\n32\n32\n34\n31\n33"..., 4096) = 4096
+908   write(9</tmp/data_0022.txt>, "1\n35\n33\n34\n40\n31\n34\n35\n32\n36\n35\n"..., 4096) = 4096
+908   write(9</tmp/data_0022.txt>, "\n34\n33\n35\n33\n33\n31\n31\n32\n34\n31\n3"..., 1450) = 1450
+908   close(9</tmp/data_0022.txt>)      = 0
+908   munmap(0xb6c20000, 4096)          = 0
+908   clock_gettime(CLOCK_THREAD_CPUTIME_ID, {0, 126978237}) = 0
+908   open("/sys/bus/iio/devices/iio:device0/buffer/enable", O_WRONLY|O_CREAT|O_TRUNC, 0666) = 9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>
+908   fstat64(9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>, {st_mode=S_IFREG|0644, st_size=4096, ...}) = 0
+908   mmap2(NULL, 4096, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0xb6c20000
+908   write(9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>, "0", 1) = 1
+908   close(9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>) = 0
+908   munmap(0xb6c20000, 4096)          = 0
+908   clock_gettime(CLOCK_THREAD_CPUTIME_ID, {0, 127420832}) = 0
+908   clock_gettime(CLOCK_MONOTONIC, {403, 165134583}) = 0
+908   write(1</dev/pts/0>, "403165 disable (took: 442595) af"..., 55) = 55
+908   clock_gettime(CLOCK_THREAD_CPUTIME_ID, {0, 127558287}) = 0
+908   open("/sys/bus/iio/devices/iio:device0/buffer/enable", O_WRONLY|O_CREAT|O_TRUNC, 0666) = 9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>
+908   fstat64(9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>, {st_mode=S_IFREG|0644, st_size=4096, ...}) = 0
+908   mmap2(NULL, 4096, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0xb6c20000
+908   write(9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>, "1", 1) = 1
+908   close(9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>) = 0
+908   munmap(0xb6c20000, 4096)          = 0
+908   clock_gettime(CLOCK_THREAD_CPUTIME_ID, {0, 128075657}) = 0
+908   clock_gettime(CLOCK_MONOTONIC, {403, 169999724}) = 0
+908   ioctl(8</dev/spidev1.0>, 0x40206b00SPI_IOC_MESSAGE(1), [{tx_buf: "\xf0\xf0\xf0\xf0\xf0\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00", rx_buf: NULL, len: 16, speed_hz: 320000, delay_usecs: 0, bits_per_word: 8, cs_change: 1, pad: 3064988936}, ]) = 16
+908   write(1</dev/pts/0>, "403170 enable (took: 517370)\n", 29) = 29
+908   poll([{fd=7</dev/iio:device0>, events=POLLIN}], 1, -1) = 1 ([{fd=7, revents=POLLIN}])
+908   clock_gettime(CLOCK_MONOTONIC, {403, 196469798}) = 0
+908   clock_gettime(CLOCK_THREAD_CPUTIME_ID, {0, 128369940}) = 0
+908   read(7</dev/iio:device0>, "\x12\x02\x42\x02\x12\x02\x12\x02\x42\x02\x12\x02\x22\x02\x92\x02\x02\x02\x22\x02\x22\x02\x02\x02\x22\x02\x12\x02\x12\x02\x12\x02"..., 16384) = 8246
+908   clock_gettime(CLOCK_THREAD_CPUTIME_ID, {0, 128452015}) = 0
+908   write(1</dev/pts/0>, "403196 total_read(8246 octets) t"..., 43) = 43
+908   open("/tmp/data_0023.txt", O_WRONLY|O_CREAT|O_TRUNC, 0666) = 9</tmp/data_0023.txt>
+908   fstat64(9</tmp/data_0023.txt>, {st_mode=S_IFREG|0644, st_size=0, ...}) = 0
+908   mmap2(NULL, 4096, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0xb6c20000
+908   write(9</tmp/data_0023.txt>, "33\n36\n33\n33\n36\n33\n34\n41\n32\n34\n34"..., 4096) = 4096
+908   write(9</tmp/data_0023.txt>, "32\n35\n32\n34\n35\n33\n33\n32\n33\n32\n32"..., 4096) = 4096
+908   write(9</tmp/data_0023.txt>, "4\n33\n32\n31\n32\n33\n33\n33\n32\n33\n33\n"..., 4096) = 4096
+908   write(9</tmp/data_0023.txt>, "\n29\n33\n35\n29\n33\n34\n32\n31\n35\n31\n3"..., 1312) = 1312
+908   close(9</tmp/data_0023.txt>)      = 0
+908   munmap(0xb6c20000, 4096)          = 0
+908   clock_gettime(CLOCK_THREAD_CPUTIME_ID, {0, 132212683}) = 0
+908   open("/sys/bus/iio/devices/iio:device0/buffer/enable", O_WRONLY|O_CREAT|O_TRUNC, 0666) = 9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>
+908   fstat64(9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>, {st_mode=S_IFREG|0644, st_size=4096, ...}) = 0
+908   mmap2(NULL, 4096, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0xb6c20000
+908   write(9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>, "0", 1) = 1
+908   close(9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>) = 0
+908   munmap(0xb6c20000, 4096)          = 0
+908   clock_gettime(CLOCK_THREAD_CPUTIME_ID, {0, 132660121}) = 0
+908   clock_gettime(CLOCK_MONOTONIC, {403, 205151045}) = 0
+908   write(1</dev/pts/0>, "403205 disable (took: 447438) af"..., 55) = 55
+908   clock_gettime(CLOCK_THREAD_CPUTIME_ID, {0, 132806585}) = 0
+908   open("/sys/bus/iio/devices/iio:device0/buffer/enable", O_WRONLY|O_CREAT|O_TRUNC, 0666) = 9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>
+908   fstat64(9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>, {st_mode=S_IFREG|0644, st_size=4096, ...}) = 0
+908   mmap2(NULL, 4096, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0xb6c20000
+908   write(9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>, "1", 1) = 1
+908   close(9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>) = 0
+908   munmap(0xb6c20000, 4096)          = 0
+908   clock_gettime(CLOCK_THREAD_CPUTIME_ID, {0, 133324736}) = 0
+908   clock_gettime(CLOCK_MONOTONIC, {403, 209983026}) = 0
+908   ioctl(8</dev/spidev1.0>, 0x40206b00SPI_IOC_MESSAGE(1), [{tx_buf: "\xf0\xf0\xf0\xf0\xf0\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00", rx_buf: NULL, len: 16, speed_hz: 320000, delay_usecs: 0, bits_per_word: 8, cs_change: 1, pad: 3064988936}, ]) = 16
+908   write(1</dev/pts/0>, "403210 enable (took: 518151)\n", 29) = 29
+908   poll([{fd=7</dev/iio:device0>, events=POLLIN}], 1, -1) = 1 ([{fd=7, revents=POLLIN}])
+908   clock_gettime(CLOCK_MONOTONIC, {403, 236546393}) = 0
+908   clock_gettime(CLOCK_THREAD_CPUTIME_ID, {0, 133588421}) = 0
+908   read(7</dev/iio:device0>, "\x12\x02\x22\x02\x32\x02\x12\x02\x22\x02\xb2\x02\x02\x02\xe2\x01\x02\x02\x02\x02\x32\x02\x32\x02\x02\x02\x02\x02\x12\x02\x02\x02"..., 16384) = 8276
+908   clock_gettime(CLOCK_THREAD_CPUTIME_ID, {0, 133673239}) = 0
+908   write(1</dev/pts/0>, "403237 total_read(8276 octets) t"..., 43) = 43
+908   open("/tmp/data_0024.txt", O_WRONLY|O_CREAT|O_TRUNC, 0666) = 9</tmp/data_0024.txt>
+908   fstat64(9</tmp/data_0024.txt>, {st_mode=S_IFREG|0644, st_size=0, ...}) = 0
+908   mmap2(NULL, 4096, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0xb6c20000
+908   write(9</tmp/data_0024.txt>, "33\n34\n35\n33\n34\n43\n32\n30\n32\n32\n35"..., 4096) = 4096
+908   write(9</tmp/data_0024.txt>, "\n33\n35\n36\n32\n32\n34\n32\n34\n36\n34\n3"..., 4096) = 4096
+908   write(9</tmp/data_0024.txt>, "32\n33\n34\n32\n33\n35\n32\n33\n38\n31\n34"..., 4096) = 4096
+908   write(9</tmp/data_0024.txt>, "5\n34\n32\n34\n33\n33\n35\n33\n34\n35\n35\n"..., 1340) = 1340
+908   close(9</tmp/data_0024.txt>)      = 0
+908   munmap(0xb6c20000, 4096)          = 0
+908   clock_gettime(CLOCK_THREAD_CPUTIME_ID, {0, 137506965}) = 0
+908   open("/sys/bus/iio/devices/iio:device0/buffer/enable", O_WRONLY|O_CREAT|O_TRUNC, 0666) = 9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>
+908   fstat64(9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>, {st_mode=S_IFREG|0644, st_size=4096, ...}) = 0
+908   mmap2(NULL, 4096, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0xb6c20000
+908   write(9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>, "0", 1) = 1
+908   close(9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>) = 0
+908   munmap(0xb6c20000, 4096)          = 0
+908   clock_gettime(CLOCK_THREAD_CPUTIME_ID, {0, 137950928}) = 0
+908   clock_gettime(CLOCK_MONOTONIC, {403, 245240780}) = 0
+908   write(1</dev/pts/0>, "403245 disable (took: 443963) af"..., 55) = 55
+908   clock_gettime(CLOCK_THREAD_CPUTIME_ID, {0, 138085305}) = 0
+908   open("/sys/bus/iio/devices/iio:device0/buffer/enable", O_WRONLY|O_CREAT|O_TRUNC, 0666) = 9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>
+908   fstat64(9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>, {st_mode=S_IFREG|0644, st_size=4096, ...}) = 0
+908   mmap2(NULL, 4096, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0xb6c20000
+908   write(9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>, "1", 1) = 1
+908   close(9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>) = 0
+908   munmap(0xb6c20000, 4096)          = 0
+908   clock_gettime(CLOCK_THREAD_CPUTIME_ID, {0, 138606799}) = 0
+908   clock_gettime(CLOCK_MONOTONIC, {403, 250167550}) = 0
+908   ioctl(8</dev/spidev1.0>, 0x40206b00SPI_IOC_MESSAGE(1), [{tx_buf: "\xf0\xf0\xf0\xf0\xf0\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00", rx_buf: NULL, len: 16, speed_hz: 320000, delay_usecs: 0, bits_per_word: 8, cs_change: 1, pad: 3064988936}, ]) = 16
+908   write(1</dev/pts/0>, "403250 enable (took: 521494)\n", 29) = 29
+908   poll([{fd=7</dev/iio:device0>, events=POLLIN}], 1, -1) = 1 ([{fd=7, revents=POLLIN}])
+908   clock_gettime(CLOCK_MONOTONIC, {403, 276765468}) = 0
+908   clock_gettime(CLOCK_THREAD_CPUTIME_ID, {0, 138875462}) = 0
+908   read(7</dev/iio:device0>, "\x02\x02\x32\x02\x12\x02\x12\x02\x22\x02\x02\x02\x32\x02\x32\x02\x02\x02\x12\x02\x22\x02\x02\x02\x22\x02\x22\x02\x12\x02\x12\x02"..., 16384) = 8304
+908   clock_gettime(CLOCK_THREAD_CPUTIME_ID, {0, 138960197}) = 0
+908   write(1</dev/pts/0>, "403277 total_read(8304 octets) t"..., 43) = 43
+908   open("/tmp/data_0025.txt", O_WRONLY|O_CREAT|O_TRUNC, 0666) = 9</tmp/data_0025.txt>
+908   fstat64(9</tmp/data_0025.txt>, {st_mode=S_IFREG|0644, st_size=0, ...}) = 0
+908   mmap2(NULL, 4096, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0xb6c20000
+908   write(9</tmp/data_0025.txt>, "32\n35\n33\n33\n34\n32\n35\n35\n32\n33\n34"..., 4096) = 4096
+908   write(9</tmp/data_0025.txt>, "\n35\n30\n33\n34\n36\n33\n36\n30\n33\n33\n3"..., 4096) = 4096
+908   write(9</tmp/data_0025.txt>, "32\n32\n35\n38\n34\n36\n30\n28\n34\n34\n33"..., 4096) = 4096
+908   write(9</tmp/data_0025.txt>, "5\n34\n32\n33\n34\n35\n35\n34\n33\n34\n35\n"..., 1343) = 1343
+908   close(9</tmp/data_0025.txt>)      = 0
+908   munmap(0xb6c20000, 4096)          = 0
+908   clock_gettime(CLOCK_THREAD_CPUTIME_ID, {0, 142674829}) = 0
+908   open("/sys/bus/iio/devices/iio:device0/buffer/enable", O_WRONLY|O_CREAT|O_TRUNC, 0666) = 9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>
+908   fstat64(9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>, {st_mode=S_IFREG|0644, st_size=4096, ...}) = 0
+908   mmap2(NULL, 4096, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0xb6c20000
+908   write(9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>, "0", 1) = 1
+908   close(9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>) = 0
+908   munmap(0xb6c20000, 4096)          = 0
+908   clock_gettime(CLOCK_THREAD_CPUTIME_ID, {0, 143121944}) = 0
+908   clock_gettime(CLOCK_MONOTONIC, {403, 285274460}) = 0
+908   write(1</dev/pts/0>, "403285 disable (took: 447115) af"..., 55) = 55
+908   clock_gettime(CLOCK_THREAD_CPUTIME_ID, {0, 143265737}) = 0
+908   open("/sys/bus/iio/devices/iio:device0/buffer/enable", O_WRONLY|O_CREAT|O_TRUNC, 0666) = 9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>
+908   fstat64(9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>, {st_mode=S_IFREG|0644, st_size=4096, ...}) = 0
+908   mmap2(NULL, 4096, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0xb6c20000
+908   write(9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>, "1", 1) = 1
+908   close(9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>) = 0
+908   munmap(0xb6c20000, 4096)          = 0
+908   clock_gettime(CLOCK_THREAD_CPUTIME_ID, {0, 143825964}) = 0
+908   clock_gettime(CLOCK_MONOTONIC, {403, 290375878}) = 0
+908   ioctl(8</dev/spidev1.0>, 0x40206b00SPI_IOC_MESSAGE(1), [{tx_buf: "\xf0\xf0\xf0\xf0\xf0\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00", rx_buf: NULL, len: 16, speed_hz: 320000, delay_usecs: 0, bits_per_word: 8, cs_change: 1, pad: 3064988936}, ]) = 16
+908   write(1</dev/pts/0>, "403290 enable (took: 560227)\n", 29) = 29
+908   poll([{fd=7</dev/iio:device0>, events=POLLIN}], 1, -1) = 1 ([{fd=7, revents=POLLIN}])
+908   clock_gettime(CLOCK_MONOTONIC, {403, 317102273}) = 0
+908   clock_gettime(CLOCK_THREAD_CPUTIME_ID, {0, 144115107}) = 0
+908   read(7</dev/iio:device0>, "\x02\x02\x12\x02\x22\x02\x12\x02\x32\x02\x12\x02\x02\x02\x42\x02\x32\x02\x12\x02\x12\x02\x32\x02\x02\x02\x22\x02\x22\x02\x02\x02"..., 16384) = 8332
+908   clock_gettime(CLOCK_THREAD_CPUTIME_ID, {0, 144217766}) = 0
+908   write(1</dev/pts/0>, "403317 total_read(8332 octets) t"..., 44) = 44
+908   open("/tmp/data_0026.txt", O_WRONLY|O_CREAT|O_TRUNC, 0666) = 9</tmp/data_0026.txt>
+908   fstat64(9</tmp/data_0026.txt>, {st_mode=S_IFREG|0644, st_size=0, ...}) = 0
+908   mmap2(NULL, 4096, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0xb6c20000
+908   write(9</tmp/data_0026.txt>, "32\n33\n34\n33\n35\n33\n32\n36\n35\n33\n33"..., 4096) = 4096
+908   write(9</tmp/data_0026.txt>, "\n34\n35\n31\n33\n34\n31\n34\n35\n32\n35\n3"..., 4096) = 4096
+908   write(9</tmp/data_0026.txt>, "32\n33\n33\n32\n34\n34\n31\n36\n33\n33\n34"..., 4096) = 4096
+908   write(9</tmp/data_0026.txt>, "5\n30\n34\n34\n33\n35\n35\n32\n33\n35\n32\n"..., 1397) = 1397
+908   close(9</tmp/data_0026.txt>)      = 0
+908   munmap(0xb6c20000, 4096)          = 0
+908   clock_gettime(CLOCK_THREAD_CPUTIME_ID, {0, 147999768}) = 0
+908   open("/sys/bus/iio/devices/iio:device0/buffer/enable", O_WRONLY|O_CREAT|O_TRUNC, 0666) = 9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>
+908   fstat64(9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>, {st_mode=S_IFREG|0644, st_size=4096, ...}) = 0
+908   mmap2(NULL, 4096, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0xb6c20000
+908   write(9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>, "0", 1) = 1
+908   close(9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>) = 0
+908   munmap(0xb6c20000, 4096)          = 0
+908   clock_gettime(CLOCK_THREAD_CPUTIME_ID, {0, 148446133}) = 0
+908   clock_gettime(CLOCK_MONOTONIC, {403, 325608424}) = 0
+908   write(1</dev/pts/0>, "403326 disable (took: 446365) af"..., 55) = 55
+908   clock_gettime(CLOCK_THREAD_CPUTIME_ID, {0, 148586385}) = 0
+908   open("/sys/bus/iio/devices/iio:device0/buffer/enable", O_WRONLY|O_CREAT|O_TRUNC, 0666) = 9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>
+908   fstat64(9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>, {st_mode=S_IFREG|0644, st_size=4096, ...}) = 0
+908   mmap2(NULL, 4096, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0xb6c20000
+908   write(9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>, "1", 1) = 1
+908   close(9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>) = 0
+908   munmap(0xb6c20000, 4096)          = 0
+908   clock_gettime(CLOCK_THREAD_CPUTIME_ID, {0, 149116093}) = 0
+908   clock_gettime(CLOCK_MONOTONIC, {403, 330509978}) = 0
+908   ioctl(8</dev/spidev1.0>, 0x40206b00SPI_IOC_MESSAGE(1), [{tx_buf: "\xf0\xf0\xf0\xf0\xf0\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00", rx_buf: NULL, len: 16, speed_hz: 320000, delay_usecs: 0, bits_per_word: 8, cs_change: 1, pad: 3064988936}, ]) = 16
+908   write(1</dev/pts/0>, "403331 enable (took: 529708)\n", 29) = 29
+908   poll([{fd=7</dev/iio:device0>, events=POLLIN}], 1, -1) = 1 ([{fd=7, revents=POLLIN}])
+908   clock_gettime(CLOCK_MONOTONIC, {403, 357182103}) = 0
+908   clock_gettime(CLOCK_THREAD_CPUTIME_ID, {0, 149376714}) = 0
+908   read(7</dev/iio:device0>, "\x22\x02\x22\x02\x02\x02\x12\x02\x12\x02\x02\x02\x22\x02\x12\x02\x42\x02\x32\x02\x02\x02\x02\x02\x22\x02\x12\x02\x12\x02\x32\x02"..., 16384) = 8326
+908   clock_gettime(CLOCK_THREAD_CPUTIME_ID, {0, 149460586}) = 0
+908   write(1</dev/pts/0>, "403357 total_read(8326 octets) t"..., 43) = 43
+908   open("/tmp/data_0027.txt", O_WRONLY|O_CREAT|O_TRUNC, 0666) = 9</tmp/data_0027.txt>
+908   fstat64(9</tmp/data_0027.txt>, {st_mode=S_IFREG|0644, st_size=0, ...}) = 0
+908   mmap2(NULL, 4096, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0xb6c20000
+908   write(9</tmp/data_0027.txt>, "34\n34\n32\n33\n33\n32\n34\n33\n36\n35\n32"..., 4096) = 4096
+908   write(9</tmp/data_0027.txt>, "5\n30\n34\n34\n33\n34\n34\n31\n32\n34\n32\n"..., 4096) = 4096
+908   write(9</tmp/data_0027.txt>, "\n32\n33\n34\n31\n35\n32\n32\n34\n33\n32\n3"..., 4096) = 4096
+908   write(9</tmp/data_0027.txt>, "34\n34\n30\n35\n31\n31\n35\n33\n34\n35\n32"..., 1353) = 1353
+908   close(9</tmp/data_0027.txt>)      = 0
+908   munmap(0xb6c20000, 4096)          = 0
+908   clock_gettime(CLOCK_THREAD_CPUTIME_ID, {0, 153258175}) = 0
+908   open("/sys/bus/iio/devices/iio:device0/buffer/enable", O_WRONLY|O_CREAT|O_TRUNC, 0666) = 9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>
+908   fstat64(9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>, {st_mode=S_IFREG|0644, st_size=4096, ...}) = 0
+908   mmap2(NULL, 4096, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0xb6c20000
+908   write(9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>, "0", 1) = 1
+908   close(9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>) = 0
+908   munmap(0xb6c20000, 4096)          = 0
+908   clock_gettime(CLOCK_THREAD_CPUTIME_ID, {0, 153705252}) = 0
+908   clock_gettime(CLOCK_MONOTONIC, {403, 365731883}) = 0
+908   write(1</dev/pts/0>, "403366 disable (took: 447077) af"..., 55) = 55
+908   clock_gettime(CLOCK_THREAD_CPUTIME_ID, {0, 153849182}) = 0
+908   open("/sys/bus/iio/devices/iio:device0/buffer/enable", O_WRONLY|O_CREAT|O_TRUNC, 0666) = 9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>
+908   fstat64(9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>, {st_mode=S_IFREG|0644, st_size=4096, ...}) = 0
+908   mmap2(NULL, 4096, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0xb6c20000
+908   write(9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>, "1", 1) = 1
+908   close(9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>) = 0
+908   munmap(0xb6c20000, 4096)          = 0
+908   clock_gettime(CLOCK_THREAD_CPUTIME_ID, {0, 154370111}) = 0
+908   clock_gettime(CLOCK_MONOTONIC, {403, 370649376}) = 0
+908   ioctl(8</dev/spidev1.0>, 0x40206b00SPI_IOC_MESSAGE(1), [{tx_buf: "\xf0\xf0\xf0\xf0\xf0\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00", rx_buf: NULL, len: 16, speed_hz: 320000, delay_usecs: 0, bits_per_word: 8, cs_change: 1, pad: 3064988936}, ]) = 16
+908   write(1</dev/pts/0>, "403371 enable (took: 520929)\n", 29) = 29
+908   poll([{fd=7</dev/iio:device0>, events=POLLIN}], 1, -1) = 1 ([{fd=7, revents=POLLIN}])
+908   clock_gettime(CLOCK_MONOTONIC, {403, 397295678}) = 0
+908   clock_gettime(CLOCK_THREAD_CPUTIME_ID, {0, 154634097}) = 0
+908   read(7</dev/iio:device0>, "\x02\x02\xf2\x01\x22\x02\x12\x02\x02\x02\x22\x02\x12\x02\x02\x02\x12\x02\x02\x02\x02\x02\x22\x02\x12\x02\x12\x02\x12\x02\x02\x02"..., 16384) = 8322
+908   clock_gettime(CLOCK_THREAD_CPUTIME_ID, {0, 154718958}) = 0
+908   write(1</dev/pts/0>, "403397 total_read(8322 octets) t"..., 43) = 43
+908   open("/tmp/data_0028.txt", O_WRONLY|O_CREAT|O_TRUNC, 0666) = 9</tmp/data_0028.txt>
+908   fstat64(9</tmp/data_0028.txt>, {st_mode=S_IFREG|0644, st_size=0, ...}) = 0
+908   mmap2(NULL, 4096, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0xb6c20000
+908   write(9</tmp/data_0028.txt>, "32\n31\n34\n33\n32\n34\n33\n32\n33\n32\n32"..., 4096) = 4096
+908   write(9</tmp/data_0028.txt>, "33\n33\n37\n34\n33\n31\n37\n34\n33\n33\n34"..., 4096) = 4096
+908   write(9</tmp/data_0028.txt>, "5\n35\n29\n34\n34\n31\n34\n34\n33\n34\n34\n"..., 4096) = 4096
+908   write(9</tmp/data_0028.txt>, "\n33\n33\n33\n34\n34\n33\n34\n32\n31\n34\n3"..., 1372) = 1372
+908   close(9</tmp/data_0028.txt>)      = 0
+908   munmap(0xb6c20000, 4096)          = 0
+908   clock_gettime(CLOCK_THREAD_CPUTIME_ID, {0, 158447339}) = 0
+908   open("/sys/bus/iio/devices/iio:device0/buffer/enable", O_WRONLY|O_CREAT|O_TRUNC, 0666) = 9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>
+908   fstat64(9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>, {st_mode=S_IFREG|0644, st_size=4096, ...}) = 0
+908   mmap2(NULL, 4096, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0xb6c20000
+908   write(9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>, "0", 1) = 1
+908   close(9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>) = 0
+908   munmap(0xb6c20000, 4096)          = 0
+908   clock_gettime(CLOCK_THREAD_CPUTIME_ID, {0, 158895742}) = 0
+908   clock_gettime(CLOCK_MONOTONIC, {403, 405832642}) = 0
+908   write(1</dev/pts/0>, "403406 disable (took: 448403) af"..., 55) = 55
+908   clock_gettime(CLOCK_THREAD_CPUTIME_ID, {0, 159042230}) = 0
+908   open("/sys/bus/iio/devices/iio:device0/buffer/enable", O_WRONLY|O_CREAT|O_TRUNC, 0666) = 9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>
+908   fstat64(9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>, {st_mode=S_IFREG|0644, st_size=4096, ...}) = 0
+908   mmap2(NULL, 4096, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0xb6c20000
+908   write(9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>, "1", 1) = 1
+908   close(9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>) = 0
+908   munmap(0xb6c20000, 4096)          = 0
+908   clock_gettime(CLOCK_THREAD_CPUTIME_ID, {0, 159571248}) = 0
+908   clock_gettime(CLOCK_MONOTONIC, {403, 410679609}) = 0
+908   ioctl(8</dev/spidev1.0>, 0x40206b00SPI_IOC_MESSAGE(1), [{tx_buf: "\xf0\xf0\xf0\xf0\xf0\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00", rx_buf: NULL, len: 16, speed_hz: 320000, delay_usecs: 0, bits_per_word: 8, cs_change: 1, pad: 3064988936}, ]) = 16
+908   write(1</dev/pts/0>, "403411 enable (took: 529018)\n", 29) = 29
+908   poll([{fd=7</dev/iio:device0>, events=POLLIN}], 1, -1) = 1 ([{fd=7, revents=POLLIN}])
+908   clock_gettime(CLOCK_MONOTONIC, {403, 437309116}) = 0
+908   clock_gettime(CLOCK_THREAD_CPUTIME_ID, {0, 159829061}) = 0
+908   read(7</dev/iio:device0>, "\x32\x02\x02\x02\x22\x02\x32\x02\x42\x02\x12\x02\x02\x02\xf2\x01\x22\x02\x22\x02\xf2\x01\x02\x02\x32\x02\x02\x02\x12\x02\x32\x02"..., 16384) = 8324
+908   clock_gettime(CLOCK_THREAD_CPUTIME_ID, {0, 159912446}) = 0
+908   write(1</dev/pts/0>, "403437 total_read(8324 octets) t"..., 43) = 43
+908   open("/tmp/data_0029.txt", O_WRONLY|O_CREAT|O_TRUNC, 0666) = 9</tmp/data_0029.txt>
+908   fstat64(9</tmp/data_0029.txt>, {st_mode=S_IFREG|0644, st_size=0, ...}) = 0
+908   mmap2(NULL, 4096, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0xb6c20000
+908   write(9</tmp/data_0029.txt>, "35\n32\n34\n35\n36\n33\n32\n31\n34\n34\n31"..., 4096) = 4096
+908   write(9</tmp/data_0029.txt>, "34\n35\n31\n32\n35\n35\n34\n34\n32\n33\n33"..., 4096) = 4096
+908   write(9</tmp/data_0029.txt>, "1\n34\n36\n34\n33\n35\n35\n33\n36\n32\n34\n"..., 4096) = 4096
+908   write(9</tmp/data_0029.txt>, "\n34\n36\n32\n34\n36\n35\n34\n32\n32\n33\n3"..., 1351) = 1351
+908   close(9</tmp/data_0029.txt>)      = 0
+908   munmap(0xb6c20000, 4096)          = 0
+908   clock_gettime(CLOCK_THREAD_CPUTIME_ID, {0, 163668288}) = 0
+908   open("/sys/bus/iio/devices/iio:device0/buffer/enable", O_WRONLY|O_CREAT|O_TRUNC, 0666) = 9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>
+908   fstat64(9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>, {st_mode=S_IFREG|0644, st_size=4096, ...}) = 0
+908   mmap2(NULL, 4096, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0xb6c20000
+908   write(9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>, "0", 1) = 1
+908   close(9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>) = 0
+908   munmap(0xb6c20000, 4096)          = 0
+908   clock_gettime(CLOCK_THREAD_CPUTIME_ID, {0, 164125997}) = 0
+908   clock_gettime(CLOCK_MONOTONIC, {403, 446068652}) = 0
+908   write(1</dev/pts/0>, "403446 disable (took: 457709) af"..., 55) = 55
+908   clock_gettime(CLOCK_THREAD_CPUTIME_ID, {0, 164269804}) = 0
+908   open("/sys/bus/iio/devices/iio:device0/buffer/enable", O_WRONLY|O_CREAT|O_TRUNC, 0666) = 9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>
+908   fstat64(9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>, {st_mode=S_IFREG|0644, st_size=4096, ...}) = 0
+908   mmap2(NULL, 4096, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0xb6c20000
+908   write(9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>, "1", 1) = 1
+908   close(9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>) = 0
+908   munmap(0xb6c20000, 4096)          = 0
+908   clock_gettime(CLOCK_THREAD_CPUTIME_ID, {0, 164787083}) = 0
+908   clock_gettime(CLOCK_MONOTONIC, {403, 450831447}) = 0
+908   ioctl(8</dev/spidev1.0>, 0x40206b00SPI_IOC_MESSAGE(1), [{tx_buf: "\xf0\xf0\xf0\xf0\xf0\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00", rx_buf: NULL, len: 16, speed_hz: 320000, delay_usecs: 0, bits_per_word: 8, cs_change: 1, pad: 3064988936}, ]) = 16
+908   write(1</dev/pts/0>, "403451 enable (took: 517279)\n", 29) = 29
+908   poll([{fd=7</dev/iio:device0>, events=POLLIN}], 1, -1) = 1 ([{fd=7, revents=POLLIN}])
+908   clock_gettime(CLOCK_MONOTONIC, {403, 477371532}) = 0
+908   clock_gettime(CLOCK_THREAD_CPUTIME_ID, {0, 165046165}) = 0
+908   read(7</dev/iio:device0>, "\xf2\x01\x22\x02\x42\x02\x22\x02\x22\x02\x22\x02\x32\x02\x42\x02\x12\x02\x12\x02\x32\x02\x32\x02\x12\x02\x12\x02\xb2\x02\x02\x02"..., 16384) = 8260
+908   clock_gettime(CLOCK_THREAD_CPUTIME_ID, {0, 165130207}) = 0
+908   write(1</dev/pts/0>, "403477 total_read(8260 octets) t"..., 43) = 43
+908   open("/tmp/data_0030.txt", O_WRONLY|O_CREAT|O_TRUNC, 0666) = 9</tmp/data_0030.txt>
+908   fstat64(9</tmp/data_0030.txt>, {st_mode=S_IFREG|0644, st_size=0, ...}) = 0
+908   mmap2(NULL, 4096, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0xb6c20000
+908   write(9</tmp/data_0030.txt>, "31\n34\n36\n34\n34\n34\n35\n36\n33\n33\n35"..., 4096) = 4096
+908   write(9</tmp/data_0030.txt>, "4\n31\n33\n33\n33\n32\n36\n33\n34\n34\n31\n"..., 4096) = 4096
+908   write(9</tmp/data_0030.txt>, "\n35\n36\n30\n31\n35\n34\n33\n35\n32\n34\n3"..., 4096) = 4096
+908   write(9</tmp/data_0030.txt>, "32\n34\n36\n31\n34\n34\n31\n34\n34\n32\n34"..., 1278) = 1278
+908   close(9</tmp/data_0030.txt>)      = 0
+908   munmap(0xb6c20000, 4096)          = 0
+908   clock_gettime(CLOCK_THREAD_CPUTIME_ID, {0, 168831814}) = 0
+908   open("/sys/bus/iio/devices/iio:device0/buffer/enable", O_WRONLY|O_CREAT|O_TRUNC, 0666) = 9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>
+908   fstat64(9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>, {st_mode=S_IFREG|0644, st_size=4096, ...}) = 0
+908   mmap2(NULL, 4096, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0xb6c20000
+908   write(9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>, "0", 1) = 1
+908   close(9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>) = 0
+908   munmap(0xb6c20000, 4096)          = 0
+908   clock_gettime(CLOCK_THREAD_CPUTIME_ID, {0, 169272102}) = 0
+908   clock_gettime(CLOCK_MONOTONIC, {403, 486032260}) = 0
+908   write(1</dev/pts/0>, "403486 disable (took: 440288) af"..., 55) = 55
+908   clock_gettime(CLOCK_THREAD_CPUTIME_ID, {0, 169418030}) = 0
+908   open("/sys/bus/iio/devices/iio:device0/buffer/enable", O_WRONLY|O_CREAT|O_TRUNC, 0666) = 9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>
+908   fstat64(9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>, {st_mode=S_IFREG|0644, st_size=4096, ...}) = 0
+908   mmap2(NULL, 4096, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0xb6c20000
+908   write(9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>, "1", 1) = 1
+908   close(9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>) = 0
+908   munmap(0xb6c20000, 4096)          = 0
+908   clock_gettime(CLOCK_THREAD_CPUTIME_ID, {0, 169956337}) = 0
+908   clock_gettime(CLOCK_MONOTONIC, {403, 490884488}) = 0
+908   ioctl(8</dev/spidev1.0>, 0x40206b00SPI_IOC_MESSAGE(1), [{tx_buf: "\xf0\xf0\xf0\xf0\xf0\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00", rx_buf: NULL, len: 16, speed_hz: 320000, delay_usecs: 0, bits_per_word: 8, cs_change: 1, pad: 3064988936}, ]) = 16
+908   write(1</dev/pts/0>, "403491 enable (took: 538307)\n", 29) = 29
+908   poll([{fd=7</dev/iio:device0>, events=POLLIN}], 1, -1) = 1 ([{fd=7, revents=POLLIN}])
+908   clock_gettime(CLOCK_MONOTONIC, {403, 517652306}) = 0
+908   clock_gettime(CLOCK_THREAD_CPUTIME_ID, {0, 170215748}) = 0
+908   read(7</dev/iio:device0>, "\x32\x02\x02\x02\x22\x02\x32\x02\x02\x02\x12\x02\x02\x02\x12\x02\x12\x02\x12\x02\x12\x02\x22\x02\x22\x02\x12\x02\x12\x02\x22\x02"..., 16384) = 8346
+908   clock_gettime(CLOCK_THREAD_CPUTIME_ID, {0, 170302364}) = 0
+908   write(1</dev/pts/0>, "403518 total_read(8346 octets) t"..., 43) = 43
+908   open("/tmp/data_0031.txt", O_WRONLY|O_CREAT|O_TRUNC, 0666) = 9</tmp/data_0031.txt>
+908   fstat64(9</tmp/data_0031.txt>, {st_mode=S_IFREG|0644, st_size=0, ...}) = 0
+908   mmap2(NULL, 4096, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0xb6c20000
+908   write(9</tmp/data_0031.txt>, "35\n32\n34\n35\n32\n33\n32\n33\n33\n33\n33"..., 4096) = 4096
+908   write(9</tmp/data_0031.txt>, "33\n34\n35\n32\n33\n36\n35\n34\n31\n31\n34"..., 4096) = 4096
+908   write(9</tmp/data_0031.txt>, "3\n34\n31\n35\n33\n32\n33\n35\n32\n32\n34\n"..., 4096) = 4096
+908   write(9</tmp/data_0031.txt>, "\n35\n34\n33\n32\n33\n34\n34\n33\n34\n33\n3"..., 1372) = 1372
+908   close(9</tmp/data_0031.txt>)      = 0
+908   munmap(0xb6c20000, 4096)          = 0
+908   clock_gettime(CLOCK_THREAD_CPUTIME_ID, {0, 174103418}) = 0
+908   open("/sys/bus/iio/devices/iio:device0/buffer/enable", O_WRONLY|O_CREAT|O_TRUNC, 0666) = 9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>
+908   fstat64(9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>, {st_mode=S_IFREG|0644, st_size=4096, ...}) = 0
+908   mmap2(NULL, 4096, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0xb6c20000
+908   write(9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>, "0", 1) = 1
+908   close(9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>) = 0
+908   munmap(0xb6c20000, 4096)          = 0
+908   clock_gettime(CLOCK_THREAD_CPUTIME_ID, {0, 174544572}) = 0
+908   clock_gettime(CLOCK_MONOTONIC, {403, 526455521}) = 0
+908   write(1</dev/pts/0>, "403526 disable (took: 441154) af"..., 55) = 55
+908   clock_gettime(CLOCK_THREAD_CPUTIME_ID, {0, 174679594}) = 0
+908   open("/sys/bus/iio/devices/iio:device0/buffer/enable", O_WRONLY|O_CREAT|O_TRUNC, 0666) = 9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>
+908   fstat64(9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>, {st_mode=S_IFREG|0644, st_size=4096, ...}) = 0
+908   mmap2(NULL, 4096, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0xb6c20000
+908   write(9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>, "1", 1) = 1
+908   close(9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>) = 0
+908   munmap(0xb6c20000, 4096)          = 0
+908   clock_gettime(CLOCK_THREAD_CPUTIME_ID, {0, 175199216}) = 0
+908   clock_gettime(CLOCK_MONOTONIC, {403, 531434976}) = 0
+908   ioctl(8</dev/spidev1.0>, 0x40206b00SPI_IOC_MESSAGE(1), [{tx_buf: "\xf0\xf0\xf0\xf0\xf0\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00", rx_buf: NULL, len: 16, speed_hz: 320000, delay_usecs: 0, bits_per_word: 8, cs_change: 1, pad: 3064988936}, ]) = 16
+908   write(1</dev/pts/0>, "403531 enable (took: 519622)\n", 29) = 29
+908   poll([{fd=7</dev/iio:device0>, events=POLLIN}], 1, -1) = 1 ([{fd=7, revents=POLLIN}])
+908   clock_gettime(CLOCK_MONOTONIC, {403, 557883596}) = 0
+908   clock_gettime(CLOCK_THREAD_CPUTIME_ID, {0, 175460894}) = 0
+908   read(7</dev/iio:device0>, "\xe2\x01\x22\x02\x12\x02\xe2\x01\x12\x02\x22\x02\xf2\x01\x22\x02\x22\x02\x02\x02\x02\x02\x62\x02\xf2\x01\x32\x02\x42\x02\x02\x02"..., 16384) = 8244
+908   clock_gettime(CLOCK_THREAD_CPUTIME_ID, {0, 175543592}) = 0
+908   write(1</dev/pts/0>, "403558 total_read(8244 octets) t"..., 43) = 43
+908   open("/tmp/data_0032.txt", O_WRONLY|O_CREAT|O_TRUNC, 0666) = 9</tmp/data_0032.txt>
+908   fstat64(9</tmp/data_0032.txt>, {st_mode=S_IFREG|0644, st_size=0, ...}) = 0
+908   mmap2(NULL, 4096, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0xb6c20000
+908   write(9</tmp/data_0032.txt>, "30\n34\n33\n30\n33\n34\n31\n34\n34\n32\n32"..., 4096) = 4096
+908   write(9</tmp/data_0032.txt>, "72\n68\n64\n57\n56\n55\n45\n42\n37\n35\n32"..., 4096) = 4096
+908   write(9</tmp/data_0032.txt>, "1\n34\n33\n32\n32\n34\n34\n33\n39\n32\n32\n"..., 4096) = 4096
+908   write(9</tmp/data_0032.txt>, "\n34\n32\n32\n34\n30\n35\n34\n33\n32\n35\n3"..., 1237) = 1237
+908   close(9</tmp/data_0032.txt>)      = 0
+908   munmap(0xb6c20000, 4096)          = 0
+908   clock_gettime(CLOCK_THREAD_CPUTIME_ID, {0, 179288314}) = 0
+908   open("/sys/bus/iio/devices/iio:device0/buffer/enable", O_WRONLY|O_CREAT|O_TRUNC, 0666) = 9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>
+908   fstat64(9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>, {st_mode=S_IFREG|0644, st_size=4096, ...}) = 0
+908   mmap2(NULL, 4096, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0xb6c20000
+908   write(9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>, "0", 1) = 1
+908   close(9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>) = 0
+908   munmap(0xb6c20000, 4096)          = 0
+908   clock_gettime(CLOCK_THREAD_CPUTIME_ID, {0, 179731937}) = 0
+908   clock_gettime(CLOCK_MONOTONIC, {403, 566375624}) = 0
+908   write(1</dev/pts/0>, "403566 disable (took: 443623) af"..., 55) = 55
+908   clock_gettime(CLOCK_THREAD_CPUTIME_ID, {0, 179878373}) = 0
+908   open("/sys/bus/iio/devices/iio:device0/buffer/enable", O_WRONLY|O_CREAT|O_TRUNC, 0666) = 9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>
+908   fstat64(9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>, {st_mode=S_IFREG|0644, st_size=4096, ...}) = 0
+908   mmap2(NULL, 4096, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0xb6c20000
+908   write(9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>, "1", 1) = 1
+908   close(9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>) = 0
+908   munmap(0xb6c20000, 4096)          = 0
+908   clock_gettime(CLOCK_THREAD_CPUTIME_ID, {0, 180397462}) = 0
+908   clock_gettime(CLOCK_MONOTONIC, {403, 571234994}) = 0
+908   ioctl(8</dev/spidev1.0>, 0x40206b00SPI_IOC_MESSAGE(1), [{tx_buf: "\xf0\xf0\xf0\xf0\xf0\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00", rx_buf: NULL, len: 16, speed_hz: 320000, delay_usecs: 0, bits_per_word: 8, cs_change: 1, pad: 3064988936}, ]) = 16
+908   write(1</dev/pts/0>, "403571 enable (took: 519089)\n", 29) = 29
+908   poll([{fd=7</dev/iio:device0>, events=POLLIN}], 1, -1) = 1 ([{fd=7, revents=POLLIN}])
+908   clock_gettime(CLOCK_MONOTONIC, {403, 598093965}) = 0
+908   clock_gettime(CLOCK_THREAD_CPUTIME_ID, {0, 180654905}) = 0
+908   read(7</dev/iio:device0>, "\x02\x02\x02\x02\xe2\x01\x02\x02\x22\x02\x12\x02\xe2\x01\x32\x02\x12\x02\x12\x02\x12\x02\x02\x02\x12\x02\x42\x02\x12\x02\x12\x02"..., 16384) = 8346
+908   clock_gettime(CLOCK_THREAD_CPUTIME_ID, {0, 180739283}) = 0
+908   write(1</dev/pts/0>, "403598 total_read(8346 octets) t"..., 43) = 43
+908   open("/tmp/data_0033.txt", O_WRONLY|O_CREAT|O_TRUNC, 0666) = 9</tmp/data_0033.txt>
+908   fstat64(9</tmp/data_0033.txt>, {st_mode=S_IFREG|0644, st_size=0, ...}) = 0
+908   mmap2(NULL, 4096, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0xb6c20000
+908   write(9</tmp/data_0033.txt>, "32\n32\n30\n32\n34\n33\n30\n35\n33\n33\n33"..., 4096) = 4096
+908   write(9</tmp/data_0033.txt>, "5\n37\n34\n35\n35\n34\n33\n35\n33\n35\n34\n"..., 4096) = 4096
+908   write(9</tmp/data_0033.txt>, "\n31\n32\n32\n33\n33\n32\n32\n33\n33\n34\n3"..., 4096) = 4096
+908   write(9</tmp/data_0033.txt>, "34\n32\n35\n33\n33\n33\n36\n33\n35\n35\n33"..., 1344) = 1344
+908   close(9</tmp/data_0033.txt>)      = 0
+908   munmap(0xb6c20000, 4096)          = 0
+908   clock_gettime(CLOCK_THREAD_CPUTIME_ID, {0, 184536645}) = 0
+908   open("/sys/bus/iio/devices/iio:device0/buffer/enable", O_WRONLY|O_CREAT|O_TRUNC, 0666) = 9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>
+908   fstat64(9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>, {st_mode=S_IFREG|0644, st_size=4096, ...}) = 0
+908   mmap2(NULL, 4096, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0xb6c20000
+908   write(9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>, "0", 1) = 1
+908   close(9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>) = 0
+908   munmap(0xb6c20000, 4096)          = 0
+908   clock_gettime(CLOCK_THREAD_CPUTIME_ID, {0, 184980897}) = 0
+908   clock_gettime(CLOCK_MONOTONIC, {403, 606787457}) = 0
+908   write(1</dev/pts/0>, "403607 disable (took: 444252) af"..., 55) = 55
+908   clock_gettime(CLOCK_THREAD_CPUTIME_ID, {0, 185123245}) = 0
+908   open("/sys/bus/iio/devices/iio:device0/buffer/enable", O_WRONLY|O_CREAT|O_TRUNC, 0666) = 9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>
+908   fstat64(9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>, {st_mode=S_IFREG|0644, st_size=4096, ...}) = 0
+908   mmap2(NULL, 4096, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0xb6c20000
+908   write(9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>, "1", 1) = 1
+908   close(9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>) = 0
+908   munmap(0xb6c20000, 4096)          = 0
+908   clock_gettime(CLOCK_THREAD_CPUTIME_ID, {0, 185638224}) = 0
+908   clock_gettime(CLOCK_MONOTONIC, {403, 611647763}) = 0
+908   ioctl(8</dev/spidev1.0>, 0x40206b00SPI_IOC_MESSAGE(1), [{tx_buf: "\xf0\xf0\xf0\xf0\xf0\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00", rx_buf: NULL, len: 16, speed_hz: 320000, delay_usecs: 0, bits_per_word: 8, cs_change: 1, pad: 3064988936}, ]) = 16
+908   write(1</dev/pts/0>, "403612 enable (took: 514979)\n", 29) = 29
+908   poll([{fd=7</dev/iio:device0>, events=POLLIN}], 1, -1) = 1 ([{fd=7, revents=POLLIN}])
+908   clock_gettime(CLOCK_MONOTONIC, {403, 638154608}) = 0
+908   clock_gettime(CLOCK_THREAD_CPUTIME_ID, {0, 185895477}) = 0
+908   read(7</dev/iio:device0>, "\x12\x02\x02\x02\x32\x02\xd2\x01\x12\x02\x22\x02\x22\x02\x02\x02\x12\x02\x22\x02\x02\x02\x02\x02\x12\x02\x02\x02\x22\x02\x02\x02"..., 16384) = 8250
+908   clock_gettime(CLOCK_THREAD_CPUTIME_ID, {0, 185978807}) = 0
+908   write(1</dev/pts/0>, "403638 total_read(8250 octets) t"..., 43) = 43
+908   open("/tmp/data_0034.txt", O_WRONLY|O_CREAT|O_TRUNC, 0666) = 9</tmp/data_0034.txt>
+908   fstat64(9</tmp/data_0034.txt>, {st_mode=S_IFREG|0644, st_size=0, ...}) = 0
+908   mmap2(NULL, 4096, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0xb6c20000
+908   write(9</tmp/data_0034.txt>, "33\n32\n35\n29\n33\n34\n34\n32\n33\n34\n32"..., 4096) = 4096
+908   write(9</tmp/data_0034.txt>, "8\n36\n36\n32\n34\n36\n32\n36\n37\n32\n33\n"..., 4096) = 4096
+908   write(9</tmp/data_0034.txt>, "\n33\n33\n33\n32\n33\n33\n34\n34\n36\n32\n3"..., 4096) = 4096
+908   write(9</tmp/data_0034.txt>, "35\n34\n33\n35\n32\n34\n33\n33\n34\n34\n34"..., 1185) = 1185
+908   close(9</tmp/data_0034.txt>)      = 0
+908   munmap(0xb6c20000, 4096)          = 0
+908   clock_gettime(CLOCK_THREAD_CPUTIME_ID, {0, 189703773}) = 0
+908   open("/sys/bus/iio/devices/iio:device0/buffer/enable", O_WRONLY|O_CREAT|O_TRUNC, 0666) = 9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>
+908   fstat64(9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>, {st_mode=S_IFREG|0644, st_size=4096, ...}) = 0
+908   mmap2(NULL, 4096, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0xb6c20000
+908   write(9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>, "0", 1) = 1
+908   close(9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>) = 0
+908   munmap(0xb6c20000, 4096)          = 0
+908   clock_gettime(CLOCK_THREAD_CPUTIME_ID, {0, 190142897}) = 0
+908   clock_gettime(CLOCK_MONOTONIC, {403, 646744944}) = 0
+908   write(1</dev/pts/0>, "403647 disable (took: 439124) af"..., 55) = 55
+908   clock_gettime(CLOCK_THREAD_CPUTIME_ID, {0, 190287852}) = 0
+908   open("/sys/bus/iio/devices/iio:device0/buffer/enable", O_WRONLY|O_CREAT|O_TRUNC, 0666) = 9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>
+908   fstat64(9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>, {st_mode=S_IFREG|0644, st_size=4096, ...}) = 0
+908   mmap2(NULL, 4096, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0xb6c20000
+908   write(9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>, "1", 1) = 1
+908   close(9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>) = 0
+908   munmap(0xb6c20000, 4096)          = 0
+908   clock_gettime(CLOCK_THREAD_CPUTIME_ID, {0, 190794063}) = 0
+908   clock_gettime(CLOCK_MONOTONIC, {403, 651463217}) = 0
+908   ioctl(8</dev/spidev1.0>, 0x40206b00SPI_IOC_MESSAGE(1), [{tx_buf: "\xf0\xf0\xf0\xf0\xf0\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00", rx_buf: NULL, len: 16, speed_hz: 320000, delay_usecs: 0, bits_per_word: 8, cs_change: 1, pad: 3064988936}, ]) = 16
+908   write(1</dev/pts/0>, "403651 enable (took: 506211)\n", 29) = 29
+908   poll([{fd=7</dev/iio:device0>, events=POLLIN}], 1, -1) = 1 ([{fd=7, revents=POLLIN}])
+908   clock_gettime(CLOCK_MONOTONIC, {403, 678197280}) = 0
+908   clock_gettime(CLOCK_THREAD_CPUTIME_ID, {0, 191076076}) = 0
+908   read(7</dev/iio:device0>, "\x12\x02\x32\x02\x02\x02\x12\x02\x02\x02\x12\x02\x22\x02\x22\x02\x12\x02\x22\x02\x22\x02\x02\x02\x12\x02\x32\x02\xe2\x01\x22\x02"..., 16384) = 8312
+908   clock_gettime(CLOCK_THREAD_CPUTIME_ID, {0, 191176283}) = 0
+908   write(1</dev/pts/0>, "403678 total_read(8312 octets) t"..., 44) = 44
+908   open("/tmp/data_0035.txt", O_WRONLY|O_CREAT|O_TRUNC, 0666) = 9</tmp/data_0035.txt>
+908   fstat64(9</tmp/data_0035.txt>, {st_mode=S_IFREG|0644, st_size=0, ...}) = 0
+908   mmap2(NULL, 4096, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0xb6c20000
+908   write(9</tmp/data_0035.txt>, "33\n35\n32\n33\n32\n33\n34\n34\n33\n34\n34"..., 4096) = 4096
+908   write(9</tmp/data_0035.txt>, "\n33\n34\n35\n33\n34\n34\n32\n38\n34\n33\n3"..., 4096) = 4096
+908   write(9</tmp/data_0035.txt>, "35\n34\n34\n33\n33\n38\n35\n33\n34\n33\n32"..., 4096) = 4096
+908   write(9</tmp/data_0035.txt>, "6\n33\n34\n35\n32\n30\n35\n32\n32\n30\n33\n"..., 1271) = 1271
+908   close(9</tmp/data_0035.txt>)      = 0
+908   munmap(0xb6c20000, 4096)          = 0
+908   clock_gettime(CLOCK_THREAD_CPUTIME_ID, {0, 195002346}) = 0
+908   open("/sys/bus/iio/devices/iio:device0/buffer/enable", O_WRONLY|O_CREAT|O_TRUNC, 0666) = 9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>
+908   fstat64(9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>, {st_mode=S_IFREG|0644, st_size=4096, ...}) = 0
+908   mmap2(NULL, 4096, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0xb6c20000
+908   write(9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>, "0", 1) = 1
+908   close(9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>) = 0
+908   munmap(0xb6c20000, 4096)          = 0
+908   clock_gettime(CLOCK_THREAD_CPUTIME_ID, {0, 195447247}) = 0
+908   clock_gettime(CLOCK_MONOTONIC, {403, 686503309}) = 0
+908   write(1</dev/pts/0>, "403687 disable (took: 444901) af"..., 55) = 55
+908   clock_gettime(CLOCK_THREAD_CPUTIME_ID, {0, 195578166}) = 0
+908   open("/sys/bus/iio/devices/iio:device0/buffer/enable", O_WRONLY|O_CREAT|O_TRUNC, 0666) = 9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>
+908   fstat64(9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>, {st_mode=S_IFREG|0644, st_size=4096, ...}) = 0
+908   mmap2(NULL, 4096, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0xb6c20000
+908   write(9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>, "1", 1) = 1
+908   close(9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>) = 0
+908   munmap(0xb6c20000, 4096)          = 0
+908   clock_gettime(CLOCK_THREAD_CPUTIME_ID, {0, 196060476}) = 0
+908   clock_gettime(CLOCK_MONOTONIC, {403, 691031432}) = 0
+908   ioctl(8</dev/spidev1.0>, 0x40206b00SPI_IOC_MESSAGE(1), [{tx_buf: "\xf0\xf0\xf0\xf0\xf0\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00", rx_buf: NULL, len: 16, speed_hz: 320000, delay_usecs: 0, bits_per_word: 8, cs_change: 1, pad: 3064988936}, ]) = 16
+908   write(1</dev/pts/0>, "403691 enable (took: 482310)\n", 29) = 29
+908   poll([{fd=7</dev/iio:device0>, events=POLLIN}], 1, -1) = 1 ([{fd=7, revents=POLLIN}])
+908   clock_gettime(CLOCK_MONOTONIC, {403, 718011673}) = 0
+908   clock_gettime(CLOCK_THREAD_CPUTIME_ID, {0, 196328490}) = 0
+908   read(7</dev/iio:device0>, "\x02\x02\x32\x02\x22\x02\x12\x02\x02\x02\x42\x02\x12\x02\x22\x02\x32\x02\xe2\x01\x02\x02\x32\x02\x02\x02\x12\x02\x12\x02\x22\x02"..., 16384) = 8394
+908   clock_gettime(CLOCK_THREAD_CPUTIME_ID, {0, 196413774}) = 0
+908   write(1</dev/pts/0>, "403718 total_read(8394 octets) t"..., 43) = 43
+908   open("/tmp/data_0036.txt", O_WRONLY|O_CREAT|O_TRUNC, 0666) = 9</tmp/data_0036.txt>
+908   fstat64(9</tmp/data_0036.txt>, {st_mode=S_IFREG|0644, st_size=0, ...}) = 0
+908   mmap2(NULL, 4096, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0xb6c20000
+908   write(9</tmp/data_0036.txt>, "32\n35\n34\n33\n32\n36\n33\n34\n35\n30\n32"..., 4096) = 4096
+908   write(9</tmp/data_0036.txt>, "39\n34\n33\n35\n34\n34\n36\n33\n36\n36\n33"..., 4096) = 4096
+908   write(9</tmp/data_0036.txt>, "0\n34\n34\n31\n35\n34\n28\n34\n34\n35\n33\n"..., 4096) = 4096
+908   write(9</tmp/data_0036.txt>, "\n33\n33\n32\n31\n36\n33\n34\n36\n32\n32\n3"..., 1450) = 1450
+908   close(9</tmp/data_0036.txt>)      = 0
+908   munmap(0xb6c20000, 4096)          = 0
+908   clock_gettime(CLOCK_THREAD_CPUTIME_ID, {0, 200258363}) = 0
+908   open("/sys/bus/iio/devices/iio:device0/buffer/enable", O_WRONLY|O_CREAT|O_TRUNC, 0666) = 9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>
+908   fstat64(9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>, {st_mode=S_IFREG|0644, st_size=4096, ...}) = 0
+908   mmap2(NULL, 4096, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0xb6c20000
+908   write(9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>, "0", 1) = 1
+908   close(9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>) = 0
+908   munmap(0xb6c20000, 4096)          = 0
+908   clock_gettime(CLOCK_THREAD_CPUTIME_ID, {0, 200707158}) = 0
+908   clock_gettime(CLOCK_MONOTONIC, {403, 726669762}) = 0
+908   write(1</dev/pts/0>, "403727 disable (took: 448795) af"..., 55) = 55
+908   clock_gettime(CLOCK_THREAD_CPUTIME_ID, {0, 200845025}) = 0
+908   open("/sys/bus/iio/devices/iio:device0/buffer/enable", O_WRONLY|O_CREAT|O_TRUNC, 0666) = 9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>
+908   fstat64(9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>, {st_mode=S_IFREG|0644, st_size=4096, ...}) = 0
+908   mmap2(NULL, 4096, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0xb6c20000
+908   write(9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>, "1", 1) = 1
+908   close(9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>) = 0
+908   munmap(0xb6c20000, 4096)          = 0
+908   clock_gettime(CLOCK_THREAD_CPUTIME_ID, {0, 201347344}) = 0
+908   clock_gettime(CLOCK_MONOTONIC, {403, 731609599}) = 0
+908   ioctl(8</dev/spidev1.0>, 0x40206b00SPI_IOC_MESSAGE(1), [{tx_buf: "\xf0\xf0\xf0\xf0\xf0\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00", rx_buf: NULL, len: 16, speed_hz: 320000, delay_usecs: 0, bits_per_word: 8, cs_change: 1, pad: 3064988936}, ]) = 16
+908   write(1</dev/pts/0>, "403732 enable (took: 502319)\n", 29) = 29
+908   poll([{fd=7</dev/iio:device0>, events=POLLIN}], 1, -1) = 1 ([{fd=7, revents=POLLIN}])
+908   clock_gettime(CLOCK_MONOTONIC, {403, 758145824}) = 0
+908   clock_gettime(CLOCK_THREAD_CPUTIME_ID, {0, 201608366}) = 0
+908   read(7</dev/iio:device0>, "\x42\x02\x22\x02\x12\x02\x32\x02\x22\x02\xf2\x01\x12\x02\x32\x02\x02\x02\x32\x02\x12\x02\x02\x02\x12\x02\x32\x02\xf2\x01\x32\x02"..., 16384) = 8290
+908   clock_gettime(CLOCK_THREAD_CPUTIME_ID, {0, 201690787}) = 0
+908   write(1</dev/pts/0>, "403758 total_read(8290 octets) t"..., 43) = 43
+908   open("/tmp/data_0037.txt", O_WRONLY|O_CREAT|O_TRUNC, 0666) = 9</tmp/data_0037.txt>
+908   fstat64(9</tmp/data_0037.txt>, {st_mode=S_IFREG|0644, st_size=0, ...}) = 0
+908   mmap2(NULL, 4096, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0xb6c20000
+908   write(9</tmp/data_0037.txt>, "36\n34\n33\n35\n34\n31\n33\n35\n32\n35\n33"..., 4096) = 4096
+908   write(9</tmp/data_0037.txt>, "\n36\n34\n33\n35\n37\n36\n39\n37\n34\n37\n3"..., 4096) = 4096
+908   write(9</tmp/data_0037.txt>, "33\n35\n32\n33\n33\n33\n33\n34\n34\n32\n34"..., 4096) = 4096
+908   write(9</tmp/data_0037.txt>, "4\n31\n34\n34\n32\n34\n34\n33\n34\n33\n33\n"..., 1262) = 1262
+908   close(9</tmp/data_0037.txt>)      = 0
+908   munmap(0xb6c20000, 4096)          = 0
+908   clock_gettime(CLOCK_THREAD_CPUTIME_ID, {0, 205440913}) = 0
+908   open("/sys/bus/iio/devices/iio:device0/buffer/enable", O_WRONLY|O_CREAT|O_TRUNC, 0666) = 9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>
+908   fstat64(9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>, {st_mode=S_IFREG|0644, st_size=4096, ...}) = 0
+908   mmap2(NULL, 4096, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0xb6c20000
+908   write(9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>, "0", 1) = 1
+908   close(9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>) = 0
+908   munmap(0xb6c20000, 4096)          = 0
+908   clock_gettime(CLOCK_THREAD_CPUTIME_ID, {0, 205885886}) = 0
+908   clock_gettime(CLOCK_MONOTONIC, {403, 766609642}) = 0
+908   write(1</dev/pts/0>, "403767 disable (took: 444973) af"..., 55) = 55
+908   clock_gettime(CLOCK_THREAD_CPUTIME_ID, {0, 206027010}) = 0
+908   open("/sys/bus/iio/devices/iio:device0/buffer/enable", O_WRONLY|O_CREAT|O_TRUNC, 0666) = 9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>
+908   fstat64(9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>, {st_mode=S_IFREG|0644, st_size=4096, ...}) = 0
+908   mmap2(NULL, 4096, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0xb6c20000
+908   write(9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>, "1", 1) = 1
+908   close(9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>) = 0
+908   munmap(0xb6c20000, 4096)          = 0
+908   clock_gettime(CLOCK_THREAD_CPUTIME_ID, {0, 206540309}) = 0
+908   clock_gettime(CLOCK_MONOTONIC, {403, 771536781}) = 0
+908   ioctl(8</dev/spidev1.0>, 0x40206b00SPI_IOC_MESSAGE(1), [{tx_buf: "\xf0\xf0\xf0\xf0\xf0\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00", rx_buf: NULL, len: 16, speed_hz: 320000, delay_usecs: 0, bits_per_word: 8, cs_change: 1, pad: 3064988936}, ]) = 16
+908   write(1</dev/pts/0>, "403772 enable (took: 513299)\n", 29) = 29
+908   poll([{fd=7</dev/iio:device0>, events=POLLIN}], 1, -1) = 1 ([{fd=7, revents=POLLIN}])
+908   clock_gettime(CLOCK_MONOTONIC, {403, 798145162}) = 0
+908   clock_gettime(CLOCK_THREAD_CPUTIME_ID, {0, 206802253}) = 0
+908   read(7</dev/iio:device0>, "\x22\x02\x32\x02\x32\x02\x02\x02\x02\x02\x22\x02\x02\x02\x02\x02\x32\x02\xe2\x01\x12\x02\x22\x02\x12\x02\x22\x02\x32\x02\x02\x02"..., 16384) = 8354
+908   clock_gettime(CLOCK_THREAD_CPUTIME_ID, {0, 206884388}) = 0
+908   write(1</dev/pts/0>, "403798 total_read(8354 octets) t"..., 43) = 43
+908   open("/tmp/data_0038.txt", O_WRONLY|O_CREAT|O_TRUNC, 0666) = 9</tmp/data_0038.txt>
+908   fstat64(9</tmp/data_0038.txt>, {st_mode=S_IFREG|0644, st_size=0, ...}) = 0
+908   mmap2(NULL, 4096, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0xb6c20000
+908   write(9</tmp/data_0038.txt>, "34\n35\n35\n32\n32\n34\n32\n32\n35\n30\n33"..., 4096) = 4096
+908   write(9</tmp/data_0038.txt>, "4\n34\n36\n36\n36\n36\n40\n36\n36\n34\n35\n"..., 4096) = 4096
+908   write(9</tmp/data_0038.txt>, "\n35\n32\n34\n34\n31\n35\n35\n31\n35\n35\n3"..., 4096) = 4096
+908   write(9</tmp/data_0038.txt>, "33\n32\n35\n33\n32\n34\n33\n32\n34\n34\n34"..., 1326) = 1326
+908   close(9</tmp/data_0038.txt>)      = 0
+908   munmap(0xb6c20000, 4096)          = 0
+908   clock_gettime(CLOCK_THREAD_CPUTIME_ID, {0, 210645935}) = 0
+908   open("/sys/bus/iio/devices/iio:device0/buffer/enable", O_WRONLY|O_CREAT|O_TRUNC, 0666) = 9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>
+908   fstat64(9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>, {st_mode=S_IFREG|0644, st_size=4096, ...}) = 0
+908   mmap2(NULL, 4096, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0xb6c20000
+908   write(9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>, "0", 1) = 1
+908   close(9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>) = 0
+908   munmap(0xb6c20000, 4096)          = 0
+908   clock_gettime(CLOCK_THREAD_CPUTIME_ID, {0, 211089079}) = 0
+908   clock_gettime(CLOCK_MONOTONIC, {403, 806533275}) = 0
+908   write(1</dev/pts/0>, "403807 disable (took: 443144) af"..., 55) = 55
+908   clock_gettime(CLOCK_THREAD_CPUTIME_ID, {0, 211223962}) = 0
+908   open("/sys/bus/iio/devices/iio:device0/buffer/enable", O_WRONLY|O_CREAT|O_TRUNC, 0666) = 9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>
+908   fstat64(9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>, {st_mode=S_IFREG|0644, st_size=4096, ...}) = 0
+908   mmap2(NULL, 4096, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0xb6c20000
+908   write(9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>, "1", 1) = 1
+908   close(9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>) = 0
+908   munmap(0xb6c20000, 4096)          = 0
+908   clock_gettime(CLOCK_THREAD_CPUTIME_ID, {0, 211704486}) = 0
+908   clock_gettime(CLOCK_MONOTONIC, {403, 811098186}) = 0
+908   ioctl(8</dev/spidev1.0>, 0x40206b00SPI_IOC_MESSAGE(1), [{tx_buf: "\xf0\xf0\xf0\xf0\xf0\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00", rx_buf: NULL, len: 16, speed_hz: 320000, delay_usecs: 0, bits_per_word: 8, cs_change: 1, pad: 3064988936}, ]) = 16
+908   write(1</dev/pts/0>, "403811 enable (took: 480524)\n", 29) = 29
+908   poll([{fd=7</dev/iio:device0>, events=POLLIN}], 1, -1) = 1 ([{fd=7, revents=POLLIN}])
+908   clock_gettime(CLOCK_MONOTONIC, {403, 837974952}) = 0
+908   clock_gettime(CLOCK_THREAD_CPUTIME_ID, {0, 211955926}) = 0
+908   read(7</dev/iio:device0>, "\x02\x02\x32\x02\x12\x02\x12\x02\x12\x02\x22\x02\x12\x02\x22\x02\x12\x02\x22\x02\x22\x02\x12\x02\x12\x02\x22\x02\x12\x02\x32\x02"..., 16384) = 8374
+908   clock_gettime(CLOCK_THREAD_CPUTIME_ID, {0, 212040148}) = 0
+908   write(1</dev/pts/0>, "403838 total_read(8374 octets) t"..., 43) = 43
+908   open("/tmp/data_0039.txt", O_WRONLY|O_CREAT|O_TRUNC, 0666) = 9</tmp/data_0039.txt>
+908   fstat64(9</tmp/data_0039.txt>, {st_mode=S_IFREG|0644, st_size=0, ...}) = 0
+908   mmap2(NULL, 4096, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0xb6c20000
+908   write(9</tmp/data_0039.txt>, "32\n35\n33\n33\n33\n34\n33\n34\n33\n34\n34"..., 4096) = 4096
+908   write(9</tmp/data_0039.txt>, "\n35\n35\n30\n34\n33\n32\n34\n30\n32\n34\n3"..., 4096) = 4096
+908   write(9</tmp/data_0039.txt>, "31\n33\n35\n27\n33\n36\n32\n34\n35\n31\n34"..., 4096) = 4096
+908   write(9</tmp/data_0039.txt>, "3\n33\n36\n33\n33\n36\n32\n35\n34\n33\n35\n"..., 1346) = 1346
+908   close(9</tmp/data_0039.txt>)      = 0
+908   munmap(0xb6c20000, 4096)          = 0
+908   clock_gettime(CLOCK_THREAD_CPUTIME_ID, {0, 215801830}) = 0
+908   open("/sys/bus/iio/devices/iio:device0/buffer/enable", O_WRONLY|O_CREAT|O_TRUNC, 0666) = 9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>
+908   fstat64(9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>, {st_mode=S_IFREG|0644, st_size=4096, ...}) = 0
+908   mmap2(NULL, 4096, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0xb6c20000
+908   write(9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>, "0", 1) = 1
+908   close(9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>) = 0
+908   munmap(0xb6c20000, 4096)          = 0
+908   clock_gettime(CLOCK_THREAD_CPUTIME_ID, {0, 216233689}) = 0
+908   clock_gettime(CLOCK_MONOTONIC, {403, 846186593}) = 0
+908   write(1</dev/pts/0>, "403846 disable (took: 431859) af"..., 55) = 55
+908   clock_gettime(CLOCK_THREAD_CPUTIME_ID, {0, 216372159}) = 0
+908   open("/sys/bus/iio/devices/iio:device0/buffer/enable", O_WRONLY|O_CREAT|O_TRUNC, 0666) = 9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>
+908   fstat64(9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>, {st_mode=S_IFREG|0644, st_size=4096, ...}) = 0
+908   mmap2(NULL, 4096, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0xb6c20000
+908   write(9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>, "1", 1) = 1
+908   close(9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>) = 0
+908   munmap(0xb6c20000, 4096)          = 0
+908   clock_gettime(CLOCK_THREAD_CPUTIME_ID, {0, 216897810}) = 0
+908   clock_gettime(CLOCK_MONOTONIC, {403, 851576768}) = 0
+908   ioctl(8</dev/spidev1.0>, 0x40206b00SPI_IOC_MESSAGE(1), [{tx_buf: "\xf0\xf0\xf0\xf0\xf0\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00", rx_buf: NULL, len: 16, speed_hz: 320000, delay_usecs: 0, bits_per_word: 8, cs_change: 1, pad: 3064988936}, ]) = 16
+908   write(1</dev/pts/0>, "403852 enable (took: 525651)\n", 29) = 29
+908   poll([{fd=7</dev/iio:device0>, events=POLLIN}], 1, -1) = 1 ([{fd=7, revents=POLLIN}])
+908   clock_gettime(CLOCK_MONOTONIC, {403, 878349473}) = 0
+908   clock_gettime(CLOCK_THREAD_CPUTIME_ID, {0, 217158814}) = 0
+908   read(7</dev/iio:device0>, "\x22\x02\x22\x02\x12\x02\x12\x02\x12\x02\xf2\x01\x22\x02\x12\x02\x22\x02\x12\x02\xf2\x01\x32\x02\xf2\x01\x12\x02\x22\x02\xf2\x01"..., 16384) = 8432
+908   clock_gettime(CLOCK_THREAD_CPUTIME_ID, {0, 217245537}) = 0
+908   write(1</dev/pts/0>, "403878 total_read(8432 octets) t"..., 43) = 43
+908   open("/tmp/data_0040.txt", O_WRONLY|O_CREAT|O_TRUNC, 0666) = 9</tmp/data_0040.txt>
+908   fstat64(9</tmp/data_0040.txt>, {st_mode=S_IFREG|0644, st_size=0, ...}) = 0
+908   mmap2(NULL, 4096, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0xb6c20000
+908   write(9</tmp/data_0040.txt>, "34\n34\n33\n33\n33\n31\n34\n33\n34\n33\n31"..., 4096) = 4096
+908   write(9</tmp/data_0040.txt>, "4\n35\n36\n36\n36\n36\n35\n35\n37\n35\n36\n"..., 4096) = 4096
+908   write(9</tmp/data_0040.txt>, "\n33\n33\n31\n35\n35\n32\n32\n34\n33\n35\n3"..., 4096) = 4096
+908   write(9</tmp/data_0040.txt>, "30\n35\n29\n33\n34\n34\n32\n33\n35\n33\n34"..., 1422) = 1422
+908   close(9</tmp/data_0040.txt>)      = 0
+908   munmap(0xb6c20000, 4096)          = 0
+908   clock_gettime(CLOCK_THREAD_CPUTIME_ID, {0, 221034047}) = 0
+908   open("/sys/bus/iio/devices/iio:device0/buffer/enable", O_WRONLY|O_CREAT|O_TRUNC, 0666) = 9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>
+908   fstat64(9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>, {st_mode=S_IFREG|0644, st_size=4096, ...}) = 0
+908   mmap2(NULL, 4096, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0xb6c20000
+908   write(9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>, "0", 1) = 1
+908   close(9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>) = 0
+908   munmap(0xb6c20000, 4096)          = 0
+908   clock_gettime(CLOCK_THREAD_CPUTIME_ID, {0, 221492760}) = 0
+908   clock_gettime(CLOCK_MONOTONIC, {403, 887065162}) = 0
+908   write(1</dev/pts/0>, "403887 disable (took: 458713) af"..., 55) = 55
+908   clock_gettime(CLOCK_THREAD_CPUTIME_ID, {0, 221627123}) = 0
+908   open("/sys/bus/iio/devices/iio:device0/buffer/enable", O_WRONLY|O_CREAT|O_TRUNC, 0666) = 9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>
+908   fstat64(9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>, {st_mode=S_IFREG|0644, st_size=4096, ...}) = 0
+908   mmap2(NULL, 4096, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0xb6c20000
+908   write(9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>, "1", 1) = 1
+908   close(9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>) = 0
+908   munmap(0xb6c20000, 4096)          = 0
+908   clock_gettime(CLOCK_THREAD_CPUTIME_ID, {0, 222106095}) = 0
+908   clock_gettime(CLOCK_MONOTONIC, {403, 891624635}) = 0
+908   ioctl(8</dev/spidev1.0>, 0x40206b00SPI_IOC_MESSAGE(1), [{tx_buf: "\xf0\xf0\xf0\xf0\xf0\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00", rx_buf: NULL, len: 16, speed_hz: 320000, delay_usecs: 0, bits_per_word: 8, cs_change: 1, pad: 3064988936}, ]) = 16
+908   write(1</dev/pts/0>, "403892 enable (took: 478972)\n", 29) = 29
+908   poll([{fd=7</dev/iio:device0>, events=POLLIN}], 1, -1) = 1 ([{fd=7, revents=POLLIN}])
+908   clock_gettime(CLOCK_MONOTONIC, {403, 918206234}) = 0
+908   clock_gettime(CLOCK_THREAD_CPUTIME_ID, {0, 222358796}) = 0
+908   read(7</dev/iio:device0>, "\x22\x02\x22\x02\x12\x02\x22\x02\x12\x02\x22\x02\x02\x02\x02\x02\x22\x02\x02\x02\x32\x02\xf2\x01\x02\x02\x12\x02\x12\x02\xe2\x01"..., 16384) = 8270
+908   clock_gettime(CLOCK_THREAD_CPUTIME_ID, {0, 222442565}) = 0
+908   write(1</dev/pts/0>, "403918 total_read(8270 octets) t"..., 43) = 43
+908   open("/tmp/data_0041.txt", O_WRONLY|O_CREAT|O_TRUNC, 0666) = 9</tmp/data_0041.txt>
+908   fstat64(9</tmp/data_0041.txt>, {st_mode=S_IFREG|0644, st_size=0, ...}) = 0
+908   mmap2(NULL, 4096, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0xb6c20000
+908   write(9</tmp/data_0041.txt>, "34\n34\n33\n34\n33\n34\n32\n32\n34\n32\n35"..., 4096) = 4096
+908   write(9</tmp/data_0041.txt>, "33\n34\n33\n34\n34\n32\n34\n33\n33\n34\n33"..., 4096) = 4096
+908   write(9</tmp/data_0041.txt>, "2\n34\n31\n33\n33\n33\n35\n37\n32\n31\n34\n"..., 4096) = 4096
+908   write(9</tmp/data_0041.txt>, "\n35\n31\n34\n36\n30\n35\n31\n31\n34\n36\n3"..., 1192) = 1192
+908   close(9</tmp/data_0041.txt>)      = 0
+908   munmap(0xb6c20000, 4096)          = 0
+908   clock_gettime(CLOCK_THREAD_CPUTIME_ID, {0, 226162966}) = 0
+908   open("/sys/bus/iio/devices/iio:device0/buffer/enable", O_WRONLY|O_CREAT|O_TRUNC, 0666) = 9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>
+908   fstat64(9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>, {st_mode=S_IFREG|0644, st_size=4096, ...}) = 0
+908   mmap2(NULL, 4096, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0xb6c20000
+908   write(9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>, "0", 1) = 1
+908   close(9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>) = 0
+908   munmap(0xb6c20000, 4096)          = 0
+908   clock_gettime(CLOCK_THREAD_CPUTIME_ID, {0, 226608789}) = 0
+908   clock_gettime(CLOCK_MONOTONIC, {403, 926814162}) = 0
+908   write(1</dev/pts/0>, "403927 disable (took: 445823) af"..., 55) = 55
+908   clock_gettime(CLOCK_THREAD_CPUTIME_ID, {0, 226743940}) = 0
+908   open("/sys/bus/iio/devices/iio:device0/buffer/enable", O_WRONLY|O_CREAT|O_TRUNC, 0666) = 9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>
+908   fstat64(9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>, {st_mode=S_IFREG|0644, st_size=4096, ...}) = 0
+908   mmap2(NULL, 4096, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0xb6c20000
+908   write(9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>, "1", 1) = 1
+908   close(9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>) = 0
+908   munmap(0xb6c20000, 4096)          = 0
+908   clock_gettime(CLOCK_THREAD_CPUTIME_ID, {0, 227254288}) = 0
+908   clock_gettime(CLOCK_MONOTONIC, {403, 931578119}) = 0
+908   ioctl(8</dev/spidev1.0>, 0x40206b00SPI_IOC_MESSAGE(1), [{tx_buf: "\xf0\xf0\xf0\xf0\xf0\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00", rx_buf: NULL, len: 16, speed_hz: 320000, delay_usecs: 0, bits_per_word: 8, cs_change: 1, pad: 3064988936}, ]) = 16
+908   write(1</dev/pts/0>, "403932 enable (took: 510348)\n", 29) = 29
+908   poll([{fd=7</dev/iio:device0>, events=POLLIN}], 1, -1) = 1 ([{fd=7, revents=POLLIN}])
+908   clock_gettime(CLOCK_MONOTONIC, {403, 958253252}) = 0
+908   clock_gettime(CLOCK_THREAD_CPUTIME_ID, {0, 227510452}) = 0
+908   read(7</dev/iio:device0>, "\x22\x02\x02\x02\x12\x02\x42\x02\x12\x02\x22\x02\x32\x02\x02\x02\x22\x02\x42\x02\x52\x02\x22\x02\x72\x02\xf2\x01\x12\x02\x22\x02"..., 16384) = 8304
+908   clock_gettime(CLOCK_THREAD_CPUTIME_ID, {0, 227606392}) = 0
+908   write(1</dev/pts/0>, "403958 total_read(8304 octets) t"..., 43) = 43
+908   open("/tmp/data_0042.txt", O_WRONLY|O_CREAT|O_TRUNC, 0666) = 9</tmp/data_0042.txt>
+908   fstat64(9</tmp/data_0042.txt>, {st_mode=S_IFREG|0644, st_size=0, ...}) = 0
+908   mmap2(NULL, 4096, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0xb6c20000
+908   write(9</tmp/data_0042.txt>, "34\n32\n33\n36\n33\n34\n35\n32\n34\n36\n37"..., 4096) = 4096
+908   write(9</tmp/data_0042.txt>, "\n33\n34\n33\n33\n35\n34\n35\n33\n34\n33\n3"..., 4096) = 4096
+908   write(9</tmp/data_0042.txt>, "34\n34\n33\n40\n35\n32\n36\n33\n35\n33\n31"..., 4096) = 4096
+908   write(9</tmp/data_0042.txt>, "3\n33\n30\n32\n37\n32\n33\n34\n32\n32\n33\n"..., 1250) = 1250
+908   close(9</tmp/data_0042.txt>)      = 0
+908   munmap(0xb6c20000, 4096)          = 0
+908   clock_gettime(CLOCK_THREAD_CPUTIME_ID, {0, 231337627}) = 0
+908   open("/sys/bus/iio/devices/iio:device0/buffer/enable", O_WRONLY|O_CREAT|O_TRUNC, 0666) = 9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>
+908   fstat64(9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>, {st_mode=S_IFREG|0644, st_size=4096, ...}) = 0
+908   mmap2(NULL, 4096, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0xb6c20000
+908   write(9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>, "0", 1) = 1
+908   close(9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>) = 0
+908   munmap(0xb6c20000, 4096)          = 0
+908   clock_gettime(CLOCK_THREAD_CPUTIME_ID, {0, 231773021}) = 0
+908   clock_gettime(CLOCK_MONOTONIC, {403, 966696680}) = 0
+908   write(1</dev/pts/0>, "403967 disable (took: 435394) af"..., 55) = 55
+908   clock_gettime(CLOCK_THREAD_CPUTIME_ID, {0, 231905736}) = 0
+908   open("/sys/bus/iio/devices/iio:device0/buffer/enable", O_WRONLY|O_CREAT|O_TRUNC, 0666) = 9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>
+908   fstat64(9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>, {st_mode=S_IFREG|0644, st_size=4096, ...}) = 0
+908   mmap2(NULL, 4096, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0xb6c20000
+908   write(9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>, "1", 1) = 1
+908   close(9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>) = 0
+908   munmap(0xb6c20000, 4096)          = 0
+908   clock_gettime(CLOCK_THREAD_CPUTIME_ID, {0, 232427843}) = 0
+908   clock_gettime(CLOCK_MONOTONIC, {403, 971428570}) = 0
+908   ioctl(8</dev/spidev1.0>, 0x40206b00SPI_IOC_MESSAGE(1), [{tx_buf: "\xf0\xf0\xf0\xf0\xf0\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00", rx_buf: NULL, len: 16, speed_hz: 320000, delay_usecs: 0, bits_per_word: 8, cs_change: 1, pad: 3064988936}, ]) = 16
+908   write(1</dev/pts/0>, "403971 enable (took: 522107)\n", 29) = 29
+908   poll([{fd=7</dev/iio:device0>, events=POLLIN}], 1, -1) = 1 ([{fd=7, revents=POLLIN}])
+908   clock_gettime(CLOCK_MONOTONIC, {403, 998333083}) = 0
+908   clock_gettime(CLOCK_THREAD_CPUTIME_ID, {0, 232690350}) = 0
+908   read(7</dev/iio:device0>, "\x32\x02\xf2\x01\x12\x02\x22\x02\x12\x02\x22\x02\x32\x02\x12\x02\x02\x02\x32\x02\xf2\x01\x22\x02\x32\x02\xf2\x01\x22\x02\x32\x02"..., 16384) = 8346
+908   clock_gettime(CLOCK_THREAD_CPUTIME_ID, {0, 232783932}) = 0
+908   write(1</dev/pts/0>, "403998 total_read(8346 octets) t"..., 43) = 43
+908   open("/tmp/data_0043.txt", O_WRONLY|O_CREAT|O_TRUNC, 0666) = 9</tmp/data_0043.txt>
+908   fstat64(9</tmp/data_0043.txt>, {st_mode=S_IFREG|0644, st_size=0, ...}) = 0
+908   mmap2(NULL, 4096, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0xb6c20000
+908   write(9</tmp/data_0043.txt>, "35\n31\n33\n34\n33\n34\n35\n33\n32\n35\n31"..., 4096) = 4096
+908   write(9</tmp/data_0043.txt>, "6\n33\n35\n36\n34\n34\n35\n32\n34\n35\n34\n"..., 4096) = 4096
+908   write(9</tmp/data_0043.txt>, "\n33\n34\n33\n33\n36\n33\n32\n35\n34\n32\n3"..., 4096) = 4096
+908   write(9</tmp/data_0043.txt>, "29\n34\n32\n33\n37\n36\n34\n36\n37\n34\n35"..., 1293) = 1293
+908   close(9</tmp/data_0043.txt>)      = 0
+908   munmap(0xb6c20000, 4096)          = 0
+908   clock_gettime(CLOCK_THREAD_CPUTIME_ID, {0, 236481668}) = 0
+908   open("/sys/bus/iio/devices/iio:device0/buffer/enable", O_WRONLY|O_CREAT|O_TRUNC, 0666) = 9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>
+908   fstat64(9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>, {st_mode=S_IFREG|0644, st_size=4096, ...}) = 0
+908   mmap2(NULL, 4096, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0xb6c20000
+908   write(9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>, "0", 1) = 1
+908   close(9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>) = 0
+908   munmap(0xb6c20000, 4096)          = 0
+908   clock_gettime(CLOCK_THREAD_CPUTIME_ID, {0, 236929668}) = 0
+908   clock_gettime(CLOCK_MONOTONIC, {404, 6900180}) = 0
+908   write(1</dev/pts/0>, "404007 disable (took: 448000) af"..., 55) = 55
+908   clock_gettime(CLOCK_THREAD_CPUTIME_ID, {0, 237062507}) = 0
+908   open("/sys/bus/iio/devices/iio:device0/buffer/enable", O_WRONLY|O_CREAT|O_TRUNC, 0666) = 9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>
+908   fstat64(9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>, {st_mode=S_IFREG|0644, st_size=4096, ...}) = 0
+908   mmap2(NULL, 4096, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0xb6c20000
+908   write(9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>, "1", 1) = 1
+908   close(9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>) = 0
+908   munmap(0xb6c20000, 4096)          = 0
+908   clock_gettime(CLOCK_THREAD_CPUTIME_ID, {0, 237542917}) = 0
+908   clock_gettime(CLOCK_MONOTONIC, {404, 11462099}) = 0
+908   ioctl(8</dev/spidev1.0>, 0x40206b00SPI_IOC_MESSAGE(1), [{tx_buf: "\xf0\xf0\xf0\xf0\xf0\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00", rx_buf: NULL, len: 16, speed_hz: 320000, delay_usecs: 0, bits_per_word: 8, cs_change: 1, pad: 3064988936}, ]) = 16
+908   write(1</dev/pts/0>, "404011 enable (took: 480410)\n", 29) = 29
+908   poll([{fd=7</dev/iio:device0>, events=POLLIN}], 1, -1) = 1 ([{fd=7, revents=POLLIN}])
+908   clock_gettime(CLOCK_MONOTONIC, {404, 38075365}) = 0
+908   clock_gettime(CLOCK_THREAD_CPUTIME_ID, {0, 237797673}) = 0
+908   read(7</dev/iio:device0>, "\x02\x02\x52\x02\x12\x02\x22\x02\x32\x02\xf2\x01\x22\x02\x32\x02\x12\x02\x32\x02\x22\x02\xf2\x01\x12\x02\x32\x02\x02\x02\x22\x02"..., 16384) = 8278
+908   clock_gettime(CLOCK_THREAD_CPUTIME_ID, {0, 237884182}) = 0
+908   write(1</dev/pts/0>, "404038 total_read(8278 octets) t"..., 43) = 43
+908   open("/tmp/data_0044.txt", O_WRONLY|O_CREAT|O_TRUNC, 0666) = 9</tmp/data_0044.txt>
+908   fstat64(9</tmp/data_0044.txt>, {st_mode=S_IFREG|0644, st_size=0, ...}) = 0
+908   mmap2(NULL, 4096, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0xb6c20000
+908   write(9</tmp/data_0044.txt>, "32\n37\n33\n34\n35\n31\n34\n35\n33\n35\n34"..., 4096) = 4096
+908   write(9</tmp/data_0044.txt>, "4\n34\n35\n33\n34\n36\n34\n35\n34\n32\n34\n"..., 4096) = 4096
+908   write(9</tmp/data_0044.txt>, "\n32\n32\n32\n32\n31\n34\n35\n33\n34\n33\n3"..., 4096) = 4096
+908   write(9</tmp/data_0044.txt>, "33\n34\n33\n34\n34\n32\n34\n34\n31\n33\n34"..., 1215) = 1215
+908   close(9</tmp/data_0044.txt>)      = 0
+908   munmap(0xb6c20000, 4096)          = 0
+908   clock_gettime(CLOCK_THREAD_CPUTIME_ID, {0, 241565358}) = 0
+908   open("/sys/bus/iio/devices/iio:device0/buffer/enable", O_WRONLY|O_CREAT|O_TRUNC, 0666) = 9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>
+908   fstat64(9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>, {st_mode=S_IFREG|0644, st_size=4096, ...}) = 0
+908   mmap2(NULL, 4096, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0xb6c20000
+908   write(9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>, "0", 1) = 1
+908   close(9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>) = 0
+908   munmap(0xb6c20000, 4096)          = 0
+908   clock_gettime(CLOCK_THREAD_CPUTIME_ID, {0, 241999726}) = 0
+908   clock_gettime(CLOCK_MONOTONIC, {404, 46144842}) = 0
+908   write(1</dev/pts/0>, "404046 disable (took: 434368) af"..., 55) = 55
+908   clock_gettime(CLOCK_THREAD_CPUTIME_ID, {0, 242131949}) = 0
+908   open("/sys/bus/iio/devices/iio:device0/buffer/enable", O_WRONLY|O_CREAT|O_TRUNC, 0666) = 9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>
+908   fstat64(9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>, {st_mode=S_IFREG|0644, st_size=4096, ...}) = 0
+908   mmap2(NULL, 4096, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0xb6c20000
+908   write(9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>, "1", 1) = 1
+908   close(9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>) = 0
+908   munmap(0xb6c20000, 4096)          = 0
+908   clock_gettime(CLOCK_THREAD_CPUTIME_ID, {0, 242618465}) = 0
+908   clock_gettime(CLOCK_MONOTONIC, {404, 50753001}) = 0
+908   ioctl(8</dev/spidev1.0>, 0x40206b00SPI_IOC_MESSAGE(1), [{tx_buf: "\xf0\xf0\xf0\xf0\xf0\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00", rx_buf: NULL, len: 16, speed_hz: 320000, delay_usecs: 0, bits_per_word: 8, cs_change: 1, pad: 3064988936}, ]) = 16
+908   write(1</dev/pts/0>, "404051 enable (took: 486516)\n", 29) = 29
+908   poll([{fd=7</dev/iio:device0>, events=POLLIN}], 1, -1) = 1 ([{fd=7, revents=POLLIN}])
+908   clock_gettime(CLOCK_MONOTONIC, {404, 77909529}) = 0
+908   clock_gettime(CLOCK_THREAD_CPUTIME_ID, {0, 242877755}) = 0
+908   read(7</dev/iio:device0>, "\xe2\x01\x32\x02\x22\x02\xf2\x01\x12\x02\x22\x02\xf2\x01\x12\x02\x22\x02\xf2\x01\x12\x02\x42\x02\x12\x02\x12\x02\x32\x02\x32\x02"..., 16384) = 8472
+908   clock_gettime(CLOCK_THREAD_CPUTIME_ID, {0, 242963196}) = 0
+908   write(1</dev/pts/0>, "404078 total_read(8472 octets) t"..., 43) = 43
+908   open("/tmp/data_0045.txt", O_WRONLY|O_CREAT|O_TRUNC, 0666) = 9</tmp/data_0045.txt>
+908   fstat64(9</tmp/data_0045.txt>, {st_mode=S_IFREG|0644, st_size=0, ...}) = 0
+908   mmap2(NULL, 4096, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0xb6c20000
+908   write(9</tmp/data_0045.txt>, "30\n35\n34\n31\n33\n34\n31\n33\n34\n31\n33"..., 4096) = 4096
+908   write(9</tmp/data_0045.txt>, "\n34\n38\n30\n34\n36\n33\n34\n35\n31\n31\n3"..., 4096) = 4096
+908   write(9</tmp/data_0045.txt>, "30\n33\n35\n31\n33\n33\n32\n33\n35\n31\n33"..., 4096) = 4096
+908   write(9</tmp/data_0045.txt>, "4\n35\n31\n33\n35\n32\n33\n33\n32\n34\n36\n"..., 1529) = 1529
+908   close(9</tmp/data_0045.txt>)      = 0
+908   munmap(0xb6c20000, 4096)          = 0
+908   clock_gettime(CLOCK_THREAD_CPUTIME_ID, {0, 246784789}) = 0
+908   open("/sys/bus/iio/devices/iio:device0/buffer/enable", O_WRONLY|O_CREAT|O_TRUNC, 0666) = 9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>
+908   fstat64(9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>, {st_mode=S_IFREG|0644, st_size=4096, ...}) = 0
+908   mmap2(NULL, 4096, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0xb6c20000
+908   write(9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>, "0", 1) = 1
+908   close(9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>) = 0
+908   munmap(0xb6c20000, 4096)          = 0
+908   clock_gettime(CLOCK_THREAD_CPUTIME_ID, {0, 247232561}) = 0
+908   clock_gettime(CLOCK_MONOTONIC, {404, 86565021}) = 0
+908   write(1</dev/pts/0>, "404087 disable (took: 447772) af"..., 55) = 55
+908   clock_gettime(CLOCK_THREAD_CPUTIME_ID, {0, 247379177}) = 0
+908   open("/sys/bus/iio/devices/iio:device0/buffer/enable", O_WRONLY|O_CREAT|O_TRUNC, 0666) = 9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>
+908   fstat64(9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>, {st_mode=S_IFREG|0644, st_size=4096, ...}) = 0
+908   mmap2(NULL, 4096, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0xb6c20000
+908   write(9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>, "1", 1) = 1
+908   close(9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>) = 0
+908   munmap(0xb6c20000, 4096)          = 0
+908   clock_gettime(CLOCK_THREAD_CPUTIME_ID, {0, 247912359}) = 0
+908   clock_gettime(CLOCK_MONOTONIC, {404, 91563232}) = 0
+908   ioctl(8</dev/spidev1.0>, 0x40206b00SPI_IOC_MESSAGE(1), [{tx_buf: "\xf0\xf0\xf0\xf0\xf0\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00", rx_buf: NULL, len: 16, speed_hz: 320000, delay_usecs: 0, bits_per_word: 8, cs_change: 1, pad: 3064988936}, ]) = 16
+908   write(1</dev/pts/0>, "404092 enable (took: 533182)\n", 29) = 29
+908   poll([{fd=7</dev/iio:device0>, events=POLLIN}], 1, -1) = 1 ([{fd=7, revents=POLLIN}])
+908   clock_gettime(CLOCK_MONOTONIC, {404, 118314101}) = 0
+908   clock_gettime(CLOCK_THREAD_CPUTIME_ID, {0, 248172361}) = 0
+908   read(7</dev/iio:device0>, "\x32\x02\xf2\x01\x22\x02\x12\x02\x02\x02\x12\x02\x22\x02\x02\x02\x22\x02\x22\x02\xe2\x01\x22\x02\x12\x02\x02\x02\x22\x02\x42\x02"..., 16384) = 8328
+908   clock_gettime(CLOCK_THREAD_CPUTIME_ID, {0, 248258250}) = 0
+908   write(1</dev/pts/0>, "404118 total_read(8328 octets) t"..., 43) = 43
+908   open("/tmp/data_0046.txt", O_WRONLY|O_CREAT|O_TRUNC, 0666) = 9</tmp/data_0046.txt>
+908   fstat64(9</tmp/data_0046.txt>, {st_mode=S_IFREG|0644, st_size=0, ...}) = 0
+908   mmap2(NULL, 4096, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0xb6c20000
+908   write(9</tmp/data_0046.txt>, "35\n31\n34\n33\n32\n33\n34\n32\n34\n34\n30"..., 4096) = 4096
+908   write(9</tmp/data_0046.txt>, "\n34\n32\n35\n33\n31\n34\n37\n33\n34\n35\n3"..., 4096) = 4096
+908   write(9</tmp/data_0046.txt>, "31\n35\n35\n32\n33\n35\n32\n33\n36\n33\n35"..., 4096) = 4096
+908   write(9</tmp/data_0046.txt>, "5\n29\n33\n34\n32\n34\n34\n31\n35\n34\n32\n"..., 1295) = 1295
+908   close(9</tmp/data_0046.txt>)      = 0
+908   munmap(0xb6c20000, 4096)          = 0
+908   clock_gettime(CLOCK_THREAD_CPUTIME_ID, {0, 251945788}) = 0
+908   open("/sys/bus/iio/devices/iio:device0/buffer/enable", O_WRONLY|O_CREAT|O_TRUNC, 0666) = 9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>
+908   fstat64(9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>, {st_mode=S_IFREG|0644, st_size=4096, ...}) = 0
+908   mmap2(NULL, 4096, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0xb6c20000
+908   write(9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>, "0", 1) = 1
+908   close(9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>) = 0
+908   munmap(0xb6c20000, 4096)          = 0
+908   clock_gettime(CLOCK_THREAD_CPUTIME_ID, {0, 252386749}) = 0
+908   clock_gettime(CLOCK_MONOTONIC, {404, 126742796}) = 0
+908   write(1</dev/pts/0>, "404127 disable (took: 440961) af"..., 55) = 55
+908   clock_gettime(CLOCK_THREAD_CPUTIME_ID, {0, 252517846}) = 0
+908   open("/sys/bus/iio/devices/iio:device0/buffer/enable", O_WRONLY|O_CREAT|O_TRUNC, 0666) = 9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>
+908   fstat64(9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>, {st_mode=S_IFREG|0644, st_size=4096, ...}) = 0
+908   mmap2(NULL, 4096, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0xb6c20000
+908   write(9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>, "1", 1) = 1
+908   close(9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>) = 0
+908   munmap(0xb6c20000, 4096)          = 0
+908   clock_gettime(CLOCK_THREAD_CPUTIME_ID, {0, 253025801}) = 0
+908   clock_gettime(CLOCK_MONOTONIC, {404, 131786255}) = 0
+908   ioctl(8</dev/spidev1.0>, 0x40206b00SPI_IOC_MESSAGE(1), [{tx_buf: "\xf0\xf0\xf0\xf0\xf0\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00", rx_buf: NULL, len: 16, speed_hz: 320000, delay_usecs: 0, bits_per_word: 8, cs_change: 1, pad: 3064988936}, ]) = 16
+908   write(1</dev/pts/0>, "404132 enable (took: 507955)\n", 29) = 29
+908   poll([{fd=7</dev/iio:device0>, events=POLLIN}], 1, -1) = 1 ([{fd=7, revents=POLLIN}])
+908   clock_gettime(CLOCK_MONOTONIC, {404, 158603206}) = 0
+908   clock_gettime(CLOCK_THREAD_CPUTIME_ID, {0, 253283048}) = 0
+908   read(7</dev/iio:device0>, "\x32\x02\x32\x02\xf2\x01\x12\x02\x32\x02\x02\x02\x22\x02\x32\x02\x02\x02\x22\x02\x32\x02\xc2\x01\x12\x02\x12\x02\x52\x02\x32\x02"..., 16384) = 8358
+908   clock_gettime(CLOCK_THREAD_CPUTIME_ID, {0, 253366451}) = 0
+908   write(1</dev/pts/0>, "404159 total_read(8358 octets) t"..., 43) = 43
+908   open("/tmp/data_0047.txt", O_WRONLY|O_CREAT|O_TRUNC, 0666) = 9</tmp/data_0047.txt>
+908   fstat64(9</tmp/data_0047.txt>, {st_mode=S_IFREG|0644, st_size=0, ...}) = 0
+908   mmap2(NULL, 4096, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0xb6c20000
+908   write(9</tmp/data_0047.txt>, "35\n35\n31\n33\n35\n32\n34\n35\n32\n34\n35"..., 4096) = 4096
+908   write(9</tmp/data_0047.txt>, "0\n33\n36\n36\n33\n36\n36\n33\n34\n36\n32\n"..., 4096) = 4096
+908   write(9</tmp/data_0047.txt>, "\n33\n35\n34\n35\n32\n34\n31\n35\n35\n32\n3"..., 4096) = 4096
+908   write(9</tmp/data_0047.txt>, "35\n36\n32\n34\n33\n34\n34\n34\n30\n34\n33"..., 1338) = 1338
+908   close(9</tmp/data_0047.txt>)      = 0
+908   munmap(0xb6c20000, 4096)          = 0
+908   clock_gettime(CLOCK_THREAD_CPUTIME_ID, {0, 257171694}) = 0
+908   open("/sys/bus/iio/devices/iio:device0/buffer/enable", O_WRONLY|O_CREAT|O_TRUNC, 0666) = 9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>
+908   fstat64(9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>, {st_mode=S_IFREG|0644, st_size=4096, ...}) = 0
+908   mmap2(NULL, 4096, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0xb6c20000
+908   write(9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>, "0", 1) = 1
+908   close(9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>) = 0
+908   munmap(0xb6c20000, 4096)          = 0
+908   clock_gettime(CLOCK_THREAD_CPUTIME_ID, {0, 257636376}) = 0
+908   clock_gettime(CLOCK_MONOTONIC, {404, 167312373}) = 0
+908   write(1</dev/pts/0>, "404167 disable (took: 464682) af"..., 55) = 55
+908   clock_gettime(CLOCK_THREAD_CPUTIME_ID, {0, 257770383}) = 0
+908   open("/sys/bus/iio/devices/iio:device0/buffer/enable", O_WRONLY|O_CREAT|O_TRUNC, 0666) = 9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>
+908   fstat64(9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>, {st_mode=S_IFREG|0644, st_size=4096, ...}) = 0
+908   mmap2(NULL, 4096, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0xb6c20000
+908   write(9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>, "1", 1) = 1
+908   close(9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>) = 0
+908   munmap(0xb6c20000, 4096)          = 0
+908   clock_gettime(CLOCK_THREAD_CPUTIME_ID, {0, 258260898}) = 0
+908   clock_gettime(CLOCK_MONOTONIC, {404, 171901311}) = 0
+908   ioctl(8</dev/spidev1.0>, 0x40206b00SPI_IOC_MESSAGE(1), [{tx_buf: "\xf0\xf0\xf0\xf0\xf0\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00", rx_buf: NULL, len: 16, speed_hz: 320000, delay_usecs: 0, bits_per_word: 8, cs_change: 1, pad: 3064988936}, ]) = 16
+908   write(1</dev/pts/0>, "404172 enable (took: 490515)\n", 29) = 29
+908   poll([{fd=7</dev/iio:device0>, events=POLLIN}], 1, -1) = 1 ([{fd=7, revents=POLLIN}])
+908   clock_gettime(CLOCK_MONOTONIC, {404, 198512339}) = 0
+908   clock_gettime(CLOCK_THREAD_CPUTIME_ID, {0, 258514925}) = 0
+908   read(7</dev/iio:device0>, "\x12\x02\x22\x02\x02\x02\x12\x02\x22\x02\x02\x02\x12\x02\x22\x02\x12\x02\x22\x02\x52\x02\xe2\x01\x12\x02\xf2\x01\x12\x02\x32\x02"..., 16384) = 8282
+908   clock_gettime(CLOCK_THREAD_CPUTIME_ID, {0, 258599832}) = 0
+908   write(1</dev/pts/0>, "404199 total_read(8282 octets) t"..., 43) = 43
+908   open("/tmp/data_0048.txt", O_WRONLY|O_CREAT|O_TRUNC, 0666) = 9</tmp/data_0048.txt>
+908   fstat64(9</tmp/data_0048.txt>, {st_mode=S_IFREG|0644, st_size=0, ...}) = 0
+908   mmap2(NULL, 4096, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0xb6c20000
+908   write(9</tmp/data_0048.txt>, "33\n34\n32\n33\n34\n32\n33\n34\n33\n34\n37"..., 4096) = 4096
+908   write(9</tmp/data_0048.txt>, "\n33\n33\n34\n33\n34\n34\n32\n34\n34\n33\n3"..., 4096) = 4096
+908   write(9</tmp/data_0048.txt>, "34\n32\n34\n35\n34\n33\n34\n31\n33\n37\n32"..., 4096) = 4096
+908   write(9</tmp/data_0048.txt>, "2\n36\n31\n34\n35\n29\n34\n34\n38\n34\n33\n"..., 1208) = 1208
+908   close(9</tmp/data_0048.txt>)      = 0
+908   munmap(0xb6c20000, 4096)          = 0
+908   clock_gettime(CLOCK_THREAD_CPUTIME_ID, {0, 262332856}) = 0
+908   open("/sys/bus/iio/devices/iio:device0/buffer/enable", O_WRONLY|O_CREAT|O_TRUNC, 0666) = 9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>
+908   fstat64(9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>, {st_mode=S_IFREG|0644, st_size=4096, ...}) = 0
+908   mmap2(NULL, 4096, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0xb6c20000
+908   write(9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>, "0", 1) = 1
+908   close(9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>) = 0
+908   munmap(0xb6c20000, 4096)          = 0
+908   clock_gettime(CLOCK_THREAD_CPUTIME_ID, {0, 262784809}) = 0
+908   clock_gettime(CLOCK_MONOTONIC, {404, 207160180}) = 0
+908   write(1</dev/pts/0>, "404207 disable (took: 451953) af"..., 55) = 55
+908   clock_gettime(CLOCK_THREAD_CPUTIME_ID, {0, 262917164}) = 0
+908   open("/sys/bus/iio/devices/iio:device0/buffer/enable", O_WRONLY|O_CREAT|O_TRUNC, 0666) = 9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>
+908   fstat64(9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>, {st_mode=S_IFREG|0644, st_size=4096, ...}) = 0
+908   mmap2(NULL, 4096, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0xb6c20000
+908   write(9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>, "1", 1) = 1
+908   close(9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>) = 0
+908   munmap(0xb6c20000, 4096)          = 0
+908   clock_gettime(CLOCK_THREAD_CPUTIME_ID, {0, 263419609}) = 0
+908   clock_gettime(CLOCK_MONOTONIC, {404, 211869660}) = 0
+908   ioctl(8</dev/spidev1.0>, 0x40206b00SPI_IOC_MESSAGE(1), [{tx_buf: "\xf0\xf0\xf0\xf0\xf0\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00", rx_buf: NULL, len: 16, speed_hz: 320000, delay_usecs: 0, bits_per_word: 8, cs_change: 1, pad: 3064988936}, ]) = 16
+908   write(1</dev/pts/0>, "404212 enable (took: 502445)\n", 29) = 29
+908   poll([{fd=7</dev/iio:device0>, events=POLLIN}], 1, -1) = 1 ([{fd=7, revents=POLLIN}])
+908   clock_gettime(CLOCK_MONOTONIC, {404, 238567667}) = 0
+908   clock_gettime(CLOCK_THREAD_CPUTIME_ID, {0, 263675989}) = 0
+908   read(7</dev/iio:device0>, "\x02\x02\x22\x02\xf2\x01\x22\x02\x22\x02\xf2\x01\x02\x02\x12\x02\x02\x02\x12\x02\x22\x02\x12\x02\x12\x02\x22\x02\x02\x02\x32\x02"..., 16384) = 8310
+908   clock_gettime(CLOCK_THREAD_CPUTIME_ID, {0, 263761295}) = 0
+908   write(1</dev/pts/0>, "404239 total_read(8310 octets) t"..., 43) = 43
+908   open("/tmp/data_0049.txt", O_WRONLY|O_CREAT|O_TRUNC, 0666) = 9</tmp/data_0049.txt>
+908   fstat64(9</tmp/data_0049.txt>, {st_mode=S_IFREG|0644, st_size=0, ...}) = 0
+908   mmap2(NULL, 4096, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0xb6c20000
+908   write(9</tmp/data_0049.txt>, "32\n34\n31\n34\n34\n31\n32\n33\n32\n33\n34"..., 4096) = 4096
+908   write(9</tmp/data_0049.txt>, "\n34\n33\n35\n28\n33\n34\n32\n34\n35\n31\n3"..., 4096) = 4096
+908   write(9</tmp/data_0049.txt>, "30\n34\n35\n31\n34\n35\n36\n33\n33\n30\n33"..., 4096) = 4096
+908   write(9</tmp/data_0049.txt>, "2\n26\n33\n34\n36\n36\n34\n32\n34\n32\n35\n"..., 1259) = 1259
+908   close(9</tmp/data_0049.txt>)      = 0
+908   munmap(0xb6c20000, 4096)          = 0
+908   clock_gettime(CLOCK_THREAD_CPUTIME_ID, {0, 267439918}) = 0
+908   open("/sys/bus/iio/devices/iio:device0/buffer/enable", O_WRONLY|O_CREAT|O_TRUNC, 0666) = 9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>
+908   fstat64(9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>, {st_mode=S_IFREG|0644, st_size=4096, ...}) = 0
+908   mmap2(NULL, 4096, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0xb6c20000
+908   write(9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>, "0", 1) = 1
+908   close(9</sys/devices/platform/p7-i2cm.0/i2c-0/0-0031/p7mu-adc/iio:device0/buffer/enable>) = 0
+908   munmap(0xb6c20000, 4096)          = 0
+908   clock_gettime(CLOCK_THREAD_CPUTIME_ID, {0, 267879732}) = 0
+908   clock_gettime(CLOCK_MONOTONIC, {404, 247306124}) = 0
+908   write(1</dev/pts/0>, "404247 disable (took: 439814) af"..., 55) = 55
+908   exit_group(0)                     = ?
+908   +++ exited with 0 +++
+907   +++ exited with 0 +++
