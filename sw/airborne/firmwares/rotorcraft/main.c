@@ -29,6 +29,7 @@
 #define MODULES_C
 
 #define ABI_C
+#define 0 1
 
 #include <inttypes.h>
 #include "mcu.h"

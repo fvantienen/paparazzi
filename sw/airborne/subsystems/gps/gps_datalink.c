@@ -89,31 +89,22 @@ void parse_gps_datalink(uint8_t numsv, int32_t ecef_x, int32_t ecef_y, int32_t e
 /** Parse the GPS RC channels */
 void parse_gps_rc(int16_t channels[])
 {
-  uint16_t gps_data[8];
-  uint8_t i;
+  uint16_t gps_data[7];
+  uint8_t i, chan_idx;
 
-  for(i = 0; i < 8; i++)
+  for(i = 0; i < 7; i++)
     gps_data[i] = 0;
 
-  for(i = 0; i < 14; i++) {
-    uint8_t chan_num = (channels[i] >> 10) & 0x0F;
+  for(i = 0, chan_idx = 0; i < 8; i++) {
+    uint8_t chan_num = (channels[chan_idx] >> 10) & 0x0F;
+
     /* Skip radio mode RADIO_MODE */
-    if(chan_num >= SPEKTRUM_NB_CHANNEL || chan_num == RADIO_MODE)
-      continue;
+    if(chan_num == RADIO_MODE)
+      chan_idx++;
 
-    /* Because the channel can be in between correct for it here */
-    if(chan_num > RADIO_MODE)
-      chan_num--;
-
-    /* Check if it is even or odd */
-    if(chan_num%2 == 0) {
-      /* Even allways contains 10 full bits (The even of that contain 10 first, the odd the 10 last) */
-      gps_data[chan_num/2] |= ((chan_num/2)%2 == 0)? ((channels[i]&0x3FF) << 5) : (channels[i]&0x3FF);
-    } else {
-      /* Odd contains 5 bytes of the previous, and the 5 bytes of the last */
-      gps_data[chan_num/2] |= (channels[i] >> 5) & 0x1F;
-      gps_data[(chan_num+1)/2] |= (channels[i] & 0x1F) << 10;
-    }
+    // Set the GPS data
+    gps_data[i] = ((channels[chan_idx]&0x3FF) << 5) + ((channels[++chan_idx]&0x3E0) >> 5);
+    if(i < 6) gps_data[++i] = ((channels[chan_idx]&0x1F) << 10) + (channels[++chan_idx]&0x3FF);
   }
 
   /* Convert the position */
