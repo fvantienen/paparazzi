@@ -17,6 +17,10 @@
     <subsystem name="motor_mixing"/>
     <subsystem name="actuators" type="bebop"/>
     <subsystem name="imu" type="bebop"/>
+    <!--subsystem name="gps" type="piksi">
+      <define name="UART2_DEV" value="/dev/ttyUSB0"/>
+      <configure name="GPS_PORT" value="UART2"/>
+    </subsystem-->
     <subsystem name="gps" type="furuno"/>
     <subsystem name="stabilization" type="indi"/>
     <subsystem name="ahrs"          type="float_mlkf"/>

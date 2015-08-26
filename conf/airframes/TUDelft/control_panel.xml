@@ -43,6 +43,7 @@
       <arg flag="--port" constant="/dev/ttyUSB1"/>
       <arg flag="--id" constant="1"/>
     </program>
+    <program name="SBP dgps" command="sw/ground_segment/misc/sbp2ivy"/>
   </section>
 
   <section name="sessions">
@@ -164,6 +165,11 @@
       <program name="Joystick">
         <arg flag="-ac" constant="@AIRCRAFT"/>
         <arg flag="extreme_3d_pro.xml"/>
+      </program>
+    </session>
+    <session name="Piksi DGPS">
+      <program name="SBP dgps">
+        <arg flag="-i" constant="@AC_ID"/>
       </program>
     </session>
   </section>

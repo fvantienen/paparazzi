@@ -38,11 +38,14 @@
 #include GPS_TYPE_H
 #endif
 
-#define GPS_FIX_NONE 0x00
-#define GPS_FIX_2D   0x02
-#define GPS_FIX_3D   0x03
+#define GPS_FIX_NONE 0x00     ///< No GPS fix
+#define GPS_FIX_2D   0x02     ///< 2D GPS fix
+#define GPS_FIX_3D   0x03     ///< 3D GPS fix
+#define GPS_FIX_DGPS 0x04     ///< DGPS fix
+#define GPS_FIX_RTK  0x05     ///< RTK GPS fix
 
-#define GpsFixValid() (gps.fix == GPS_FIX_3D)
+#define GpsFixValid() (gps.fix >= GPS_FIX_3D)
+#define GpsIsLost() !GpsFixValid()
 
 
 #ifndef GPS_NB_CHANNELS
@@ -62,7 +65,7 @@ struct SVinfo {
 /** data structure for GPS information */
 struct GpsState {
   struct EcefCoor_i ecef_pos;    ///< position in ECEF in cm
-  struct LlaCoor_i lla_pos;      ///< position in LLA (lat,lon: deg*1e7; alt: mm over ellipsoid)
+  struct LlaCoor_i lla_pos;      ///< positGpsIsLostion in LLA (lat,lon: deg*1e7; alt: mm over ellipsoid)
   struct UtmCoor_i utm_pos;      ///< position in UTM (north,east: cm; alt: mm over ellipsoid)
   int32_t hmsl;                  ///< height above mean sea level in mm
   struct EcefCoor_i ecef_vel;    ///< speed ECEF in cm/s
@@ -102,45 +105,22 @@ extern struct GpsState gps;
 /** initialize the global GPS state */
 extern void gps_init(void);
 
-/* GPS model specific init implementation */
+/** GPS model specific init implementation */
 extern void gps_impl_init(void);
 
+/** GPS packet injection (default empty) */
+extern void gps_inject_data(uint8_t packet_id, uint8_t length, uint8_t *data);
 
 /** GPS timeout in seconds */
 #ifndef GPS_TIMEOUT
 #define GPS_TIMEOUT 2
 #endif
 
-static inline bool_t GpsIsLost(void)
-{
-  if (gps.fix == GPS_FIX_3D) {
-    return FALSE;
-  }
-  return TRUE;
-}
-
-static inline bool_t gps_has_been_good(void)
-{
-  static bool_t gps_had_valid_fix = FALSE;
-  if (GpsFixValid()) {
-    gps_had_valid_fix = TRUE;
-  }
-  return gps_had_valid_fix;
-}
-
 
 /** Periodic GPS check.
  * Marks GPS as lost when no GPS message was received for GPS_TIMEOUT seconds
  */
 extern void gps_periodic_check(void);
-
-/**
- * GPS Reset
- * @todo this still needs to call gps specific stuff
- */
-#define gps_Reset(_val) {                               \
-  }
-
 
 /*
  * For GPS time synchronizaiton...
