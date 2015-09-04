@@ -66,6 +66,17 @@
    gui_color="green"
   />
   <aircraft
+   name="Mavtec5"
+   ac_id="3"
+   airframe="airframes/TUDelft/airframes/mavtec5.xml"
+   radio="radios/spektrum.xml"
+   telemetry="telemetry/default_rotorcraft.xml"
+   flight_plan="flight_plans/rotorcraft_basic.xml"
+   settings="settings/rotorcraft_basic.xml settings/estimation/ahrs_float_mlkf.xml settings/control/stabilization_att_int_quat.xml settings/modules/config_asctec_v2.xml"
+   settings_modules="modules/geo_mag.xml modules/air_data.xml"
+   gui_color="blue"
+  />
+  <aircraft
    name="MentorEnergy"
    ac_id="1"
    airframe="airframes/examples/MentorEnergy.xml"
