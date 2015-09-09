@@ -109,8 +109,10 @@ static void sbp_pos_ecef_callback(uint16_t sender_id __attribute__((unused)),
   static uint8_t last_flags = 0;
   msg_pos_ecef_t pos_ecef = *(msg_pos_ecef_t *)msg;
 
+  //printf("p:%d,%f,%f,%f,%d,%d,%d\n", pos_ecef.flags, pos_ecef.x, pos_ecef.y, pos_ecef.z, pos_ecef.accuracy, pos_ecef.n_sats, pos_ecef.tow);
+
   // Check if we got RTK fix (FIXME when libsbp has a nicer way of doing this)
-  if(pos_ecef.flags > 0 ){//|| last_flags == 0) {
+  if(pos_ecef.flags > 0 || last_flags == 0) {
     gps.ecef_pos.x = (int32_t)(pos_ecef.x * 100.0);
     gps.ecef_pos.y = (int32_t)(pos_ecef.y * 100.0);
     gps.ecef_pos.z = (int32_t)(pos_ecef.z * 100.0);
@@ -136,6 +138,7 @@ static void sbp_vel_ecef_callback(uint16_t sender_id __attribute__((unused)),
                                   void *context __attribute__((unused)))
 {
   msg_vel_ecef_t vel_ecef = *(msg_vel_ecef_t *)msg;
+  //printf("v:%d,%d,%d,%d\n", vel_ecef.x, vel_ecef.y, vel_ecef.z, vel_ecef.accuracy);
   gps.ecef_vel.x = (int32_t)(vel_ecef.x / 10);
   gps.ecef_vel.y = (int32_t)(vel_ecef.y / 10);
   gps.ecef_vel.z = (int32_t)(vel_ecef.z / 10);
@@ -281,12 +284,12 @@ void gps_impl_init(void)
   sbp_send_message(&sbp_state, SBP_MSG_SETTINGS_WRITE, SBP_SENDER_ID, sizeof(SBP_UART_SET2), (u8*)(&SBP_UART_SET2), gps_piksi_write);
   sbp_send_message(&sbp_state, SBP_MSG_SETTINGS_WRITE, SBP_SENDER_ID, sizeof(SBP_UART_SET3), (u8*)(&SBP_UART_SET3), gps_piksi_write);
   sbp_send_message(&sbp_state, SBP_MSG_SETTINGS_SAVE, SBP_SENDER_ID, 0, NULL, gps_piksi_write);
-  msg_base_pos_t base_pos;
-  base_pos.lat = 51.991152;
-  base_pos.lon = 4.378052;
-  base_pos.height = 50.;
+  /*msg_base_pos_t base_pos;
+  base_pos.lat = 51.991105;
+  base_pos.lon = 4.378022;
+  base_pos.height = 56.;
   sbp_send_message(&sbp_state, SBP_MSG_BASE_POS, SBP_SENDER_ID, sizeof(msg_base_pos_t), (u8*)(&base_pos), gps_piksi_write);
-
+*/
   gps.nb_channels = GPS_NB_CHANNELS;
 }
 
@@ -351,5 +354,7 @@ uint32_t gps_piksi_write(uint8_t *buff, uint32_t n, void *context __attribute__(
  */
 void gps_inject_data(uint8_t packet_id, uint8_t length, uint8_t *data)
 {
+  /*if(packet_id == SBP_MSG_BASE_POS)
+    printf("Got base!\n");*/
   sbp_send_message(&sbp_state, packet_id, SBP_SENDER_ID, length, data, gps_piksi_write);
 }

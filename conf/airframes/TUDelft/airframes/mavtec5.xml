@@ -8,13 +8,10 @@
      * RC:          one Spektrum sats         http://wiki.paparazziuav.org/wiki/Subsystem/radio_control#Spektrum
 -->
 
-<airframe name="Quadrotor LisaMX_2.1 pwm">
+<airframe name="MAVTec5">
 
   <firmware name="rotorcraft">
-    <target name="ap" board="lisa_mx_2.1">
-      <!-- MPU6000 is configured to output data at 2kHz, but polled at 512Hz PERIODIC_FREQUENCY -->
-    </target>
-
+    <target name="ap" board="lisa_mx_2.1"/>
     <target name="nps" board="pc">
       <subsystem name="fdm" type="jsbsim"/>
     </target>
@@ -26,23 +23,19 @@
 
     <subsystem name="motor_mixing"/>
     <subsystem name="actuators"     type="asctec_v2"/>
+    <subsystem name="actuators"     type="pwm"/>
     <subsystem name="telemetry"     type="xbee_api"/>
     <subsystem name="imu"           type="lisa_mx_v2.1"/>
     <subsystem name="gps"           type="piksi"/>
     <subsystem name="stabilization" type="int_quat"/>
-    <subsystem name="ahrs"          type="float_mlkf">
-      <!-- Uncomment to enable all axis update from the Magnetometer. Do
-     it only if you have a very well calibrated and tested
-     magnetometer otherwise your attitude will drift. -->
-      <!--define name="AHRS_MAG_UPDATE_ALL_AXES" value="1"/-->
-    </subsystem>
+    <subsystem name="ahrs"          type="float_mlkf"/>
     <subsystem name="ins" type="hff"/>
   </firmware>
-
 
   <modules>
     <load name="geo_mag.xml"/>
     <load name="air_data.xml"/>
+    <load name="servo_switch.xml"/>
   </modules>
 
   <servos driver="Asctec_v2">
@@ -50,6 +43,10 @@
     <servo name="RIGHT"   no="1" min="0" neutral="3" max="200"/>
     <servo name="BACK"    no="2" min="0" neutral="3" max="200"/>
     <servo name="LEFT"    no="3" min="0" neutral="3" max="200"/>
+  </servos>
+
+  <servos driver="Pwm">
+     <servo name="DROP" no="4" min="1000" neutral="1500" max="2000"/>
   </servos>
 
   <commands>
@@ -65,12 +62,20 @@
     <define name="REVERSE" value="TRUE"/>
   </section>
 
+  <section name="SERVO_SWITCH">
+    <define name="SERVO_SWITCH_SERVO" value="DROP"/>
+    <define name="SERVO_SWITCH_ON_VALUE" value="SERVO_DROP_MIN"/>
+    <define name="SERVO_SWITCH_OFF_VALUE" value="SERVO_DROP_MAX"/>
+    <define name="DropOpen()" value="ServoSwitchOn()"/>
+    <define name="DropClose()" value="ServoSwitchOff()"/>
+  </section>
+
   <command_laws>
     <call fun="motor_mixing_run(autopilot_motors_on,FALSE,values)"/>
-    <set servo="FRONT" value="motor_mixing.commands[MOTOR_FRONT_LEFT]"/>
-    <set servo="RIGHT" value="motor_mixing.commands[MOTOR_FRONT_RIGHT]"/>
-    <set servo="BACK"  value="motor_mixing.commands[MOTOR_BACK_RIGHT]"/>
-    <set servo="LEFT"  value="motor_mixing.commands[MOTOR_BACK_LEFT]"/>
+    <set servo="FRONT"   value="motor_mixing.commands[MOTOR_FRONT_LEFT]"/>
+    <set servo="RIGHT"   value="motor_mixing.commands[MOTOR_FRONT_RIGHT]"/>
+    <set servo="BACK"    value="motor_mixing.commands[MOTOR_BACK_RIGHT]"/>
+    <set servo="LEFT"    value="motor_mixing.commands[MOTOR_BACK_LEFT]"/>
   </command_laws>
 
   <section name="IMU" prefix="IMU_">
