@@ -46,7 +46,7 @@
   </servos>
 
   <servos driver="Pwm">
-     <servo name="DROP" no="4" min="1000" neutral="1500" max="2000"/>
+     <servo name="DROP" no="4" min="1000" neutral="1500" max="2100"/>
   </servos>
 
   <commands>
