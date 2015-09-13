@@ -17,8 +17,8 @@
     </target>
 
     <subsystem name="radio_control" type="spektrum">
-      <define name="RADIO_KILL_SWITCH" value="RADIO_GEAR"/>
-      <define name="RADIO_MODE" value="RADIO_AUX1"/>
+      <define name="RADIO_KILL_SWITCH" value="RADIO_AUX1"/>
+      <define name="RADIO_MODE" value="RADIO_GEAR"/>
     </subsystem>
 
     <subsystem name="motor_mixing"/>
