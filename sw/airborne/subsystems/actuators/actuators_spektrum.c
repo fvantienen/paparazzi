@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2015 Freek van Tienen <freek.v.tienen@gmail.com>
+ * Copyright (C) 2013 The Paparazzi Team
  *
  * This file is part of paparazzi.
  *
@@ -19,31 +19,25 @@
  * Boston, MA 02111-1307, USA.
  */
 
-/** @file actuators_asctec_v2.h
+/** @file actuators_asctec_v2.c
  *  Actuators driver for Asctec v2 motor controllers.
  */
 
-#ifndef ACTUATORS_SPEKTRUM_H
-#define ACTUATORS_SPEKTRUM_H
+#include "subsystems/actuators.h"
+#include "subsystems/actuators/actuators_spektrum.h"
 
-#include "generated/airframe.h"
+#include "mcu_periph/uart.h"
 
+struct ActuatorsSpektrum actuators_spektrum;
 
-struct ActuatorsSpektrum {
-  enum actuators_spektrum_cmd cmd;
-  int32_t cmds[ACTUATORS_NB];
-  struct link_device *device;
-};
-
-
-extern struct ActuatorsSpektrum actuators_spektrum;
-
-extern void actuators_asctec_v2_init(void);
-extern void actuators_asctec_v2_set(void);
-
-#define ActuatorSpektrumSet(_i, _v) { actuators_spektrum.cmds[_i] = _v; }
-#define ActuatorsSpektrumInit() actuators_spektrum_init()
-#define ActuatorsSpektrumCommit() actuators_spektrum_set()
+void actuators_asctec_v2_init(void)
+{
+  actuators_spektrum.device = &((ACUTATORS_SPEKTRUM_OUT).link_device);
+}
 
 
-#endif /* ACTUATORS_SPEKTRUM_H */
+void actuators_asctec_v2_set(void)
+{
+  actuators_spektrum.device.put_byte(0x01); // 7 channels, 11 bit
+}
+
