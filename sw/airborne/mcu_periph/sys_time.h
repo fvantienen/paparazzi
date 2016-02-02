@@ -47,7 +47,7 @@
  */
 #ifndef SYS_TIME_FREQUENCY
 #if defined PERIODIC_FREQUENCY
-#define SYS_TIME_FREQUENCY (2 * PERIODIC_FREQUENCY)
+#define SYS_TIME_FREQUENCY (4 * PERIODIC_FREQUENCY)
 #else
 #define SYS_TIME_FREQUENCY 1000
 #endif
@@ -86,9 +86,10 @@ extern void sys_time_init(void);
  * Register a new system timer.
  * @param duration Duration in seconds until the timer elapses.
  * @param cb Callback function that is called from the ISR when timer elapses, or NULL
+ * @param offset The offset in milliseconds from now
  * @return -1 if it failed, the timer id otherwise
  */
-extern int sys_time_register_timer(float duration, sys_time_cb cb);
+extern int sys_time_register_timer(float duration, sys_time_cb cb, float offset);
 
 /**
  * Cancel a system timer by id.

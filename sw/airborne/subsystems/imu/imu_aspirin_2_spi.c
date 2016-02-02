@@ -29,6 +29,7 @@
 #include "mcu_periph/sys_time.h"
 #include "mcu_periph/spi.h"
 #include "peripherals/hmc58xx_regs.h"
+#include "modules/debug/timing_debug.h" ///< For debugging timers even when not used it sets all macros
 
 /* defaults suitable for Lisa */
 #ifndef ASPIRIN_2_SPI_SLAVE_IDX
@@ -50,7 +51,7 @@ PRINT_CONFIG_VAR(ASPIRIN_2_SPI_DEV)
 #define ASPIRIN_2_LOWPASS_FILTER MPU60X0_DLPF_42HZ
 #define ASPIRIN_2_SMPLRT_DIV 9
 PRINT_CONFIG_MSG("Gyro/Accel output rate is 100Hz at 1kHz internal sampling")
-#elif PERIODIC_FREQUENCY == 512
+#elif (PERIODIC_FREQUENCY == 512) || (PERIODIC_FREQUENCY == 800)
 /* Accelerometer: Bandwidth 260Hz, Delay 0ms
  * Gyroscope: Bandwidth 256Hz, Delay 0.98ms sampling 8kHz
  */
@@ -164,14 +165,6 @@ void imu_aspirin2_event(void)
 
   mpu60x0_spi_event(&imu_aspirin2.mpu);
   if (imu_aspirin2.mpu.data_available) {
-#if !ASPIRIN_2_DISABLE_MAG
-    /* HMC5883 has xzy order of axes in returned data */
-    struct Int32Vect3 mag;
-    mag.x = Int16FromBuf(imu_aspirin2.mpu.data_ext, 0);
-    mag.z = Int16FromBuf(imu_aspirin2.mpu.data_ext, 2);
-    mag.y = Int16FromBuf(imu_aspirin2.mpu.data_ext, 4);
-#endif
-
     /* Handle axis assignement for Lisa/S integrated Aspirin like IMU. */
 #ifdef LISA_S
 #ifdef LISA_S_UPSIDE_DOWN
@@ -183,13 +176,9 @@ void imu_aspirin2_event(void)
                  imu_aspirin2.mpu.data_accel.vect.x,
                  -imu_aspirin2.mpu.data_accel.vect.y,
                  -imu_aspirin2.mpu.data_accel.vect.z);
-    VECT3_ASSIGN(imu.mag_unscaled, mag.x, -mag.y, -mag.z);
 #else
     RATES_COPY(imu.gyro_unscaled, imu_aspirin2.mpu.data_rates.rates);
     VECT3_COPY(imu.accel_unscaled, imu_aspirin2.mpu.data_accel.vect);
-#if !ASPIRIN_2_DISABLE_MAG
-    VECT3_COPY(imu.mag_unscaled, mag);
-#endif
 #endif
 #else
 
@@ -205,9 +194,6 @@ void imu_aspirin2_event(void)
                  -imu_aspirin2.mpu.data_accel.vect.y,
                  imu_aspirin2.mpu.data_accel.vect.x,
                  imu_aspirin2.mpu.data_accel.vect.z);
-#if !ASPIRIN_2_DISABLE_MAG
-    VECT3_ASSIGN(imu.mag_unscaled, -mag.y, mag.x, mag.z);
-#endif
 #else
 
     /* Handle real Aspirin IMU axis assignement. */
@@ -220,15 +206,9 @@ void imu_aspirin2_event(void)
                  imu_aspirin2.mpu.data_accel.vect.y,
                  -imu_aspirin2.mpu.data_accel.vect.x,
                  imu_aspirin2.mpu.data_accel.vect.z);
-#if !ASPIRIN_2_DISABLE_MAG
-    VECT3_ASSIGN(imu.mag_unscaled, -mag.x, -mag.y, mag.z);
-#endif
 #else
     RATES_COPY(imu.gyro_unscaled, imu_aspirin2.mpu.data_rates.rates);
     VECT3_COPY(imu.accel_unscaled, imu_aspirin2.mpu.data_accel.vect);
-#if !ASPIRIN_2_DISABLE_MAG
-    VECT3_ASSIGN(imu.mag_unscaled, mag.y, -mag.x, mag.z)
-#endif
 #endif
 #endif
 #endif
@@ -236,12 +216,35 @@ void imu_aspirin2_event(void)
     imu_aspirin2.mpu.data_available = FALSE;
 
     imu_scale_gyro(&imu);
-    imu_scale_accel(&imu);
+    //imu_scale_accel(&imu);
     AbiSendMsgIMU_GYRO_INT32(IMU_ASPIRIN2_ID, now_ts, &imu.gyro);
-    AbiSendMsgIMU_ACCEL_INT32(IMU_ASPIRIN2_ID, now_ts, &imu.accel);
+    //AbiSendMsgIMU_ACCEL_INT32(IMU_ASPIRIN2_ID, now_ts, &imu.accel);
+
 #if !ASPIRIN_2_DISABLE_MAG
-    imu_scale_mag(&imu);
-    AbiSendMsgIMU_MAG_INT32(IMU_ASPIRIN2_ID, now_ts, &imu.mag);
+    /* Parse the magnetometer if available */
+    if(imu_aspirin2.mpu.data_ext[6]) {
+      TD_ON(11);
+      /* HMC5883 has xzy order of axes in returned data */
+      struct Int32Vect3 mag;
+      mag.x = Int16FromBuf(imu_aspirin2.mpu.data_ext, 0);
+      mag.z = Int16FromBuf(imu_aspirin2.mpu.data_ext, 2);
+      mag.y = Int16FromBuf(imu_aspirin2.mpu.data_ext, 4);
+
+  #if LISA_S && LISA_S_UPSIDE_DOWN
+      VECT3_ASSIGN(imu.mag_unscaled, mag.x, -mag.y, -mag.z);
+  #elif LISA_S && !LISA_S_UPSIDE_DOWN
+      VECT3_COPY(imu.mag_unscaled, mag);
+  #elif LISA_M_OR_MX_21
+      VECT3_ASSIGN(imu.mag_unscaled, -mag.y, mag.x, mag.z);
+  #elif LISA_M_LONGITUDINAL_X
+      VECT3_ASSIGN(imu.mag_unscaled, -mag.x, -mag.y, mag.z);
+  #else
+      VECT3_ASSIGN(imu.mag_unscaled, mag.y, -mag.x, mag.z);
+  #endif
+      imu_scale_mag(&imu);
+      AbiSendMsgIMU_MAG_INT32(IMU_ASPIRIN2_ID, now_ts, &imu.mag);
+      TD_OFF(11);
+    }
 #endif
   }
 }

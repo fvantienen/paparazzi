@@ -83,6 +83,7 @@ PRINT_CONFIG_MSG_VALUE("USE_BARO_BOARD is TRUE, reading onboard baro: ", BARO_BO
 
 #include "generated/modules.h"
 #include "subsystems/abi.h"
+#include "modules/debug/timing_debug.h" ///< For debugging timers even when not used it sets all macros
 
 /* if PRINT_CONFIG is defined, print some config options */
 PRINT_CONFIG_VAR(PERIODIC_FREQUENCY)
@@ -110,6 +111,7 @@ INFO_VALUE("it is recommended to configure in your airframe PERIODIC_FREQUENCY t
 #endif
 
 tid_t main_periodic_tid; ///< id for main_periodic() timer
+tid_t imu_periodic_tid; ///< id for imu_periodic() timer
 tid_t modules_tid;       ///< id for modules_periodic_task() timer
 tid_t failsafe_tid;      ///< id for failsafe_check() timer
 tid_t radio_control_tid; ///< id for radio_control_periodic_task() timer
@@ -147,7 +149,9 @@ int main(void)
   }
 #else
   while (1) {
+    TD_ON(0);
     handle_periodic_tasks();
+    TD_OFF(0);
     main_event();
   }
 #endif
@@ -219,14 +223,15 @@ STATIC_INLINE void main_init(void)
 #endif
 
   // register the timers for the periodic functions
-  main_periodic_tid = sys_time_register_timer((1. / PERIODIC_FREQUENCY), NULL);
-  modules_tid = sys_time_register_timer(1. / MODULES_FREQUENCY, NULL);
-  radio_control_tid = sys_time_register_timer((1. / 60.), NULL);
-  failsafe_tid = sys_time_register_timer(0.05, NULL);
-  electrical_tid = sys_time_register_timer(0.1, NULL);
-  telemetry_tid = sys_time_register_timer((1. / TELEMETRY_FREQUENCY), NULL);
+  main_periodic_tid = sys_time_register_timer((1. / PERIODIC_FREQUENCY), NULL, 0);
+  imu_periodic_tid = sys_time_register_timer((1. / PERIODIC_FREQUENCY), NULL, (1. / PERIODIC_FREQUENCY / 4 * 3));
+  modules_tid = sys_time_register_timer(1. / MODULES_FREQUENCY, NULL, (1. / PERIODIC_FREQUENCY / 4 * 1));
+  radio_control_tid = sys_time_register_timer((1. / 60.), NULL, 0);
+  failsafe_tid = sys_time_register_timer(0.05, NULL, 0);
+  electrical_tid = sys_time_register_timer(0.1, NULL, 0);
+  telemetry_tid = sys_time_register_timer((1. / TELEMETRY_FREQUENCY), NULL, (1. / PERIODIC_FREQUENCY / 4 * 2));
 #if USE_BARO_BOARD
-  baro_tid = sys_time_register_timer(1. / BARO_PERIODIC_FREQUENCY, NULL);
+  baro_tid = sys_time_register_timer(1. / BARO_PERIODIC_FREQUENCY, NULL, 0);
 #endif
 
 #if USE_IMU
@@ -241,42 +246,56 @@ STATIC_INLINE void main_init(void)
 STATIC_INLINE void handle_periodic_tasks(void)
 {
   if (sys_time_check_and_ack_timer(main_periodic_tid)) {
+    TD_ON(1);
     main_periodic();
+    TD_OFF(1);
+  }
+  if (sys_time_check_and_ack_timer(imu_periodic_tid)) {
+#if USE_IMU
+    imu_periodic();
+#endif
+
+  //FIXME: temporary hack, remove me
+#ifdef InsPeriodic
+    InsPeriodic();
+#endif
   }
   if (sys_time_check_and_ack_timer(modules_tid)) {
+    TD_ON(2);
     modules_periodic_task();
+    TD_OFF(2);
   }
   if (sys_time_check_and_ack_timer(radio_control_tid)) {
+    TD_ON(3);
     radio_control_periodic_task();
+    TD_OFF(3);
   }
   if (sys_time_check_and_ack_timer(failsafe_tid)) {
+    TD_ON(4);
     failsafe_check();
+    TD_OFF(4);
   }
   if (sys_time_check_and_ack_timer(electrical_tid)) {
+    TD_ON(5);
     electrical_periodic();
+    TD_OFF(5);
   }
   if (sys_time_check_and_ack_timer(telemetry_tid)) {
+    TD_ON(6);
     telemetry_periodic();
+    TD_OFF(6);
   }
 #if USE_BARO_BOARD
   if (sys_time_check_and_ack_timer(baro_tid)) {
+    TD_ON(7);
     baro_periodic();
+    TD_OFF(7);
   }
 #endif
 }
 
 STATIC_INLINE void main_periodic(void)
 {
-
-#if USE_IMU
-  imu_periodic();
-#endif
-
-  //FIXME: temporary hack, remove me
-#ifdef InsPeriodic
-  InsPeriodic();
-#endif
-
   /* run control loops */
   autopilot_periodic();
   /* set actuators     */
@@ -362,16 +381,24 @@ STATIC_INLINE void failsafe_check(void)
 STATIC_INLINE void main_event(void)
 {
   /* event functions for mcu peripherals: i2c, usb_serial.. */
+  TD_ON(1);
   mcu_event();
+  TD_OFF(1);
 
+  TD_ON(2);
   DatalinkEvent();
+  TD_OFF(2);
 
   if (autopilot_rc) {
+    TD_ON(3);
     RadioControlEvent(autopilot_on_rc_frame);
+    TD_OFF(3);
   }
 
 #if USE_IMU
+  TD_ON(4);
   ImuEvent();
+  TD_OFF(4);
 #endif
 
 #ifdef InsEvent
@@ -380,16 +407,22 @@ STATIC_INLINE void main_event(void)
 #endif
 
 #if USE_BARO_BOARD
+  TD_ON(5);
   BaroEvent();
+  TD_OFF(5);
 #endif
 
 #if USE_GPS
+  TD_ON(6);
   GpsEvent();
+  TD_OFF(6);
 #endif
 
 #if FAILSAFE_GROUND_DETECT || KILL_ON_GROUND_DETECT
   DetectGroundEvent();
 #endif
 
+  TD_ON(7);
   modules_event_task();
+  TD_OFF(7);
 }

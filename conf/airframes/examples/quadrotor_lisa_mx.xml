@@ -20,8 +20,8 @@
     </target>
 
     <subsystem name="radio_control" type="spektrum">
-      <define name="RADIO_MODE" value="RADIO_AUX1"/>
-      <configure name="USE_SECONDARY_SPEKTRUM_RECEIVER" value="1"/>
+      <define name="RADIO_KILL_SWITCH" value="RADIO_AUX1"/>
+      <define name="RADIO_MODE" value="RADIO_GEAR"/>
     </subsystem>
 
     <subsystem name="motor_mixing"/>
@@ -32,17 +32,18 @@
     <subsystem name="telemetry"     type="transparent"/>
     <subsystem name="imu"           type="lisa_mx_v2.1"/>
     <subsystem name="gps"           type="ublox"/>
-    <subsystem name="stabilization" type="int_quat"/>
-    <subsystem name="stabilization" type="rate"/>
-    <subsystem name="ahrs"          type="float_mlkf">
+    <subsystem name="stabilization" type="indi"/>
+    <!--subsystem name="stabilization" type="rate"/-->
+    <subsystem name="ahrs"          type="float_cmpl_quat">
 	    <!-- Uncomment to enable all axis update from the Magnetometer. Do
 		 it only if you have a very well calibrated and tested
 		 magnetometer otherwise your attitude will drift. -->
 	    <!--define name="AHRS_MAG_UPDATE_ALL_AXES" value="1"/-->
     </subsystem>
-    <subsystem name="ins" type="hff"/>
+    <subsystem name="ins"/>
 
     <!--define name="KILL_ON_GROUND_DETECT" value="TRUE"/-->
+    <configure name="PERIODIC_FREQUENCY" value="800"/>
   </firmware>
 
 
@@ -50,6 +51,7 @@
     <load name="gps_ubx_ucenter.xml"/>
     <load name="geo_mag.xml"/>
     <load name="air_data.xml"/>
+    <load name="timing_debug.xml"/>
   </modules>
 
   <servos driver="Pwm">
@@ -104,6 +106,37 @@
     <define name="H_Z" value="0.9259921"/>
   </section>
 
+  <section name="STABILIZATION_ATTITUDE_INDI" prefix="STABILIZATION_INDI_">
+    <!-- control effectiveness -->
+    <define name="G1_P" value="0.032"/>
+    <define name="G1_Q" value="0.025"/>
+    <define name="G1_R" value="0.0032"/>
+    <define name="G2_R" value="0.16"/>
+
+    <!-- reference acceleration for attitude control -->
+    <define name="REF_ERR_P" value="380.0"/>
+    <define name="REF_ERR_Q" value="380.0"/>
+    <define name="REF_ERR_R" value="250.0"/>
+    <define name="REF_RATE_P" value="21.6"/>
+    <define name="REF_RATE_Q" value="21.6"/>
+    <define name="REF_RATE_R" value="21.0"/>
+
+    <!-- second order filter parameters -->
+    <define name="FILT_OMEGA" value="20.0"/>
+    <define name="FILT_ZETA" value="0.55"/>
+    <define name="FILT_OMEGA_R" value="20.0"/>
+    <define name="FILT_ZETA_R" value="0.55"/>
+
+    <!-- first order actuator dynamics -->
+    <define name="ACT_DYN_P" value="0.06"/>
+    <define name="ACT_DYN_Q" value="0.06"/>
+    <define name="ACT_DYN_R" value="0.06"/>
+
+    <!-- Adaptive Learning Rate -->
+    <define name="USE_ADAPTIVE" value="TRUE"/>
+    <define name="ADAPTIVE_MU" value="0.0001"/>
+  </section>
+  
   <section name="STABILIZATION_RATE" prefix="STABILIZATION_RATE_">
     <!-- setpoints -->
     <define name="SP_MAX_P" value="140" unit="deg/s"/>

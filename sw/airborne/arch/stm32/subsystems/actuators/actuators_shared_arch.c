@@ -28,6 +28,7 @@
 #include <libopencm3/stm32/timer.h>
 // for timer_get_frequency
 #include "arch/stm32/mcu_arch.h"
+#include "mcu_periph/sys_time_arch.h"
 
 
 /** Set PWM channel configuration
@@ -119,7 +120,9 @@ void set_servo_timer(uint32_t timer, uint32_t freq, uint8_t channels_mask)
   timer_enable_preload(timer);
 
   /* Counter enable. */
+  uint32_t us_till_period = usec_of_cpu_ticks(systick_get_reload() - systick_get_value()) + 100;
+  timer_set_counter(timer, (PWM_BASE_FREQ / freq) - 500);//us_till_period);
+  //sys_time_usleep(us_till_period);
   timer_enable_counter(timer);
-
 }
 

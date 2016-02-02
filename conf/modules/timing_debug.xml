@@ -1,0 +1,17 @@
+<!DOCTYPE module SYSTEM "module.dtd">
+
+<module name="timing_debug" dir="debug">
+  <doc>
+    <description>This module debugs the timings of Paparazzi using GPIOs as output.</description>
+  </doc>
+  <header>
+    <file name="timing_debug.h"/>
+  </header>
+  <init fun="timing_debug_init()"/>
+  <makefile>
+    <file name="timing_debug.c"/>
+    <define name="USE_TIMING_DEBUG" value="TRUE"/>
+    <configure name="AHRS_ALIGNER_LED" value="none"/>
+  </makefile>
+</module>
+

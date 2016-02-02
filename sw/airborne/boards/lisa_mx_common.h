@@ -107,7 +107,6 @@
 #define LED_8_GPIO_OFF gpio_set
 #define LED_8_AFIO_REMAP ((void)0)
 
-
 /*
  * not actual LEDS, used as GPIOs
  */
@@ -126,6 +125,92 @@
 #define LED_12_GPIO_OFF gpio_set
 #define LED_12_AFIO_REMAP ((void)0)
 
+/*
+ * High speed debug outputs, not actual LEDS
+ */
+/* PC3, ADC13 on ADC_1 */
+#define LED_D0_GPIO GPIOC
+#define LED_D0_GPIO_PIN GPIO3
+#define LED_D0_GPIO_ON gpio_set
+#define LED_D0_GPIO_OFF gpio_clear
+#define LED_D0_AFIO_REMAP ((void)0)
+
+/* PC0, ADC10 on ADC_2 */
+#define LED_D1_GPIO GPIOC
+#define LED_D1_GPIO_PIN GPIO0
+#define LED_D1_GPIO_ON gpio_set
+#define LED_D1_GPIO_OFF gpio_clear
+#define LED_D1_AFIO_REMAP ((void)0)
+
+/* PC1, ADC11 on ADC_3 */
+#define LED_D2_GPIO GPIOC
+#define LED_D2_GPIO_PIN GPIO1
+#define LED_D2_GPIO_ON gpio_set
+#define LED_D2_GPIO_OFF gpio_clear
+#define LED_D2_AFIO_REMAP ((void)0)
+
+/* PB1, ADC9 on DRDY */
+#define LED_D3_GPIO GPIOB
+#define LED_D3_GPIO_PIN GPIO1
+#define LED_D3_GPIO_ON gpio_set
+#define LED_D3_GPIO_OFF gpio_clear
+#define LED_D3_AFIO_REMAP ((void)0)
+
+/* PA4, ADC4 on SS */
+#define LED_D4_GPIO GPIOA
+#define LED_D4_GPIO_PIN GPIO4
+#define LED_D4_GPIO_ON gpio_set
+#define LED_D4_GPIO_OFF gpio_clear
+#define LED_D4_AFIO_REMAP ((void)0)
+
+/* PA5, ADC5 on SCK */
+#define LED_D5_GPIO GPIOA
+#define LED_D5_GPIO_PIN GPIO5
+#define LED_D5_GPIO_ON gpio_set
+#define LED_D5_GPIO_OFF gpio_clear
+#define LED_D5_AFIO_REMAP ((void)0)
+
+/* PA6, ADC6 on MISO */
+#define LED_D6_GPIO GPIOA
+#define LED_D6_GPIO_PIN GPIO6
+#define LED_D6_GPIO_ON gpio_set
+#define LED_D6_GPIO_OFF gpio_clear
+#define LED_D6_AFIO_REMAP ((void)0)
+
+/* PA7, ADC7 on MOSI */
+#define LED_D7_GPIO GPIOA
+#define LED_D7_GPIO_PIN GPIO7
+#define LED_D7_GPIO_ON gpio_set
+#define LED_D7_GPIO_OFF gpio_clear
+#define LED_D7_AFIO_REMAP ((void)0)
+
+/* LED2 */
+#define LED_D8_GPIO GPIOB
+#define LED_D8_GPIO_PIN GPIO4
+#define LED_D8_GPIO_ON gpio_clear
+#define LED_D8_GPIO_OFF gpio_set
+#define LED_D8_AFIO_REMAP ((void)0)
+
+/* PC12 */
+#define LED_D9_GPIO GPIOC
+#define LED_D9_GPIO_PIN GPIO12
+#define LED_D9_GPIO_ON gpio_clear
+#define LED_D9_GPIO_OFF gpio_set
+#define LED_D9_AFIO_REMAP ((void)0)
+
+/* SDA */
+#define LED_D10_GPIO GPIOB
+#define LED_D10_GPIO_PIN GPIO11
+#define LED_D10_GPIO_ON gpio_set
+#define LED_D10_GPIO_OFF gpio_clear
+#define LED_D10_AFIO_REMAP ((void)0)
+
+/* SCL */
+#define LED_D11_GPIO GPIOB
+#define LED_D11_GPIO_PIN GPIO10
+#define LED_D11_GPIO_ON gpio_set
+#define LED_D11_GPIO_OFF gpio_clear
+#define LED_D11_AFIO_REMAP ((void)0)
 
 /* Default actuators driver */
 #define DEFAULT_ACTUATORS "subsystems/actuators/actuators_pwm.h"

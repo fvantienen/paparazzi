@@ -34,6 +34,7 @@
 #include <libopencm3/stm32/timer.h>
 
 #include "mcu_periph/gpio_arch.h"
+#include "modules/debug/timing_debug.h" ///< For debugging timers even when not used it sets all macros
 
 
 int32_t actuators_pwm_values[ACTUATORS_PWM_NB];
@@ -150,6 +151,16 @@ void actuators_pwm_arch_init(void)
  */
 void actuators_pwm_commit(void)
 {
+  static uint8_t i = 0;
+  i++;
+  if(i == 100) {
+    //TD_ON(11);
+    actuators_pwm_values[PWM_SERVO_1] = 1900;
+    actuators_pwm_values[PWM_SERVO_2] = 1900;
+    actuators_pwm_values[PWM_SERVO_3] = 1900;
+    actuators_pwm_values[PWM_SERVO_4] = 1900;
+  }
+  TD_ON(10);
 #ifdef PWM_SERVO_0
   timer_set_oc_value(PWM_SERVO_0_TIMER, PWM_SERVO_0_OC, actuators_pwm_values[PWM_SERVO_0]);
 #endif
@@ -186,5 +197,9 @@ void actuators_pwm_commit(void)
 #ifdef PWM_SERVO_11
   timer_set_oc_value(PWM_SERVO_11_TIMER, PWM_SERVO_11_OC, actuators_pwm_values[PWM_SERVO_11]);
 #endif
-
+  TD_OFF(10);
+  if(i == 100) {
+    i = 0;
+    //TD_OFF(11);
+  }
 }
