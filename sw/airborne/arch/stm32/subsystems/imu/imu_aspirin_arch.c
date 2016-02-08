@@ -1,117 +1,73 @@
-#include "subsystems/imu.h"
+/*
+ * Copyright (C) 2016 Freek van Tienen <freek.v.tienen@gmail.com>
+ *
+ * This file is part of paparazzi.
+ *
+ * paparazzi is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2, or (at your option)
+ * any later version.
+ *
+ * paparazzi is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with paparazzi; see the file COPYING.  If not, write to
+ * the Free Software Foundation, 59 Temple Place - Suite 330,
+ * Boston, MA 02111-1307, USA.
+ */
 
 #include <libopencm3/stm32/gpio.h>
 #include <libopencm3/stm32/rcc.h>
 #include <libopencm3/stm32/exti.h>
-#include <libopencm3/stm32/spi.h>
-#include <libopencm3/stm32/dma.h>
 #include <libopencm3/cm3/nvic.h>
 
-#include "mcu_periph/i2c.h"
-
-#ifndef STM32F1
-#error "imu_aspirin_arch arch currently only implemented for STM32F1"
-#endif
-
-void imu_aspirin_arch_int_enable(void)
-{
-
-#ifdef ASPIRIN_USE_GYRO_INT
-  nvic_set_priority(NVIC_EXTI15_10_IRQ, 0x0F);
-  nvic_enable_irq(NVIC_EXTI15_10_IRQ);
-#endif
-
-  nvic_set_priority(NVIC_EXTI2_IRQ, 0x0F);
-  nvic_enable_irq(NVIC_EXTI2_IRQ);
-
-  // should not be needed anymore, handled by the spi driver
-#if 0
-  /* Enable DMA1 channel4 IRQ Channel ( SPI RX) */
-  nvic_set_priority(NVIC_DMA1_CHANNEL4_IRQ, 0);
-  nvic_enable_irq(NVIC_DMA1_CHANNEL4_IRQ);
-#endif
-}
-
-void imu_aspirin_arch_int_disable(void)
-{
-
-#ifdef ASPIRIN_USE_GYRO_INT
-  nvic_disable_irq(NVIC_EXTI15_10_IRQ);
-#endif
-
-  nvic_disable_irq(NVIC_EXTI2_IRQ);
-
-  // should not be needed anymore, handled by the spi driver
-#if 0
-  /* Enable DMA1 channel4 IRQ Channel ( SPI RX) */
-  nvic_disable_irq(NVIC_DMA1_CHANNEL4_IRQ);
-#endif
-}
+#include "mcu_periph/gpio.h"
+#include "imu_aspirin_arch.h"
+#include "subsystems/imu/imu_aspirin_2_spi.h"
 
 void imu_aspirin_arch_init(void)
 {
+  /* Enable SYSCFG clock for External Interrupts on the F4 */
+  //RCC_APB2ENR |= RCC_APB2ENR_SYSCFGEN;
+  rcc_periph_clock_enable(RCC_SYSCFG);
 
-  // This was needed for Lisa/L????
-#if 0
-  /* Set "mag ss" and "mag reset" as floating inputs ------------------------*/
-  /* "mag ss"    (PC12) is shorted to I2C2 SDA       */
-  /* "mag reset" (PC13) is shorted to I2C2 SCL       */
-  rcc_periph_clock_enable(RCC_GPIOC);
-  gpio_set_mode(GPIOC, GPIO_MODE_INPUT,
-                GPIO_CNF_INPUT_FLOAT, GPIO12 | GPIO13);
-#endif
+  /* Configure the interrupt pins as input */
+  /*rcc_periph_clock_enable(RCC_GPIOC);
+  gpio_mode_setup(GPIOC, GPIO_MODE_INPUT, GPIO_PUPD_NONE, GPIO14);
+  gpio_set_af(GPIOC, GPIO_AF0, GPIO14);*/
+  gpio_setup_input(GPIOC, GPIO14); // HMC58xx interrupt pin
+  gpio_setup_input(GPIOB, GPIO5); // MPU60x0 interrupt pin
 
-  /* Gyro --------------------------------------------------------------------*/
-  /* configure external interrupt exti15_10 on PC14( gyro int ) */
-  rcc_periph_clock_enable(RCC_GPIOC);
-  rcc_periph_clock_enable(RCC_AFIO);
-  gpio_set_mode(GPIOC, GPIO_MODE_INPUT,
-                GPIO_CNF_INPUT_FLOAT, GPIO14);
-
-#ifdef ASPIRIN_USE_GYRO_INT
+  /* Setup the external interrupt for the HMC58xx */
   exti_select_source(EXTI14, GPIOC);
-  exti_set_trigger(EXTI14, EXTI_TRIGGER_FALLING);
+  exti_set_trigger(EXTI14, EXTI_TRIGGER_RISING);
   exti_enable_request(EXTI14);
-#endif
 
-  /* configure external interrupt exti2 on PB2( accel int ) */
-  rcc_periph_clock_enable(RCC_GPIOB);
-  gpio_set_mode(GPIOB, GPIO_MODE_INPUT,
-                GPIO_CNF_INPUT_FLOAT, GPIO2);
-  exti_select_source(EXTI2, GPIOB);
-  exti_set_trigger(EXTI2, EXTI_TRIGGER_FALLING);
-  exti_enable_request(EXTI2);
+  /* Setup the external interrupt for the MPU60x0 */
+  exti_select_source(EXTI5, GPIOB);
+  exti_set_trigger(EXTI5, EXTI_TRIGGER_FALLING);
+  exti_enable_request(EXTI5);
 
+  /* Enable NVIC IRQ for the HMC58xx and MPU60x0 */
+  nvic_set_priority(NVIC_EXTI15_10_IRQ, 0x0F);
+  nvic_enable_irq(NVIC_EXTI15_10_IRQ);
+  nvic_set_priority(NVIC_EXTI9_5_IRQ, 0x0F);
+  nvic_enable_irq(NVIC_EXTI9_5_IRQ);
 }
 
-
-/****** the interrupts should be handled in the peripheral drivers *******/
-
-/*
- * Gyro data ready
- */
+/* External interrupt for the HMC58xx */
 void exti15_10_isr(void)
 {
-
-  /* clear EXTI */
   exti_reset_request(EXTI14);
-
-#ifdef ASPIRIN_USE_GYRO_INT
-  imu_aspirin.gyro_eoc = TRUE;
-  imu_aspirin.status = AspirinStatusReadingGyro;
-#endif
-
+  imu_aspirin2.hmc58xx_ready = TRUE;
 }
 
-/*
- * Accel data ready
- */
-void exti2_isr(void)
+/* External interrupt for the MPU60x0 */
+void exti9_5_isr(void)
 {
-
-  /* clear EXTI */
-  exti_reset_request(EXTI2);
-
-  //adxl345_start_reading_data();
+  exti_reset_request(EXTI5);
+  imu_aspirin2.mpu60x0_ready = TRUE;
 }
-

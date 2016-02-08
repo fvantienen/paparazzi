@@ -36,12 +36,15 @@
 #include "peripherals/mpu60x0_spi.h"
 
 struct ImuAspirin2Spi {
-  struct Mpu60x0_Spi mpu;
+  struct Mpu60x0_Spi mpu;                   ///< Main MPU SPI structure
 
-  struct spi_transaction wait_slave4_trans;
-  volatile uint8_t wait_slave4_tx_buf[1];
-  volatile uint8_t wait_slave4_rx_buf[2];
-  volatile bool_t slave4_ready;
+  struct spi_transaction wait_slave4_trans; ///< Busy waiting slave 4 spi to i2c transaction
+  volatile uint8_t wait_slave4_tx_buf[1];   ///< Slave 4 i2c transmit buffer
+  volatile uint8_t wait_slave4_rx_buf[2];   ///< Slave 4 i2c receive buffer
+  volatile bool_t slave4_ready;             ///< Is set to TRUE when slave 4 i2c transaction is done
+
+  volatile bool_t hmc58xx_ready;            ///< Is set to TRUE when we had an interrupt from the HMC
+  volatile bool_t mpu60x0_ready;            ///< Is set to TRUE when we had an interrupt from the MPU
 };
 
 extern struct ImuAspirin2Spi imu_aspirin2;

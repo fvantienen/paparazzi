@@ -50,6 +50,7 @@ IMU_ASPIRIN_2_SRCS    = $(SRC_SUBSYSTEMS)/imu.c
 IMU_ASPIRIN_2_SRCS   += $(SRC_SUBSYSTEMS)/imu/imu_aspirin_2_spi.c
 IMU_ASPIRIN_2_SRCS   += peripherals/mpu60x0.c
 IMU_ASPIRIN_2_SRCS   += peripherals/mpu60x0_spi.c
+IMU_ASPIRIN_2_SRCS   += $(SRC_ARCH)/subsystems/imu/imu_aspirin_arch.c
 
 include $(CFG_SHARED)/spi_master.makefile
 

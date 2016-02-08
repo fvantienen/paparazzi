@@ -30,8 +30,10 @@
       <define name="USE_PIKSI_EXT_ANTENNA" value="TRUE"/>
     </subsystem>
     <subsystem name="stabilization" type="indi"/>
-    <subsystem name="ahrs"          type="int_cmpl_quat"/>
-    <subsystem name="ins" type="hff"/>
+    <subsystem name="ahrs"          type="float_cmpl_quat"/>
+    <subsystem name="ins"/>
+
+    <configure name="PERIODIC_FREQUENCY" value="1000"/>
   </firmware>
 
   <modules>
@@ -158,8 +160,8 @@
     <!-- control effectiveness -->
     <define name="G1_P" value="0.073"/>
     <define name="G1_Q" value="0.073"/>
-    <define name="G1_R" value="0.0045"/>
-    <define name="G2_R" value="0.2"/>
+    <define name="G1_R" value="0.0049"/>
+    <define name="G2_R" value="0.3811"/>
 
     <!-- reference acceleration for attitude control -->
     <define name="REF_ERR_P" value="900.0"/>
@@ -172,13 +174,13 @@
     <!-- second order filter parameters -->
     <define name="FILT_OMEGA" value="50.0"/>
     <define name="FILT_ZETA" value="0.7"/>
-    <define name="FILT_OMEGA_R" value="20.0"/>
-    <define name="FILT_ZETA_R" value="0.55"/>
+    <define name="FILT_OMEGA_R" value="50.0"/>
+    <define name="FILT_ZETA_R" value="0.7"/>
 
     <!-- first order actuator dynamics -->
-    <define name="ACT_DYN_P" value="0.15"/>
-    <define name="ACT_DYN_Q" value="0.15"/>
-    <define name="ACT_DYN_R" value="0.15"/>
+    <define name="ACT_DYN_P" value="0.15*512/1000"/>
+    <define name="ACT_DYN_Q" value="0.15*512/1000"/>
+    <define name="ACT_DYN_R" value="0.15*512/1000"/>
 
     <!-- Adaptive Learning Rate -->
     <define name="USE_ADAPTIVE" value="FALSE"/>
