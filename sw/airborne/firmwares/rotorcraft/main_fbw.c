@@ -102,11 +102,11 @@ STATIC_INLINE void main_init(void)
   intermcu_init();
 
   // register the timers for the periodic functions
-  main_periodic_tid = sys_time_register_timer((1. / PERIODIC_FREQUENCY), NULL);
+  main_periodic_tid = sys_time_register_timer((1. / PERIODIC_FREQUENCY), NULL, 0);
 //  modules_tid = sys_time_register_timer(1. / MODULES_FREQUENCY, NULL);
-  radio_control_tid = sys_time_register_timer((1. / 60.), NULL);
-  electrical_tid = sys_time_register_timer(0.1, NULL);
-  telemetry_tid = sys_time_register_timer((1. / 20.), NULL);
+  radio_control_tid = sys_time_register_timer((1. / 60.), NULL, 0);
+  electrical_tid = sys_time_register_timer(0.1, NULL, 0);
+  telemetry_tid = sys_time_register_timer((1. / 20.), NULL, 0);
 }
 
 
