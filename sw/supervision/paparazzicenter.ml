@@ -180,6 +180,7 @@ let () =
   let s = gui#statusbar#new_context "env" in
   ignore (s#push (sprintf "HOME=%s SRC=%s \tVersion=%s \tBuild=%s" Env.paparazzi_home Env.paparazzi_src version_str build_str));
 
+(*)
   if Sys.file_exists Utils.backup_xml_file then begin
     let rec question_box = fun () ->
       let message = "Configuration changes to conf/conf.xml were not saved during the last session.\nYou can either keep the current version or restore the auto-saved backup from the last session to discard the changes.\nIf you made any manual changes to conf/conf.xml and choose [Restore auto-backup] you will lose these." in
@@ -189,7 +190,7 @@ let () =
       | _ -> Sys.remove Utils.backup_xml_file in
     question_box ()
   end;
-
+*)
   Utils.build_aircrafts ();
 
   let ac_combo = AC.parse_conf_xml gui#vbox_ac
