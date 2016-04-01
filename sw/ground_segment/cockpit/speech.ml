@@ -29,7 +29,7 @@ let say = fun s ->
     let os = (Os_calls.os_name) in
     match os with
         (* If the os is Darwin, then use "say" *)
-        "Linux" -> ignore (Sys.command (Printf.sprintf "spd-say '%s'&" s))
+        "Linux" -> ignore (Sys.command (Printf.sprintf "spd-say -p 100 -r -100 '%s'&" s))
       (* If the os is Linux, use "spd-say" *)
       | "Darwin" -> ignore (Sys.command (Printf.sprintf "say '%s'&" s))
       (* Add more cases here to enhance support *)
