@@ -221,12 +221,12 @@ void stabilization_rate_run(bool in_flight)
 
   // Add euler dynamics compensation
   float compensation_ratio = ((float) radio_control.values[7]+9600.0)/9600.0/2.0;
-  original_roll =  original_roll  + 497.0*2.26*body_rate->q  * compensation_ratio;
-  original_pitch = original_pitch + 169.1*-6.27*body_rate->p * compensation_ratio;
+  original_roll =  original_roll  + 299.0*3.43*body_rate->q  * compensation_ratio;
+  original_pitch = original_pitch + 120.1*-7.45*body_rate->p * compensation_ratio;
 
   // Add advance angle compensation
-  stabilization_cmd[COMMAND_ROLL] =   0.7457*original_roll + -0.8849*original_pitch;
-  stabilization_cmd[COMMAND_PITCH] =  0.6663*original_roll + 0.4657*original_pitch;
+  stabilization_cmd[COMMAND_ROLL] =   0.8578*original_roll + -0.3276*original_pitch;
+  stabilization_cmd[COMMAND_PITCH] =  0.5139*original_roll + 0.9448*original_pitch;
 
   /* bound the result */
   BoundAbs(stabilization_cmd[COMMAND_ROLL], MAX_PPRZ);
