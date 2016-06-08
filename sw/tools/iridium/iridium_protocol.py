@@ -142,8 +142,11 @@ class IridiumProtocol(protocol.Protocol):
 
   # Handle the 'CPIN' message in thread
   def _handle_cpin(self,data):
+    print("Got data1 \n" + data);
     if not self.wait_for_ok():
       return
+
+    print("Got data \n" + data);
 
     if data == 'SIM PIN1':
       self.transmit_cmd_ok("AT+CPIN=\"%s\"" % self.cpin1)
@@ -179,8 +182,8 @@ class IridiumProtocol(protocol.Protocol):
         return
 
     # Handle the in call data
-    if self.console_write != None:
-      self.console_write("< %s\r\n" % self.recv_data.encode("hex"))
+    #if self.console_write != None:
+    #  self.console_write("< %s\r\n" % self.recv_data.encode("hex"))
     if self.cb_call_data != None:
       self.cb_call_data(self.recv_data)
 
@@ -204,10 +207,12 @@ class IridiumProtocol(protocol.Protocol):
       self.recv_data = ''
       return
 
+    print("data: "+self.recv_data);
+
     # Split the information from the received line
     if self.console_write != None:
       self.console_write(self.recv_data + "\r\n")
-    reg = re.match(r'([+]?)([A-Za-z0-9 ]+)[:]?[ ]?([A-Za-z0-9, ]*)', self.recv_data)
+    reg = re.match(r'([+]?)([A-Za-z0-9]+)[:]?[ ]?([A-Za-z0-9, ]*)', self.recv_data)
     #plus = reg.group(1)
     command = reg.group(2).lower()
     data = reg.group(3).strip()
@@ -222,9 +227,10 @@ class IridiumProtocol(protocol.Protocol):
 
   # When we receive data over the serial device
   def dataReceived(self, data):
-    self.recv_data += data
+    for d in data:
+      self.recv_data += d
 
-    if self.in_call:
-      self.handleInCall() # We are currently calling
-    else:
-      self.handleInTerminal() # Not in call
+      if self.in_call:
+        self.handleInCall() # We are currently calling
+      else:
+        self.handleInTerminal() # Not in call

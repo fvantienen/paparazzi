@@ -24,6 +24,7 @@ class TelemetryQuat:
         self.message_name = message_name
         self.index = index
         self.name = name
+        self.valid = False
         self.qi = 1
         self.qx = 0
         self.qy = 0
@@ -34,6 +35,20 @@ class TelemetryQuat:
         else:
             self.scale = 1.0
 
+class TelemetryEuler:
+    def __init__(self, message_name, index, name, integer):
+        self.message_name = message_name
+        self.index = index
+        self.name = name
+        self.valid = False
+        self.phi = 0
+        self.theta = 0
+        self.psi = 0
+        # optional scaling for fixed point telemetry
+        if integer:
+            self.scale = 0.0139882
+        else:
+            self.scale = 1.0
 
 class TelemetryValue:
     def __init__(self, message_name, index, name, offset, scale, max):
@@ -49,6 +64,7 @@ class TelemetryValue:
 class Visualization:
     def __init__(self, parent):
         self.quats = []
+        self.eulers = []
         self.graph_values = []
         self.throttle = 0.0
         self.mode = 0.0
@@ -59,6 +75,8 @@ class Visualization:
 
         for message_name, index, name, bfp in VEHICLE_QUATS:
             self.quats.append(TelemetryQuat(message_name, index, name, bfp))
+        for message_name, index, name, bfp in VEHICLE_EULERS:
+            self.eulers.append(TelemetryEuler(message_name, index, name, bfp))
         for message_name, index, name, offset, scale, max in BAR_VALUES:
             self.graph_values.append(TelemetryValue(message_name, index, name, offset, scale, max))
 
@@ -66,11 +84,20 @@ class Visualization:
         data = str(larg[0]).split(' ')
         for telemetry_quat in self.quats:
             if telemetry_quat.message_name == data[1]:
-                self.display_dirty = True
                 telemetry_quat.qi = float(data[telemetry_quat.index + 0])
                 telemetry_quat.qx = float(data[telemetry_quat.index + 1])
                 telemetry_quat.qy = float(data[telemetry_quat.index + 2])
                 telemetry_quat.qz = float(data[telemetry_quat.index + 3])
+                telemetry_quat.valid = True
+                self.display_dirty = True
+
+        for telemetry_euler in self.eulers:
+            if telemetry_euler.message_name == data[1]:
+                telemetry_euler.phi = float(data[telemetry_euler.index + 0])
+                telemetry_euler.theta = float(data[telemetry_euler.index + 1])
+                telemetry_euler.psi = float(data[telemetry_euler.index + 2])
+                telemetry_euler.valid = True
+                self.display_dirty = True
 
         for graph_value in self.graph_values:
             if graph_value.message_name == data[1]:
@@ -227,7 +254,28 @@ class Visualization:
         glEnable(GL_LIGHTING)
 
         glTranslate(0, -height + (height / len(self.quats) + 1), 0)
+        for telemetry_euler in self.eulers:
+            if not telemetry_euler.valid:
+                continue
+            glPushMatrix()
+            try:
+                glRotate(telemetry_euler.psi * telemetry_euler.scale, 0, -1, 0);
+                glRotate(telemetry_euler.theta * telemetry_euler.scale, 1, 0, 0);
+                glRotate(telemetry_euler.phi * telemetry_euler.scale, 0, 0, -1);
+                glRotate(self.rotate_theta, 1, 0, 0)
+
+                self.DrawVehicle(telemetry_euler.name)
+            except Exception:
+                raise Exception
+            finally:
+                glPopMatrix()
+
+            telemetry_euler.valid = False
+            glPopMatrix()
+
         for telemetry_quat in self.quats:
+            if not telemetry_quat.valid:
+                continue
             glPushMatrix()
             try:
                 scaled_quat = [telemetry_quat.qi * telemetry_quat.scale, telemetry_quat.qx * telemetry_quat.scale,
@@ -241,7 +289,9 @@ class Visualization:
             finally:
                 glPopMatrix()
                 glTranslate(0, 2 * height / (len(self.quats)), 0)
-        glPopMatrix()
+
+            telemetry_quat.valid = False
+            glPopMatrix()
 
 
 class Visualizer:
@@ -271,6 +321,8 @@ class Visualizer:
         # append all message names
         for vehicle_quat in VEHICLE_QUATS:
             messages.append(vehicle_quat[0])
+        for vehicle_euler in VEHICLE_EULERS:
+            messages.append(vehicle_euler[0])
         for bar_value in BAR_VALUES:
             messages.append(bar_value[0])
 
@@ -334,8 +386,9 @@ def init():
 
 
 def run():
-    global VEHICLE_QUATS, BAR_VALUES
+    global VEHICLE_QUATS, VEHICLE_EULERS, BAR_VALUES
     VEHICLE_QUATS = [["AHRS_REF_QUAT", 6, "Estimate", True], ["AHRS_REF_QUAT", 2, "Reference", True]]
+    VEHICLE_EULERS = [["ROTORCRAFT_FP", 8, "State", True]]
     BAR_VALUES = [["ROTORCRAFT_RADIO_CONTROL", 5, "Throttle (%%) %i", 0, 100, 100]]
     window_title = "Attitude_Viz"
     rotate_theta = -90

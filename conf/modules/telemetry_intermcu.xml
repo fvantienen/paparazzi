@@ -22,7 +22,7 @@
     <file name="pprz_transport.c" dir="pprzlink/src"/>
 
     <configure name="TELEMETRY_INTERMCU_DEV" default="UART3" case="upper|lower"/>
-    <configure name="TELEMETRY_INTERMCU_BAUD" default="B115200"/>
+    <configure name="TELEMETRY_INTERMCU_BAUD" default="B19200"/>
     <define name="USE_$(TELEMETRY_INTERMCU_DEV_UPPER)"/>
     <define name="$(TELEMETRY_INTERMCU_DEV_UPPER)_BAUD" value="$(TELEMETRY_INTERMCU_BAUD)"/>
     <define name="TELEMETRY_INTERMCU_DEV" value="$(TELEMETRY_INTERMCU_DEV_LOWER)"/>

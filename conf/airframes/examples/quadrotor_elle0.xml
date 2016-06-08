@@ -19,9 +19,9 @@
     </target>
 
     <module name="radio_control" type="spektrum">
-      <define name="RADIO_MODE" value="RADIO_FLAP"/>
-      <define name="RADIO_KILL_SWITCH" value="RADIO_GEAR"/>
-      <configure name="USE_SECONDARY_SPEKTRUM_RECEIVER" value="1"/>
+      <define name="RADIO_MODE" value="RADIO_GEAR"/>
+      <define name="RADIO_KILL_SWITCH" value="RADIO_FLAP"/>
+      <define name="RADIO_CONTROL_SPEKTRUM_NO_SIGN" value="1"/>
     </module>
 
     <module name="motor_mixing"/>
@@ -29,7 +29,7 @@
       <define name="SERVO_HZ" value="400"/>
     </module>
 
-    <module name="telemetry"     type="transparent"/>
+    <module name="telemetry"     type="xbee_api"/>
     <module name="imu"           type="elle0"/>
     <module name="gps"           type="ublox"/>
     <module name="stabilization" type="int_quat"/>
@@ -68,6 +68,7 @@
 
   <section name="MIXING" prefix="MOTOR_MIXING_">
     <!-- front left (CW), front right (CCW), back right (CW), back left (CCW) -->
+    <define name="REVERSE" value="true"/>
     <define name="TYPE" value="QUAD_X"/>
   </section>
 
@@ -120,17 +121,17 @@
     <define name="DEADBAND_R"     value="250"/>
 
     <!-- reference -->
-    <define name="REF_OMEGA_P"  value="400" unit="deg/s"/>
+    <define name="REF_OMEGA_P"  value="1500" unit="deg/s"/>
     <define name="REF_ZETA_P"   value="0.85"/>
     <define name="REF_MAX_P"    value="400." unit="deg/s"/>
     <define name="REF_MAX_PDOT" value="RadOfDeg(8000.)"/>
 
-    <define name="REF_OMEGA_Q"  value="400" unit="deg/s"/>
+    <define name="REF_OMEGA_Q"  value="1500" unit="deg/s"/>
     <define name="REF_ZETA_Q"   value="0.85"/>
     <define name="REF_MAX_Q"    value="400." unit="deg/s"/>
     <define name="REF_MAX_QDOT" value="RadOfDeg(8000.)"/>
 
-    <define name="REF_OMEGA_R"  value="250" unit="deg/s"/>
+    <define name="REF_OMEGA_R"  value="1500" unit="deg/s"/>
     <define name="REF_ZETA_R"   value="0.85"/>
     <define name="REF_MAX_R"    value="180." unit="deg/s"/>
     <define name="REF_MAX_RDOT" value="RadOfDeg(1800.)"/>
