@@ -27,12 +27,14 @@
     <module name="motor_mixing"/>
     <module name="actuators"     type="pwm">
       <define name="SERVO_HZ" value="400"/>
+      <define name="PWM_BASE_FREQ" value="28000000"/>
     </module>
 
     <module name="telemetry"     type="xbee_api"/>
     <module name="imu"           type="elle0"/>
     <module name="gps"           type="ublox"/>
     <module name="stabilization" type="int_quat"/>
+    <module name="stabilization" type="rate"/>
     <module name="ahrs"          type="float_mlkf">
 	    <!-- Uncomment to enable all axis update from the Magnetometer. Do
 		 it only if you have a very well calibrated and tested
@@ -53,10 +55,10 @@
   </modules>
 
   <servos driver="Pwm">
-    <servo name="FR"   no="0" min="1000" neutral="1100" max="2000"/>
-    <servo name="BR"    no="1" min="1000" neutral="1100" max="2000"/>
-    <servo name="BL"   no="2" min="1000" neutral="1100" max="2000"/>
-    <servo name="FL"    no="3" min="1000" neutral="1100" max="2000"/>
+    <servo name="FR"   no="0" min="3500" neutral="3700" max="7000"/>
+    <servo name="BR"    no="1" min="3500" neutral="3700" max="7000"/>
+    <servo name="BL"   no="2" min="3500" neutral="3700" max="7000"/>
+    <servo name="FL"    no="3" min="3500" neutral="3700" max="7000"/>
   </servos>
 
   <commands>
@@ -83,12 +85,12 @@
   <section name="IMU" prefix="IMU_">
 
     <!-- replace this with your own calibration -->
-    <define name="MAG_X_NEUTRAL" value="30"/>
-    <define name="MAG_Y_NEUTRAL" value="127"/>
-    <define name="MAG_Z_NEUTRAL" value="140"/>
-    <define name="MAG_X_SENS" value="7.11726808648" integer="16"/>
-    <define name="MAG_Y_SENS" value="7.09366475279" integer="16"/>
-    <define name="MAG_Z_SENS" value="6.84467824688" integer="16"/>
+    <define name="MAG_X_NEUTRAL" value="-166"/>
+    <define name="MAG_Y_NEUTRAL" value="-398"/>
+    <define name="MAG_Z_NEUTRAL" value="51"/>
+    <define name="MAG_X_SENS" value="7.70218142786" integer="16"/>
+    <define name="MAG_Y_SENS" value="7.66491328941" integer="16"/>
+    <define name="MAG_Z_SENS" value="7.26699030533" integer="16"/>
 
     <define name="ACCEL_X_NEUTRAL" value="-52"/>
     <define name="ACCEL_Y_NEUTRAL" value="-4"/>
@@ -103,22 +105,41 @@
   </section>
 
   <section name="AHRS" prefix="AHRS_">
+    <define name="GRAVITY_HEURISTIC_FACTOR" value="0"/>
+
     <!-- values used if no GPS fix, on 3D fix is update by geo_mag module -->
     <define name="H_X" value="0.3770441"/>
     <define name="H_Y" value="0.0193986"/>
     <define name="H_Z" value="0.9259921"/>
   </section>
 
+  <section name="STABILIZATION_RATE" prefix="STABILIZATION_RATE_">
+    <!-- setpoints -->
+    <define name="SP_MAX_P" unit="deg/s" value="280"/>
+    <define name="SP_MAX_Q" unit="deg/s" value="280"/>
+    <define name="SP_MAX_R" unit="deg/s" value="140"/>
+    <define name="DEADBAND_P" value="20"/>
+    <define name="DEADBAND_Q" value="20"/>
+    <define name="DEADBAND_R" value="200"/>
 
+    <!-- feedback -->
+    <define name="GAIN_P" value="2000"/>
+    <define name="GAIN_Q" value="2000"/>
+    <define name="GAIN_R" value="2000"/>
+
+    <define name="IGAIN_P" value="0"/>
+    <define name="IGAIN_Q" value="0"/>
+    <define name="IGAIN_R" value="50"/>
+  </section>
 
   <section name="STABILIZATION_ATTITUDE" prefix="STABILIZATION_ATTITUDE_">
     <!-- setpoints -->
-    <define name="SP_MAX_PHI"     value="45." unit="deg"/>
-    <define name="SP_MAX_THETA"   value="45." unit="deg"/>
-    <define name="SP_MAX_R"       value="90." unit="deg/s"/>
+    <define name="SP_MAX_PHI"     value="70." unit="deg"/>
+    <define name="SP_MAX_THETA"   value="70." unit="deg"/>
+    <define name="SP_MAX_R"       value="250." unit="deg/s"/>
     <define name="DEADBAND_A"     value="0"/>
     <define name="DEADBAND_E"     value="0"/>
-    <define name="DEADBAND_R"     value="250"/>
+    <define name="DEADBAND_R"     value="200"/>
 
     <!-- reference -->
     <define name="REF_OMEGA_P"  value="1500" unit="deg/s"/>
@@ -137,22 +158,22 @@
     <define name="REF_MAX_RDOT" value="RadOfDeg(1800.)"/>
 
     <!-- feedback -->
-    <define name="PHI_PGAIN"  value="1000"/>
-    <define name="PHI_DGAIN"  value="400"/>
-    <define name="PHI_IGAIN"  value="200"/>
+    <define name="PHI_PGAIN"  value="910"/>
+    <define name="PHI_DGAIN"  value="300"/>
+    <define name="PHI_IGAIN"  value="0"/>
 
-    <define name="THETA_PGAIN"  value="1000"/>
-    <define name="THETA_DGAIN"  value="400"/>
-    <define name="THETA_IGAIN"  value="200"/>
+    <define name="THETA_PGAIN"  value="910"/>
+    <define name="THETA_DGAIN"  value="300"/>
+    <define name="THETA_IGAIN"  value="0"/>
 
-    <define name="PSI_PGAIN"  value="500"/>
-    <define name="PSI_DGAIN"  value="300"/>
-    <define name="PSI_IGAIN"  value="10"/>
+    <define name="PSI_PGAIN"  value="1500"/>
+    <define name="PSI_DGAIN"  value="500"/>
+    <define name="PSI_IGAIN"  value="0"/>
 
     <!-- feedforward -->
-    <define name="PHI_DDGAIN"   value="300"/>
-    <define name="THETA_DDGAIN" value="300"/>
-    <define name="PSI_DDGAIN"   value="300"/>
+    <define name="PHI_DDGAIN"   value="0"/>
+    <define name="THETA_DDGAIN" value="0"/>
+    <define name="PSI_DDGAIN"   value="0"/>
   </section>
 
   <section name="GUIDANCE_V" prefix="GUIDANCE_V_">
@@ -182,15 +203,16 @@
 
   <section name="AUTOPILOT">
     <define name="MODE_MANUAL" value="AP_MODE_ATTITUDE_DIRECT"/>
-    <define name="MODE_AUTO1"  value="AP_MODE_HOVER_Z_HOLD"/>
-    <define name="MODE_AUTO2"  value="AP_MODE_NAV"/>
+    <define name="MODE_AUTO1"  value="AP_MODE_RATE_DIRECT"/>
+    <define name="MODE_AUTO2"  value="AP_MODE_RATE_DIRECT"/>
   </section>
 
   <section name="BAT">
     <define name="CATASTROPHIC_BAT_LEVEL" value="9.3" unit="V"/>
-    <define name="CRITIC_BAT_LEVEL" value="9.6" unit="V"/>
-    <define name="LOW_BAT_LEVEL" value="10.1" unit="V"/>
+    <define name="CRITIC_BAT_LEVEL" value="10.3" unit="V"/>
+    <define name="LOW_BAT_LEVEL" value="10.9" unit="V"/>
     <define name="MAX_BAT_LEVEL" value="12.4" unit="V"/>
+    <define name="VoltageOfAdc(adc)" value="(0.006178 * adc)"/>
   </section>
 
 </airframe>
