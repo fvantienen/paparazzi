@@ -34,7 +34,7 @@ PRINT_CONFIG_VAR(SYS_TIME_FREQUENCY)
 
 struct sys_time sys_time;
 
-int sys_time_register_timer(float duration, sys_time_cb cb)
+int sys_time_register_timer(float duration, float offset, sys_time_cb cb)
 {
 
   uint32_t start_time = sys_time.nb_tick;
@@ -42,7 +42,7 @@ int sys_time_register_timer(float duration, sys_time_cb cb)
     if (!sys_time.timer[i].in_use) {
       sys_time.timer[i].cb         = cb;
       sys_time.timer[i].elapsed    = false;
-      sys_time.timer[i].end_time   = start_time + sys_time_ticks_of_sec(duration);
+      sys_time.timer[i].end_time   = start_time + sys_time_ticks_of_sec(duration) + sys_time_ticks_of_sec(offset);
       sys_time.timer[i].duration   = sys_time_ticks_of_sec(duration);
       sys_time.timer[i].in_use     = true;
       return i;

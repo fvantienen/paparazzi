@@ -88,7 +88,7 @@ extern void sys_time_init(void);
  * @param cb Callback function that is called from the ISR when timer elapses, or NULL
  * @return -1 if it failed, the timer id otherwise
  */
-extern int sys_time_register_timer(float duration, sys_time_cb cb);
+extern int sys_time_register_timer(float duration, float offset, sys_time_cb cb);
 
 /**
  * Cancel a system timer by id.
