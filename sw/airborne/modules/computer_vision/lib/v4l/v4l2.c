@@ -97,7 +97,7 @@ static void *v4l2_capture_thread(void *data)
     assert(buf.index < dev->buffers_cnt);
 
     // Copy the timestamp
-    dev->buffers[buf.index].timestamp = buf.timestamp;
+    dev->buffers[buf.index].timestamp = buf.timestamp.tv_usec;
     dev->buffers[buf.index].pprz_timestamp = now_ts;
     // Update the dequeued id
     // We need lock because between setting prev_idx and updating the deq_idx the deq_idx could change
