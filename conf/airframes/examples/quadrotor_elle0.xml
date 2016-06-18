@@ -37,7 +37,7 @@
     <module name="gps" type="ublox"/>
     <module name="stabilization" type="int_quat"/>
     <module name="stabilization" type="rate"/>
-    <module name="ahrs" type="float_mlkf">
+    <module name="ahrs" type="int_cmpl_quat">
 	    <!-- Uncomment to enable all axis update from the Magnetometer. Do
 		 it only if you have a very well calibrated and tested
 		 magnetometer otherwise your attitude will drift. -->
