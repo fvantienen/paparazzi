@@ -64,7 +64,7 @@
 struct edge_hist_t {
   int32_t *x;
   int32_t *y;
-  struct timeval frame_time;
+  uint32_t frame_time;
   float roll;
   float pitch;
 };
@@ -95,7 +95,6 @@ void calculate_edge_displacement(int32_t *edge_histogram, int32_t *edge_histogra
 
 // Local assisting functions (only used here)
 // TODO: find a way to incorperate/find these functions in paparazzi
-uint32_t timeval_diff2(struct timeval *starttime, struct timeval *finishtime);
 uint32_t getMinimum(uint32_t *a, uint32_t n);
 void line_fit(int32_t *displacement, int32_t *divergence, int32_t *flow, uint32_t size, uint32_t border,
               uint16_t RES);

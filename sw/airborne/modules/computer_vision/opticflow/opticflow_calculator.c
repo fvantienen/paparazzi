@@ -156,7 +156,6 @@ PRINT_CONFIG_VAR(OPTICFLOW_DEROTATION)
 PRINT_CONFIG_VAR(CAMERA_ROTATED_180)
 
 /* Functions only used here */
-static uint32_t timeval_diff(struct timeval *starttime, struct timeval *finishtime);
 static int cmp_flow(const void *a, const void *b);
 
 /**
@@ -215,8 +214,8 @@ void calc_fast9_lukas_kanade(struct opticflow_t *opticflow, struct opticflow_sta
   float error_threshold; int n_iterations_RANSAC, n_samples_RANSAC, success_fit; struct linear_flow_fit_info fit_info;
 
   // Update FPS for information
-  result->fps = 1 / (timeval_diff(&opticflow->prev_timestamp, &img->ts) / 1000.);
-  memcpy(&opticflow->prev_timestamp, &img->ts, sizeof(struct timeval));
+  result->fps = 1. / ((float)(img->ts - opticflow->prev_timestamp) / 1e6);
+  opticflow->prev_timestamp = img->ts;
   printf("FPS = %f\n", result->fps);
 
   // Convert image to grayscale
@@ -253,7 +252,7 @@ void calc_fast9_lukas_kanade(struct opticflow_t *opticflow, struct opticflow_sta
   image_show_points(img, corners, result->corner_cnt);
 #endif
 
-  // Check if we found some corners to track 
+  // Check if we found some corners to track
   if (result->corner_cnt < 1) {
     free(corners);
     image_copy(&opticflow->img_gray, &opticflow->prev_img_gray);
@@ -433,7 +432,7 @@ void calc_edgeflow_tot(struct opticflow_t *opticflow, struct opticflow_state_t *
 
 
   // Copy frame time and angles of image to calculated edge histogram
-  memcpy(&edge_hist[current_frame_nr].frame_time, &img->ts, sizeof(struct timeval));
+  edge_hist[current_frame_nr].frame_time = img->ts;
   edge_hist[current_frame_nr].pitch = state->theta;
   edge_hist[current_frame_nr].roll = state->phi;
 
@@ -504,8 +503,8 @@ void calc_edgeflow_tot(struct opticflow_t *opticflow, struct opticflow_state_t *
   */
   float fps_x = 0;
   float fps_y = 0;
-  float time_diff_x = (float)(timeval_diff(&edge_hist[previous_frame_nr[0]].frame_time, &img->ts)) / 1000.;
-  float time_diff_y = (float)(timeval_diff(&edge_hist[previous_frame_nr[1]].frame_time, &img->ts)) / 1000.;
+  float time_diff_x = (float)(img->ts - edge_hist[previous_frame_nr[0]].frame_time) / 1e6;
+  float time_diff_y = (float)(img->ts - edge_hist[previous_frame_nr[1]].frame_time) / 1e6;
   fps_x = 1 / (time_diff_x);
   fps_y = 1 / (time_diff_y);
 
@@ -555,20 +554,6 @@ void opticflow_calc_frame(struct opticflow_t *opticflow, struct opticflow_state_
     } else {}
   }
 
-}
-
-/**
- * Calculate the difference from start till finish
- * @param[in] *starttime The start time to calculate the difference from
- * @param[in] *finishtime The finish time to calculate the difference from
- * @return The difference in milliseconds
- */
-static uint32_t timeval_diff(struct timeval *starttime, struct timeval *finishtime)
-{
-  uint32_t msec;
-  msec = (finishtime->tv_sec - starttime->tv_sec) * 1000;
-  msec += (finishtime->tv_usec - starttime->tv_usec) / 1000;
-  return msec;
 }
 
 /**

@@ -44,7 +44,7 @@ struct opticflow_t {
   float prev_theta;                 ///< Theta from the previous image frame
   struct image_t img_gray;          ///< Current gray image frame
   struct image_t prev_img_gray;     ///< Previous gray image frame
-  struct timeval prev_timestamp;    ///< Timestamp of the previous frame, used for FPS calculation
+  uint32_t prev_timestamp;          ///< Timestamp (us) of the previous frame, used for FPS calculation
 
   uint8_t method;               ///< Method to use to calculate the optical flow
   uint16_t window_size;             ///< Window size for the blockmatching algorithm (general value for all methods)
