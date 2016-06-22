@@ -65,8 +65,7 @@ struct edge_hist_t {
   int32_t *x;
   int32_t *y;
   uint32_t frame_time;
-  float roll;
-  float pitch;
+  struct FloatRates rates;
 };
 
 struct edgeflow_displacement_t {
