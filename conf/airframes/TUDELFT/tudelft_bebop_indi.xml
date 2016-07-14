@@ -25,7 +25,7 @@
       <configure name="USE_MAGNETOMETER" value="TRUE"/>
       <define name="AHRS_USE_GPS_HEADING" value="FALSE"/>
     </module>
-    <module name="ins" type="extended"/>
+    <module name="ins" type="ekf2"/>
     <module name="guidance" type="indi">
       <define name="GUIDANCE_INDI_SPECIFIC_FORCE_GAIN" value="-500.0"/>
     </module>
