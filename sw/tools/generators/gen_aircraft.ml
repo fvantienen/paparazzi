@@ -76,7 +76,7 @@ let configure_xml2mk = fun f xml ->
 let include_xml2mk = fun f ?(target="$(TARGET)") ?(vpath=None) xml ->
   let name = Xml.attrib xml "name"
   and path = match vpath with Some vp -> vp ^ "/" | None -> "" in
-  let flag = sprintf "%s.CFLAGS += -I%s%s" target path name in
+  let flag = sprintf "%s.CFLAGS += -I%s%s\n%s.CXXFLAGS += -I%s%s" target path name target path name in
   try
     (* TODO: add condition in xml syntax ? *)
     let cond = Xml.attrib xml "cond" in
@@ -92,7 +92,7 @@ let define_xml2mk = fun f ?(target="$(TARGET)") xml ->
     | _, Some v -> "="^v
     | _, _ -> ""
   in
-  let flag = sprintf "%s.CFLAGS += -D%s%s" target name (flag_type value) in
+  let flag = sprintf "%s.CFLAGS += -D%s%s\n%s.CXXFLAGS += -D%s%s" target name (flag_type value) target name (flag_type value) in
   try
     (* TODO: add condition in xml syntax ? *)
     let cond = Xml.attrib xml "cond" in
