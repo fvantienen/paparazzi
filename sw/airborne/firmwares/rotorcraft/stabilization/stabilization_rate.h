@@ -38,6 +38,7 @@ extern void stabilization_rate_enter(void);
 
 extern struct FloatRates stabilization_rate_sp;
 extern struct FloatRates stabilization_rate_gain;
+extern struct FloatRates stabilization_rate_gain_forward;
 extern struct FloatRates stabilization_rate_igain;
 extern struct FloatRates stabilization_rate_sum_err;
 extern struct FloatRates stabilization_rate_fb_cmd;

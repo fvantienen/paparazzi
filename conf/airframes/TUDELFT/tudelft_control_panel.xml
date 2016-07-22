@@ -55,6 +55,7 @@
       <arg flag="4242" />
       <arg flag="4252" />
     </program>
+    <program name="Iridium Link" command="sw/tools/iridium/iridium_link.py"/>
   </section>
 
   <section name="sessions">
@@ -77,6 +78,16 @@
         <arg flag="-d" constant="2"/>
         <arg flag="-ac" constant="GeniusDD"/>
         <arg flag="hobbyking.xml"/>
+      </program>
+    </session>
+    <session name="Flight Iridium">
+      <program name="Iridium Link"/>
+      <program name="Data Link">
+        <arg flag="-udp"/>
+      </program>
+      <program name="Server"/>
+      <program name="GCS">
+        <arg flag="-speech"/>
       </program>
     </session>
     <session name="Bluegiga">

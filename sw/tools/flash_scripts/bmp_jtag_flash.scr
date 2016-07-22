@@ -7,6 +7,7 @@ mon connect_srst enable
 monitor jtag_scan
 # Attach to the first device
 attach 1
+monitor option 0x1FFFC000 0X00AA
 # Load the binary
 load
 # Check if the flash matches the binary

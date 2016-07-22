@@ -7,6 +7,7 @@ mon connect_srst enable
 monitor swdp_scan
 # Attach to the first device
 attach 1
+monitor option 0x1FFFC000 0X00AA
 # Load the binary into the flash
 load
 # Check if the flash matches the binary
