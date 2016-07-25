@@ -7,10 +7,12 @@
     </description>
   </doc>
   <header>
-    <file name="ins_int.h" dir="subsystems/ins"/>
+    <file name="ins_ekf2.h" dir="subsystems/ins"/>
   </header>
+  <init fun="ins_ekf2_init()"/>
+  <periodic fun="ins_ekf2_update()" autorun="TRUE"/>
   <makefile target="ap|nps">
-    <!--define name="INS_TYPE_H" value="subsystems/ins/ins_int.h" type="string"/-->
+    <define name="INS_TYPE_H" value="subsystems/ins/ins_ekf2.h" type="string"/>
     <file name="ins.c" dir="subsystems"/>
     <file name="ins_ekf2.cpp" dir="subsystems/ins"/>
 

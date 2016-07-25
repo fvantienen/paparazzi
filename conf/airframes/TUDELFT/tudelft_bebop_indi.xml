@@ -21,11 +21,11 @@
     <module name="gps" type="furuno"/>
     <module name="stabilization" type="indi"/>
     <module name="stabilization" type="rate_indi"/>
-    <module name="ahrs" type="int_cmpl_quat">
+    <!--module name="ahrs" type="int_cmpl_quat">
       <configure name="USE_MAGNETOMETER" value="TRUE"/>
       <define name="AHRS_USE_GPS_HEADING" value="FALSE"/>
-    </module>
-    <module name="ins" type="extended"/>
+    </module-->
+    <!--module name="ins" type="extended"/-->
     <module name="ins" type="ekf2"/>
     <module name="guidance" type="indi"/>
   </firmware>

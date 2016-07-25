@@ -20,8 +20,7 @@
     <module name="imu" type="bebop"/>
     <module name="gps" type="furuno"/>
     <module name="stabilization" type="int_quat"/>
-    <module name="ahrs"          type="float_mlkf"/>
-    <module name="ins" type="extended"/>
+    <module name="ins" type="ekf2"/>
   </firmware>
 
   <modules main_freq="512">
@@ -32,14 +31,14 @@
       <define name="FILE_LOGGER_PATH" value="/data/ftp/internal_000"/>
     </module-->
 
-    <module name="video_thread">
+    <!--module name="video_thread">
     </module>
 
     <module name="video_rtp_stream">
       <define name="VIEWVIDEO_CAMERA" value="front_camera"/>
       <define name="VIEWVIDEO_DOWNSIZE_FACTOR" value="1"/>
       <define name="VIEWVIDEO_QUALITY_FACTOR" value="20"/>
-    </module>
+    </module-->
 
   </modules>
 
