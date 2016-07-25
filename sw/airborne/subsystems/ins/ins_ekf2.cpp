@@ -125,6 +125,7 @@ struct ekf2_t {
     bool accel_valid;
 
     struct OrientationReps body_to_imu;
+    bool got_imu_data;
 };
 static struct ekf2_t ekf2;
 
@@ -237,6 +238,7 @@ void ins_ekf2_init(void)
   ekf2.gyro_stamp = 0;
   ekf2.gyro_valid = false;
   ekf2.accel_valid = false;
+  ekf2.got_imu_data = false;
 
 
 /*#if USE_INS_NAV_INIT
@@ -270,9 +272,9 @@ void ins_ekf2_init(void)
 
 void ins_ekf2_update(void)
 {
-  if(ekf.update()) {
+  if(ekf2.got_imu_data && ekf.update()) {
     /* Get the attitude */
-    float att_q[4];
+    float att_q[4] = {};
     struct FloatQuat ltp_to_imu_quat, ltp_to_body_quat;
     struct FloatQuat *body_to_imu_quat = orientationGetQuat_f(&ekf2.body_to_imu);
     ekf.copy_quaternion(att_q);
@@ -302,8 +304,10 @@ void ins_ekf2_update(void)
     // Publish it to the state
     stateSetBodyRates_f(&body_rate);
   }
+  ekf2.got_imu_data = false;
 }
 
+#include "mcu_periph/sys_time.h"
 static void baro_cb(uint8_t __attribute__((unused)) sender_id, float pressure)
 {
 
@@ -315,9 +319,8 @@ static void baro_cb(uint8_t __attribute__((unused)) sender_id, float pressure)
    * dont use the variable pressure?
    *
    * */
-
-  //ekf.setBaroData(0, air_data.amsl_baro); /* is this the right function call statement*/
-
+   float height = 0.1f;
+  ekf.setBaroData(get_sys_time_usec(), &height); /* is this the right function call statement*/
 }
 
 static void sonar_cb(uint8_t __attribute__((unused)) sender_id, float distance)
@@ -339,16 +342,17 @@ static void gyro_cb(uint8_t __attribute__((unused)) sender_id,
 
   if(ekf2.gyro_valid && ekf2.accel_valid) {
     float rates_int[3], accel_int[3];
-    rates_int[0] = ekf2.gyro.p * ekf2.gyro_dt;
-    rates_int[1] = ekf2.gyro.q * ekf2.gyro_dt;
-    rates_int[2] = ekf2.gyro.r * ekf2.gyro_dt;
-    accel_int[0] = ekf2.accel.x * ekf2.accel_dt;
-    accel_int[1] = ekf2.accel.y * ekf2.accel_dt;
-    accel_int[2] = ekf2.accel.z * ekf2.accel_dt;
+    rates_int[0] = ekf2.gyro.p * ekf2.gyro_dt/1.e6f;
+    rates_int[1] = ekf2.gyro.q * ekf2.gyro_dt/1.e6f;
+    rates_int[2] = ekf2.gyro.r * ekf2.gyro_dt/1.e6f;
+    accel_int[0] = ekf2.accel.x * ekf2.accel_dt/1.e6f;
+    accel_int[1] = ekf2.accel.y * ekf2.accel_dt/1.e6f;
+    accel_int[2] = ekf2.accel.z * ekf2.accel_dt/1.e6f;
 
     ekf.setIMUData(stamp, ekf2.gyro_dt * 1.e6f, ekf2.accel_dt * 1.e6f, rates_int, accel_int);
     ekf2.gyro_valid = false;
     ekf2.accel_valid = false;
+    ekf2.got_imu_data = true;
   }
 }
 
@@ -364,16 +368,17 @@ static void accel_cb(uint8_t sender_id __attribute__((unused)),
 
   if(ekf2.gyro_valid && ekf2.accel_valid) {
     float rates_int[3], accel_int[3];
-    rates_int[0] = ekf2.gyro.p * ekf2.gyro_dt;
-    rates_int[1] = ekf2.gyro.q * ekf2.gyro_dt;
-    rates_int[2] = ekf2.gyro.r * ekf2.gyro_dt;
-    accel_int[0] = ekf2.accel.x * ekf2.accel_dt;
-    accel_int[1] = ekf2.accel.y * ekf2.accel_dt;
-    accel_int[2] = ekf2.accel.z * ekf2.accel_dt;
+    rates_int[0] = ekf2.gyro.p * ekf2.gyro_dt/1.e6f;
+    rates_int[1] = ekf2.gyro.q * ekf2.gyro_dt/1.e6f;
+    rates_int[2] = ekf2.gyro.r * ekf2.gyro_dt/1.e6f;
+    accel_int[0] = ekf2.accel.x * ekf2.accel_dt/1.e6f;
+    accel_int[1] = ekf2.accel.y * ekf2.accel_dt/1.e6f;
+    accel_int[2] = ekf2.accel.z * ekf2.accel_dt/1.e6f;
 
-    ekf.setIMUData(stamp, ekf2.gyro_dt * 1.e6f, ekf2.accel_dt * 1.e6f, rates_int, accel_int);
+    ekf.setIMUData(stamp, ekf2.gyro_dt, ekf2.accel_dt, rates_int, accel_int);
     ekf2.gyro_valid = false;
     ekf2.accel_valid = false;
+    ekf2.got_imu_data = true;
   }
 }
 
@@ -381,15 +386,14 @@ static void mag_cb(uint8_t __attribute__((unused)) sender_id,
                    uint32_t __attribute__((unused)) stamp,
                    struct Int32Vect3 *mag)
 {
-
   float mag_r[3];
   FloatVect3 mag_f;
   MAGS_FLOAT_OF_BFP(mag_f, *mag);
-  mag_r[0]=mag_f.x;
-  mag_r[1]=mag_f.y;
-  mag_r[2]=mag_f.z;
-  ekf.setMagData(stamp, mag_r);
+  mag_r[0] = mag_f.x;
+  mag_r[1] = mag_f.y;
+  mag_r[2] = mag_f.z;
 
+  ekf.setMagData(stamp, mag_r);
 }
 
 static void aligner_cb(uint8_t __attribute__((unused)) sender_id,
