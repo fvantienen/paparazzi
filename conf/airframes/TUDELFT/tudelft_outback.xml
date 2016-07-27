@@ -65,7 +65,6 @@
       <module name="intermcu" type="uart"/>
       <module name="telemetry" type="intermcu"/>
       <module name="opa_controller"/>
-      <module name="heli_throttle_curve"/>
       <module name="heli_swashplate_mixing"/>
 
       <define name="RC_LOST_FBW_MODE" value="FBW_MODE_FAILSAFE"/><!-- Switch to Failsafe or to Autopilot on RC loss? -->

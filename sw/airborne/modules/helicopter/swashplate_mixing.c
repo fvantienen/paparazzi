@@ -101,7 +101,7 @@ void swashplate_mixing_run(pprz_t in_cmd[])
     swashplate_mixing.commands[i] = swashplate_mixing.trim[i] +
         roll_coef[i] * cmd_roll +
         pitch_coef[i] * cmd_pitch +
-        coll_coef[i] * throttle_curve.collective;
+        coll_coef[i] * in_cmd[COMMAND_COLLECTIVE];
     BoundAbs(swashplate_mixing.commands[i], MAX_PPRZ);
   }
 }
