@@ -61,7 +61,9 @@
         <define name="RADIO_CONTROL_SPEKTRUM_NO_SIGN" value="1"/>
       </module>
 
-      <module name="actuators" type="pwm"/>
+      <module name="actuators" type="pwm">
+        <define name="SERVO_HZ" value="300"/>
+      </module>
       <module name="intermcu" type="uart"/>
       <module name="telemetry" type="intermcu"/>
       <module name="opa_controller"/>
@@ -83,7 +85,7 @@
   </section>
 
   <servos driver="Pwm">
-     <servo name="THROTTLE" no="0" min="1100" neutral="1100" max="1900"/>
+     <servo name="THROTTLE" no="0" min="1000" neutral="1000" max="2000"/>
      <servo name="SW_BACK" no="1" min="1950" neutral="1550" max="1150"/>
      <servo name="SW_LEFTFRONT" no="2" min="1100" neutral="1500" max="1900"/>
      <servo name="SW_RIGHTFRONT" no="3" min="1880" neutral="1480" max="1080"/>
