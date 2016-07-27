@@ -55,6 +55,16 @@ struct throttle_curve_t throttle_curve = {
   .curves = THROTTLE_CURVES
 };
 
+#if PERIODIC_TELEMETRY
+#include "subsystems/datalink/telemetry.h"
+
+static void throttle_curve_send_telem(struct transport_tx *trans, struct link_device *dev)
+{
+  pprz_msg_send_THROTTLE_CURVE(trans, dev, AC_ID, &throttle_curve.mode, &throttle_curve.throttle, &throttle_curve.collective,
+    &throttle_curve.rpm, &throttle_curve.rpm_meas, &throttle_curve.rpm_err_sum);
+}
+#endif
+
 /**
  * Initialize the default throttle curve values
  */
@@ -69,6 +79,10 @@ void throttle_curve_init(void)
   throttle_curve.rpm_measured = false;
 
   AbiBindMsgRPM(THROTTLE_CURVE_RPM_ID, &rpm_ev, rpm_cb);
+
+#if PERIODIC_TELEMETRY
+  register_periodic_telemetry(DefaultPeriodic, PPRZ_MSG_ID_THROTTLE_CURVE, throttle_curve_send_telem);
+#endif
 }
 
 /**
@@ -114,11 +128,9 @@ void throttle_curve_run(pprz_t cmds[], uint8_t ap_mode)
     if(curve.rpm[0] != 0xFFFF)
       throttle_curve.rpm = curve.rpm[curve_p]
                             + ((curve.rpm[curve_p + 1] - curve.rpm[curve_p]) * x / curve_range);
+    else
+      throttle_curve.rpm = 0xFFFF;
   }
-
-  // Set the commands
-  cmds[COMMAND_THRUST] = throttle_curve.throttle; //Reuse for now
-  cmds[COMMAND_COLLECTIVE] = throttle_curve.collective;
 
   // Update RPM feedback
   if(curve.rpm[0] != 0xFFFF && throttle_curve.rpm_measured) {
@@ -134,13 +146,18 @@ void throttle_curve_run(pprz_t cmds[], uint8_t ap_mode)
     Bound(rpm_feedback, -MAX_PPRZ, MAX_PPRZ);
 
     // Apply feedback command
-    cmds[COMMAND_THRUST] += rpm_feedback;
-    Bound(cmds[COMMAND_THRUST], 0, MAX_PPRZ);
+    int32_t new_throttle = throttle_curve.throttle + rpm_feedback;
+    Bound(new_throttle, 0, MAX_PPRZ);
+    throttle_curve.throttle = new_throttle;
     throttle_curve.rpm_measured = false;
   }
   else if(curve.rpm[0] == 0xFFFF) {
     throttle_curve.rpm_err_sum = 0;;
   }
+
+  // Set the commands
+  cmds[COMMAND_THRUST] = throttle_curve.throttle; //Reuse for now
+  cmds[COMMAND_COLLECTIVE] = throttle_curve.collective;
 
   // Only set throttle if motors are on
   if (!autopilot_motors_on) {
