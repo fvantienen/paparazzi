@@ -142,18 +142,18 @@
     <set servo="AIL_RIGHTUP"  value="-2*@PITCH + 3*@YAW"/>
   </command_laws>
 
-  <!-- RPM to PPRZ calculation (governer low, fixed RPM) -->
+  <!-- v3 Pitch RODS black laminated props with straight angle root and 25deg blade-grip handles: 52mm top links 65mm bottom links -->
+  <heli_curves>
+    <curve throttle="0,6492,6492,6492,6492" collective="-7500,-6350,-5200,-3850,-2500"/>
+    <curve throttle="5000,6500,8000" rpm="1650,1650,1650" collective="-7500,-5200,-1000"/>
+    <curve throttle="6492,6492,6492" rpm="1650,1650,1650" collective="-7500,-5000,3000"/>
+  </heli_curves>
+
+  <!-- RPM to PPRZ calculation (governer low, fixed RPM) Castle Creations BEC-->
   <!-- RPM * 0.000214141414 + 1.2841 = ms -->
   <!-- 1500 RPM: 1.602ms    1.602 - 1.1 = 0.502ms    9600 / 800 * 502 = 6024 PPRZ -->
   <!-- 1650 RPM: 1.641ms    1.641 - 1.1 = 0.541ms    9600 / 800 * 541 = 6492 PPRZ -->
   <!-- 1800 RPM: 1.672ms    1.672 - 1.1 = 0.572ms    9600 / 800 * 572 = 6864 PPRZ -->
-
-  <!-- v3 Pitch RODS black laminated props with straight angle root and 25deg blade-grip handles: 52mm top links 65mm bottom links -->
-  <heli_curves>
-    <curve throttle="0,6492,6492,6492,6492" collective="-7500,-6350,-5200,-3850,-2500"/>
-    <curve throttle="6492,6492,6492" rpm="1650,1650,1650" collective="-7500,-5200,-1000"/>
-    <curve throttle="6492,6492,5000" collective="-7500,-5000,3000"/>
-  </heli_curves>
 
   <!-- v2 Pitch RODS black laminated props with straight angle root and straight blade-grip handles: 63mm top links 65mm bottom links -->
   <!--heli_curves>
