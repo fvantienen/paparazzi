@@ -66,6 +66,7 @@ void throttle_curve_init(void)
   throttle_curve.rpm_fb_p = THROTTLE_CURVE_RPM_FB_P;
   throttle_curve.rpm_fb_i = THROTTLE_CURVE_RPM_FB_I;
   throttle_curve.rpm_err_sum = 0;
+  throttle_curve.rpm_measured = false;
 
   AbiBindMsgRPM(THROTTLE_CURVE_RPM_ID, &rpm_ev, rpm_cb);
 }

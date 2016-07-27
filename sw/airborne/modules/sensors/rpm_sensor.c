@@ -36,8 +36,7 @@ static struct FirstOrderLowPass rpm_lp;
 
 static void rpm_sensor_send_motor(struct transport_tx *trans, struct link_device *dev)
 {
-  uint16_t rpm = rpm_sensor_get_rpm();
-
+  uint16_t rpm = get_first_order_low_pass(&rpm_lp);
   pprz_msg_send_MOTOR(trans, dev, AC_ID, &rpm, &electrical.current);
 }
 #endif
@@ -45,7 +44,7 @@ static void rpm_sensor_send_motor(struct transport_tx *trans, struct link_device
 /* Initialize the RPM measurement by configuring the telemetry */
 void rpm_sensor_init(void)
 {
-  init_first_order_low_pass(&rpm_lp, 0.3, 512, 0);
+  init_first_order_low_pass(&rpm_lp, 0.3, 1/512, 0);
 
 #if PERIODIC_TELEMETRY
   register_periodic_telemetry(DefaultPeriodic, PPRZ_MSG_ID_MOTOR, rpm_sensor_send_motor);
