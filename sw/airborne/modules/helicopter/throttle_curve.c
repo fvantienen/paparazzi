@@ -116,11 +116,6 @@ void throttle_curve_run(pprz_t cmds[], uint8_t ap_mode)
                             + ((curve.rpm[curve_p + 1] - curve.rpm[curve_p]) * x / curve_range);
   }
 
-  // Only set throttle if motors are on
-  if (!autopilot_motors_on) {
-    throttle_curve.throttle = 0;
-  }
-
   // Set the commands
   cmds[COMMAND_THRUST] = throttle_curve.throttle; //Reuse for now
   cmds[COMMAND_COLLECTIVE] = throttle_curve.collective;
@@ -132,19 +127,24 @@ void throttle_curve_run(pprz_t cmds[], uint8_t ap_mode)
 
     // Calculate integrated error
     throttle_curve.rpm_err_sum += rpm_err * throttle_curve.rpm_fb_i;
-    Bound(throttle_curve.rpm_err_sum, 0, MAX_PPRZ);
+    Bound(throttle_curve.rpm_err_sum, -MAX_PPRZ, MAX_PPRZ);
 
     // Calculate feedback command
     int32_t rpm_feedback = rpm_err * throttle_curve.rpm_fb_p + throttle_curve.rpm_err_sum;
-    Bound(rpm_feedback, 0, MAX_PPRZ);
+    Bound(rpm_feedback, -MAX_PPRZ, MAX_PPRZ);
 
     // Apply feedback command
     cmds[COMMAND_THRUST] += rpm_feedback;
     Bound(cmds[COMMAND_THRUST], 0, MAX_PPRZ);
     throttle_curve.rpm_measured = false;
   }
-  else if(curve.rpm[0] != 0xFFFF) {
+  else if(curve.rpm[0] == 0xFFFF) {
     throttle_curve.rpm_err_sum = 0;;
+  }
+
+  // Only set throttle if motors are on
+  if (!autopilot_motors_on) {
+    cmds[COMMAND_THRUST] = 0;
   }
 }
 

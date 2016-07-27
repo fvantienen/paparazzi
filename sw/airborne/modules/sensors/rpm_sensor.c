@@ -44,7 +44,7 @@ static void rpm_sensor_send_motor(struct transport_tx *trans, struct link_device
 /* Initialize the RPM measurement by configuring the telemetry */
 void rpm_sensor_init(void)
 {
-  init_first_order_low_pass(&rpm_lp, 0.3, 1/512, 0);
+  init_first_order_low_pass(&rpm_lp, 0.3, RPM_SENSOR_PERIODIC_PERIOD, 0);
 
 #if PERIODIC_TELEMETRY
   register_periodic_telemetry(DefaultPeriodic, PPRZ_MSG_ID_MOTOR, rpm_sensor_send_motor);
