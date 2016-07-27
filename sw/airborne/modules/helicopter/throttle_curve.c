@@ -143,7 +143,7 @@ void throttle_curve_run(pprz_t cmds[], uint8_t ap_mode)
     Bound(cmds[COMMAND_THRUST], 0, MAX_PPRZ);
     throttle_curve.rpm_measured = false;
   }
-  else {
+  else if(curve.rpm[0] != 0xFFFF) {
     throttle_curve.rpm_err_sum = 0;;
   }
 }
