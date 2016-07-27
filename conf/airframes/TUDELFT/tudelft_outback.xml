@@ -124,6 +124,11 @@
     <define name="TRIM_COLL" value="0"/>
   </section>
 
+  <section name="THROTTLE_CURVE" prefix="THROTTLE_CURVE_">
+    <define name="RPM_FB_P" value="5.0"/>
+    <define name="RPM_FB_I" value="5.0"/>
+  </section>
+
   <command_laws>
     
     <call fun="swashplate_mixing_run(values)"/>
@@ -145,8 +150,8 @@
   <!-- v3 Pitch RODS black laminated props with straight angle root and 25deg blade-grip handles: 52mm top links 65mm bottom links -->
   <heli_curves>
     <curve throttle="0,6492,6492,6492,6492" collective="-7500,-6350,-5200,-3850,-2500"/>
-    <curve throttle="5000,6500,8000" rpm="1650,1650,1650" collective="-7500,-5200,-1000"/>
-    <curve throttle="6492,6492,6492" rpm="1650,1650,1650" collective="-7500,-5000,3000"/>
+    <curve throttle="5000,6500,8000" rpm="1650,1650,1650" collective="-7500,-5200,-1000"/><!-- 1 blue bat: -5650 collective with 8000 throttle FF with 1650 RPM -->
+    <curve throttle="6492,6492,6492" rpm="1800,1800,1800" collective="-7500,-5000,3000"/>
   </heli_curves>
 
   <!-- RPM to PPRZ calculation (governer low, fixed RPM) Castle Creations BEC-->
