@@ -113,8 +113,6 @@
     <axis name="PITCH" failsafe_value="0"/>
     <axis name="YAW" failsafe_value="0"/>
     <axis name="COLLECTIVE" failsafe_value="-9600"/>
-    <axis name="TH_HOLD" failsafe_value="-9600"/>
-    <axis name="MODE" failsafe_value="-9600"/>
   </commands>
 
   <section name="MIXING" prefix="SW_MIXING_">
@@ -151,7 +149,7 @@
   <!-- v3 Pitch RODS black laminated props with straight angle root and 25deg blade-grip handles: 52mm top links 65mm bottom links -->
   <heli_curves>
     <curve throttle="0,6492,6492,6492,6492" collective="-7500,-6350,-5200,-3850,-2500"/>
-    <curve throttle="6492,6492,6492" rpm="100,100,100" collective="-7500,-5200,-1000"/>
+    <curve throttle="6492,6492,6492" rpm="1650,1650,1650" collective="-7500,-5200,-1000"/>
     <curve throttle="6492,6492,5000" collective="-7500,-5000,3000"/>
   </heli_curves>
 

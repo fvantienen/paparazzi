@@ -28,9 +28,26 @@
 #include "subsystems/commands.h"
 #include "autopilot.h"
 #include "subsystems/radio_control.h"
+#include "subsystems/abi.h"
 
 /* The switching values for the Throttle Curve Mode switch */
 #define THROTTLE_CURVE_SWITCH_VAL (MAX_PPRZ*2/THROTTLE_CURVES_NB)
+
+/* Default RPM feedback gains */
+#ifndef THROTTLE_CURVE_RPM_FB_P
+#define THROTTLE_CURVE_RPM_FB_P 0.0
+#endif
+
+#ifndef THROTTLE_CURVE_RPM_FB_I
+#define THROTTLE_CURVE_RPM_FB_I 0.0
+#endif
+
+/* Register the RPM callback */
+#ifndef THROTTLE_CURVE_RPM_ID
+#define THROTTLE_CURVE_RPM_ID ABI_BROADCAST
+#endif
+static abi_event rpm_ev;
+static void rpm_cb(uint8_t sender_id, uint16_t rpm);
 
 /* Initialize the throttle curves from the airframe file */
 struct throttle_curve_t throttle_curve = {
@@ -46,6 +63,20 @@ void throttle_curve_init(void)
   throttle_curve.mode       = THROTTLE_CURVE_MODE_INIT;
   throttle_curve.throttle   = throttle_curve.curves[THROTTLE_CURVE_MODE_INIT].throttle[0];
   throttle_curve.collective = throttle_curve.curves[THROTTLE_CURVE_MODE_INIT].collective[0];
+  throttle_curve.rpm_fb_p = THROTTLE_CURVE_RPM_FB_P;
+  throttle_curve.rpm_fb_i = THROTTLE_CURVE_RPM_FB_I;
+  throttle_curve.rpm_err_sum = 0;
+
+  AbiBindMsgRPM(THROTTLE_CURVE_RPM_ID, &rpm_ev, rpm_cb);
+}
+
+/**
+ * RPM callback for RPM based control throttle curves
+ */
+static void rpm_cb(uint8_t __attribute__((unused)) sender_id, uint16_t rpm)
+{
+  throttle_curve.rpm_meas = rpm;
+  throttle_curve.rpm_measured = true;
 }
 
 /**
@@ -66,18 +97,22 @@ void throttle_curve_run(pprz_t cmds[], uint8_t ap_mode)
   if (curve.nb_points == 1) {
     throttle_curve.throttle = curve.throttle[0];
     throttle_curve.collective = curve.collective[0];
+    throttle_curve.rpm = curve.rpm[0];
   } else {
     // Calculate the left point on the curve we need to use
     uint16_t curve_range = (MAX_PPRZ / (curve.nb_points - 1));
     int8_t curve_p = ((float)cmds[COMMAND_THRUST] / curve_range);
     Bound(curve_p, 0, curve.nb_points - 1);
 
-    // Calculate the throttle and pitch value
+    // Calculate the throttle, pitch and rpm value
     uint16_t x = cmds[COMMAND_THRUST] - curve_p * curve_range;
     throttle_curve.throttle = curve.throttle[curve_p]
                               + ((curve.throttle[curve_p + 1] - curve.throttle[curve_p]) * x / curve_range);
     throttle_curve.collective = curve.collective[curve_p]
                                 + ((curve.collective[curve_p + 1] - curve.collective[curve_p]) * x / curve_range);
+    if(curve.rpm[0] != 0xFFFF)
+      throttle_curve.rpm = curve.rpm[curve_p]
+                            + ((curve.rpm[curve_p + 1] - curve.rpm[curve_p]) * x / curve_range);
   }
 
   // Only set throttle if motors are on
@@ -88,6 +123,28 @@ void throttle_curve_run(pprz_t cmds[], uint8_t ap_mode)
   // Set the commands
   cmds[COMMAND_THRUST] = throttle_curve.throttle; //Reuse for now
   cmds[COMMAND_COLLECTIVE] = throttle_curve.collective;
+
+  // Update RPM feedback
+  if(curve.rpm[0] != 0xFFFF && throttle_curve.rpm_measured) {
+    // Calculate RPM error
+    int32_t rpm_err = (throttle_curve.rpm - throttle_curve.rpm_meas);
+
+    // Calculate integrated error
+    throttle_curve.rpm_err_sum += rpm_err * throttle_curve.rpm_fb_i;
+    Bound(throttle_curve.rpm_err_sum, 0, MAX_PPRZ);
+
+    // Calculate feedback command
+    int32_t rpm_feedback = rpm_err * throttle_curve.rpm_fb_p + throttle_curve.rpm_err_sum;
+    Bound(rpm_feedback, 0, MAX_PPRZ);
+
+    // Apply feedback command
+    cmds[COMMAND_THRUST] += rpm_feedback;
+    Bound(cmds[COMMAND_THRUST], 0, MAX_PPRZ);
+    throttle_curve.rpm_measured = false;
+  }
+  else {
+    throttle_curve.rpm_err_sum = 0;;
+  }
 }
 
 /**

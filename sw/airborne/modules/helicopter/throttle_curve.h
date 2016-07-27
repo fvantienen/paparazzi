@@ -47,6 +47,13 @@ struct throttle_curve_t {
 
   uint16_t throttle;                          ///< Output thrust(throttle) of the throttle curve
   int16_t collective;                         ///< Output collective of the throttle curve
+  uint16_t rpm;                               ///< Output RPM of the throttle curve
+
+  uint16_t rpm_meas;                          ///< RPM measured
+  bool rpm_measured;                          ///< Whenever the RPM is measured
+  int16_t rpm_err_sum;                        ///< Summed RPM error
+  float rpm_fb_p;                             ///< RPM feedback p gain
+  float rpm_fb_i;                             ///< RPM feedback i gain
 };
 extern struct throttle_curve_t throttle_curve;
 
