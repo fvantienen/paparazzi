@@ -126,7 +126,7 @@ void throttle_curve_run(pprz_t cmds[], uint8_t ap_mode)
     int32_t rpm_err = (throttle_curve.rpm - throttle_curve.rpm_meas);
 
     // Calculate integrated error
-    throttle_curve.rpm_err_sum += rpm_err * throttle_curve.rpm_fb_i;
+    throttle_curve.rpm_err_sum += rpm_err * throttle_curve.rpm_fb_i / 512.0f;
     Bound(throttle_curve.rpm_err_sum, -MAX_PPRZ, MAX_PPRZ);
 
     // Calculate feedback command
