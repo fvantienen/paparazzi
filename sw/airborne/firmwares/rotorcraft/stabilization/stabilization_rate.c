@@ -208,7 +208,7 @@ void stabilization_rate_run(bool in_flight)
   }
 
   //gain scheduling for forward flight
-  if(commands[COMMAND_FMODE]>4500) {
+  if(radio_control.values[RADIO_FMODE] > 4500) {
         /* PI */
     stabilization_rate_fb_cmd.p = stabilization_rate_gain_forward.p * _error.p +
                                   stabilization_rate_igain.p  * stabilization_rate_sum_err.p;

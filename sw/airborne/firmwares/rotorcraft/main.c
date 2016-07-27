@@ -267,6 +267,9 @@ STATIC_INLINE void main_periodic(void)
 
   /* run control loops */
   autopilot_periodic();
+
+  //FIXME check
+  throttle_curve_run(commands, autopilot_mode);
   /* set actuators     */
   //actuators_set(autopilot_motors_on);
 #ifndef INTER_MCU_AP

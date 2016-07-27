@@ -26,6 +26,8 @@
 
 #include "throttle_curve.h"
 #include "subsystems/commands.h"
+#include "autopilot.h"
+#include "subsystems/radio_control.h"
 
 /* The switching values for the Throttle Curve Mode switch */
 #define THROTTLE_CURVE_SWITCH_VAL (MAX_PPRZ*2/THROTTLE_CURVES_NB)
@@ -50,26 +52,28 @@ void throttle_curve_init(void)
  * Run the throttle curve and generate the output throttle and pitch
  * This depends on the FMODE(flight mode) and TRHUST command
  */
-void throttle_curve_run(bool motors_on, pprz_t in_cmd[])
+void throttle_curve_run(pprz_t cmds[], uint8_t ap_mode)
 {
   // Calculate the mode value from the switch
-  int8_t mode = ((float)(in_cmd[COMMAND_FMODE] + MAX_PPRZ) / THROTTLE_CURVE_SWITCH_VAL);
-  Bound(mode, 0, THROTTLE_CURVES_NB - 1);
-  throttle_curve.mode = mode;
+  if(ap_mode != AP_MODE_NAV) {
+    int8_t mode = ((float)(radio_control.values[RADIO_FMODE] + MAX_PPRZ) / THROTTLE_CURVE_SWITCH_VAL);
+    Bound(mode, 0, THROTTLE_CURVES_NB - 1);
+    throttle_curve.mode = mode;
+  }
 
   // Check if we have multiple points or a single point
-  struct curve_t curve = throttle_curve.curves[mode];
+  struct curve_t curve = throttle_curve.curves[throttle_curve.mode];
   if (curve.nb_points == 1) {
     throttle_curve.throttle = curve.throttle[0];
     throttle_curve.collective = curve.collective[0];
   } else {
     // Calculate the left point on the curve we need to use
     uint16_t curve_range = (MAX_PPRZ / (curve.nb_points - 1));
-    int8_t curve_p = ((float)in_cmd[COMMAND_THRUST] / curve_range);
+    int8_t curve_p = ((float)cmds[COMMAND_THRUST] / curve_range);
     Bound(curve_p, 0, curve.nb_points - 1);
 
     // Calculate the throttle and pitch value
-    uint16_t x = in_cmd[COMMAND_THRUST] - curve_p * curve_range;
+    uint16_t x = cmds[COMMAND_THRUST] - curve_p * curve_range;
     throttle_curve.throttle = curve.throttle[curve_p]
                               + ((curve.throttle[curve_p + 1] - curve.throttle[curve_p]) * x / curve_range);
     throttle_curve.collective = curve.collective[curve_p]
@@ -77,9 +81,13 @@ void throttle_curve_run(bool motors_on, pprz_t in_cmd[])
   }
 
   // Only set throttle if motors are on
-  if (!motors_on) {
+  if (!autopilot_motors_on) {
     throttle_curve.throttle = 0;
   }
+
+  // Set the commands
+  cmds[COMMAND_THRUST] = throttle_curve.throttle; //Reuse for now
+  cmds[COMMAND_COLLECTIVE] = throttle_curve.collective;
 }
 
 /**
@@ -87,5 +95,7 @@ void throttle_curve_run(bool motors_on, pprz_t in_cmd[])
  */
 void nav_throttle_curve_set(uint8_t mode)
 {
-  commands[COMMAND_FMODE] = mode * THROTTLE_CURVE_SWITCH_VAL - MAX_PPRZ;
+  int16_t new_mode = mode;
+  Bound(new_mode, 0, THROTTLE_CURVES_NB - 1);
+  throttle_curve.mode = new_mode;
 }
