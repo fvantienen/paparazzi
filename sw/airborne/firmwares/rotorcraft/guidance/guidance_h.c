@@ -283,6 +283,10 @@ void guidance_h_mode_changed(uint8_t new_mode)
           guidance_h.mode == GUIDANCE_H_MODE_RC_DIRECT)
 #endif
         stabilization_attitude_enter();
+
+        struct Int32Eulers sp_cmd_i;
+        sp_cmd_i.psi = stabilization_attitude_get_heading_i();
+        guidance_hybrid_reset_heading(&sp_cmd_i);
       break;
 
     case GUIDANCE_H_MODE_FLIP:
@@ -374,6 +378,9 @@ void guidance_h_run(bool  in_flight)
     case GUIDANCE_H_MODE_FORWARD:
       if (transition_percentage < (100 << INT32_PERCENTAGE_FRAC)) {
         transition_run(true);
+      }
+      else{
+        guidance_hybrid_vertical_simple();
       }
     case GUIDANCE_H_MODE_CARE_FREE:
     case GUIDANCE_H_MODE_ATTITUDE:

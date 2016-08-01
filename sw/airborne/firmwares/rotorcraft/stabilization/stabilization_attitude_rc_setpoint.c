@@ -32,6 +32,7 @@
 #include "firmwares/rotorcraft/stabilization/stabilization_attitude.h"
 #include "firmwares/rotorcraft/autopilot_rc_helpers.h"
 #include "mcu_periph/sys_time.h"
+#include "guidance/guidance_hybrid.h"
 
 #ifndef STABILIZATION_ATTITUDE_DEADBAND_A
 #define STABILIZATION_ATTITUDE_DEADBAND_A 0
@@ -348,7 +349,7 @@ void stabilization_attitude_read_rc_roll_pitch_earth_quat_f(struct FloatQuat *q)
 
   //An offset is added if in forward mode
   /* only non-zero entries for pitch quaternion */
-  float pitch2 = (ANGLE_FLOAT_OF_BFP(transition_theta_offset) + get_rc_pitch_f()) / 2.0f;
+  float pitch2 = (ANGLE_FLOAT_OF_BFP(transition_theta_offset + v_control_pitch) + get_rc_pitch_f()) / 2.0f;
   float qy_pitch = sinf(pitch2);
   float qi_pitch = cosf(pitch2);
 
