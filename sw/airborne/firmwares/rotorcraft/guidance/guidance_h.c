@@ -375,6 +375,9 @@ void guidance_h_run(bool  in_flight)
       if (transition_percentage < (100 << INT32_PERCENTAGE_FRAC)) {
         transition_run(true);
       }
+      else{
+        guidance_hybrid_vertical_simple();
+      }
     case GUIDANCE_H_MODE_CARE_FREE:
     case GUIDANCE_H_MODE_ATTITUDE:
       if ( (!(guidance_h.mode == GUIDANCE_H_MODE_FORWARD)) && transition_percentage > 0) {

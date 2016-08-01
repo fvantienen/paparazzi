@@ -28,7 +28,7 @@
         <define name="AHRS_GRAVITY_UPDATE_COORDINATED_TURN" value="TRUE"/>
       </module>
       <module name="ins" type="hff"/>
-      <module name="guidance" type="indi"/>
+      <module name="guidance" type="hybrid"/>
       <module name="intermcu" type="uart"/>
       <module name="telemetry" type="intermcu"/>
       <module name="current_sensor"/>
@@ -198,6 +198,9 @@
     <define name="MAX_FWD_SPEED" value="18.0"/>
 <!--     For hybrid guidance -->
     <define name="MAX_AIRSPEED" value="20.0"/>
+    <define name="OUTBACK_FORWARD_VERTICAL_GAIN" value="0.01"/>
+    <define name="NOMINAL_FORWARD_THRUST" value="8825"/>
+    <define name="OUTBACK_GUIDANCE" value="TRUE"/>
   </section>
 
   <section name="IMU" prefix="IMU_">
