@@ -274,7 +274,7 @@ void ahrs_icq_update_accel(struct Int32Vect3 *accel, float dt)
 #define ACC_FROM_CROSS_FRAC INT32_RATE_FRAC + INT32_SPEED_FRAC - INT32_ACCEL_FRAC - COMPUTATION_FRAC
 
     const struct Int32Vect3 vel_tangential_body =
-      {ahrs_icq.ltp_vel_norm >> COMPUTATION_FRAC, 0, 0};
+      {0, 0, -(ahrs_icq.ltp_vel_norm >> COMPUTATION_FRAC)};
     struct Int32RMat *body_to_imu_rmat = orientationGetRMat_i(&ahrs_icq.body_to_imu);
     struct Int32Rates body_rate;
     int32_rmat_transp_ratemult(&body_rate, body_to_imu_rmat, &ahrs_icq.imu_rate);
