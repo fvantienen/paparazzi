@@ -60,7 +60,7 @@ float turn_bank_gain;
 float vertical_gain = OUTBACK_FORWARD_VERTICAL_GAIN;
 int32_t nominal_forward_thrust = NOMINAL_FORWARD_THRUST;
 
-float vertical_setpont_outback = -20;
+float vertical_setpont_outback = -83;
 
 // Private variables
 static struct Int32Eulers guidance_hybrid_ypr_sp;
@@ -115,7 +115,7 @@ void guidance_hybrid_init(void)
   guidance_hovering = true;
   horizontal_speed_gain = 8;
   guidance_hybrid_norm_ref_airspeed = 0;
-  max_turn_bank = 20.0;
+  max_turn_bank = 27.5;
   turn_bank_gain = 0.8;
   wind_gain = 64;
   force_forward_flight = 0;

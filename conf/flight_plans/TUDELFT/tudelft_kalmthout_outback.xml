@@ -8,10 +8,10 @@
     <waypoint name="HOME" x="0.0" y="0.0"/>
     <waypoint name="CLIMB" x="0.0" y="5.0"/>
     <waypoint name="STDBY" x="-2.0" y="-5.0"/>
-    <waypoint name="p1" x="129.2" y="242.2"/>
-    <waypoint name="p2" x="-177.1" y="326.3"/>
-    <waypoint name="p3" x="38.9" y="-17.4"/>
-    <waypoint name="p4" x="-220.1" y="114.1"/>
+    <waypoint name="p1" x="347.9" y="162.3"/>
+    <waypoint name="p2" x="177.1" y="247.6"/>
+    <waypoint name="p3" x="237.4" y="-185.6"/>
+    <waypoint name="p4" x="49.8" y="-145.6"/>
     <waypoint name="TD" x="5.6" y="-10.9"/>
   </waypoints>
   <modules>
@@ -54,26 +54,30 @@
       <stay wp="STDBY"/>
     </block>
     <block name="go_p1">
-      <while cond="MoreThan(get_dist2_to_waypoint(WP_p1), nav_radius)">
+      <while cond="MoreThan(get_dist2_to_waypoint(WP_p1), nav_radius*nav_radius)">
+        <set value="VERTICAL_MODE_CLIMB" var="vertical_mode"/>
+        <set value="HORIZONTAL_MODE_WAYPOINT" var="horizontal_mode"/>
         <call fun="nav_set_heading_towards_waypoint(WP_p1)"/>
       </while>
       <deroute block="turn_p2"/>
     </block>
     <block name="turn_p2">
       <while cond="LessThan(NavBlockTime(), 5)">
+        <set value="VERTICAL_MODE_CLIMB" var="vertical_mode"/>
+        <set value="HORIZONTAL_MODE_WAYPOINT" var="horizontal_mode"/>
         <call fun="nav_set_heading_towards_waypoint(WP_p2)"/>
       </while>
       <deroute block="go_p3"/>
     </block>
     <block name="go_p3">
-      <while cond="MoreThan(get_dist2_to_waypoint(WP_p3), nav_radius)">
-        <call fun="nav_set_heading_towards_waypoint(WP_p3)"/>
+      <while cond="MoreThan(get_dist2_to_waypoint(WP_p3), nav_radius*nav_radius)">
+        <call fun="NavGotoWaypointHeading(WP_p3)"/>
       </while>
       <deroute block="turn_p4"/>
     </block>
     <block name="turn_p4">
       <while cond="LessThan(NavBlockTime(), 5)">
-        <call fun="nav_set_heading_towards_waypoint(WP_p4)"/>
+        <call fun="NavGotoWaypointHeading(WP_p4)"/>
       </while>
       <deroute block="go_p1"/>
     </block>

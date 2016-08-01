@@ -380,7 +380,7 @@ void guidance_h_run(bool  in_flight)
         transition_run(true);
       }
       else{
-        guidance_hybrid_vertical_simple();
+        //guidance_hybrid_vertical_simple();
       }
     case GUIDANCE_H_MODE_CARE_FREE:
     case GUIDANCE_H_MODE_ATTITUDE:
@@ -415,9 +415,9 @@ void guidance_h_run(bool  in_flight)
       break;
 
     case GUIDANCE_H_MODE_NAV:
-      if (!in_flight) {
+      /*if (!in_flight) {
         guidance_h_nav_enter();
-      }
+      }*/
 
       if (horizontal_mode == HORIZONTAL_MODE_MANUAL) {
         stabilization_cmd[COMMAND_ROLL]  = nav_roll;
