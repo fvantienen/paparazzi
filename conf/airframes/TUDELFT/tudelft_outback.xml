@@ -187,6 +187,7 @@
     <define name="NAV_CLIMB_VSPEED" value="2.5"/>
     <define name="NAV_DESCEND_VSPEED" value="-0.7"/>
     <define name="NO_RC_THRUST_LIMIT" value="TRUE"/>
+    <define name="DEFAULT_CIRCLE_RADIUS" value="100."/> <!-- for now distance to waypoint ok -->
   </section>
 
   <section name="FORWARD">

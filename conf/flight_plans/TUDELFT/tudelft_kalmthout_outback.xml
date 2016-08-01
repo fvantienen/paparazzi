@@ -1,0 +1,93 @@
+<!DOCTYPE flight_plan SYSTEM "../flight_plan.dtd">
+
+<flight_plan alt="55" ground_alt="0" lat0="51 28 46.0" lon0="4 33 4.0" max_dist_from_home="2260" name="Kalmthout OBC2016test" security_height="10">
+  <header>
+#include "autopilot.h"
+</header>
+  <waypoints>
+    <waypoint name="HOME" x="0.0" y="0.0"/>
+    <waypoint name="CLIMB" x="0.0" y="5.0"/>
+    <waypoint name="STDBY" x="-2.0" y="-5.0"/>
+    <waypoint name="p1" x="129.2" y="242.2"/>
+    <waypoint name="p2" x="-177.1" y="326.3"/>
+    <waypoint name="p3" x="38.9" y="-17.4"/>
+    <waypoint name="p4" x="-220.1" y="114.1"/>
+    <waypoint name="TD" x="5.6" y="-10.9"/>
+  </waypoints>
+  <modules>
+    <module name="nav" type="heli_spinup"/>
+  </modules>
+  <blocks>
+    <block name="Wait GPS">
+      <call fun="NavKillThrottle()"/>
+      <while cond="!GpsFixValid()"/>
+    </block>
+    <block name="Geo init">
+      <while cond="LessThan(NavBlockTime(), 10)"/>
+      <call fun="NavSetAltitudeReferenceHere()"/>
+      <call fun="nav_set_heading_current()"/>
+    </block>
+    <block name="Holding point">
+      <call fun="NavKillThrottle()"/>
+      <manual pitch="0" roll="0" throttle="0" until="FALSE" vmode="throttle" yaw="0"/>
+    </block>
+    <block name="Start Engine">
+      <call fun="nav_throttle_curve_set(0)" loop="false"/>
+      <call fun="nav_heli_spinup_setup(7, 0.15)" loop="false"/>
+      <call fun="NavResurrect()"/>
+      <call fun="nav_heli_spinup_run()"/>
+      <call fun="nav_throttle_curve_set(1)" loop="false"/>
+      <manual pitch="0" roll="0" throttle="0.15" until="stage_time>7" vmode="throttle" yaw="0"/>
+      <call fun="nav_throttle_curve_set(2)" loop="false"/>
+      <manual pitch="0" roll="0" throttle="0.15" until="stage_time>3" vmode="throttle" yaw="0"/>
+    </block>
+    <block name="Hold Attitude">
+      <manual pitch="0" roll="0" throttle="0.15" until="FALSE" vmode="throttle" yaw="0"/>
+    </block>
+    <block name="Takeoff" strip_button="Takeoff" strip_icon="takeoff.png">
+      <exception cond="stateGetPositionEnu_f()->z > 2.0" deroute="Standby"/>
+      <call fun="nav_set_heading_current()"/>
+      <call fun="NavSetWaypointHere(WP_CLIMB)"/>
+      <stay climb="nav_climb_vspeed" vmode="climb" wp="CLIMB"/>
+    </block>
+    <block name="Standby" strip_button="Standby" strip_icon="home.png">
+      <stay wp="STDBY"/>
+    </block>
+    <block name="go_p1">
+      <while cond="MoreThan(get_dist2_to_waypoint(WP_p1), nav_radius)">
+        <call fun="nav_set_heading_towards_waypoint(WP_p1)"/>
+      </while>
+      <deroute block="turn_p2"/>
+    </block>
+    <block name="turn_p2">
+      <while cond="LessThan(NavBlockTime(), 5)">
+        <call fun="nav_set_heading_towards_waypoint(WP_p2)"/>
+      </while>
+      <deroute block="go_p3"/>
+    </block>
+    <block name="go_p3">
+      <while cond="MoreThan(get_dist2_to_waypoint(WP_p3), nav_radius)">
+        <call fun="nav_set_heading_towards_waypoint(WP_p3)"/>
+      </while>
+      <deroute block="turn_p4"/>
+    </block>
+    <block name="turn_p4">
+      <while cond="LessThan(NavBlockTime(), 5)">
+        <call fun="nav_set_heading_towards_waypoint(WP_p4)"/>
+      </while>
+      <deroute block="go_p1"/>
+    </block>
+    <block name="land">
+      <go wp="TD"/>
+    </block>
+    <block name="flare">
+      <exception cond="NavDetectGround()" deroute="Holding point"/>
+      <exception cond="!nav_is_in_flight()" deroute="landed"/>
+      <call fun="NavStartDetectGround()"/>
+      <stay climb="nav_descend_vspeed" vmode="climb" wp="TD"/>
+    </block>
+    <block name="landed">
+      <attitude pitch="0" roll="0" throttle="0" until="FALSE" vmode="throttle"/>
+    </block>
+  </blocks>
+</flight_plan>
