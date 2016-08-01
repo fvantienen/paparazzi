@@ -194,7 +194,7 @@ void stabilization_attitude_read_rc_setpoint_eulers(struct Int32Eulers *sp, bool
       int32_t omega = 0;
       const int32_t max_phi = ANGLE_BFP_OF_REAL(RadOfDeg(85.0));
       if (abs(sp->phi) < max_phi) {
-        omega = ANGLE_BFP_OF_REAL(9.81 * tanf(ANGLE_FLOAT_OF_BFP(sp->phi))/MAX_FWD_SPEED);
+        omega = ANGLE_BFP_OF_REAL(9.81 * tanf(ANGLE_FLOAT_OF_BFP(sp->phi))/airspeed_for_coordinated_turn);
       }
 
       sp->psi += omega * dt;
@@ -272,7 +272,7 @@ void stabilization_attitude_read_rc_setpoint_eulers_f(struct FloatEulers *sp, bo
       float omega = 0.0;
       const float max_phi = RadOfDeg(85.0);
       if (fabsf(sp->phi) < max_phi) {
-        omega = 9.81 * tanf(sp->phi)/MAX_FWD_SPEED;
+        omega = 9.81 * tanf(sp->phi)/airspeed_for_coordinated_turn;
       }
 
       sp->psi += omega * dt;
