@@ -49,6 +49,8 @@
 #define MAX_FWD_SPEED 10.0
 #endif
 
+float airspeed_for_coordinated_turn = MAX_FWD_SPEED;
+
 float care_free_heading = 0;
 
 

@@ -194,7 +194,10 @@
     <define name="USE_EARTH_BOUND_RC_SETPOINT" value="TRUE"/>
     <!-- This is the pitch angle that the Quadshot will have in forward flight, where 0 degrees is hover-->
     <define name="TRANSITION_MAX_OFFSET" value="-80.0" unit="deg"/>
-    <define name="MAX_FWD_SPEED" value="22.0"/>
+<!--     For RC coordinated turns, lower because the yawing was too slow -->
+    <define name="MAX_FWD_SPEED" value="18.0"/>
+<!--     For hybrid guidance -->
+    <define name="MAX_AIRSPEED" value="20.0"/>
   </section>
 
   <section name="IMU" prefix="IMU_">

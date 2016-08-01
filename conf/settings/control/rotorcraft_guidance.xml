@@ -26,6 +26,7 @@
       <dl_setting var="guidance_h.gains.a" min="0" step="1" max="400" module="guidance/guidance_h" shortname="ka" param="GUIDANCE_H_AGAIN" type="int32" persistent="true"/>
       <dl_setting var="guidance_h.sp.pos.x" MIN="-10" MAX="10" STEP="1"  module="guidance/guidance_h" shortname="sp_x_ned" unit="1/2^8m" alt_unit="m" alt_unit_coef="0.00390625"/>
       <dl_setting var="guidance_h.sp.pos.y" MIN="-10" MAX="10" STEP="1"  module="guidance/guidance_h" shortname="sp_y_ned" unit="1/2^8m" alt_unit="m" alt_unit_coef="0.00390625"/>
+      <dl_setting var="airspeed_for_coordinated_turn" MIN="0.0" MAX="50.0" STEP="0.1"  module="stabilization/stabilization_attitude_rc_setpoint" shortname="speed_coor_turn"/>
     </dl_settings>
 
     <dl_settings NAME="NAV">
