@@ -36,6 +36,8 @@
 #include "firmwares/rotorcraft/guidance/guidance_h.h"
 #include "subsystems/radio_control.h"
 #include "firmwares/rotorcraft/stabilization/stabilization_attitude.h"
+#include "firmwares/rotorcraft/navigation.h"
+#include "firmwares/rotorcraft/stabilization/stabilization_attitude_rc_setpoint.h"
 
 /* for guidance_v_thrust_coeff */
 #include "firmwares/rotorcraft/guidance/guidance_v.h"
@@ -136,8 +138,7 @@ void guidance_hybrid_run(void)
 {
 #if OUTBACK_GUIDANCE
   nav_throttle_curve_set(2); //set curve 2 for outback forward flight
-  guidance_hybrid_position_to_airspeed();
-  guidance_hybrid_airspeed_to_attitude(&guidance_hybrid_ypr_sp);
+  guidance_hybrid_attitude_outback(&guidance_hybrid_ypr_sp);
 #else
   guidance_hybrid_determine_wind_estimate();
   guidance_hybrid_position_to_airspeed();
@@ -151,7 +152,9 @@ void guidance_hybrid_reset_heading(struct Int32Eulers *sp_cmd)
 {
   guidance_hybrid_ypr_sp.psi = sp_cmd->psi;
   high_res_psi = sp_cmd->psi << (INT32_ANGLE_HIGH_RES_FRAC - INT32_ANGLE_FRAC);
+#if !OUTBACK_GUIDANCE
   stabilization_attitude_set_rpy_setpoint_i(sp_cmd);
+#endif
 }
 
 /// Convert a required airspeed to a certain attitude for the Quadshot
@@ -260,6 +263,57 @@ void guidance_hybrid_airspeed_to_attitude(struct Int32Eulers *ypr_sp)
       if (omega < ANGLE_BFP_OF_REAL(-0.7)) { omega = ANGLE_BFP_OF_REAL(-0.7); }
     }
   }
+
+  //only for debugging purposes
+  omega_disp = omega;
+
+  //go to higher resolution because else the increment is too small to be added
+  high_res_psi += (omega << (INT32_ANGLE_HIGH_RES_FRAC - INT32_ANGLE_FRAC)) / 512;
+
+  INT32_ANGLE_HIGH_RES_NORMALIZE(high_res_psi);
+
+  // go back to angle_frac
+  ypr_sp->psi = high_res_psi >> (INT32_ANGLE_HIGH_RES_FRAC - INT32_ANGLE_FRAC);
+  ypr_sp->theta = ypr_sp->theta + v_control_pitch;
+}
+
+/// Convert a required airspeed to a certain attitude for the Quadshot
+void guidance_hybrid_attitude_outback(struct Int32Eulers *ypr_sp)
+{
+  //The difference of the current heading with the required heading.
+  float heading_diff = ANGLE_FLOAT_OF_BFP(nav_heading) - stabilization_attitude_get_heading_f();
+  FLOAT_ANGLE_NORMALIZE(heading_diff);
+
+  //only for debugging
+  heading_diff_disp = (int32_t)(heading_diff / 3.14 * 180.0);
+
+  //calculate the norm of the airspeed setpoint
+  int32_t norm_sp_airspeed;
+  norm_sp_airspeed = int32_vect2_norm(&guidance_hybrid_airspeed_sp);
+
+  norm_sp_airspeed_disp = norm_sp_airspeed;
+
+  int32_t psi = ypr_sp->psi;
+  int32_t s_psi, c_psi;
+  PPRZ_ITRIG_SIN(s_psi, psi);
+  PPRZ_ITRIG_COS(c_psi, psi);
+
+  guidance_hybrid_ref_airspeed.x = (guidance_hybrid_norm_ref_airspeed * c_psi) >> INT32_TRIG_FRAC;
+  guidance_hybrid_ref_airspeed.y = (guidance_hybrid_norm_ref_airspeed * s_psi) >> INT32_TRIG_FRAC;
+
+  ypr_sp->theta = -ANGLE_BFP_OF_REAL(RadOfDeg(80.0));
+
+  ypr_sp->phi = ANGLE_BFP_OF_REAL(heading_diff * turn_bank_gain);
+  if (ypr_sp->phi > ANGLE_BFP_OF_REAL(max_turn_bank / 180.0 * M_PI)) { ypr_sp->phi = ANGLE_BFP_OF_REAL(max_turn_bank / 180.0 * M_PI); }
+  if (ypr_sp->phi < ANGLE_BFP_OF_REAL(-max_turn_bank / 180.0 * M_PI)) { ypr_sp->phi = ANGLE_BFP_OF_REAL(-max_turn_bank / 180.0 * M_PI); }
+
+  int32_t omega = 0;
+  //feedforward estimate angular rotation omega = g*tan(phi)/v
+  omega = ANGLE_BFP_OF_REAL(9.81 / max_airspeed * tanf(ANGLE_FLOAT_OF_BFP(
+                              ypr_sp->phi)));
+
+  if (omega > ANGLE_BFP_OF_REAL(0.7)) { omega = ANGLE_BFP_OF_REAL(0.7); }
+  if (omega < ANGLE_BFP_OF_REAL(-0.7)) { omega = ANGLE_BFP_OF_REAL(-0.7); }
 
   //only for debugging purposes
   omega_disp = omega;
