@@ -109,7 +109,7 @@ void throttle_curve_run(pprz_t cmds[], uint8_t ap_mode)
   }
 
   // Failsafe curve
-  if(ap_mode != AP_MODE_FAILSAFE) {
+  if(ap_mode == AP_MODE_FAILSAFE) {
     throttle_curve.mode = 0;
   }
 
