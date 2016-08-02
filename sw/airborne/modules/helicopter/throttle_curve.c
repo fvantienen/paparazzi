@@ -108,6 +108,11 @@ void throttle_curve_run(pprz_t cmds[], uint8_t ap_mode)
     throttle_curve.mode = mode;
   }
 
+  // Failsafe curve
+  if(ap_mode != AP_MODE_FAILSAFE) {
+    throttle_curve.mode = 0;
+  }
+
   // Check if we have multiple points or a single point
   struct curve_t curve = throttle_curve.curves[throttle_curve.mode];
   if (curve.nb_points == 1) {

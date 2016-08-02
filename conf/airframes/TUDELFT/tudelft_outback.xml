@@ -72,7 +72,7 @@
       <module name="heli_swashplate_mixing"/>
 
       <define name="RC_LOST_FBW_MODE" value="FBW_MODE_FAILSAFE"/><!-- Switch to Failsafe or to Autopilot on RC loss? -->
-      <define name="RC_LOST_IN_AUTO_FBW_MODE" value="FBW_MODE_FAILSAFE"/><!-- Switch to Failsafe with a working autopilot on RC loss? -->
+      <define name="RC_LOST_IN_AUTO_FBW_MODE" value="FBW_MODE_AUTO"/><!-- Switch to Failsafe with a working autopilot on RC loss? -->
       <define name="AP_LOST_FBW_MODE" value="FBW_MODE_MANUAL"/><!-- Switch to Failsafe or to Manual on AP loss? -->
       <define name="RADIO_FBW_MODE" value="7"/><!-- Switch to Desactivate AP -->
     </target>

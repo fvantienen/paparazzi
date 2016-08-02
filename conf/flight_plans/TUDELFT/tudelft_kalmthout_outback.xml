@@ -1,6 +1,6 @@
 <!DOCTYPE flight_plan SYSTEM "../flight_plan.dtd">
 
-<flight_plan alt="55" ground_alt="0" lat0="51 28 46.0" lon0="4 33 4.0" max_dist_from_home="2260" name="Kalmthout OBC2016test" security_height="10">
+<flight_plan alt="55" ground_alt="0" lat0="52 28 38.0" lon0="4 41 25.0" max_dist_from_home="2260" name="Kalmthout OBC2016test" security_height="10">
   <header>
 #include "autopilot.h"
 </header>
@@ -8,15 +8,30 @@
     <waypoint name="HOME" x="0.0" y="0.0"/>
     <waypoint name="CLIMB" x="0.0" y="5.0"/>
     <waypoint name="STDBY" x="-2.0" y="-5.0"/>
-    <waypoint name="p1" x="347.9" y="162.3"/>
-    <waypoint name="p2" x="177.1" y="247.6"/>
-    <waypoint name="p3" x="237.4" y="-185.6"/>
-    <waypoint name="p4" x="49.8" y="-145.6"/>
-    <waypoint name="TD" x="5.6" y="-10.9"/>
+    <waypoint name="p1" x="268.2" y="251.9"/>
+    <waypoint name="p2" x="527.1" y="131.6"/>
+    <waypoint name="p3" x="93.9" y="-103.2"/>
+    <waypoint name="p4" x="321.3" y="-217.7"/>
+    <waypoint name="_s1" x="112.1" y="652.8"/>
+    <waypoint name="_s2" x="1396.4" y="172.8"/>
+    <waypoint name="_s3" x="635.3" y="-816.0"/>
+    <waypoint name="_s4" x="-324.9" y="-249.8"/>
+    <waypoint name="TD" x="89.3" y="118.1"/>
   </waypoints>
+  <sectors>
+    <sector color="red" name="Safety">
+      <corner name="_s1"/>
+      <corner name="_s2"/>
+      <corner name="_s3"/>
+      <corner name="_s4"/>
+    </sector>
+  </sectors>
   <modules>
     <module name="nav" type="heli_spinup"/>
   </modules>
+  <exceptions>
+    <exception cond="(!InsideSafety(GetPosX(), GetPosY()) && !(nav_block == IndexOfBlock('Wait GPS')) && !(nav_block == IndexOfBlock('Geo init')) )" deroute="Holding point"/>
+  </exceptions>
   <blocks>
     <block name="Wait GPS">
       <call fun="NavKillThrottle()"/>
