@@ -58,6 +58,7 @@ int32_t horizontal_speed_gain;
 float max_turn_bank;
 float turn_bank_gain;
 float vertical_gain = OUTBACK_FORWARD_VERTICAL_GAIN;
+float vertical_dgain = OUTBACK_FORWARD_VERTICAL_DGAIN;
 int32_t nominal_forward_thrust = NOMINAL_FORWARD_THRUST;
 
 float vertical_setpont_outback = -83;
@@ -487,7 +488,7 @@ void guidance_hybrid_vertical_quadshot(void)
 void guidance_hybrid_vertical_simple(void)
 {
   int32_t vertical_err = -(POS_BFP_OF_REAL(vertical_setpont_outback) - stateGetPositionNed_i()->z);
-  v_control_pitch = ANGLE_BFP_OF_REAL( POS_FLOAT_OF_BFP(vertical_err) * vertical_gain);
+  v_control_pitch = ANGLE_BFP_OF_REAL( POS_FLOAT_OF_BFP(vertical_err) * vertical_gain + stateGetSpeedNed_f()->z * vertical_dgain);
 
   Bound(v_control_pitch, ANGLE_BFP_OF_REAL(RadOfDeg(-15.0)), ANGLE_BFP_OF_REAL(RadOfDeg(15.0)));
 

@@ -43,6 +43,7 @@ extern int32_t v_control_pitch;
 extern float vertical_setpont_outback;
 extern int32_t nominal_forward_thrust;
 extern float vertical_gain;
+extern float vertical_dgain;
 
 /** Runs the Hybrid Guidance main functions.
  */
