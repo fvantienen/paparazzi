@@ -88,9 +88,9 @@
 
   <servos driver="Pwm">
      <servo name="THROTTLE" no="0" min="1000" neutral="1000" max="2000"/>
-     <servo name="SW_BACK" no="1" min="1950" neutral="1550" max="1150"/>
-     <servo name="SW_LEFTFRONT" no="2" min="1100" neutral="1500" max="1900"/>
-     <servo name="SW_RIGHTFRONT" no="3" min="1880" neutral="1480" max="1080"/>
+     <servo name="SW_BACK" no="1" min="1900" neutral="1500" max="1100"/>
+     <servo name="SW_LEFTFRONT" no="2" min="1120" neutral="1520" max="1920"/>
+     <servo name="SW_RIGHTFRONT" no="3" min="1900" neutral="1500" max="1100"/>
      <servo name="TAIL_LEFT" no="4" min="1100" neutral="1500" max="1900"/>
      <servo name="TAIL_RIGHT" no="5" min="1100" neutral="1500" max="1900"/>
      <servo name="AIL_LEFTLOW" no="6" min="1100" neutral="1475" max="1900"/>
