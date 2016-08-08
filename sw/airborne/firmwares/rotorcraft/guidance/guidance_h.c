@@ -313,10 +313,19 @@ void guidance_h_read_rc(bool  in_flight)
 
 #if USE_STABILIZATION_RATE
     case GUIDANCE_H_MODE_RATE:
+#ifdef THROTTLE_CURVE_H 
+      if(throttle_curve.mode == 2) {
+        stabilization_rate_read_rc_switched_sticks();
+      }
+      else {
+        stabilization_rate_read_rc();
+      }
+#else
 #if SWITCH_STICKS_FOR_RATE_CONTROL
       stabilization_rate_read_rc_switched_sticks();
 #else
       stabilization_rate_read_rc();
+#endif
 #endif
       break;
 #endif
