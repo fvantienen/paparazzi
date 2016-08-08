@@ -71,6 +71,7 @@ static void throttle_curve_send_telem(struct transport_tx *trans, struct link_de
 void throttle_curve_init(void)
 {
   throttle_curve.mode       = THROTTLE_CURVE_MODE_INIT;
+  throttle_curve.nav_mode   = THROTTLE_CURVE_MODE_INIT;
   throttle_curve.throttle   = throttle_curve.curves[THROTTLE_CURVE_MODE_INIT].throttle[0];
   throttle_curve.collective = throttle_curve.curves[THROTTLE_CURVE_MODE_INIT].collective[0];
   throttle_curve.rpm_fb_p = THROTTLE_CURVE_RPM_FB_P;
@@ -106,6 +107,8 @@ void throttle_curve_run(pprz_t cmds[], uint8_t ap_mode)
     int8_t mode = ((float)(radio_control.values[RADIO_FMODE] + MAX_PPRZ) / THROTTLE_CURVE_SWITCH_VAL);
     Bound(mode, 0, THROTTLE_CURVES_NB - 1);
     throttle_curve.mode = mode;
+  } else {
+    throttle_curve.mode = throttle_curve.nav_mode;
   }
 
   // Failsafe curve
@@ -186,5 +189,5 @@ void nav_throttle_curve_set(uint8_t mode)
 {
   int16_t new_mode = mode;
   Bound(new_mode, 0, THROTTLE_CURVES_NB - 1);
-  throttle_curve.mode = new_mode;
+  throttle_curve.nav_mode = new_mode;
 }

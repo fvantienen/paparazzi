@@ -42,6 +42,7 @@ struct curve_t {
 /* Main throttle curve structure */
 struct throttle_curve_t {
   uint8_t mode;                               ///< Flight mode
+  uint8_t nav_mode;                               ///< Nav Flight mode
   uint8_t nb_curves;                          ///< The number of throttle/pitch curves
   struct curve_t curves[THROTTLE_CURVES_NB];  ///< Throttle/pitch curves
 
