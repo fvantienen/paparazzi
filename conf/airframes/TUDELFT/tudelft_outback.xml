@@ -204,6 +204,8 @@
     <define name="OUTBACK_FORWARD_VERTICAL_DGAIN" value="0.01"/>
     <define name="NOMINAL_FORWARD_THRUST" value="6624"/>
     <define name="OUTBACK_GUIDANCE" value="TRUE"/>
+    <define name="OUTBACK_LOW_AIRSPEED_PITCH_GAIN" value="0.0"/>
+    <define name="OUTBACK_LOW_AIRSPEED" value="20.0"/>
   </section>
 
   <section name="IMU" prefix="IMU_">

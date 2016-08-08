@@ -80,6 +80,7 @@ static int32_t airspeed_sp_heading_disp;
 static bool guidance_hovering;
 static bool force_forward_flight;
 int32_t v_control_pitch = 0;
+float low_airspeed_pitch_gain = OUTBACK_LOW_AIRSPEED_PITCH_GAIN;
 
 #if PERIODIC_TELEMETRY
 #include "subsystems/datalink/telemetry.h"
@@ -489,6 +490,12 @@ void guidance_hybrid_vertical_simple(void)
 {
   int32_t vertical_err = -(POS_BFP_OF_REAL(vertical_setpont_outback) - stateGetPositionNed_i()->z);
   v_control_pitch = ANGLE_BFP_OF_REAL( POS_FLOAT_OF_BFP(vertical_err) * vertical_gain + stateGetSpeedNed_f()->z * vertical_dgain);
+
+  float airspeed = stateGetAirspeed_f();
+
+  if(airspeed<OUTBACK_LOW_AIRSPEED) {
+    v_control_pitch -= ANGLE_BFP_OF_REAL((OUTBACK_LOW_AIRSPEED - airspeed)*RadOfDeg(low_airspeed_pitch_gain));
+  }
 
   Bound(v_control_pitch, ANGLE_BFP_OF_REAL(RadOfDeg(-15.0)), ANGLE_BFP_OF_REAL(RadOfDeg(15.0)));
 
