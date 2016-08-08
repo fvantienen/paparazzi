@@ -289,7 +289,7 @@ void stabilization_attitude_run(bool enable_integrator)
 
   // Add euler dynamics compensation
     // Add euler dynamics compensation
-  float compensation_ratio = 0.5;
+  float compensation_ratio = 0.0;
   stabilization_cmd[COMMAND_ROLL] =  stabilization_cmd[COMMAND_ROLL]  + 299*3.43*body_rate_f->q  * compensation_ratio;
   stabilization_cmd[COMMAND_PITCH] = stabilization_cmd[COMMAND_PITCH] + 120.1*-7.45*body_rate_f->p * compensation_ratio;
 
