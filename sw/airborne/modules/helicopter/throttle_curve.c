@@ -134,9 +134,15 @@ void throttle_curve_run(pprz_t cmds[], uint8_t ap_mode)
                               + ((curve.throttle[curve_p + 1] - curve.throttle[curve_p]) * x / curve_range);
     throttle_curve.collective = curve.collective[curve_p]
                                 + ((curve.collective[curve_p + 1] - curve.collective[curve_p]) * x / curve_range);
-    if(curve.rpm[0] != 0xFFFF)
-      throttle_curve.rpm = curve.rpm[curve_p]
+    if(curve.rpm[0] != 0xFFFF) {
+      if(throttle_curve.rpm == 0xFFFF)
+        throttle_curve.rpm = throttle_curve.rpm_meas;
+      uint16_t new_rpm = curve.rpm[curve_p]
                             + ((curve.rpm[curve_p + 1] - curve.rpm[curve_p]) * x / curve_range);
+      int32_t rpm_diff = new_rpm - throttle_curve.rpm;
+      Bound(rpm_diff, -1, 1);
+      throttle_curve.rpm += rpm_diff;
+    }
     else
       throttle_curve.rpm = 0xFFFF;
   }
