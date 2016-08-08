@@ -85,19 +85,17 @@ void swashplate_mixing_run(pprz_t in_cmd[])
   int16_t cmd_roll;
   int16_t cmd_pitch;
 
-  cmd_roll = in_cmd[COMMAND_ROLL];
-  cmd_pitch = in_cmd[COMMAND_PITCH];
 
-//  if(radio_control.values[7]<-4500) {
+ if(radio_control.values[8]<-4500) {
 //    // Add advance compensation with G matrix
-//    cmd_roll  = 0.8578*in_cmd[COMMAND_ROLL] + -0.3276*in_cmd[COMMAND_PITCH];
-//    cmd_pitch = 0.5139*in_cmd[COMMAND_ROLL] + 0.9448*in_cmd[COMMAND_PITCH];
-//  }
-//  else {
+    cmd_roll = in_cmd[COMMAND_ROLL];
+    cmd_pitch = in_cmd[COMMAND_PITCH];
+ }
+ else {
 //    // Add advance compensation with G matrix
-//    cmd_roll  = 0.7753*in_cmd[COMMAND_ROLL] + -0.6635*in_cmd[COMMAND_PITCH];
-//    cmd_pitch = 0.6316*in_cmd[COMMAND_ROLL] + 0.7482*in_cmd[COMMAND_PITCH];
-//  }
+   cmd_roll  = 0.7*in_cmd[COMMAND_ROLL] + -0.91*in_cmd[COMMAND_PITCH];
+   cmd_pitch = 0.7*in_cmd[COMMAND_ROLL] + 0.43*in_cmd[COMMAND_PITCH];
+ }
 
   // Go trough all the motors and calculate the command
   for (i = 0; i < SW_NB; i++) {
