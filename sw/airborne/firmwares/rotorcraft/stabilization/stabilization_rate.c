@@ -72,6 +72,9 @@ struct FloatRates stabilization_rate_sum_err;
 
 struct FloatRates stabilization_rate_fb_cmd;
 
+float p_on_q_coupling = 0.0;
+float q_on_p_coupling = 0.0;
+
 #ifndef STABILIZATION_RATE_DEADBAND_P
 #define STABILIZATION_RATE_DEADBAND_P 0
 #endif
@@ -236,9 +239,8 @@ void stabilization_rate_run(bool in_flight)
   stabilization_cmd[COMMAND_YAW]   = stabilization_rate_fb_cmd.r;
 
   // Add euler dynamics compensation
-  float compensation_ratio = 0.0;
-  stabilization_cmd[COMMAND_ROLL] =  stabilization_cmd[COMMAND_ROLL]  + 299*3.43*body_rate->q  * compensation_ratio;
-  stabilization_cmd[COMMAND_PITCH] = stabilization_cmd[COMMAND_PITCH] + 120.1*-7.45*body_rate->p * compensation_ratio;
+  stabilization_cmd[COMMAND_ROLL] =  stabilization_cmd[COMMAND_ROLL]  + 299*q_on_p_coupling*body_rate->q;
+  stabilization_cmd[COMMAND_PITCH] = stabilization_cmd[COMMAND_PITCH] + 337.0*-p_on_q_coupling*body_rate->p;
 
   /* bound the result */
   BoundAbs(stabilization_cmd[COMMAND_ROLL], MAX_PPRZ);

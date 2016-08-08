@@ -43,4 +43,7 @@ extern struct FloatRates stabilization_rate_igain;
 extern struct FloatRates stabilization_rate_sum_err;
 extern struct FloatRates stabilization_rate_fb_cmd;
 
+extern float p_on_q_coupling;
+extern float q_on_p_coupling;
+
 #endif /* STABILIZATION_RATE */

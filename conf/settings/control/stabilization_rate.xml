@@ -15,6 +15,8 @@
       <dl_setting var="stabilization_rate_gain_forward.p" min="1" step="1" max="5000" module="stabilization/stabilization_rate" shortname="pgain p_fwd" param="STABILIZATION_RATE_GAIN_FORWARD_P" type="int32" persistent="true"/>
       <dl_setting var="stabilization_rate_gain_forward.q" min="1" step="1" max="5000" module="stabilization/stabilization_rate" shortname="pgain q_fwd" param="STABILIZATION_RATE_GAIN_FORWARD_Q" type="int32" persistent="true"/>
       <dl_setting var="stabilization_rate_gain_forward.r" min="1" step="1" max="5000" module="stabilization/stabilization_rate" shortname="pgain r_fwd" param="STABILIZATION_RATE_GAIN_FORWARD_R" type="int32" persistent="true"/>
+      <dl_setting var="p_on_q_coupling" min="0" step="0.01" max="20.0" module="stabilization/stabilization_rate" shortname="p_on_q_coupling"/>
+      <dl_setting var="q_on_p_coupling" min="0" step="0.01" max="20.0" module="stabilization/stabilization_rate" shortname="q_on_p_coupling"/>
     </dl_settings>
 
   </dl_settings>
