@@ -8,13 +8,13 @@
     <waypoint name="HOME" x="0.0" y="0.0"/>
     <waypoint name="CLIMB" x="0.0" y="5.0"/>
     <waypoint name="STDBY" x="-2.0" y="-5.0"/>
-    <waypoint name="p1" x="268.2" y="251.9"/>
-    <waypoint name="p2" x="527.1" y="131.6"/>
-    <waypoint name="p3" x="93.9" y="-103.2"/>
-    <waypoint name="p4" x="321.3" y="-217.7"/>
-    <waypoint name="_s1" x="112.1" y="652.8"/>
-    <waypoint name="_s2" x="1396.4" y="172.8"/>
-    <waypoint name="_s3" x="635.3" y="-816.0"/>
+    <waypoint name="p1" x="315.4" y="369.3"/>
+    <waypoint name="p2" x="283.4" y="465.2"/>
+    <waypoint name="p3" x="82.4" y="265.4"/>
+    <waypoint name="p4" x="118.1" y="159.6"/>
+    <waypoint name="_s1" x="-698.2" y="824.5"/>
+    <waypoint name="_s2" x="647.0" y="1182.8"/>
+    <waypoint name="_s3" x="1064.6" y="210.6"/>
     <waypoint name="_s4" x="-324.9" y="-249.8"/>
     <waypoint name="TD" x="89.3" y="118.1"/>
   </waypoints>
@@ -71,28 +71,36 @@
     </block>
     <block name="go_p1">
       <while cond="MoreThan(get_dist2_to_waypoint(WP_p1), nav_radius*nav_radius)">
-        <set value="VERTICAL_MODE_CLIMB" var="vertical_mode"/>
+        <set value="VERTICAL_MODE_ALT" var="vertical_mode"/>
         <set value="HORIZONTAL_MODE_WAYPOINT" var="horizontal_mode"/>
+        <call fun="nav_throttle_curve_set(2)" loop="false"/>
         <call fun="nav_set_heading_towards_waypoint(WP_p1)"/>
       </while>
       <deroute block="turn_p2"/>
     </block>
     <block name="turn_p2">
       <while cond="LessThan(NavBlockTime(), 5)">
-        <set value="VERTICAL_MODE_CLIMB" var="vertical_mode"/>
+        <set value="VERTICAL_MODE_ALT" var="vertical_mode"/>
         <set value="HORIZONTAL_MODE_WAYPOINT" var="horizontal_mode"/>
+        <call fun="nav_throttle_curve_set(2)" loop="false"/>
         <call fun="nav_set_heading_towards_waypoint(WP_p2)"/>
       </while>
       <deroute block="go_p3"/>
     </block>
     <block name="go_p3">
       <while cond="MoreThan(get_dist2_to_waypoint(WP_p3), nav_radius*nav_radius)">
+        <set value="VERTICAL_MODE_ALT" var="vertical_mode"/>
+        <set value="HORIZONTAL_MODE_WAYPOINT" var="horizontal_mode"/>
+        <call fun="nav_throttle_curve_set(2)" loop="false"/>
         <call fun="NavGotoWaypointHeading(WP_p3)"/>
       </while>
       <deroute block="turn_p4"/>
     </block>
     <block name="turn_p4">
       <while cond="LessThan(NavBlockTime(), 5)">
+        <set value="VERTICAL_MODE_ALT" var="vertical_mode"/>
+        <set value="HORIZONTAL_MODE_WAYPOINT" var="horizontal_mode"/>
+        <call fun="nav_throttle_curve_set(2)" loop="false"/>
         <call fun="NavGotoWaypointHeading(WP_p4)"/>
       </while>
       <deroute block="go_p1"/>
