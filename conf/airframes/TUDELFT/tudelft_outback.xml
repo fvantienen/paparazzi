@@ -122,7 +122,7 @@
   <section name="MIXING" prefix="SW_MIXING_">
     <define name="TYPE" value="HR120"/>
     <define name="TRIM_ROLL" value="0"/>
-    <define name="TRIM_PITCH" value="0"/>
+    <define name="TRIM_PITCH" value="-682"/>
     <define name="TRIM_COLL" value="0"/>
   </section>
 
@@ -262,7 +262,7 @@
 
     <!-- feedback -->
     <define name="GAIN_P" value="880"/>
-    <define name="GAIN_Q" value="620"/>
+    <define name="GAIN_Q" value="880"/>
     <define name="GAIN_R" value="4100"/>
 
     <!-- feedback -->

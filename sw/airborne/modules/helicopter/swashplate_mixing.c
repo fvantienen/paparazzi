@@ -85,15 +85,15 @@ void swashplate_mixing_run(pprz_t in_cmd[])
   int16_t cmd_roll;
   int16_t cmd_pitch;
 
-  float compensation_angle = (radio_control.values[8]+9600.0)/(2*9600.0)*1.0472;
+  float compensation_angle = 0.733*1.0472;
 
 //    // Add advance compensation with G matrix
-   cmd_roll  = in_cmd[COMMAND_ROLL];
-   cmd_pitch = sinf(compensation_angle)*in_cmd[COMMAND_ROLL] + cosf(compensation_angle)*in_cmd[COMMAND_PITCH];
+   cmd_roll  = in_cmd[COMMAND_ROLL] + SW_MIXING_TRIM_ROLL;
+   cmd_pitch = sinf(compensation_angle)*in_cmd[COMMAND_ROLL] + cosf(compensation_angle)*in_cmd[COMMAND_PITCH] + SW_MIXING_TRIM_PITCH;
 
   // Go trough all the motors and calculate the command
   for (i = 0; i < SW_NB; i++) {
-    swashplate_mixing.commands[i] = swashplate_mixing.trim[i] +
+    swashplate_mixing.commands[i] = //swashplate_mixing.trim[i] +
         roll_coef[i] * cmd_roll +
         pitch_coef[i] * cmd_pitch +
         coll_coef[i] * in_cmd[COMMAND_COLLECTIVE];
