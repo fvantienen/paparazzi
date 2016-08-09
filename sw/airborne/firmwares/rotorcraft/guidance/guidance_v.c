@@ -354,6 +354,9 @@ void guidance_v_run(bool in_flight)
         guidance_v_zd_sp = 0;
         gv_update_ref_from_z_sp(guidance_v_z_sp);
         run_hover_loop(in_flight);
+#if HYBRID_NAVIGATION
+      guidance_hybrid_vertical();
+#endif
       } else if (vertical_mode == VERTICAL_MODE_CLIMB) {
         guidance_v_z_sp = stateGetPositionNed_i()->z;
         guidance_v_zd_sp = -nav_climb;
@@ -366,17 +369,21 @@ void guidance_v_run(bool in_flight)
         guidance_v_z_sum_err = 0;
         guidance_v_delta_t = nav_throttle;
       }
+
 #if HYBRID_NAVIGATION
-      guidance_hybrid_vertical();
-#else
+      if(vertical_mode != VERTICAL_MODE_ALT) {
+#endif
 #if !NO_RC_THRUST_LIMIT
-      /* use rc limitation if available */
-      if (radio_control.status == RC_OK) {
-        stabilization_cmd[COMMAND_THRUST] = Min(guidance_v_rc_delta_t, guidance_v_delta_t);
-      } else
+        /* use rc limitation if available */
+        if (radio_control.status == RC_OK) {
+          stabilization_cmd[COMMAND_THRUST] = Min(guidance_v_rc_delta_t, guidance_v_delta_t);
+        } else
 #endif
-        stabilization_cmd[COMMAND_THRUST] = guidance_v_delta_t;
+          stabilization_cmd[COMMAND_THRUST] = guidance_v_delta_t;
+#if HYBRID_NAVIGATION
+      }
 #endif
+
       break;
     }
 

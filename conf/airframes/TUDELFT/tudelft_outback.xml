@@ -151,9 +151,9 @@
 
   <!-- v3 Pitch RODS black laminated props with straight angle root and 25deg blade-grip handles: 52mm top links 65mm bottom links -->
   <heli_curves>
-    <curve throttle="0,6492,6492,6492,6492" collective="-8800,-7650,-6500,-5150,-3800"/>
-    <curve throttle="5000,6500,8000" rpm="1650,1650,1650" collective="-8800,-6500,-2300"/><!-- 1 blue bat: -5650 collective with 8000 throttle FF with 1650 RPM -->
-    <curve throttle="9600,9600,7600" collective="-8800,-6300,1700"/>
+    <curve throttle="0,6000,0,0,0" collective="-9600,-8150,-6700,-5250,-3800"/>
+    <curve throttle="5000,6500,8000" rpm="1650,1650,1650" collective="-9600,-6500,-2300"/><!-- 1 blue bat: -5650 collective with 8000 throttle FF with 1650 RPM -->
+    <curve throttle="9600,9600,7600" collective="-9600,-6300,1700"/>
   </heli_curves>
 
   <!-- RPM to PPRZ calculation (governer low, fixed RPM) Castle Creations BEC-->

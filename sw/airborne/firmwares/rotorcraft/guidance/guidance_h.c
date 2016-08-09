@@ -313,7 +313,7 @@ void guidance_h_read_rc(bool  in_flight)
 
 #if USE_STABILIZATION_RATE
     case GUIDANCE_H_MODE_RATE:
-#ifdef THROTTLE_CURVE_H 
+#ifdef THROTTLE_CURVE_H
       if(throttle_curve.mode == 2) {
         stabilization_rate_read_rc_switched_sticks();
       }
@@ -424,9 +424,9 @@ void guidance_h_run(bool  in_flight)
       break;
 
     case GUIDANCE_H_MODE_NAV:
-      /*if (!in_flight) {
+      if (!in_flight) {
         guidance_h_nav_enter();
-      }*/
+      }
 
       if (horizontal_mode == HORIZONTAL_MODE_MANUAL) {
         stabilization_cmd[COMMAND_ROLL]  = nav_roll;

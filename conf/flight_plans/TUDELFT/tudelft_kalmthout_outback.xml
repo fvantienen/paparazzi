@@ -35,27 +35,30 @@
   <blocks>
     <block name="Wait GPS">
       <call fun="NavKillThrottle()"/>
+      <call fun="nav_throttle_curve_set(0)" loop="false"/>
       <while cond="!GpsFixValid()"/>
     </block>
     <block name="Geo init">
       <while cond="LessThan(NavBlockTime(), 10)"/>
+      <call fun="nav_throttle_curve_set(0)" loop="false"/>
       <call fun="NavSetAltitudeReferenceHere()"/>
       <call fun="nav_set_heading_current()"/>
     </block>
     <block name="Holding point">
       <call fun="NavKillThrottle()"/>
+      <call fun="nav_throttle_curve_set(0)" loop="false"/>
       <manual pitch="0" roll="0" throttle="0" until="FALSE" vmode="throttle" yaw="0"/>
     </block>
     <block name="Start Engine">
       <call fun="nav_throttle_curve_set(0)" loop="false"/>
-      <call fun="nav_heli_spinup_setup(7, 0.15)" loop="false"/>
+      <call fun="nav_heli_spinup_setup(3, 0.07)" loop="false"/>
       <call fun="NavResurrect()"/>
       <call fun="nav_heli_spinup_run()"/>
       <call fun="nav_throttle_curve_set(1)" loop="false"/>
-      <manual pitch="0" roll="0" throttle="0.15" until="stage_time>7" vmode="throttle" yaw="0"/>
+      <manual pitch="0" roll="0" throttle="0" until="stage_time>7" vmode="throttle" yaw="0"/>
     </block>
     <block name="Hold Attitude">
-      <manual pitch="0" roll="0" throttle="0.15" until="FALSE" vmode="throttle" yaw="0"/>
+      <manual pitch="0" roll="0" throttle="0" until="FALSE" vmode="throttle" yaw="0"/>
     </block>
     <block name="Takeoff" strip_button="Takeoff" strip_icon="takeoff.png">
       <exception cond="stateGetPositionEnu_f()->z > 2.0" deroute="Standby"/>
