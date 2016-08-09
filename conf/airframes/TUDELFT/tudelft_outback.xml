@@ -189,6 +189,8 @@
     <define name="NO_RC_THRUST_LIMIT" value="TRUE"/>
     <define name="DEFAULT_CIRCLE_RADIUS" value="100."/> <!-- for now distance to waypoint ok -->
     <define name="MilliAmpereOfAdc(_adc)" value="(DefaultMilliAmpereOfAdc(_adc) + 417)"/>
+    <define name="OUTBACK_P_ON_Q_COUPLING" value="6.0"/>
+    <define name="OUTBACK_Q_ON_P_COUPLING" value="1.0"/>
   </section>
 
   <section name="FORWARD">

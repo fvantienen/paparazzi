@@ -72,8 +72,8 @@ struct FloatRates stabilization_rate_sum_err;
 
 struct FloatRates stabilization_rate_fb_cmd;
 
-float p_on_q_coupling = 0.0;
-float q_on_p_coupling = 0.0;
+float p_on_q_coupling = OUTBACK_P_ON_Q_COUPLING;
+float q_on_p_coupling = OUTBACK_Q_ON_P_COUPLING;
 
 #ifndef STABILIZATION_RATE_DEADBAND_P
 #define STABILIZATION_RATE_DEADBAND_P 0
