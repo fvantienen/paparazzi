@@ -26,6 +26,7 @@
 #include "generated/airframe.h"
 
 #include "firmwares/rotorcraft/stabilization/stabilization_attitude.h"
+#include "firmwares/rotorcraft/stabilization/stabilization_rate.h"
 #include "firmwares/rotorcraft/stabilization/stabilization_attitude_rc_setpoint.h"
 #include "firmwares/rotorcraft/stabilization/stabilization_attitude_quat_transformations.h"
 
@@ -289,9 +290,8 @@ void stabilization_attitude_run(bool enable_integrator)
 
   // Add euler dynamics compensation
     // Add euler dynamics compensation
-  float compensation_ratio = 0.0;
-  stabilization_cmd[COMMAND_ROLL] =  stabilization_cmd[COMMAND_ROLL]  + 299*3.43*body_rate_f->q  * compensation_ratio;
-  stabilization_cmd[COMMAND_PITCH] = stabilization_cmd[COMMAND_PITCH] + 120.1*-7.45*body_rate_f->p * compensation_ratio;
+  stabilization_cmd[COMMAND_ROLL] =  stabilization_cmd[COMMAND_ROLL]  + 299*q_on_p_coupling*body_rate_f->q;
+  stabilization_cmd[COMMAND_PITCH] = stabilization_cmd[COMMAND_PITCH] + 337.0*-p_on_q_coupling*body_rate_f->p;
 
   /* bound the result */
   BoundAbs(stabilization_cmd[COMMAND_ROLL], MAX_PPRZ);
