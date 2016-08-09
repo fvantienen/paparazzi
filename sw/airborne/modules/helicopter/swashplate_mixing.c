@@ -85,7 +85,7 @@ void swashplate_mixing_run(pprz_t in_cmd[])
   int16_t cmd_roll;
   int16_t cmd_pitch;
 
-  float compensation_angle = 0.733*1.0472;
+  float compensation_angle = 0.733;
 
 //    // Add advance compensation with G matrix
    cmd_roll  = in_cmd[COMMAND_ROLL] + SW_MIXING_TRIM_ROLL;

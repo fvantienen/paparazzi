@@ -81,6 +81,7 @@ struct HorizontalGuidance guidance_h;
 
 int32_t transition_percentage;
 int32_t transition_theta_offset;
+float ground_pitch_control_gain = OUTBACK_GROUND_PITCH_CONTROL_GAIN;
 
 /*
  * internal variables
@@ -432,6 +433,12 @@ void guidance_h_run(bool  in_flight)
         stabilization_cmd[COMMAND_ROLL]  = nav_cmd_roll;
         stabilization_cmd[COMMAND_PITCH] = nav_cmd_pitch;
         stabilization_cmd[COMMAND_YAW]   = nav_cmd_yaw;
+
+        //ground balance controller
+        float pitch_angle_err = -stateGetNedToBodyEulers_f()->theta;
+        stabilization_cmd[COMMAND_ROLL]  += pitch_angle_err * -0.8332 * ground_pitch_control_gain;
+        stabilization_cmd[COMMAND_PITCH] += pitch_angle_err * 0.5529 * ground_pitch_control_gain;
+
       } else if (horizontal_mode == HORIZONTAL_MODE_ATTITUDE) {
         struct Int32Eulers sp_cmd_i;
         sp_cmd_i.phi = nav_roll;
