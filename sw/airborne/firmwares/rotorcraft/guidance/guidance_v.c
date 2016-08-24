@@ -373,9 +373,8 @@ void guidance_v_run(bool in_flight)
         guidance_v_delta_t = nav_throttle;
       }
 
-#if HYBRID_NAVIGATION
-      if(vertical_mode != VERTICAL_MODE_ALT) {
-#endif
+
+      if(transition_percentage <= 0) {
 #if !NO_RC_THRUST_LIMIT
         /* use rc limitation if available */
         if (radio_control.status == RC_OK) {
@@ -383,9 +382,7 @@ void guidance_v_run(bool in_flight)
         } else
 #endif
           stabilization_cmd[COMMAND_THRUST] = guidance_v_delta_t;
-#if HYBRID_NAVIGATION
       }
-#endif
 
       break;
     }

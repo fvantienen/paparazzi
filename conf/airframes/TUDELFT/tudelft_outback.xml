@@ -135,7 +135,8 @@
 
     <call fun="swashplate_mixing_run(values)"/>
     <let var="th_hold" value="LessThan(RadioControlValues(RADIO_TH_HOLD), -4800)"/>
-    <let var="forward_curve" value="MoreThan(RadioControlValues(RADIO_FMODE), 4800)"/>
+    <let var="forward_curve" value="INTERMCU_GET_CMD_STATUS(INTERMCU_CMD_TIPPROPS)"/>
+    <call fun="INTERMCU_CLR_CMD_STATUS(INTERMCU_CMD_TIPPROPS)"/>
 
     <set servo="THROTTLE" value="($th_hold? -9600 : @THRUST)"/>
     <set servo="SW_BACK" value="swashplate_mixing.commands[SW_BACK]"/>
