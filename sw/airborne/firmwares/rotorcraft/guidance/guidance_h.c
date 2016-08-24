@@ -95,6 +95,9 @@ struct Int32Vect2 guidance_h_trim_att_integrator;
  * @todo convert to real force command
  */
 struct Int32Vect2  guidance_h_cmd_earth;
+enum hybrid_mode outback_hybrid_mode = HB_HOVER;
+int32_t last_hover_heading;
+int32_t last_forward_heading;
 
 static void guidance_h_update_reference(void);
 #if !GUIDANCE_INDI
@@ -389,9 +392,6 @@ void guidance_h_run(bool  in_flight)
       if (transition_percentage < (100 << INT32_PERCENTAGE_FRAC)) {
         transition_run(true);
       }
-      else{
-        //guidance_hybrid_vertical_simple();
-      }
     case GUIDANCE_H_MODE_CARE_FREE:
     case GUIDANCE_H_MODE_ATTITUDE:
       if ( (!(guidance_h.mode == GUIDANCE_H_MODE_FORWARD)) && transition_percentage > 0) {
@@ -452,7 +452,60 @@ void guidance_h_run(bool  in_flight)
         guidance_hybrid_reset_heading(&sp_cmd_i);
 #endif
       } else {
+#if OUTBACK_GUIDANCE
+        if(transition_percentage < (50 << INT32_PERCENTAGE_FRAC)) {
+          nav_throttle_curve_set(1);
+        } else {
+          nav_throttle_curve_set(2);
+        }
+        //Check if there is a transition to be made
+        //if so, keep the roll and (extra) pitch zero
+        if((outback_hybrid_mode == HB_FORWARD) && (transition_percentage < (100 << INT32_PERCENTAGE_FRAC))) {
+          //Transition to forward
+          transition_run(true);
+          //Set the corresponding attitude
+          struct Int32Eulers transition_att_sp;
+          transition_att_sp.phi = 0;
+          transition_att_sp.theta = transition_theta_offset;
+          transition_att_sp.psi = last_hover_heading;
+          stabilization_attitude_set_rpy_setpoint_i(&transition_att_sp);
+        } else if((outback_hybrid_mode == HB_HOVER) && (transition_percentage > 0)) {
+          transition_run(false);
+          //Set the corresponding attitude
+          struct Int32Eulers transition_att_sp;
+          transition_att_sp.phi = 0;
+          transition_att_sp.theta = transition_theta_offset;
+          transition_att_sp.psi = last_forward_heading;
+          stabilization_attitude_set_rpy_setpoint_i(&transition_att_sp);
+          //reset the reference, as it is used in hover mode
+          reset_guidance_reference_from_current_position();
+        } else if(outback_hybrid_mode == HB_FORWARD) {
+          INT32_VECT2_NED_OF_ENU(guidance_h.sp.pos, navigation_target);
+          guidance_hybrid_run();
+          last_forward_heading = guidance_hybrid_ypr_sp.psi;
+        }
+        else {
+          INT32_VECT2_NED_OF_ENU(guidance_h.sp.pos, navigation_carrot);
 
+          guidance_h_update_reference();
+
+          /* set psi command */
+          guidance_h.sp.heading = nav_heading;
+          INT32_ANGLE_NORMALIZE(guidance_h.sp.heading);
+
+          //make sure the heading is right before leaving horizontal_mode attitude
+          struct Int32Eulers sp_cmd_i;
+          sp_cmd_i.psi = stabilization_attitude_get_heading_i();
+          guidance_hybrid_reset_heading(&sp_cmd_i);
+          last_hover_heading = sp_cmd_i.psi;
+
+          /* compute x,y earth commands */
+          guidance_h_traj_run(in_flight);
+          /* set final attitude setpoint */
+          stabilization_attitude_set_earth_cmd_i(&guidance_h_cmd_earth,
+                                                 guidance_h.sp.heading);
+        }
+#else //OUTBACK_GUIDANCE
 #if HYBRID_NAVIGATION
         INT32_VECT2_NED_OF_ENU(guidance_h.sp.pos, navigation_target);
         guidance_hybrid_run();
@@ -473,9 +526,10 @@ void guidance_h_run(bool  in_flight)
         /* set final attitude setpoint */
         stabilization_attitude_set_earth_cmd_i(&guidance_h_cmd_earth,
                                                guidance_h.sp.heading);
-#endif
+#endif //GUIDANCE_INDI
 
-#endif
+#endif //HYBRID_NAVIGATION
+#endif //OUTBACK_GUIDANCE
         stabilization_attitude_run(in_flight);
       }
       break;

@@ -64,7 +64,7 @@ int32_t nominal_forward_thrust = NOMINAL_FORWARD_THRUST;
 float vertical_setpont_outback = -83;
 
 // Private variables
-static struct Int32Eulers guidance_hybrid_ypr_sp;
+struct Int32Eulers guidance_hybrid_ypr_sp;
 static struct Int32Vect2 guidance_hybrid_airspeed_sp;
 static struct Int32Vect2 guidance_h_pos_err;
 static struct Int32Vect2 guidance_hybrid_airspeed_ref;
@@ -128,7 +128,6 @@ void guidance_hybrid_init(void)
 #if PERIODIC_TELEMETRY
   register_periodic_telemetry(DefaultPeriodic, PPRZ_MSG_ID_HYBRID_GUIDANCE, send_hybrid_guidance);
 #endif
-
 }
 
 #define INT32_ANGLE_HIGH_RES_NORMALIZE(_a) {             \
