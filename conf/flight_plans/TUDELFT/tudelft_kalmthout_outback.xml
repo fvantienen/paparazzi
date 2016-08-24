@@ -1,6 +1,6 @@
 <!DOCTYPE flight_plan SYSTEM "../flight_plan.dtd">
 
-<flight_plan alt="55" ground_alt="0" lat0="51 38 33.0" lon0="5 11 19.0" max_dist_from_home="2260" name="Kalmthout OBC2016test" security_height="10">
+<flight_plan alt="55" ground_alt="0" lat0="52 10 13.9" lon0="4 24 32.7" max_dist_from_home="2260" name="Kalmthout OBC2016test" security_height="10">
   <header>
 #include "autopilot.h"
 #include "guidance/guidance_hybrid.h"
@@ -60,12 +60,19 @@
     </block>
     <block name="Hold Attitude">
       <call fun="nav_throttle_curve_set(1)" loop="false"/>
+      <call fun="nav_set_heading_current()"/>
       <manual pitch="0" roll="0" throttle="0" until="FALSE" vmode="throttle" yaw="0"/>
     </block>
     <block name="Takeoff" strip_button="Takeoff" strip_icon="takeoff.png">
-      <exception cond="stateGetPositionEnu_f()->z > 2.0" deroute="Standby"/>
+      <exception cond="stateGetPositionEnu_f()->z > 5.0" deroute="Climb"/>
+      <call fun="nav_throttle_curve_set(1)" loop="false"/>
+      <attitude pitch="0" roll="0" throttle="0.6" until="FALSE" vmode="throttle"/>
+    </block>
+    <block name="Climb">
+      <exception cond="stateGetPositionEnu_f()->z > 20.0" deroute="Standby"/>
       <call fun="nav_set_heading_current()"/>
       <call fun="NavSetWaypointHere(WP_CLIMB)"/>
+      <call fun="GuidanceVSetRef(stateGetPositionNed_i()->z, 0, 0)"/>
       <set var="outback_hybrid_mode" value="HB_HOVER"/>
       <stay climb="nav_climb_vspeed" vmode="climb" wp="CLIMB"/>
     </block>
