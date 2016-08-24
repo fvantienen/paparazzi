@@ -479,6 +479,9 @@ void guidance_h_run(bool  in_flight)
           stabilization_attitude_set_rpy_setpoint_i(&transition_att_sp);
           //reset the reference, as it is used in hover mode
           reset_guidance_reference_from_current_position();
+          /* set nav_heading to current heading*/
+          nav_heading = stabilization_attitude_get_heading_i();
+          INT32_ANGLE_NORMALIZE(nav_heading);
         } else if(outback_hybrid_mode == HB_FORWARD) {
           INT32_VECT2_NED_OF_ENU(guidance_h.sp.pos, navigation_target);
           guidance_hybrid_run();

@@ -189,9 +189,9 @@ void throttle_curve_run(pprz_t cmds[], uint8_t ap_mode)
 
   // disable the tip propellers when in curve 2
   if (throttle_curve.mode == 2) {
-    INTERMCU_CLR_CMD_STATUS(INTERMCU_CMD_TIPPROPS);
-  } else {
     INTERMCU_SET_CMD_STATUS(INTERMCU_CMD_TIPPROPS);
+  } else {
+    INTERMCU_CLR_CMD_STATUS(INTERMCU_CMD_TIPPROPS);
   }
 }
 
