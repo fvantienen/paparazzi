@@ -355,7 +355,9 @@ void guidance_v_run(bool in_flight)
         gv_update_ref_from_z_sp(guidance_v_z_sp);
         run_hover_loop(in_flight);
 #if HYBRID_NAVIGATION
-        guidance_hybrid_vertical();
+        if(transition_percentage > 0) {
+          guidance_hybrid_vertical();
+        }
 #endif
       } else if (vertical_mode == VERTICAL_MODE_CLIMB) {
         guidance_v_z_sp = stateGetPositionNed_i()->z;
