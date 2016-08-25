@@ -320,6 +320,7 @@
   <!-- These gains are used when the gain scheduling module is enabled (by loading it in the modules section)-->
   <section name ="GAIN_SETS">
     <define name="NUMBER_OF_GAINSETS" value="2"/>
+    error: gain scheduling is determined by radio mode!!
     <define name="SCHEDULING_VARIABLE" value="radio_control.values[RADIO_MODE]"/>
     <define name="SCHEDULING_POINTS" value="{1000, 9000}"/>
     <define name="SCHEDULING_VARIABLE_FRAC" value="0"/>
@@ -331,6 +332,7 @@
 
     <define name="THETA_P" value="{358, 358}"/>
     <define name="THETA_D" value="{293, 293}"/>
+    error: integrator gain is needed!
     <define name="THETA_I" value="{0, 0}"/>
     <define name="THETA_DD" value="{0, 0}"/>
 
