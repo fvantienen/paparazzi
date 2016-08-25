@@ -1,6 +1,6 @@
 <!DOCTYPE flight_plan SYSTEM "../flight_plan.dtd">
 
-<flight_plan alt="55" ground_alt="0" lat0="52 10 13.9" lon0="4 24 32.7" max_dist_from_home="2260" name="Kalmthout OBC2016test" security_height="10">
+<flight_plan alt="80" ground_alt="0" lat0="52 10 13.9" lon0="4 24 32.7" max_dist_from_home="2260" name="Kalmthout OBC2016test" security_height="10">
   <header>
 #include "autopilot.h"
 #include "guidance/guidance_hybrid.h"
@@ -115,6 +115,13 @@
         <call fun="NavGotoWaypointHeading(WP_p4)"/>
       </while>
       <deroute block="go_p1"/>
+    </block>
+    <block name="Descent">
+      <call fun="nav_set_heading_current()"/>
+      <call fun="NavSetWaypointHere(WP_CLIMB)"/>
+      <call fun="GuidanceVSetRef(stateGetPositionNed_i()->z, 0, 0)"/>
+      <set var="outback_hybrid_mode" value="HB_HOVER"/>
+      <stay climb="nav_descend_vspeed" vmode="climb" wp="TD"/>
     </block>
     <block name="land">
       <set var="outback_hybrid_mode" value="HB_HOVER"/>

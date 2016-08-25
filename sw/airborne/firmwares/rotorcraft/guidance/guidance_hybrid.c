@@ -61,8 +61,6 @@ float vertical_gain = OUTBACK_FORWARD_VERTICAL_GAIN;
 float vertical_dgain = OUTBACK_FORWARD_VERTICAL_DGAIN;
 int32_t nominal_forward_thrust = NOMINAL_FORWARD_THRUST;
 
-float vertical_setpont_outback = -83;
-
 // Private variables
 struct Int32Eulers guidance_hybrid_ypr_sp;
 static struct Int32Vect2 guidance_hybrid_airspeed_sp;
@@ -487,7 +485,7 @@ void guidance_hybrid_vertical_quadshot(void)
 
 void guidance_hybrid_vertical_simple(void)
 {
-  int32_t vertical_err = -(POS_BFP_OF_REAL(vertical_setpont_outback) - stateGetPositionNed_i()->z);
+  int32_t vertical_err = -(guidance_v_z_ref - stateGetPositionNed_i()->z);
   v_control_pitch = ANGLE_BFP_OF_REAL( POS_FLOAT_OF_BFP(vertical_err) * vertical_gain + stateGetSpeedNed_f()->z * vertical_dgain);
 
   float airspeed = stateGetAirspeed_f();
