@@ -382,6 +382,8 @@ void guidance_v_run(bool in_flight)
         } else
 #endif
           stabilization_cmd[COMMAND_THRUST] = guidance_v_delta_t;
+
+        Bound(stabilization_cmd[COMMAND_THRUST], OUTBACK_MIN_HOVER_THROTTLE, OUTBACK_MAX_HOVER_THROTTLE);
       }
 
       break;
