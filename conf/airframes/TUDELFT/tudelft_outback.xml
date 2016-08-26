@@ -36,7 +36,7 @@
       <module name="mag_pitot_uart"/>
       <module name="pwm_meas"/>
       <module name="rpm_sensor"/>
-      <!--<module name="gain_scheduling"/>-->
+      <module name="gain_scheduling"/>
 
       <!--module name="geo_mag"/-->
       <module name="air_data">
@@ -324,19 +324,19 @@
     <define name="SCHEDULING_POINTS" value="{1.4, 1.5}"/>
     <define name="SCHEDULING_VARIABLE_FRAC" value="0"/>
 
-    <define name="PHI_P" value="{358, 358}"/>
-    <define name="PHI_D" value="{293, 293}"/>
-    <define name="PHI_I" value="{0, 0}"/>
+    <define name="PHI_P" value="{854, 358}"/>
+    <define name="PHI_D" value="{369, 293}"/>
+    <define name="PHI_I" value="{180, 180}"/>
     <define name="PHI_DD" value="{0, 0}"/>
 
-    <define name="THETA_P" value="{358, 358}"/>
+    <define name="THETA_P" value="{1605, 358}"/>
     <define name="THETA_D" value="{293, 293}"/>
-    <define name="THETA_I" value="{0, 0}"/>
+    <define name="THETA_I" value="{180, 180}"/>
     <define name="THETA_DD" value="{0, 0}"/>
 
     <define name="PSI_P" value="{500, 500}"/>
     <define name="PSI_D" value="{1360, 432}"/>
-    <define name="PSI_I" value="{0, 0}"/>
+    <define name="PSI_I" value="{151, 151}"/>
     <define name="PSI_DD" value="{0, 0}"/>
   </section>
 
