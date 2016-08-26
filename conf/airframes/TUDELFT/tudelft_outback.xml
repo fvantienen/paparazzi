@@ -36,7 +36,7 @@
       <module name="mag_pitot_uart"/>
       <module name="pwm_meas"/>
       <module name="rpm_sensor"/>
-      <module name="gain_scheduling"/>
+      <!--<module name="gain_scheduling"/>-->
 
       <!--module name="geo_mag"/-->
       <module name="air_data">
@@ -144,10 +144,10 @@
     <set servo="SW_RIGHTFRONT" value="swashplate_mixing.commands[SW_RIGHTFRONT]"/>
     <set servo="TAIL_LEFT" value="(Or($th_hold, $forward_curve)? 0 : (-@YAW - @THRUST*0.25) )"/>
     <set servo="TAIL_RIGHT" value="(Or($th_hold, $forward_curve)? 0 : (-@YAW - @THRUST*0.25) )"/>
-    <set servo="AIL_LEFTLOW"  value=" 2*@PITCH + 3*@YAW"/>
+    <set servo="AIL_LEFTLOW" value=" 2*@PITCH + 3*@YAW"/>
     <set servo="AIL_RIGHTLOW" value="-2*@PITCH + 3*@YAW"/>
-    <set servo="AIL_LEFTUP"   value=" 2*@PITCH + 3*@YAW"/>
-    <set servo="AIL_RIGHTUP"  value="-2*@PITCH + 3*@YAW"/>
+    <set servo="AIL_LEFTUP" value=" 2*@PITCH + 3*@YAW"/>
+    <set servo="AIL_RIGHTUP" value="-2*@PITCH + 3*@YAW"/>
   </command_laws>
 
   <!-- v3 Pitch RODS black laminated props with straight angle root and 25deg blade-grip handles: 52mm top links 65mm bottom links -->
@@ -301,12 +301,12 @@
     <define name="REF_MAX_RDOT" value="RadOfDeg(1800.)"/>
 
     <!-- feedback -->
-    <define name="PHI_PGAIN" value="358"/>
-    <define name="PHI_DGAIN" value="293"/>
-    <define name="PHI_IGAIN" value="0"/>
-    <define name="THETA_PGAIN" value="358"/>
+    <define name="PHI_PGAIN" value="825"/>
+    <define name="PHI_DGAIN" value="332"/>
+    <define name="PHI_IGAIN" value="180"/>
+    <define name="THETA_PGAIN" value="480"/>
     <define name="THETA_DGAIN" value="293"/>
-    <define name="THETA_IGAIN" value="0"/>
+    <define name="THETA_IGAIN" value="180"/>
     <define name="PSI_PGAIN" value="500"/>
     <define name="PSI_DGAIN" value="1360"/>
     <define name="PSI_IGAIN" value="0"/>
@@ -318,7 +318,7 @@
   </section>
 
   <!-- These gains are used when the gain scheduling module is enabled (by loading it in the modules section)-->
-  <section name ="GAIN_SETS">
+  <section name="GAIN_SETS">
     <define name="NUMBER_OF_GAINSETS" value="2"/>
     <define name="SCHEDULING_VARIABLE" value="throttle_curve.mode"/>
     <define name="SCHEDULING_POINTS" value="{1.4, 1.5}"/>
