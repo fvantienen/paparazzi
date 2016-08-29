@@ -279,8 +279,16 @@ void guidance_hybrid_airspeed_to_attitude(struct Int32Eulers *ypr_sp)
 /// Convert a required airspeed to a certain attitude for the Quadshot
 void guidance_hybrid_attitude_outback(struct Int32Eulers *ypr_sp)
 {
-  //The difference of the current heading with the required heading.
-  float heading_diff = ANGLE_FLOAT_OF_BFP(nav_heading) - stabilization_attitude_get_heading_f();
+  float meas_course = ((float) gps.course)/1e7;
+  FLOAT_ANGLE_NORMALIZE(meas_course);
+
+  float heading_diff;
+  if(gps.gspeed <500) {
+    //The difference of the current heading with the required heading.
+    heading_diff = ANGLE_FLOAT_OF_BFP(nav_heading) - stabilization_attitude_get_heading_f();
+  } else {
+    heading_diff = ANGLE_FLOAT_OF_BFP(nav_heading) - meas_course;
+  }
   FLOAT_ANGLE_NORMALIZE(heading_diff);
 
   //only for debugging
