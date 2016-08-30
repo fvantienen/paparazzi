@@ -10,14 +10,13 @@
     <waypoint name="HOME" x="34.3" y="19.0"/>
     <waypoint name="CLIMB" x="-32.7" y="23.4"/>
     <waypoint name="STDBY" x="20.9" y="0.9"/>
-    <waypoint name="p1" x="101.4" y="372.8"/>
-    <waypoint name="p2" x="230.2" y="355.7"/>
-    <waypoint name="p3" x="2.0" y="62.6"/>
-    <waypoint name="p4" x="133.3" y="29.7"/>
-    <waypoint name="_s1" x="-438.5" y="428.4"/>
-    <waypoint name="_s2" x="431.9" y="728.8"/>
-    <waypoint name="_s3" x="783.7" y="46.1"/>
-    <waypoint name="_s4" x="-56.6" y="-377.4"/>
+    <waypoint name="p1" x="-26.4" y="324.4"/>
+    <waypoint name="p2" x="293.5" y="282.6"/>
+    <waypoint name="p3" x="75.0" y="57.8"/>
+    <waypoint name="_s1" x="-551.8" y="446.1"/>
+    <waypoint name="_s2" x="502.5" y="843.4"/>
+    <waypoint name="_s3" x="915.2" y="11.4"/>
+    <waypoint name="_s4" x="-82.7" y="-504.7"/>
     <waypoint name="TD" x="1.8" y="1.5"/>
     <waypoint name="HOVER" x="20.0" y="27.0"/>
   </waypoints>
@@ -85,28 +84,24 @@
       <stay wp="HOVER"/>
     </block>
     <block name="go_p1">
-      <go wp="p1" forward="true"/>
-      <deroute block="turn_p2"/>
+      <go forward="true" wp="p1"/>
+      <deroute block="go_p2"/>
     </block>
-    <block name="turn_p2">
-      <go wp="p2" forward="true" until="stage_time > 5"/>
-      <deroute block="go_p3"/>
-    </block>
-    <block name="go_p3">
-      <go wp="p3" forward="true"/>
-      <deroute block="turn_p4"/>
-    </block>
-    <block name="turn_p4">
-      <go wp="p4" forward="true" until="stage_time > 5"/>
+    <block name="go_p2">
+      <go forward="true" wp="p2"/>
       <deroute block="go_p1"/>
     </block>
-    <block name="line_p1">
-      <go wp="p1" forward="true" from="p3" hmode="route"/>
-      <deroute block="line_p3"/>
+    <block name="line_p1_p2">
+      <go forward="true" from="p1" hmode="route" wp="p2"/>
+      <deroute block="line_p2_p3"/>
     </block>
-    <block name="line_p3">
-      <go wp="p3" forward="true" from="p1" hmode="route"/>
-      <deroute block="line_p1"/>
+    <block name="line_p2_p3">
+      <go forward="true" from="p2" hmode="route" wp="p3"/>
+      <deroute block="line_p3_p1"/>
+    </block>
+    <block name="line_p3_p1">
+      <go forward="true" from="p3" hmode="route" wp="p1"/>
+      <deroute block="line_p1_p2"/>
     </block>
     <block name="Descent">
       <call fun="nav_set_heading_current()"/>
@@ -115,7 +110,7 @@
       <stay climb="nav_descend_vspeed" vmode="climb" wp="TD"/>
     </block>
     <block name="land">
-      <go wp="TD" forward="false"/>
+      <go forward="false" wp="TD"/>
     </block>
     <block name="flare">
       <exception cond="NavDetectGround()" deroute="Holding point"/>
