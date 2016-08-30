@@ -135,7 +135,8 @@
 
     <call fun="swashplate_mixing_run(values)"/>
     <let var="th_hold" value="LessThan(RadioControlValues(RADIO_TH_HOLD), -4800)"/>
-    <let var="forward_curve" value="MoreThan(RadioControlValues(RADIO_FMODE), 4800)"/>
+    <let var="forward_curve" value="INTERMCU_GET_CMD_STATUS(INTERMCU_CMD_TIPPROPS)"/>
+    <call fun="INTERMCU_CLR_CMD_STATUS(INTERMCU_CMD_TIPPROPS)"/>
 
     <set servo="THROTTLE" value="($th_hold? -9600 : @THRUST)"/>
     <set servo="SW_BACK" value="swashplate_mixing.commands[SW_BACK]"/>
@@ -143,10 +144,10 @@
     <set servo="SW_RIGHTFRONT" value="swashplate_mixing.commands[SW_RIGHTFRONT]"/>
     <set servo="TAIL_LEFT" value="(Or($th_hold, $forward_curve)? 0 : (-@YAW - @THRUST*0.25) )"/>
     <set servo="TAIL_RIGHT" value="(Or($th_hold, $forward_curve)? 0 : (-@YAW - @THRUST*0.25) )"/>
-    <set servo="AIL_LEFTLOW"  value=" 2*@PITCH + 3*@YAW"/>
+    <set servo="AIL_LEFTLOW" value=" 2*@PITCH + 3*@YAW"/>
     <set servo="AIL_RIGHTLOW" value="-2*@PITCH + 3*@YAW"/>
-    <set servo="AIL_LEFTUP"   value=" 2*@PITCH + 3*@YAW"/>
-    <set servo="AIL_RIGHTUP"  value="-2*@PITCH + 3*@YAW"/>
+    <set servo="AIL_LEFTUP" value=" 2*@PITCH + 3*@YAW"/>
+    <set servo="AIL_RIGHTUP" value="-2*@PITCH + 3*@YAW"/>
   </command_laws>
 
   <!-- v3 Pitch RODS black laminated props with straight angle root and 25deg blade-grip handles: 52mm top links 65mm bottom links -->
@@ -184,14 +185,17 @@
   </heli_curves-->
 
   <section name="MISC">
-    <define name="NAV_CLIMB_VSPEED" value="2.5"/>
-    <define name="NAV_DESCEND_VSPEED" value="-0.7"/>
+    <define name="NAV_CLIMB_VSPEED" value="3.0"/>
+    <define name="NAV_DESCEND_VSPEED" value="-1.5"/>
     <define name="NO_RC_THRUST_LIMIT" value="TRUE"/>
-    <define name="DEFAULT_CIRCLE_RADIUS" value="100."/> <!-- for now distance to waypoint ok -->
     <define name="MilliAmpereOfAdc(_adc)" value="(DefaultMilliAmpereOfAdc(_adc) + 417)"/>
     <define name="OUTBACK_P_ON_Q_COUPLING" value="6.0"/>
     <define name="OUTBACK_Q_ON_P_COUPLING" value="0.0"/>
     <define name="OUTBACK_GROUND_PITCH_CONTROL_GAIN" value="70000.0"/>
+    <define name="OUTBACK_MIN_HOVER_THROTTLE" value="4000"/>
+    <define name="OUTBACK_MAX_HOVER_THROTTLE" value="7700"/>
+    <define name="MAX_TURN_BANK" value="32.5"/>
+    <define name="ARRIVED_AT_WAYPOINT" value="100"/>
   </section>
 
   <section name="FORWARD">
@@ -298,15 +302,15 @@
     <define name="REF_MAX_RDOT" value="RadOfDeg(1800.)"/>
 
     <!-- feedback -->
-    <define name="PHI_PGAIN" value="358"/>
-    <define name="PHI_DGAIN" value="293"/>
-    <define name="PHI_IGAIN" value="0"/>
-    <define name="THETA_PGAIN" value="358"/>
+    <define name="PHI_PGAIN" value="854"/>
+    <define name="PHI_DGAIN" value="369"/>
+    <define name="PHI_IGAIN" value="180"/>
+    <define name="THETA_PGAIN" value="1605"/>
     <define name="THETA_DGAIN" value="293"/>
-    <define name="THETA_IGAIN" value="0"/>
+    <define name="THETA_IGAIN" value="180"/>
     <define name="PSI_PGAIN" value="500"/>
     <define name="PSI_DGAIN" value="1360"/>
-    <define name="PSI_IGAIN" value="0"/>
+    <define name="PSI_IGAIN" value="151"/>
 
     <!-- feedforward -->
     <define name="PHI_DDGAIN" value="0"/>
@@ -315,33 +319,33 @@
   </section>
 
   <!-- These gains are used when the gain scheduling module is enabled (by loading it in the modules section)-->
-  <section name ="GAIN_SETS">
+  <section name="GAIN_SETS">
     <define name="NUMBER_OF_GAINSETS" value="2"/>
-    <define name="SCHEDULING_VARIABLE" value="radio_control.values[RADIO_MODE]"/>
-    <define name="SCHEDULING_POINTS" value="{1000, 9000}"/>
+    <define name="SCHEDULING_VARIABLE" value="throttle_curve.mode"/>
+    <define name="SCHEDULING_POINTS" value="{1.4, 1.5}"/>
     <define name="SCHEDULING_VARIABLE_FRAC" value="0"/>
 
-    <define name="PHI_P" value="{358, 358}"/>
-    <define name="PHI_D" value="{293, 293}"/>
-    <define name="PHI_I" value="{0, 0}"/>
+    <define name="PHI_P" value="{854, 358}"/>
+    <define name="PHI_D" value="{369, 293}"/>
+    <define name="PHI_I" value="{180, 180}"/>
     <define name="PHI_DD" value="{0, 0}"/>
 
-    <define name="THETA_P" value="{358, 358}"/>
+    <define name="THETA_P" value="{1605, 450}"/>
     <define name="THETA_D" value="{293, 293}"/>
-    <define name="THETA_I" value="{0, 0}"/>
+    <define name="THETA_I" value="{180, 180}"/>
     <define name="THETA_DD" value="{0, 0}"/>
 
     <define name="PSI_P" value="{500, 500}"/>
     <define name="PSI_D" value="{1360, 432}"/>
-    <define name="PSI_I" value="{0, 0}"/>
+    <define name="PSI_I" value="{151, 151}"/>
     <define name="PSI_DD" value="{0, 0}"/>
   </section>
 
   <section name="GUIDANCE_V" prefix="GUIDANCE_V_">
     <define name="HOVER_KP" value="75"/>
     <define name="HOVER_KD" value="40"/>
-    <define name="HOVER_KI" value="6"/>
-    <define name="NOMINAL_HOVER_THROTTLE" value="0.42"/>
+    <define name="HOVER_KI" value="12"/>
+    <define name="NOMINAL_HOVER_THROTTLE" value="0.53"/>
     <define name="ADAPT_THROTTLE_ENABLED" value="FALSE"/>
   </section>
 
@@ -357,7 +361,7 @@
   <section name="AUTOPILOT">
     <define name="MODE_MANUAL" value="AP_MODE_RATE_DIRECT"/>
     <define name="MODE_AUTO1" value="AP_MODE_ATTITUDE_DIRECT"/>
-    <define name="MODE_AUTO2" value="AP_MODE_FORWARD"/>
+    <define name="MODE_AUTO2" value="AP_MODE_NAV"/>
   </section>
 
 </airframe>

@@ -61,8 +61,6 @@ float vertical_gain = OUTBACK_FORWARD_VERTICAL_GAIN;
 float vertical_dgain = OUTBACK_FORWARD_VERTICAL_DGAIN;
 int32_t nominal_forward_thrust = NOMINAL_FORWARD_THRUST;
 
-float vertical_setpont_outback = -83;
-
 // Private variables
 struct Int32Eulers guidance_hybrid_ypr_sp;
 static struct Int32Vect2 guidance_hybrid_airspeed_sp;
@@ -117,7 +115,7 @@ void guidance_hybrid_init(void)
   guidance_hovering = true;
   horizontal_speed_gain = 8;
   guidance_hybrid_norm_ref_airspeed = 0;
-  max_turn_bank = 27.5;
+  max_turn_bank = MAX_TURN_BANK;
   turn_bank_gain = 0.8;
   wind_gain = 64;
   force_forward_flight = 0;
@@ -281,8 +279,16 @@ void guidance_hybrid_airspeed_to_attitude(struct Int32Eulers *ypr_sp)
 /// Convert a required airspeed to a certain attitude for the Quadshot
 void guidance_hybrid_attitude_outback(struct Int32Eulers *ypr_sp)
 {
-  //The difference of the current heading with the required heading.
-  float heading_diff = ANGLE_FLOAT_OF_BFP(nav_heading) - stabilization_attitude_get_heading_f();
+  float meas_course = ((float) gps.course)/1e7;
+  FLOAT_ANGLE_NORMALIZE(meas_course);
+
+  float heading_diff;
+  if(gps.gspeed <500) {
+    //The difference of the current heading with the required heading.
+    heading_diff = ANGLE_FLOAT_OF_BFP(nav_heading) - stabilization_attitude_get_heading_f();
+  } else {
+    heading_diff = ANGLE_FLOAT_OF_BFP(nav_heading) - meas_course;
+  }
   FLOAT_ANGLE_NORMALIZE(heading_diff);
 
   //only for debugging
@@ -487,7 +493,7 @@ void guidance_hybrid_vertical_quadshot(void)
 
 void guidance_hybrid_vertical_simple(void)
 {
-  int32_t vertical_err = -(POS_BFP_OF_REAL(vertical_setpont_outback) - stateGetPositionNed_i()->z);
+  int32_t vertical_err = -(guidance_v_z_ref - stateGetPositionNed_i()->z);
   v_control_pitch = ANGLE_BFP_OF_REAL( POS_FLOAT_OF_BFP(vertical_err) * vertical_gain + stateGetSpeedNed_f()->z * vertical_dgain);
 
   float airspeed = stateGetAirspeed_f();

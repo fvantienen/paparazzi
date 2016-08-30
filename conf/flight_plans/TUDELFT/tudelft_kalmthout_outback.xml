@@ -1,23 +1,25 @@
 <!DOCTYPE flight_plan SYSTEM "../flight_plan.dtd">
 
-<flight_plan alt="55" ground_alt="0" lat0="51 38 33.0" lon0="5 11 19.0" max_dist_from_home="2260" name="Kalmthout OBC2016test" security_height="10">
+<flight_plan alt="80" ground_alt="0" lat0="51 38 45.3" lon0="5 11 21.4" max_dist_from_home="2260" name="Kalmthout OBC2016test" security_height="10">
   <header>
 #include "autopilot.h"
 #include "guidance/guidance_hybrid.h"
+#include "guidance/guidance_v.h"
 </header>
   <waypoints>
-    <waypoint name="HOME" x="0.0" y="0.0"/>
-    <waypoint name="CLIMB" x="0.0" y="5.0"/>
-    <waypoint name="STDBY" x="-2.0" y="-5.0"/>
-    <waypoint name="p1" x="315.4" y="369.3"/>
-    <waypoint name="p2" x="283.4" y="465.2"/>
-    <waypoint name="p3" x="82.4" y="265.4"/>
-    <waypoint name="p4" x="118.1" y="159.6"/>
-    <waypoint name="_s1" x="-698.2" y="824.5"/>
-    <waypoint name="_s2" x="647.0" y="1182.8"/>
-    <waypoint name="_s3" x="1064.6" y="210.6"/>
-    <waypoint name="_s4" x="-324.9" y="-249.8"/>
-    <waypoint name="TD" x="89.3" y="118.1"/>
+    <waypoint name="HOME" x="34.3" y="19.0"/>
+    <waypoint name="CLIMB" x="-32.7" y="23.4"/>
+    <waypoint name="STDBY" x="20.9" y="0.9"/>
+    <waypoint name="p1" x="101.4" y="372.8"/>
+    <waypoint name="p2" x="230.2" y="355.7"/>
+    <waypoint name="p3" x="2.0" y="62.6"/>
+    <waypoint name="p4" x="133.3" y="29.7"/>
+    <waypoint name="_s1" x="-438.5" y="428.4"/>
+    <waypoint name="_s2" x="431.9" y="728.8"/>
+    <waypoint name="_s3" x="783.7" y="46.1"/>
+    <waypoint name="_s4" x="-56.6" y="-377.4"/>
+    <waypoint name="TD" x="1.8" y="1.5"/>
+    <waypoint name="HOVER" x="20.0" y="27.0"/>
   </waypoints>
   <sectors>
     <sector color="red" name="Safety">
@@ -60,64 +62,65 @@
     </block>
     <block name="Hold Attitude">
       <call fun="nav_throttle_curve_set(1)" loop="false"/>
+      <call fun="nav_set_heading_current()"/>
       <manual pitch="0" roll="0" throttle="0" until="FALSE" vmode="throttle" yaw="0"/>
     </block>
     <block name="Takeoff" strip_button="Takeoff" strip_icon="takeoff.png">
-      <exception cond="stateGetPositionEnu_f()->z > 2.0" deroute="Standby"/>
-      <call fun="nav_set_heading_current()"/>
+      <exception cond="stateGetPositionEnu_f()->z > 4.0" deroute="Climb"/>
       <call fun="NavSetWaypointHere(WP_CLIMB)"/>
-      <set var="outback_hybrid_mode" value="HB_HOVER"/>
+      <call fun="nav_throttle_curve_set(1)" loop="false"/>
+      <attitude pitch="0" roll="0" throttle="0.65" until="FALSE" vmode="throttle"/>
+    </block>
+    <block name="Climb">
+      <exception cond="stateGetPositionEnu_f()->z > 20.0" deroute="Standby"/>
+      <call fun="nav_set_heading_current()"/>
+      <call fun="GuidanceVSetRef(stateGetPositionNed_i()->z, 0, 0)"/>
       <stay climb="nav_climb_vspeed" vmode="climb" wp="CLIMB"/>
     </block>
     <block name="Standby" strip_button="Standby" strip_icon="home.png">
-      <set var="outback_hybrid_mode" value="HB_HOVER"/>
       <stay wp="STDBY"/>
     </block>
+    <block name="Hover here">
+      <call fun="NavSetWaypointHere(WP_HOVER)"/>
+      <stay wp="HOVER"/>
+    </block>
     <block name="go_p1">
-      <while cond="MoreThan(get_dist2_to_waypoint(WP_p1), nav_radius*nav_radius)">
-        <set value="VERTICAL_MODE_ALT" var="vertical_mode"/>
-        <set value="HORIZONTAL_MODE_WAYPOINT" var="horizontal_mode"/>
-        <set var="outback_hybrid_mode" value="HB_FORWARD"/>
-        <call fun="nav_set_heading_towards_waypoint(WP_p1)"/>
-      </while>
+      <go wp="p1" forward="true"/>
       <deroute block="turn_p2"/>
     </block>
     <block name="turn_p2">
-      <while cond="LessThan(NavBlockTime(), 5)">
-        <set value="VERTICAL_MODE_ALT" var="vertical_mode"/>
-        <set value="HORIZONTAL_MODE_WAYPOINT" var="horizontal_mode"/>
-        <set var="outback_hybrid_mode" value="HB_FORWARD"/>
-        <call fun="nav_set_heading_towards_waypoint(WP_p2)"/>
-      </while>
+      <go wp="p2" forward="true" until="stage_time > 5"/>
       <deroute block="go_p3"/>
     </block>
     <block name="go_p3">
-      <while cond="MoreThan(get_dist2_to_waypoint(WP_p3), nav_radius*nav_radius)">
-        <set value="VERTICAL_MODE_ALT" var="vertical_mode"/>
-        <set value="HORIZONTAL_MODE_WAYPOINT" var="horizontal_mode"/>
-        <set var="outback_hybrid_mode" value="HB_FORWARD"/>
-        <call fun="NavGotoWaypointHeading(WP_p3)"/>
-      </while>
+      <go wp="p3" forward="true"/>
       <deroute block="turn_p4"/>
     </block>
     <block name="turn_p4">
-      <while cond="LessThan(NavBlockTime(), 5)">
-        <set value="VERTICAL_MODE_ALT" var="vertical_mode"/>
-        <set value="HORIZONTAL_MODE_WAYPOINT" var="horizontal_mode"/>
-        <set var="outback_hybrid_mode" value="HB_FORWARD"/>
-        <call fun="NavGotoWaypointHeading(WP_p4)"/>
-      </while>
+      <go wp="p4" forward="true" until="stage_time > 5"/>
       <deroute block="go_p1"/>
     </block>
+    <block name="line_p1">
+      <go wp="p1" forward="true" from="p3" hmode="route"/>
+      <deroute block="line_p3"/>
+    </block>
+    <block name="line_p3">
+      <go wp="p3" forward="true" from="p1" hmode="route"/>
+      <deroute block="line_p1"/>
+    </block>
+    <block name="Descent">
+      <call fun="nav_set_heading_current()"/>
+      <call fun="NavSetWaypointHere(WP_TD)"/>
+      <call fun="GuidanceVSetRef(stateGetPositionNed_i()->z, 0, 0)"/>
+      <stay climb="nav_descend_vspeed" vmode="climb" wp="TD"/>
+    </block>
     <block name="land">
-      <set var="outback_hybrid_mode" value="HB_HOVER"/>
-      <go wp="TD"/>
+      <go wp="TD" forward="false"/>
     </block>
     <block name="flare">
       <exception cond="NavDetectGround()" deroute="Holding point"/>
       <exception cond="!nav_is_in_flight()" deroute="landed"/>
       <call fun="NavStartDetectGround()"/>
-      <set var="outback_hybrid_mode" value="HB_HOVER"/>
       <stay climb="nav_descend_vspeed" vmode="climb" wp="TD"/>
     </block>
     <block name="landed">

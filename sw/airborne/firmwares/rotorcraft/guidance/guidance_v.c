@@ -27,6 +27,7 @@
 #include "generated/airframe.h"
 #include "firmwares/rotorcraft/guidance/guidance_v.h"
 #include "firmwares/rotorcraft/guidance/guidance_module.h"
+#include "firmwares/rotorcraft/guidance/guidance_h.h"
 
 #include "firmwares/rotorcraft/guidance/guidance_hybrid.h"
 #include "subsystems/radio_control.h"
@@ -129,14 +130,6 @@ int32_t guidance_v_ki;
 int32_t guidance_v_z_sum_err;
 
 int32_t guidance_v_thrust_coeff;
-
-
-#define GuidanceVSetRef(_pos, _speed, _accel) { \
-    gv_set_ref(_pos, _speed, _accel);        \
-    guidance_v_z_ref = _pos;             \
-    guidance_v_zd_ref = _speed;          \
-    guidance_v_zdd_ref = _accel;             \
-  }
 
 static int32_t get_vertical_thrust_coeff(void);
 static void run_hover_loop(bool in_flight);
@@ -354,6 +347,7 @@ void guidance_v_run(bool in_flight)
         guidance_v_zd_sp = 0;
         gv_update_ref_from_z_sp(guidance_v_z_sp);
         run_hover_loop(in_flight);
+        Bound(guidance_v_delta_t, OUTBACK_MIN_HOVER_THROTTLE, OUTBACK_MAX_HOVER_THROTTLE);
 #if HYBRID_NAVIGATION
         if(transition_percentage > 0) {
           guidance_hybrid_vertical();
@@ -364,6 +358,7 @@ void guidance_v_run(bool in_flight)
         guidance_v_zd_sp = -nav_climb;
         gv_update_ref_from_zd_sp(guidance_v_zd_sp, stateGetPositionNed_i()->z);
         run_hover_loop(in_flight);
+        Bound(guidance_v_delta_t, OUTBACK_MIN_HOVER_THROTTLE, OUTBACK_MAX_HOVER_THROTTLE);
       } else if (vertical_mode == VERTICAL_MODE_MANUAL) {
         guidance_v_z_sp = stateGetPositionNed_i()->z;
         guidance_v_zd_sp = stateGetSpeedNed_i()->z;
@@ -372,9 +367,8 @@ void guidance_v_run(bool in_flight)
         guidance_v_delta_t = nav_throttle;
       }
 
-#if HYBRID_NAVIGATION
-      if(vertical_mode != VERTICAL_MODE_ALT) {
-#endif
+
+      if(transition_percentage <= 0) {
 #if !NO_RC_THRUST_LIMIT
         /* use rc limitation if available */
         if (radio_control.status == RC_OK) {
@@ -382,9 +376,7 @@ void guidance_v_run(bool in_flight)
         } else
 #endif
           stabilization_cmd[COMMAND_THRUST] = guidance_v_delta_t;
-#if HYBRID_NAVIGATION
       }
-#endif
 
       break;
     }

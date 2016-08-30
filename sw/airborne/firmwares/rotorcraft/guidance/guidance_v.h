@@ -42,6 +42,13 @@
 #define GUIDANCE_V_MODE_FLIP      7
 #define GUIDANCE_V_MODE_GUIDED    8
 
+#define GuidanceVSetRef(_pos, _speed, _accel) { \
+      gv_set_ref(_pos, _speed, _accel);        \
+      guidance_v_z_ref = _pos;             \
+      guidance_v_zd_ref = _speed;          \
+      guidance_v_zdd_ref = _accel;             \
+}
+
 extern uint8_t guidance_v_mode;
 
 /** altitude setpoint in meters (input).

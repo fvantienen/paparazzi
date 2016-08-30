@@ -107,6 +107,7 @@ static void guidance_h_hover_enter(void);
 static void guidance_h_nav_enter(void);
 static inline void transition_run(bool to_forward);
 static void read_rc_setpoint_speed_i(struct Int32Vect2 *speed_sp, bool in_flight);
+void guidance_h_set_nav_throttle_curve(void);
 
 #if PERIODIC_TELEMETRY
 #include "subsystems/datalink/telemetry.h"
@@ -453,11 +454,8 @@ void guidance_h_run(bool  in_flight)
 #endif
       } else {
 #if OUTBACK_GUIDANCE
-        if(transition_percentage < (50 << INT32_PERCENTAGE_FRAC)) {
-          nav_throttle_curve_set(1);
-        } else {
-          nav_throttle_curve_set(2);
-        }
+        guidance_h_set_nav_throttle_curve();
+
         //Check if there is a transition to be made
         //if so, keep the roll and (extra) pitch zero
         if((outback_hybrid_mode == HB_FORWARD) && (transition_percentage < (100 << INT32_PERCENTAGE_FRAC))) {
@@ -479,6 +477,9 @@ void guidance_h_run(bool  in_flight)
           stabilization_attitude_set_rpy_setpoint_i(&transition_att_sp);
           //reset the reference, as it is used in hover mode
           reset_guidance_reference_from_current_position();
+          /* set nav_heading to current heading*/
+          nav_heading = stabilization_attitude_get_heading_i();
+          INT32_ANGLE_NORMALIZE(nav_heading);
         } else if(outback_hybrid_mode == HB_FORWARD) {
           INT32_VECT2_NED_OF_ENU(guidance_h.sp.pos, navigation_target);
           guidance_hybrid_run();
@@ -814,3 +815,21 @@ const struct Int32Vect2 *guidance_h_get_pos_err(void)
 {
   return &guidance_h_pos_err;
 }
+
+void guidance_h_set_nav_throttle_curve(void) {
+
+  if(outback_hybrid_mode == HB_HOVER) {
+    if(transition_percentage < (50 << INT32_PERCENTAGE_FRAC)) {
+      nav_throttle_curve_set(1);
+    } else {
+      nav_throttle_curve_set(2);
+    }
+  } else {
+    if(transition_percentage < (90 << INT32_PERCENTAGE_FRAC)) {
+      nav_throttle_curve_set(1);
+    } else {
+      nav_throttle_curve_set(2);
+    }
+  }
+}
+
