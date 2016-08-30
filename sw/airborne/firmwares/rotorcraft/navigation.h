@@ -78,6 +78,8 @@ extern float failsafe_mode_dist2; ///< maximum squared distance to home wp befor
 
 extern float dist2_to_wp;       ///< squared distance to next waypoint
 
+extern float line_following_dist;
+
 extern float get_dist2_to_waypoint(uint8_t wp_id);
 extern float get_dist2_to_point(struct EnuCoor_i *p);
 extern void compute_dist2_to_home(void);
@@ -97,6 +99,7 @@ extern bool nav_set_heading_rad(float rad);
 extern bool nav_set_heading_deg(float deg);
 extern bool nav_set_heading_towards(float x, float y);
 extern bool nav_set_heading_towards_waypoint(uint8_t wp);
+extern bool nav_set_heading_towards_target(void);
 extern bool nav_set_heading_current(void);
 
 /** default approaching_time for a wp */

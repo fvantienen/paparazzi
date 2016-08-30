@@ -75,70 +75,52 @@
       <exception cond="stateGetPositionEnu_f()->z > 20.0" deroute="Standby"/>
       <call fun="nav_set_heading_current()"/>
       <call fun="GuidanceVSetRef(stateGetPositionNed_i()->z, 0, 0)"/>
-      <set value="HB_HOVER" var="outback_hybrid_mode"/>
       <stay climb="nav_climb_vspeed" vmode="climb" wp="CLIMB"/>
     </block>
     <block name="Standby" strip_button="Standby" strip_icon="home.png">
-      <set value="HB_HOVER" var="outback_hybrid_mode"/>
       <stay wp="STDBY"/>
     </block>
     <block name="Hover here">
-      <set value="HB_HOVER" var="outback_hybrid_mode"/>
       <call fun="NavSetWaypointHere(WP_HOVER)"/>
       <stay wp="HOVER"/>
     </block>
     <block name="go_p1">
-      <while cond="MoreThan(get_dist2_to_waypoint(WP_p1), nav_radius*nav_radius)">
-        <set value="VERTICAL_MODE_ALT" var="vertical_mode"/>
-        <set value="HORIZONTAL_MODE_WAYPOINT" var="horizontal_mode"/>
-        <set value="HB_FORWARD" var="outback_hybrid_mode"/>
-        <call fun="nav_set_heading_towards_waypoint(WP_p1)"/>
-      </while>
+      <go wp="p1" forward="true"/>
       <deroute block="turn_p2"/>
     </block>
     <block name="turn_p2">
-      <while cond="LessThan(NavBlockTime(), 5)">
-        <set value="VERTICAL_MODE_ALT" var="vertical_mode"/>
-        <set value="HORIZONTAL_MODE_WAYPOINT" var="horizontal_mode"/>
-        <set value="HB_FORWARD" var="outback_hybrid_mode"/>
-        <call fun="nav_set_heading_towards_waypoint(WP_p2)"/>
-      </while>
+      <go wp="p2" forward="true" until="stage_time > 5"/>
       <deroute block="go_p3"/>
     </block>
     <block name="go_p3">
-      <while cond="MoreThan(get_dist2_to_waypoint(WP_p3), nav_radius*nav_radius)">
-        <set value="VERTICAL_MODE_ALT" var="vertical_mode"/>
-        <set value="HORIZONTAL_MODE_WAYPOINT" var="horizontal_mode"/>
-        <set value="HB_FORWARD" var="outback_hybrid_mode"/>
-        <call fun="NavGotoWaypointHeading(WP_p3)"/>
-      </while>
+      <go wp="p3" forward="true"/>
       <deroute block="turn_p4"/>
     </block>
     <block name="turn_p4">
-      <while cond="LessThan(NavBlockTime(), 5)">
-        <set value="VERTICAL_MODE_ALT" var="vertical_mode"/>
-        <set value="HORIZONTAL_MODE_WAYPOINT" var="horizontal_mode"/>
-        <set value="HB_FORWARD" var="outback_hybrid_mode"/>
-        <call fun="NavGotoWaypointHeading(WP_p4)"/>
-      </while>
+      <go wp="p4" forward="true" until="stage_time > 5"/>
       <deroute block="go_p1"/>
+    </block>
+    <block name="line_p1">
+      <go wp="p1" forward="true" from="p3" hmode="route"/>
+      <deroute block="line_p3"/>
+    </block>
+    <block name="line_p3">
+      <go wp="p3" forward="true" from="p1" hmode="route"/>
+      <deroute block="line_p1"/>
     </block>
     <block name="Descent">
       <call fun="nav_set_heading_current()"/>
       <call fun="NavSetWaypointHere(WP_TD)"/>
       <call fun="GuidanceVSetRef(stateGetPositionNed_i()->z, 0, 0)"/>
-      <set value="HB_HOVER" var="outback_hybrid_mode"/>
       <stay climb="nav_descend_vspeed" vmode="climb" wp="TD"/>
     </block>
     <block name="land">
-      <set value="HB_HOVER" var="outback_hybrid_mode"/>
-      <go wp="TD"/>
+      <go wp="TD" forward="false"/>
     </block>
     <block name="flare">
       <exception cond="NavDetectGround()" deroute="Holding point"/>
       <exception cond="!nav_is_in_flight()" deroute="landed"/>
       <call fun="NavStartDetectGround()"/>
-      <set value="HB_HOVER" var="outback_hybrid_mode"/>
       <stay climb="nav_descend_vspeed" vmode="climb" wp="TD"/>
     </block>
     <block name="landed">
