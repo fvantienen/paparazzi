@@ -68,7 +68,7 @@
       <exception cond="stateGetPositionEnu_f()->z > 4.0" deroute="Climb"/>
       <call fun="NavSetWaypointHere(WP_CLIMB)"/>
       <call fun="nav_throttle_curve_set(1)" loop="false"/>
-      <attitude pitch="0" roll="0" throttle="0.65" until="FALSE" vmode="throttle"/>
+      <attitude pitch="0" roll="0" throttle="0.68" until="FALSE" vmode="throttle"/>
     </block>
     <block name="Climb">
       <exception cond="stateGetPositionEnu_f()->z > 20.0" deroute="Standby"/>

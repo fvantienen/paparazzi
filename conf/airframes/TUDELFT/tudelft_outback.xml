@@ -195,7 +195,7 @@
     <define name="OUTBACK_MIN_HOVER_THROTTLE" value="4000"/>
     <define name="OUTBACK_MAX_HOVER_THROTTLE" value="7700"/>
     <define name="MAX_TURN_BANK" value="32.5"/>
-    <define name="ARRIVED_AT_WAYPOINT" value="100"/>
+    <define name="ARRIVED_AT_WAYPOINT" value="75"/>
   </section>
 
   <section name="FORWARD">
