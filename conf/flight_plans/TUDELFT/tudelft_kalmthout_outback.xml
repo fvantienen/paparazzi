@@ -7,18 +7,23 @@
 #include "guidance/guidance_v.h"
 </header>
   <waypoints>
-    <waypoint name="HOME" x="34.3" y="19.0"/>
-    <waypoint name="CLIMB" x="-32.7" y="23.4"/>
-    <waypoint name="STDBY" x="20.9" y="0.9"/>
-    <waypoint name="p1" x="-26.4" y="324.4"/>
-    <waypoint name="p2" x="293.5" y="282.6"/>
-    <waypoint name="p3" x="75.0" y="57.8"/>
+    <waypoint name="HOME" x="479.4" y="-7.0"/>
+    <waypoint name="CLIMB" x="354.6" y="183.6"/>
+    <waypoint name="STDBY" x="428.7" y="122.3"/>
+    <waypoint name="p1" x="358.8" y="32.8"/>
+    <waypoint name="p2" x="284.8" y="318.5"/>
+    <waypoint name="p3" x="407.2" y="59.5"/>
+    <waypoint name="p4" x="348.2" y="345.2"/>
+    <waypoint name="p5" x="461.5" y="80.1"/>
+    <waypoint name="p6" x="410.5" y="367.4"/>
+    <waypoint name="p7" x="513.1" y="108.8"/>
+    <waypoint name="p8" x="464.2" y="394.2"/>
     <waypoint name="_s1" x="-551.8" y="446.1"/>
-    <waypoint name="_s2" x="502.5" y="843.4"/>
-    <waypoint name="_s3" x="915.2" y="11.4"/>
+    <waypoint name="_s2" x="750.4" y="885.1"/>
+    <waypoint name="_s3" x="1148.0" y="128.4"/>
     <waypoint name="_s4" x="-82.7" y="-504.7"/>
-    <waypoint name="TD" x="1.8" y="1.5"/>
-    <waypoint name="HOVER" x="20.0" y="27.0"/>
+    <waypoint name="TD" x="329.6" y="148.5"/>
+    <waypoint name="HOVER" x="372.5" y="158.2"/>
   </waypoints>
   <sectors>
     <sector color="red" name="Safety">
@@ -97,10 +102,30 @@
     </block>
     <block name="line_p2_p3">
       <go forward="true" from="p2" hmode="route" wp="p3"/>
-      <deroute block="line_p3_p1"/>
+      <deroute block="line_p3_p4"/>
     </block>
-    <block name="line_p3_p1">
-      <go forward="true" from="p3" hmode="route" wp="p1"/>
+    <block name="line_p3_p4">
+      <go forward="true" from="p3" hmode="route" wp="p4"/>
+      <deroute block="line_p4_p5"/>
+    </block>
+    <block name="line_p4_p5">
+      <go forward="true" from="p4" hmode="route" wp="p5"/>
+      <deroute block="line_p5_p6"/>
+    </block>
+    <block name="line_p5_p6">
+      <go forward="true" from="p5" hmode="route" wp="p6"/>
+      <deroute block="line_p6_p7"/>
+    </block>
+    <block name="line_p6_p7">
+      <go forward="true" from="p6" hmode="route" wp="p7"/>
+      <deroute block="line_p7_p8"/>
+    </block>
+    <block name="line_p7_p8">
+      <go forward="true" from="p7" hmode="route" wp="p8"/>
+      <deroute block="line_p8_p1"/>
+    </block>
+    <block name="line_p8_p1">
+      <go forward="true" from="p8" hmode="route" wp="p1"/>
       <deroute block="line_p1_p2"/>
     </block>
     <block name="Descent">
