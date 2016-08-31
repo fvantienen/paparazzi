@@ -1,29 +1,25 @@
 <!DOCTYPE flight_plan SYSTEM "../flight_plan.dtd">
 
-<flight_plan alt="80" ground_alt="0" lat0="51 38 45.3" lon0="5 11 21.4" max_dist_from_home="2260" name="Kalmthout OBC2016test" security_height="10">
+<flight_plan alt="80" ground_alt="0" lat0="52 10 18.2" lon0="4 25 06.0" max_dist_from_home="2260" name="Kalmthout OBC2016test" security_height="10">
   <header>
 #include "autopilot.h"
 #include "guidance/guidance_hybrid.h"
 #include "guidance/guidance_v.h"
 </header>
   <waypoints>
-    <waypoint name="HOME" x="479.4" y="-7.0"/>
-    <waypoint name="CLIMB" x="354.6" y="183.6"/>
-    <waypoint name="STDBY" x="428.7" y="122.3"/>
-    <waypoint name="p1" x="358.8" y="32.8"/>
-    <waypoint name="p2" x="284.8" y="318.5"/>
-    <waypoint name="p3" x="407.2" y="59.5"/>
-    <waypoint name="p4" x="348.2" y="345.2"/>
-    <waypoint name="p5" x="461.5" y="80.1"/>
-    <waypoint name="p6" x="410.5" y="367.4"/>
-    <waypoint name="p7" x="513.1" y="108.8"/>
-    <waypoint name="p8" x="464.2" y="394.2"/>
+    <waypoint name="HOME" x="57.4" y="69.9"/>
+    <waypoint name="CLIMB" x="106.3" y="117.1"/>
+    <waypoint name="STDBY" x="135.5" y="66.7"/>
+    <waypoint name="p1" x="-0.3" y="53.3"/>
+    <waypoint name="p2" x="318.6" y="203.2"/>
+    <waypoint name="p3" x="427.2" y="46.1"/>
+    <waypoint name="p4" x="78.9" y="-94.6"/>
     <waypoint name="_s1" x="-551.8" y="446.1"/>
-    <waypoint name="_s2" x="750.4" y="885.1"/>
-    <waypoint name="_s3" x="1148.0" y="128.4"/>
+    <waypoint name="_s2" x="597.9" y="625.6"/>
+    <waypoint name="_s3" x="916.5" y="22.6"/>
     <waypoint name="_s4" x="-82.7" y="-504.7"/>
-    <waypoint name="TD" x="329.6" y="148.5"/>
-    <waypoint name="HOVER" x="372.5" y="158.2"/>
+    <waypoint name="TD" x="69.3" y="85.7"/>
+    <waypoint name="HOVER" x="91.8" y="64.9"/>
   </waypoints>
   <sectors>
     <sector color="red" name="Safety">
@@ -106,26 +102,10 @@
     </block>
     <block name="line_p3_p4">
       <go forward="true" from="p3" hmode="route" wp="p4"/>
-      <deroute block="line_p4_p5"/>
+      <deroute block="line_p4_p1"/>
     </block>
-    <block name="line_p4_p5">
-      <go forward="true" from="p4" hmode="route" wp="p5"/>
-      <deroute block="line_p5_p6"/>
-    </block>
-    <block name="line_p5_p6">
-      <go forward="true" from="p5" hmode="route" wp="p6"/>
-      <deroute block="line_p6_p7"/>
-    </block>
-    <block name="line_p6_p7">
-      <go forward="true" from="p6" hmode="route" wp="p7"/>
-      <deroute block="line_p7_p8"/>
-    </block>
-    <block name="line_p7_p8">
-      <go forward="true" from="p7" hmode="route" wp="p8"/>
-      <deroute block="line_p8_p1"/>
-    </block>
-    <block name="line_p8_p1">
-      <go forward="true" from="p8" hmode="route" wp="p1"/>
+    <block name="line_p4_p1">
+      <go forward="true" from="p4" hmode="route" wp="p1"/>
       <deroute block="line_p1_p2"/>
     </block>
     <block name="Descent">
