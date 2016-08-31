@@ -27,7 +27,7 @@
   <event fun="kalamos_event()"/>
   <makefile>
     <!-- Configure default UART port and baudrate -->
-    <configure name="KALAMOS_PORT" default="UART3" case="upper|lower"/>
+    <configure name="KALAMOS_PORT" default="UART4" case="upper|lower"/>
     <configure name="KALAMOS_BAUD" default="B115200"/>
 
     <!-- Enable UART and set baudrate -->

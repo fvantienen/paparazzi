@@ -73,7 +73,7 @@ void kalamos_init() {
   register_periodic_telemetry(DefaultPeriodic, PPRZ_MSG_ID_DEBUG, kalamos_raw_downlink);
 #endif
 
-  NavSetWaypointHere(WP_LANDING);
+  //NavSetWaypointHere(WP_LANDING);
   k2p_package.height = -0.01;
   k2p_package.status = 1;
 
@@ -102,20 +102,20 @@ static inline void kalamos_parse_msg(void)
     }
     timeoutcount = 100;
 
-    struct EnuCoor_f *pos = stateGetPositionEnu_f();
+    //struct EnuCoor_f *pos = stateGetPositionEnu_f();
 
-    float diff_landing = (kalamos_descend_height - k2p_package.height)*kalamos_height_gain;
-    float pprzheight_landing  = pos->z + diff_landing;
+    //float diff_landing = (kalamos_descend_height - k2p_package.height)*kalamos_height_gain;
+    //float pprzheight_landing  = pos->z + diff_landing;
 
-    waypoint_set_alt(WP_LANDING,pprzheight_landing);
+    //waypoint_set_alt(WP_LANDING,pprzheight_landing);
 
-    float diff_search = (kalamos_search_height - k2p_package.height)*kalamos_height_gain;
-    float pprzheight_search  = pos->z + diff_search;
-    waypoint_set_alt(WP_JOE,pprzheight_search);
+    //float diff_search = (kalamos_search_height - k2p_package.height)*kalamos_height_gain;
+    //float pprzheight_search  = pos->z + diff_search;
+    //waypoint_set_alt(WP_JOE,pprzheight_search);
 
-    if (kalamos_enable_spotsearch) {
+    /*if (kalamos_enable_spotsearch) {
       waypoint_set_xy_i(WP_LANDING,POS_BFP_OF_REAL(k2p_package.land_gpsx), POS_BFP_OF_REAL(k2p_package.land_gpsy));
-    }
+    }*/
 
     if (k2p_package.height < 5.0) {
         kalamos_enable_landing = false;
@@ -127,15 +127,15 @@ static inline void kalamos_parse_msg(void)
       }
 
 
-      float bx = (k2p_package.target_x * kalamos_pos_gain); // x is right
-      float by = k2p_package.target_y * kalamos_pos_gain; // y is nose
+      //float bx = (k2p_package.target_x * kalamos_pos_gain); // x is right
+      //float by = k2p_package.target_y * kalamos_pos_gain; // y is nose
 
-      float psi = stateGetNedToBodyEulers_f()->psi;
+      //float psi = stateGetNedToBodyEulers_f()->psi;
 
-      float target_x = waypoint_get_x(WP_LANDING) + cos(psi) * bx + sin(psi) * by;
-      float target_y = waypoint_get_y(WP_LANDING) + -sin(psi) * bx + cos(psi) * by;
+      //float target_x = waypoint_get_x(WP_LANDING) + cos(psi) * bx + sin(psi) * by;
+      //float target_y = waypoint_get_y(WP_LANDING) + -sin(psi) * bx + cos(psi) * by;
 
-      waypoint_set_xy_i(WP_LANDING,POS_BFP_OF_REAL(target_x), POS_BFP_OF_REAL(target_y));
+      //waypoint_set_xy_i(WP_LANDING,POS_BFP_OF_REAL(target_x), POS_BFP_OF_REAL(target_y));
 
     }
 
