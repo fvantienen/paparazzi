@@ -60,10 +60,10 @@ struct video_config_t front_camera = {
   .subdev_name = "/dev/v4l-subdev1",
   .format = V4L2_PIX_FMT_UYVY,
   .subdev_format = V4L2_MBUS_FMT_SGRBG10_1X10,
-  .buf_cnt = 3,
+  .buf_cnt = 5,
   .filters = VIDEO_FILTER_ISP,
   .cv_listener = NULL,
-  .fps = 5
+  .fps = 30
 };
 
 /**

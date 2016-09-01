@@ -29,11 +29,11 @@
 #include "peripherals/video_device.h"
 
 #ifndef MT9F002_OUTPUT_HEIGHT
-#define MT9F002_OUTPUT_HEIGHT 1408
+#define MT9F002_OUTPUT_HEIGHT 1280
 #endif
 
 #ifndef MT9F002_OUTPUT_WIDTH
-#define MT9F002_OUTPUT_WIDTH 1024
+#define MT9F002_OUTPUT_WIDTH 720
 #endif
 
 #ifndef MT9F002_INITIAL_OFFSET_X
@@ -76,7 +76,7 @@
 #endif
 
 #ifndef MT9F002_TARGET_FPS
-#define MT9F002_TARGET_FPS 15
+#define MT9F002_TARGET_FPS 30
 #endif
 
 

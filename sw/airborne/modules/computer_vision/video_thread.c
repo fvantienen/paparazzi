@@ -153,7 +153,7 @@ static void *video_thread_function(void *data)
     cv_run_device(vid, img_final);
 
     // Free the image
-    v4l2_image_free(vid->thread.dev, &img);
+    //v4l2_image_free(vid->thread.dev, &img);
   }
 
   image_free(&img_color);

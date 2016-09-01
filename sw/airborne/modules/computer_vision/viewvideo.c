@@ -30,8 +30,9 @@
  */
 
 // Own header
-#include "modules/computer_vision/viewvideo.h"
-#include "modules/computer_vision/cv.h"
+#include "viewvideo.h"
+#include "cv.h"
+#include "lib/encoding/P7_H264.h"
 
 #include <stdlib.h>
 #include <stdio.h>
@@ -79,7 +80,7 @@ PRINT_CONFIG_VAR(VIEWVIDEO_SHOT_PATH)
 
 // Define stream framerate
 #ifndef VIEWVIDEO_FPS
-#define VIEWVIDEO_FPS 10
+#define VIEWVIDEO_FPS 30
 #endif
 PRINT_CONFIG_VAR(VIEWVIDEO_FPS)
 
@@ -121,6 +122,9 @@ struct viewvideo_t viewvideo = {
 #endif
 };
 
+static P7_H264_context_t videoEncoder;
+static FILE *video_file;
+
 /**
  * Handles all the video streaming and saving of the image shots
  * This is a sepereate thread, so it needs to be thread safe!
@@ -128,56 +132,15 @@ struct viewvideo_t viewvideo = {
 struct image_t *viewvideo_function(struct image_t *img);
 struct image_t *viewvideo_function(struct image_t *img)
 {
-  // Resize image if needed
-  struct image_t img_small;
-  image_create(&img_small,
-               img->w / viewvideo.downsize_factor,
-               img->h / viewvideo.downsize_factor,
-               IMAGE_YUV422);
-
-  // Create the JPEG encoded image
-  struct image_t img_jpeg;
-  image_create(&img_jpeg, img_small.w, img_small.h, IMAGE_JPEG);
-
-#if VIEWVIDEO_USE_NETCAT
-  char nc_cmd[64];
-  sprintf(nc_cmd, "nc %s %d 2>/dev/null", STRINGIFY(VIEWVIDEO_HOST), VIEWVIDEO_PORT_OUT);
-#endif
+  int32_t h264BufferIndex, size;
+  uint8_t* h264Buffer;
+  struct image_t releaseImg;
 
   if (viewvideo.is_streaming) {
 
-    // Only resize when needed
-    if (viewvideo.downsize_factor != 1) {
-      image_yuv422_downsample(img, &img_small, viewvideo.downsize_factor);
-      jpeg_encode_image(&img_small, &img_jpeg, VIEWVIDEO_QUALITY_FACTOR, VIEWVIDEO_USE_NETCAT);
-    } else {
-      jpeg_encode_image(img, &img_jpeg, VIEWVIDEO_QUALITY_FACTOR, VIEWVIDEO_USE_NETCAT);
-    }
+    //jpeg_encode_image(img, &img_jpeg, VIEWVIDEO_QUALITY_FACTOR, VIEWVIDEO_USE_NETCAT);
 
-#if VIEWVIDEO_USE_NETCAT
-    // Open process to send using netcat (in a fork because sometimes kills itself???)
-    pid_t pid = fork();
-
-    if (pid < 0) {
-      printf("[viewvideo] Could not create netcat fork.\n");
-    } else if (pid == 0) {
-      // We are the child and want to send the image
-      FILE *netcat = popen(nc_cmd, "w");
-      if (netcat != NULL) {
-        fwrite(img_jpeg.buf, sizeof(uint8_t), img_jpeg.buf_size, netcat);
-        pclose(netcat); // Ignore output, because it is too much when not connected
-      } else {
-        printf("[viewvideo] Failed to open netcat process.\n");
-      }
-
-      // Exit the program since we don't want to continue after transmitting
-      exit(0);
-    } else {
-      // We want to wait until the child is finished
-      wait(NULL);
-    }
-#else
-    if (viewvideo.use_rtp) {
+    /*if (viewvideo.use_rtp) {
 
       // Send image with RTP
       rtp_frame_send(
@@ -196,14 +159,35 @@ struct image_t *viewvideo_function(struct image_t *img)
       // the timestamp is always "late" so the frame is displayed immediately).
       // Here, we set the time increment to the lowest possible value
       // (1 = 1/90000 s) which is probably stupid but is actually working.
-    }
-#endif
+    }*/
 
+    P7_H264_releaseInputBuffer(&videoEncoder, img->buf_idx);
+
+    while ((h264BufferIndex = P7_H264_find_FreeBuffer(videoEncoder.inputBuffers, BUFFER_TOBE_RELEASED, videoEncoder.numInputBuffers)) != -1){
+      releaseImg.buf_idx = h264BufferIndex;
+      videoEncoder.inputBuffers[h264BufferIndex].status = BUFFER_FREE;
+      v4l2_image_free(VIEWVIDEO_CAMERA.thread.dev, &releaseImg);
+    }
+
+    while (!P7_H264_getOutputBuffer(&videoEncoder, &h264BufferIndex))
+    {
+
+      h264Buffer = P7_H264_bufferIndex2OutputPointer(&videoEncoder, h264BufferIndex);
+      size = P7_H264_bufferIndex2OutputSize(&videoEncoder, h264BufferIndex);
+
+      if (size == 0)
+        fprintf(stderr, "%s:%d warning, no data to write\n",__FILE__,__LINE__);
+      else {
+        printf("Got frame of size: %d\r\n", size);
+        fwrite(h264Buffer, size, 1, video_file);
+      }
+      P7_H264_releaseOutputBuffer(&videoEncoder, h264BufferIndex);
+    }
+
+  } else {
+    v4l2_image_free(VIEWVIDEO_CAMERA.thread.dev, img);
   }
 
-  // Free all buffers
-  image_free(&img_jpeg);
-  image_free(&img_small);
   return NULL; // No new images were created
 }
 
@@ -213,29 +197,18 @@ struct image_t *viewvideo_function(struct image_t *img)
 void viewvideo_init(void)
 {
   char save_name[512];
+  video_file = fopen("test.h264", "wb");
 
-  struct video_listener *listener = cv_add_to_device_async(&VIEWVIDEO_CAMERA, viewvideo_function, VIEWVIDEO_NICE_LEVEL);
-  listener->maximum_fps = VIEWVIDEO_FPS;
+
+  struct video_listener *listener = cv_add_to_device(&VIEWVIDEO_CAMERA, viewvideo_function);
+  listener->maximum_fps = 0;
 
   viewvideo.is_streaming = true;
+  videoEncoder.inputType = H264ENC_YUV422_INTERLEAVED_UYVY;
+  videoEncoder.bitRate = 10*1000*1000; // 10 000 kbps
+  videoEncoder.frameRate = 30;
+  P7_H264_open(&videoEncoder, VIEWVIDEO_CAMERA.thread.dev);
 
-#if VIEWVIDEO_USE_NETCAT
-  // Create an Netcat receiver file for the streaming
-  sprintf(save_name, "%s/netcat-recv.sh", STRINGIFY(VIEWVIDEO_SHOT_PATH));
-  FILE *fp = fopen(save_name, "w");
-  if (fp != NULL) {
-    fprintf(fp, "i=0\n");
-    fprintf(fp, "while true\n");
-    fprintf(fp, "do\n");
-    fprintf(fp, "\tn=$(printf \"%%04d\" $i)\n");
-    fprintf(fp, "\tnc -l 0.0.0.0 %d > img_${n}.jpg\n", (int)(VIEWVIDEO_PORT_OUT));
-    fprintf(fp, "\ti=$((i+1))\n");
-    fprintf(fp, "done\n");
-    fclose(fp);
-  } else {
-    printf("[viewvideo] Failed to create netcat receiver file.\n");
-  }
-#else
   // Open udp socket
   udp_socket_create(&video_sock, STRINGIFY(VIEWVIDEO_HOST), VIEWVIDEO_PORT_OUT, -1, VIEWVIDEO_BROADCAST);
 
@@ -250,6 +223,5 @@ void viewvideo_init(void)
   } else {
     printf("[viewvideo] Failed to create SDP file.\n");
   }
-#endif
 }
 
