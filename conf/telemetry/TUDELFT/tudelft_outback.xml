@@ -155,9 +155,9 @@
        <message name="IMU_GYRO_SCALED"        period=".02"/>
        <message name="ROTORCRAFT_CMD"         period=".02"/>
        <message name="RATE_LOOP"              period=".2"/>
-       <message name="AHRS_REF_QUAT"          period="0.1"/>
+       <message name="AHRS_REF_QUAT"          period="0.04"/>
        <message name="MOTOR"                  period=".2"/>
-       <message name="AIR_DATA"               period=".04"/>
+       <message name="AIR_DATA"               period=".1"/>
        <message name="THROTTLE_CURVE"         period=".2"/>
        <message name="AUTOPILOT_VERSION"      period="10.0"/>
     </mode>
