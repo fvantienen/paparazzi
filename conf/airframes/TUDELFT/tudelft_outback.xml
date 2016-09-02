@@ -331,7 +331,7 @@
     <define name="PHI_I" value="{180, 180}"/>
     <define name="PHI_DD" value="{0, 0}"/>
 
-    <define name="THETA_P" value="{1605, 750}"/>
+    <define name="THETA_P" value="{1605, 950}"/>
     <define name="THETA_D" value="{293, 293}"/>
     <define name="THETA_I" value="{180, 220}"/>
     <define name="THETA_DD" value="{0, 0}"/>

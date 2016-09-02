@@ -191,7 +191,7 @@ void kalamos_periodic() {
   uint16_t status = k2p_package.status;
 
   // Send Telemetry report
-  DOWNLINK_SEND_SONAR(DefaultChannel, DefaultDevice, &status, &k2p_package.height);
+  RunOnceEvery(30, DOWNLINK_SEND_SONAR(DefaultChannel, DefaultDevice, &status, &k2p_package.height));
 
 
   pprz_msg_send_IMCU_DEBUG(&(kalamos.transport.trans_tx), kalamos.device,

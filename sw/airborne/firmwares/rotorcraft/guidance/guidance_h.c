@@ -468,6 +468,7 @@ void guidance_h_run(bool  in_flight)
           transition_att_sp.psi = last_hover_heading;
           stabilization_attitude_set_rpy_setpoint_i(&transition_att_sp);
         } else if((outback_hybrid_mode == HB_HOVER) && (transition_percentage > 0)) {
+          //transition to hover
           transition_run(false);
           //Set the corresponding attitude
           struct Int32Eulers transition_att_sp;

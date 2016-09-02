@@ -160,6 +160,7 @@
        <message name="AIR_DATA"               period=".1"/>
        <message name="THROTTLE_CURVE"         period=".2"/>
        <message name="AUTOPILOT_VERSION"      period="10.0"/>
+       <message name="GPS"                    period="20.0"/>
     </mode>
   </process>
 
