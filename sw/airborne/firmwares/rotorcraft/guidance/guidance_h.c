@@ -89,6 +89,7 @@ float ground_pitch_control_gain = OUTBACK_GROUND_PITCH_CONTROL_GAIN;
 struct Int32Vect2 guidance_h_pos_err;
 struct Int32Vect2 guidance_h_speed_err;
 struct Int32Vect2 guidance_h_trim_att_integrator;
+float wind_heading = 0.0;
 
 /** horizontal guidance command.
  * In north/east with #INT32_ANGLE_FRAC
@@ -108,6 +109,7 @@ static void guidance_h_nav_enter(void);
 static inline void transition_run(bool to_forward);
 static void read_rc_setpoint_speed_i(struct Int32Vect2 *speed_sp, bool in_flight);
 void guidance_h_set_nav_throttle_curve(void);
+void change_heading_in_wind(void);
 
 #if PERIODIC_TELEMETRY
 #include "subsystems/datalink/telemetry.h"
@@ -115,8 +117,9 @@ void guidance_h_set_nav_throttle_curve(void);
 static void send_gh(struct transport_tx *trans, struct link_device *dev)
 {
   struct NedCoor_i *pos = stateGetPositionNed_i();
+  int32_t wind_heading_i = wind_heading;
   pprz_msg_send_GUIDANCE_H_INT(trans, dev, AC_ID,
-                               &guidance_h.sp.pos.x, &guidance_h.sp.pos.y,
+                               &wind_heading_i, &guidance_h.sp.pos.y,
                                &guidance_h.ref.pos.x, &guidance_h.ref.pos.y,
                                &(pos->x), &(pos->y));
 }
@@ -491,6 +494,8 @@ void guidance_h_run(bool  in_flight)
 
           guidance_h_update_reference();
 
+          change_heading_in_wind();
+
           /* set psi command */
           guidance_h.sp.heading = nav_heading;
           INT32_ANGLE_NORMALIZE(guidance_h.sp.heading);
@@ -603,8 +608,7 @@ static void guidance_h_update_reference(void)
 static void guidance_h_traj_run(bool in_flight)
 {
   /* maximum bank angle: default 20 deg, max 40 deg*/
-  static const int32_t traj_max_bank = Min(BFP_OF_REAL(GUIDANCE_H_MAX_BANK, INT32_ANGLE_FRAC),
-                                       BFP_OF_REAL(RadOfDeg(40), INT32_ANGLE_FRAC));
+  static const int32_t traj_max_bank = BFP_OF_REAL(GUIDANCE_H_MAX_BANK, INT32_ANGLE_FRAC);
   static const int32_t total_max_bank = BFP_OF_REAL(GUIDANCE_H_TOTAL_MAX_BANK, INT32_ANGLE_FRAC);
 
   /* compute position error    */
@@ -645,11 +649,12 @@ static void guidance_h_traj_run(bool in_flight)
     guidance_h_trim_att_integrator.x += (guidance_h.gains.i * pd_x);
     guidance_h_trim_att_integrator.y += (guidance_h.gains.i * pd_y);
     /* saturate it  */
-    VECT2_STRIM(guidance_h_trim_att_integrator, -(traj_max_bank << (INT32_ANGLE_FRAC + GH_GAIN_SCALE * 2)),
-                (traj_max_bank << (INT32_ANGLE_FRAC + GH_GAIN_SCALE * 2)));
+    // this used to be a total bitshift of 28, but that will overflow, so reduced to 24
+    VECT2_STRIM(guidance_h_trim_att_integrator, -(traj_max_bank << INT32_ANGLE_FRAC),
+                (traj_max_bank << INT32_ANGLE_FRAC));
     /* add it to the command */
-    guidance_h_cmd_earth.x += (guidance_h_trim_att_integrator.x >> (INT32_ANGLE_FRAC + GH_GAIN_SCALE * 2));
-    guidance_h_cmd_earth.y += (guidance_h_trim_att_integrator.y >> (INT32_ANGLE_FRAC + GH_GAIN_SCALE * 2));
+    guidance_h_cmd_earth.x += (guidance_h_trim_att_integrator.x >> INT32_ANGLE_FRAC);
+    guidance_h_cmd_earth.y += (guidance_h_trim_att_integrator.y >> INT32_ANGLE_FRAC);
   } else {
     INT_VECT2_ZERO(guidance_h_trim_att_integrator);
   }
@@ -832,5 +837,12 @@ void guidance_h_set_nav_throttle_curve(void) {
       nav_throttle_curve_set(2);
     }
   }
+}
+
+void change_heading_in_wind(void) {
+  //find the angle of the integrator
+  struct FloatVect2 pos_integrator = {guidance_h_trim_att_integrator.x, guidance_h_trim_att_integrator.y};
+  wind_heading = atan2f(pos_integrator.y, pos_integrator.x);
+  FLOAT_ANGLE_NORMALIZE(wind_heading);
 }
 

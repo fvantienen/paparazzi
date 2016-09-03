@@ -30,6 +30,7 @@
       <message name="THROTTLE_CURVE"         period="0.5"/>
       <message name="AHRS_REF_QUAT"          period="0.5"/>
       <message name="STAB_ATTITUDE_INT"      period="0.5"/>
+      <message name="GUIDANCE_H_INT"         period="2.0"/>
     </mode>
 
     <mode name="ppm">

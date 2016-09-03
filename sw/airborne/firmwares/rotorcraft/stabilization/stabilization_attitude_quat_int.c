@@ -62,6 +62,8 @@ struct Int32Quat stabilization_att_sum_err_quat;
 int32_t stabilization_att_fb_cmd[COMMANDS_NB];
 int32_t stabilization_att_ff_cmd[COMMANDS_NB];
 
+int32_t disp_pitch_error = 0;
+
 struct Int32Quat   stab_att_sp_quat;
 struct Int32Eulers stab_att_sp_euler;
 
@@ -93,7 +95,7 @@ static void send_att(struct transport_tx *trans, struct link_device *dev)   //FI
                                   &stabilization_att_fb_cmd[COMMAND_PITCH],
                                   &stabilization_att_fb_cmd[COMMAND_YAW],
                                   &stabilization_att_ff_cmd[COMMAND_ROLL],
-                                  &stabilization_att_ff_cmd[COMMAND_PITCH],
+                                  &disp_pitch_error,
                                   &stabilization_att_ff_cmd[COMMAND_YAW],
                                   &stabilization_cmd[COMMAND_ROLL],
                                   &stabilization_cmd[COMMAND_PITCH],
@@ -251,6 +253,8 @@ void stabilization_attitude_run(bool enable_integrator)
   /* wrap it in the shortest direction       */
   int32_quat_wrap_shortest(&att_err);
   int32_quat_normalize(&att_err);
+
+  disp_pitch_error = att_err.qy;
 
   /*  rate error                */
   const struct Int32Rates rate_ref_scaled = {

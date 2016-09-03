@@ -357,7 +357,7 @@
     <define name="PGAIN" value="20"/>
     <define name="DGAIN" value="40"/>
     <define name="AGAIN" value="30"/>
-    <define name="IGAIN" value="10"/>
+    <define name="IGAIN" value="3"/>
   </section>
 
   <section name="AUTOPILOT">
