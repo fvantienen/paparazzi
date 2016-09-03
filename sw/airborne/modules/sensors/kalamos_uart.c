@@ -102,20 +102,20 @@ static inline void kalamos_parse_msg(void)
     }
     timeoutcount = 100;
 
-    //struct EnuCoor_f *pos = stateGetPositionEnu_f();
+    struct EnuCoor_f *pos = stateGetPositionEnu_f();
 
-    //float diff_landing = (kalamos_descend_height - k2p_package.height)*kalamos_height_gain;
-    //float pprzheight_landing  = pos->z + diff_landing;
+    float diff_landing = (kalamos_descend_height - k2p_package.height)*kalamos_height_gain;
+    float pprzheight_landing  = pos->z + diff_landing;
 
     //waypoint_set_alt(WP_LANDING,pprzheight_landing);
 
-    //float diff_search = (kalamos_search_height - k2p_package.height)*kalamos_height_gain;
-    //float pprzheight_search  = pos->z + diff_search;
+    float diff_search = (kalamos_search_height - k2p_package.height)*kalamos_height_gain;
+    float pprzheight_search  = pos->z + diff_search;
     //waypoint_set_alt(WP_JOE,pprzheight_search);
 
-    /*if (kalamos_enable_spotsearch) {
-      waypoint_set_xy_i(WP_LANDING,POS_BFP_OF_REAL(k2p_package.land_gpsx), POS_BFP_OF_REAL(k2p_package.land_gpsy));
-    }*/
+    if (kalamos_enable_spotsearch) {
+      //waypoint_set_xy_i(WP_LANDING,POS_BFP_OF_REAL(k2p_package.land_gpsx), POS_BFP_OF_REAL(k2p_package.land_gpsy));
+    }
 
     if (k2p_package.height < 5.0) {
         kalamos_enable_landing = false;
@@ -126,16 +126,21 @@ static inline void kalamos_parse_msg(void)
         kalamos_descend_height -= kalamos_landing_decent_speed;
       }
 
+      struct FloatQuat *att = stateGetNedToBodyQuat_f();
 
-      //float bx = (k2p_package.target_x * kalamos_pos_gain); // x is right
-      //float by = k2p_package.target_y * kalamos_pos_gain; // y is nose
+      struct FloatRMat ltp_to_kalamos_rmat;
+      float_rmat_of_quat(&ltp_to_kalamos_rmat, att);
 
-      //float psi = stateGetNedToBodyEulers_f()->psi;
+      //x,y,z pos van joe
+      struct FloatVect3 joe;
+      joe.x = k2p_package.target_x;
+      joe.y = k2p_package.target_y;
+      joe.z = k2p_package.height;
 
-      //float target_x = waypoint_get_x(WP_LANDING) + cos(psi) * bx + sin(psi) * by;
-      //float target_y = waypoint_get_y(WP_LANDING) + -sin(psi) * bx + cos(psi) * by;
+      struct FloatVect3 measured_ltp;
+      float_rmat_transp_vmult(&measured_ltp, &ltp_to_kalamos_rmat, &joe);
 
-      //waypoint_set_xy_i(WP_LANDING,POS_BFP_OF_REAL(target_x), POS_BFP_OF_REAL(target_y));
+      //waypoint_set_xy_i(WP_LANDING,POS_BFP_OF_REAL(measured_ltp.x), POS_BFP_OF_REAL(measured_ltp.y));
 
     }
 
@@ -166,14 +171,19 @@ void kalamos_event() {
 
 void kalamos_periodic() {
 
-  struct FloatEulers *att = stateGetNedToBodyEulers_f();
+  struct FloatEulers *attE = stateGetNedToBodyEulers_f();
+  struct FloatQuat *att = stateGetNedToBodyQuat_f();
   struct EnuCoor_f *pos = stateGetPositionEnu_f();
 
 
   struct PPRZ2KalamosPackage p2k_package;
-  p2k_package.phi = att->phi;
-  p2k_package.theta = att->theta;
-  p2k_package.psi = att->psi;
+  p2k_package.phi = attE->phi;
+  p2k_package.theta = attE->theta;
+  p2k_package.psi = attE->psi;
+  p2k_package.qi = att->qi;
+  p2k_package.qx = att->qx;
+  p2k_package.qy = att->qy;
+  p2k_package.qz = att->qz;
   p2k_package.gpsx = pos->x;
   p2k_package.gpsy = pos->y;
   p2k_package.gpsz = gps.lla_pos.alt;

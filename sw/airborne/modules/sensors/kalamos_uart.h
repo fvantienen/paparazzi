@@ -61,6 +61,10 @@ struct PPRZ2KalamosPackage {
     float phi;
     float theta;
     float psi;
+    float qi;
+    float qx;
+    float qy;
+    float qz;
     float gpsx;
     float gpsy;
     float gpsz;
