@@ -608,7 +608,8 @@ static void guidance_h_update_reference(void)
 static void guidance_h_traj_run(bool in_flight)
 {
   /* maximum bank angle: default 20 deg, max 40 deg*/
-  static const int32_t traj_max_bank = BFP_OF_REAL(GUIDANCE_H_MAX_BANK, INT32_ANGLE_FRAC);
+  static const int32_t traj_max_bank = Min(BFP_OF_REAL(GUIDANCE_H_MAX_BANK, INT32_ANGLE_FRAC),
+                                       BFP_OF_REAL(RadOfDeg(40), INT32_ANGLE_FRAC));
   static const int32_t total_max_bank = BFP_OF_REAL(GUIDANCE_H_TOTAL_MAX_BANK, INT32_ANGLE_FRAC);
 
   /* compute position error    */
@@ -649,12 +650,11 @@ static void guidance_h_traj_run(bool in_flight)
     guidance_h_trim_att_integrator.x += (guidance_h.gains.i * pd_x);
     guidance_h_trim_att_integrator.y += (guidance_h.gains.i * pd_y);
     /* saturate it  */
-    // this used to be a total bitshift of 28, but that will overflow, so reduced to 24
-    VECT2_STRIM(guidance_h_trim_att_integrator, -(traj_max_bank << INT32_ANGLE_FRAC),
-                (traj_max_bank << INT32_ANGLE_FRAC));
+    VECT2_STRIM(guidance_h_trim_att_integrator, -(traj_max_bank << (INT32_ANGLE_FRAC + GH_GAIN_SCALE * 2)),
+                (traj_max_bank << (INT32_ANGLE_FRAC + GH_GAIN_SCALE * 2)));
     /* add it to the command */
-    guidance_h_cmd_earth.x += (guidance_h_trim_att_integrator.x >> INT32_ANGLE_FRAC);
-    guidance_h_cmd_earth.y += (guidance_h_trim_att_integrator.y >> INT32_ANGLE_FRAC);
+    guidance_h_cmd_earth.x += (guidance_h_trim_att_integrator.x >> (INT32_ANGLE_FRAC + GH_GAIN_SCALE * 2));
+    guidance_h_cmd_earth.y += (guidance_h_trim_att_integrator.y >> (INT32_ANGLE_FRAC + GH_GAIN_SCALE * 2));
   } else {
     INT_VECT2_ZERO(guidance_h_trim_att_integrator);
   }
