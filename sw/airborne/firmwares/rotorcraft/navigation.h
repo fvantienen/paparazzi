@@ -101,6 +101,7 @@ extern bool nav_set_heading_towards(float x, float y);
 extern bool nav_set_heading_towards_waypoint(uint8_t wp);
 extern bool nav_set_heading_towards_target(void);
 extern bool nav_set_heading_current(void);
+extern bool nav_set_failsafe(void);
 
 /** default approaching_time for a wp */
 #ifndef CARROT
@@ -223,6 +224,9 @@ bool nav_check_wp_time(struct EnuCoor_i *wp, uint16_t stay_time);
   }
 
 #define NavSetManual nav_set_manual
+#define NavSetFailsafe { \
+  nav_set_failsafe(); \
+}
 
 #define NavStartDetectGround() ({ autopilot_detect_ground_once = true; false; })
 #define NavDetectGround() nav_detect_ground()

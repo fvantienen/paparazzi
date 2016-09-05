@@ -577,6 +577,11 @@ bool nav_set_heading_current(void)
   return false;
 }
 
+bool nav_set_failsafe(void) {
+  autopilot_set_mode(AP_MODE_FAILSAFE);
+  return false;
+}
+
 /************** Oval Navigation **********************************************/
 
 /** Navigation along a figure O. One side leg is defined by waypoints [p1] and

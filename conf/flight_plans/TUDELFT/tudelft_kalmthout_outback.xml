@@ -34,6 +34,7 @@
   </modules>
   <exceptions>
     <exception cond="(!InsideSafety(GetPosX(), GetPosY()) && !(nav_block == IndexOfBlock('Wait GPS')) && !(nav_block == IndexOfBlock('Geo init')) )" deroute="Holding point"/>
+    <exception cond="(!GpsFixValid() && !(nav_block == IndexOfBlock('Hold Attitude')) && !(nav_block == IndexOfBlock('Takeoff')) && (exception_flag[0] == 0) && (autopilot_in_flight == true) )" deroute="gps loss"/>
   </exceptions>
   <blocks>
     <block name="Wait GPS">
@@ -124,6 +125,17 @@
       <stay climb="nav_descend_vspeed" vmode="climb" wp="TD"/>
     </block>
     <block name="landed">
+      <attitude pitch="0" roll="0" throttle="0" until="FALSE" vmode="throttle"/>
+    </block>
+    <block name="gps loss">
+      <exception cond="stateGetPositionEnu_f()->z > 2.0" deroute="landed"/>
+      <exception cond="GpsFixValid()" deroute="Hover here"/>
+      <set var="exception_flag[0]" value="1"/>
+      <call fun="nav_throttle_curve_set(1)" loop="false"/>
+      <attitude pitch="0" roll="0" throttle="0.55" until="stage_time>20" vmode="throttle"/>
+    </block>
+    <block name="failsafe">
+      <call fun="NavSetFailsafe"/>
       <attitude pitch="0" roll="0" throttle="0" until="FALSE" vmode="throttle"/>
     </block>
   </blocks>

@@ -21,7 +21,9 @@
 
       <module name="telemetry" type="xbee_api"/>
       <module name="imu" type="mpu6000"/>
-      <module name="gps" type="ublox"/>
+      <module name="gps" type="ublox">
+        <define name="GPS_TIMEOUT" value="5"/>
+      </module>
       <module name="stabilization" type="int_quat"/>
       <module name="stabilization" type="rate"/>
       <module name="ahrs" type="int_cmpl_quat">
