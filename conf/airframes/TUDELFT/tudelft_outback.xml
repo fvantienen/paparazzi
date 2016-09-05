@@ -197,6 +197,7 @@
     <define name="OUTBACK_MAX_HOVER_THROTTLE" value="7700"/>
     <define name="MAX_TURN_BANK" value="32.5"/>
     <define name="ARRIVED_AT_WAYPOINT" value="75"/>
+    <define name="NO_GPS_LOST_WITH_RC_VALID" value="TRUE"/>
   </section>
 
   <section name="FORWARD">
