@@ -70,7 +70,7 @@
       <exception cond="stateGetPositionEnu_f()->z > 4.0" deroute="Climb"/>
       <call fun="NavSetWaypointHere(WP_CLIMB)"/>
       <call fun="nav_throttle_curve_set(1)" loop="false"/>
-      <attitude pitch="0" roll="0" throttle="0.71" until="FALSE" vmode="throttle"/>
+      <attitude pitch="0" roll="0" throttle="0.73" until="stage_time>2" vmode="throttle"/>
     </block>
     <block name="Climb">
       <exception cond="stateGetPositionEnu_f()->z > 20.0" deroute="Standby"/>
@@ -132,7 +132,7 @@
       <exception cond="GpsFixValid()" deroute="Hover here"/>
       <set var="exception_flag[0]" value="1"/>
       <call fun="nav_throttle_curve_set(1)" loop="false"/>
-      <attitude pitch="0" roll="0" throttle="0.55" until="stage_time>20" vmode="throttle"/>
+      <attitude pitch="0" roll="0" throttle="0.62" until="stage_time>20" vmode="throttle"/>
     </block>
     <block name="failsafe">
       <call fun="NavSetFailsafe"/>
