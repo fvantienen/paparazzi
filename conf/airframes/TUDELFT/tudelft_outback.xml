@@ -192,7 +192,7 @@
     <define name="NAV_DESCEND_VSPEED" value="-1.5"/>
     <define name="NO_RC_THRUST_LIMIT" value="TRUE"/>
     <define name="MilliAmpereOfAdc(_adc)" value="(DefaultMilliAmpereOfAdc(_adc) + 417)"/>
-    <define name="OUTBACK_P_ON_Q_COUPLING" value="6.0"/>
+    <define name="OUTBACK_P_ON_Q_COUPLING" value="0.0"/>
     <define name="OUTBACK_Q_ON_P_COUPLING" value="0.0"/>
     <define name="OUTBACK_GROUND_PITCH_CONTROL_GAIN" value="70000.0"/>
     <define name="OUTBACK_MIN_HOVER_THROTTLE" value="4000"/>
