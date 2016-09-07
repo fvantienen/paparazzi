@@ -212,3 +212,17 @@ int udp_socket_set_recvbuf(struct UdpSocket *sock, int buf_size) {
 
   return 0;
 }
+
+int udp_socket_set_sendbuf(struct UdpSocket *sock, int buf_size) {
+  // Set and check
+  unsigned int optval_size = 4;
+  int buf_ret;
+  setsockopt(sock->sockfd, SOL_SOCKET, SO_SNDBUF, (char *)&buf_size, optval_size);
+  getsockopt(sock->sockfd, SOL_SOCKET, SO_SNDBUF, (char *)&buf_ret, &optval_size);
+
+  if(buf_size != buf_ret)
+    return -1;
+
+  return 0;
+}
+

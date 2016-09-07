@@ -80,7 +80,7 @@ PRINT_CONFIG_VAR(VIEWVIDEO_SHOT_PATH)
 
 // Define stream framerate
 #ifndef VIEWVIDEO_FPS
-#define VIEWVIDEO_FPS 30
+#define VIEWVIDEO_FPS 15
 #endif
 PRINT_CONFIG_VAR(VIEWVIDEO_FPS)
 
@@ -175,10 +175,13 @@ struct image_t *viewvideo_function(struct image_t *img)
       h264Buffer = P7_H264_bufferIndex2OutputPointer(&videoEncoder, h264BufferIndex);
       size = P7_H264_bufferIndex2OutputSize(&videoEncoder, h264BufferIndex);
 
+
       if (size == 0)
         fprintf(stderr, "%s:%d warning, no data to write\n",__FILE__,__LINE__);
       else {
         printf("Got frame of size: %d\r\n", size);
+        printf("Byte: %2X %2X %2X %2X %2X\n", h264Buffer[0],h264Buffer[1], h264Buffer[2], h264Buffer[3], h264Buffer[4]);
+        rtp_frame_send_h264(&video_sock, h264Buffer, size);
         fwrite(h264Buffer, size, 1, video_file);
       }
       P7_H264_releaseOutputBuffer(&videoEncoder, h264BufferIndex);
@@ -205,12 +208,14 @@ void viewvideo_init(void)
 
   viewvideo.is_streaming = true;
   videoEncoder.inputType = H264ENC_YUV422_INTERLEAVED_UYVY;
-  videoEncoder.bitRate = 10*1000*1000; // 10 000 kbps
-  videoEncoder.frameRate = 30;
+  videoEncoder.bitRate = 512*1000; // 512 kbps
+  videoEncoder.frameRate = 15;
+  videoEncoder.intraRate = 15;
   P7_H264_open(&videoEncoder, VIEWVIDEO_CAMERA.thread.dev);
 
   // Open udp socket
   udp_socket_create(&video_sock, STRINGIFY(VIEWVIDEO_HOST), VIEWVIDEO_PORT_OUT, -1, VIEWVIDEO_BROADCAST);
+  udp_socket_set_sendbuf(&video_sock, 1500*10);
 
   // Create an SDP file for the streaming
   sprintf(save_name, "%s/stream.sdp", STRINGIFY(VIEWVIDEO_SHOT_PATH));

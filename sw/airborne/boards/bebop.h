@@ -29,19 +29,19 @@
 #include "peripherals/video_device.h"
 
 #ifndef MT9F002_OUTPUT_HEIGHT
-#define MT9F002_OUTPUT_HEIGHT 1280
+#define MT9F002_OUTPUT_HEIGHT 720
 #endif
 
 #ifndef MT9F002_OUTPUT_WIDTH
-#define MT9F002_OUTPUT_WIDTH 720
+#define MT9F002_OUTPUT_WIDTH 480
 #endif
 
 #ifndef MT9F002_INITIAL_OFFSET_X
-#define MT9F002_INITIAL_OFFSET_X 1812 // pixels in the raw sensor(please make steps of 2 for ISP)!!
+#define MT9F002_INITIAL_OFFSET_X 2512 // pixels in the raw sensor(please make steps of 2 for ISP)!!
 #endif
 
 #ifndef MT9F002_INITIAL_OFFSET_Y
-#define MT9F002_INITIAL_OFFSET_Y 649 // pixels in the raw sensor(please make steps of 2 for ISP)!!
+#define MT9F002_INITIAL_OFFSET_Y 849 // pixels in the raw sensor(please make steps of 2 for ISP)!!
 #endif
 
 /** Our output is only OUTPUT_SCALER of the pixels we take of the sensor
@@ -76,7 +76,7 @@
 #endif
 
 #ifndef MT9F002_TARGET_FPS
-#define MT9F002_TARGET_FPS 30
+#define MT9F002_TARGET_FPS 15
 #endif
 
 

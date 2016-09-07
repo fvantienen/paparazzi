@@ -104,7 +104,7 @@ static int OpenEncoder(P7_H264_context_t* context)
 
     cfg.streamType = H264ENC_BYTE_STREAM;
 
-    cfg.level = H264ENC_LEVEL_4; // level 4 minimum for 1080p
+    cfg.level = H264ENC_LEVEL_2_2; // level 4 minimum for 1080p
     cfg.viewMode = H264ENC_BASE_VIEW_DOUBLE_BUFFER; // maybe H264ENC_BASE_VIEW_SINGLE_BUFFER
     cfg.scaledWidth = 0;
     cfg.scaledHeight = 0;
@@ -481,6 +481,7 @@ static int P7_H264_initStartBuffer(P7_H264_context_t* context)
   }
 
   context->startBufferSize = context->encOut.streamSize;
+  printf("Start stream: %d\n", context->startBufferSize);
 
   return 0;
 }
@@ -621,6 +622,7 @@ static void *P7_H264_encoderThread(void* param)
           memcpy(context->outputBuffers[outputBufferIndex].vencMem.virtualAddress,context->startBuffer.virtualAddress,context->startBufferSize);
           // update buffer size
           context->outputBuffers[outputBufferIndex].size += context->startBufferSize;
+          PRINT("INSERT SPS/PPS\r\n");
         }
         else
         {
