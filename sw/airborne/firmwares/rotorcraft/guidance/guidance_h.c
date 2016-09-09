@@ -117,7 +117,7 @@ void change_heading_in_wind(void);
 static void send_gh(struct transport_tx *trans, struct link_device *dev)
 {
   struct NedCoor_i *pos = stateGetPositionNed_i();
-  int32_t wind_heading_i = wind_heading;
+  int32_t wind_heading_i = DegOfRad(wind_heading);
   pprz_msg_send_GUIDANCE_H_INT(trans, dev, AC_ID,
                                &wind_heading_i, &guidance_h.sp.pos.y,
                                &guidance_h.ref.pos.x, &guidance_h.ref.pos.y,
