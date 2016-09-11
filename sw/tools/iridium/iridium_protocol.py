@@ -52,9 +52,9 @@ class IridiumProtocol(protocol.Protocol):
   def configure(self):
     # Send the serial and echo settings
     if self.serial_ctrl:
-      cfg_cmd = "ATE0 V1 X3 &D1 &K1"
+      cfg_cmd = "ATE0 V1 X3"
     else:
-      cfg_cmd = "ATE0 V1 X3 &D0 &K0"
+      cfg_cmd = "ATE0 V1 X3"
     if not self.transmit_cmd_ok(cfg_cmd):
       if self.cb_configured != None:
         self.cb_configured(False)
