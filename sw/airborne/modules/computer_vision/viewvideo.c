@@ -208,7 +208,7 @@ void viewvideo_init(void)
 
   viewvideo.is_streaming = true;
   videoEncoder.inputType = H264ENC_YUV422_INTERLEAVED_UYVY;
-  videoEncoder.bitRate = 512*1000; // 512 kbps
+  videoEncoder.bitRate = 1000*1000; // 1000 kbps
   videoEncoder.frameRate = 15;
   videoEncoder.intraRate = 15;
   P7_H264_open(&videoEncoder, VIEWVIDEO_CAMERA.thread.dev);

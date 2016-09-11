@@ -224,7 +224,7 @@ struct libisp_config isp_config = {
 
   /* RAW 10bit to 10bit */
   .vlformat_40to32 = {
-    .format = 0x03,
+    .format = 0x04,
   },
 
   /* Gamma corrector (Curves) */

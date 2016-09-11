@@ -33,6 +33,17 @@
     <module name="logger_file">
       <define name="FILE_LOGGER_PATH" value="/data/ftp/internal_000"/>
     </module>
+
+    <module name="video_thread">
+    </module>
+
+    <module name="video_rtp_stream">
+      <define name="VIEWVIDEO_CAMERA" value="front_camera"/>
+      <define name="VIEWVIDEO_DOWNSIZE_FACTOR" value="2"/>
+      <define name="VIEWVIDEO_QUALITY_FACTOR" value="40"/>
+    </module>
+
+    <module name="cv_ae_awb"/>
   </modules>
 
   <commands>
