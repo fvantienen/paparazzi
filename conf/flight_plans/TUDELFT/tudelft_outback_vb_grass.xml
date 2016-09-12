@@ -7,18 +7,18 @@
 #include "guidance/guidance_v.h"
 </header>
   <waypoints>
-    <waypoint name="HOME" x="1.0" y="3.2"/>
-    <waypoint name="CLIMB" x="-11.6" y="-85.1"/>
-    <waypoint name="STDBY" x="-18.1" y="-29.0"/>
-    <waypoint name="p1" x="-55.8" y="-61.3"/>
-    <waypoint name="p2" x="-164.0" y="-204.3"/>
-    <waypoint name="p3" x="-22.8" y="-221.7"/>
-    <waypoint name="p4" x="20.5" y="-131.3"/>
-    <waypoint name="_s1" x="-551.8" y="446.1"/>
-    <waypoint name="_s2" x="116.6" y="616.2"/>
-    <waypoint name="_s3" x="693.6" y="-472.9"/>
-    <waypoint name="_s4" x="-237.6" y="-610.3"/>
-    <waypoint name="TD" x="-39.2" y="-23.5"/>
+    <waypoint name="HOME" x="-70.9" y="-141.0"/>
+    <waypoint name="CLIMB" x="-111.2" y="-122.7"/>
+    <waypoint name="STDBY" x="-94.5" y="-138.3"/>
+    <waypoint name="p1" x="-110.7" y="-63.9"/>
+    <waypoint name="p2" x="-229.4" y="-226.8"/>
+    <waypoint name="p3" x="-95.3" y="-334.3"/>
+    <waypoint name="p4" x="23.0" y="-247.9"/>
+    <waypoint name="_s1" x="-618.4" y="87.0"/>
+    <waypoint name="_s2" x="165.1" y="282.0"/>
+    <waypoint name="_s3" x="478.9" y="-594.1"/>
+    <waypoint name="_s4" x="-382.7" y="-620.1"/>
+    <waypoint name="TD" x="-120.9" y="-143.8"/>
     <waypoint name="HOVER" x="-71.3" y="-119.0"/>
   </waypoints>
   <sectors>
@@ -81,21 +81,6 @@
     <block name="Standby" strip_button="Standby" strip_icon="home.png">
       <stay wp="STDBY"/>
     </block>
-    <block name="test landing50">
-      <call fun="nav_throttle_curve_set(1)" loop="false"/>
-      <attitude pitch="0" roll="0" throttle="0.50" until="stage_time>2" vmode="throttle"/>
-      <deroute block="Standby"/>
-    </block>
-    <block name="test landing45">
-      <call fun="nav_throttle_curve_set(1)" loop="false"/>
-      <attitude pitch="0" roll="0" throttle="0.45" until="stage_time>2" vmode="throttle"/>
-      <deroute block="Standby"/>
-    </block>
-    <block name="test landing40">
-      <call fun="nav_throttle_curve_set(1)" loop="false"/>
-      <attitude pitch="0" roll="0" throttle="0.40" until="stage_time>2" vmode="throttle"/>
-      <deroute block="Standby"/>
-    </block>
     <block name="Hover here">
       <call fun="NavSetWaypointHere(WP_HOVER)"/>
       <stay wp="HOVER"/>
@@ -129,6 +114,11 @@
       <call fun="NavSetWaypointHere(WP_TD)"/>
       <call fun="GuidanceVSetRef(stateGetPositionNed_i()->z, 0, 0)"/>
       <stay climb="nav_descend_vspeed" vmode="climb" wp="TD"/>
+    </block>
+    <block name="test landing">
+      <call fun="nav_throttle_curve_set(1)" loop="false"/>
+      <attitude pitch="0" roll="0" throttle="0.45" until="stage_time>2" vmode="throttle"/>
+      <deroute block="landed"/>
     </block>
     <block name="land">
       <go forward="false" wp="TD"/>

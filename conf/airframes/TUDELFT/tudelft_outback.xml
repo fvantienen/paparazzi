@@ -197,8 +197,8 @@
     <define name="OUTBACK_GROUND_PITCH_CONTROL_GAIN" value="70000.0"/>
     <define name="OUTBACK_MIN_HOVER_THROTTLE" value="4000"/>
     <define name="OUTBACK_MAX_HOVER_THROTTLE" value="7700"/>
-    <define name="MAX_TURN_BANK" value="32.5"/>
-    <define name="ARRIVED_AT_WAYPOINT" value="75"/>
+    <define name="MAX_TURN_BANK" value="41.4"/>
+    <define name="ARRIVED_AT_WAYPOINT" value="50"/>
     <define name="NO_GPS_LOST_WITH_RC_VALID" value="TRUE"/>
   </section>
 
@@ -210,7 +210,7 @@
 <!--     For RC coordinated turns, lower because the yawing was too slow -->
     <define name="MAX_FWD_SPEED" value="18.0"/>
 <!--     For hybrid guidance -->
-    <define name="MAX_AIRSPEED" value="20.0"/>
+    <define name="MAX_AIRSPEED" value="18.0"/>
     <define name="OUTBACK_FORWARD_VERTICAL_GAIN" value="0.1"/>
     <define name="OUTBACK_FORWARD_VERTICAL_DGAIN" value="0.04"/>
     <define name="NOMINAL_FORWARD_THRUST" value="6624"/>
