@@ -308,7 +308,7 @@ void guidance_hybrid_attitude_outback(struct Int32Eulers *ypr_sp)
   guidance_hybrid_ref_airspeed.x = (guidance_hybrid_norm_ref_airspeed * c_psi) >> INT32_TRIG_FRAC;
   guidance_hybrid_ref_airspeed.y = (guidance_hybrid_norm_ref_airspeed * s_psi) >> INT32_TRIG_FRAC;
 
-  ypr_sp->theta = -ANGLE_BFP_OF_REAL(RadOfDeg(80.0));
+  ypr_sp->theta = ANGLE_BFP_OF_REAL(TRANSITION_MAX_OFFSET);
 
   ypr_sp->phi = ANGLE_BFP_OF_REAL(heading_diff * turn_bank_gain);
   if (ypr_sp->phi > ANGLE_BFP_OF_REAL(max_turn_bank / 180.0 * M_PI)) { ypr_sp->phi = ANGLE_BFP_OF_REAL(max_turn_bank / 180.0 * M_PI); }
