@@ -12,6 +12,8 @@
       <dl_setting var="turn_bank_gain" MIN="0.1" STEP="0.01" MAX="3.0" module="guidance/guidance_hybrid" shortname="turn_bank_gain"/>
       <dl_setting var="guidance_indi_pos_gain" MIN="0.0" STEP="0.1" MAX="5.0" module="guidance/guidance_indi" shortname="indi_posgain"/>
       <dl_setting var="guidance_indi_speed_gain" MIN="0.0" STEP="0.1" MAX="5.0" module="guidance/guidance_indi" shortname="indi_speedgain"/>
+      <dl_setting var="filter_omega" MIN="1.0" STEP="0.1" MAX="50.0" module="guidance/guidance_indi" shortname="indi_omega"/>
+      <dl_setting var="wind_heading_deg" MIN="0.0" STEP="0.1" MAX="360.0" module="guidance/guidance_h" shortname="wind_heading"/>
     </dl_settings>
   </dl_settings>
 </settings>

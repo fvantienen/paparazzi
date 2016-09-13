@@ -62,7 +62,7 @@ struct FloatMat33 Ga;
 struct FloatMat33 Ga_inv;
 struct FloatVect3 euler_cmd;
 
-float filter_omega = 15.0;
+float filter_omega = 5.0;
 float filter_zeta = 0.80;
 
 struct FloatEulers guidance_euler_cmd;

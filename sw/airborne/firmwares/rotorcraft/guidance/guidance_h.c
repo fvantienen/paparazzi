@@ -90,6 +90,7 @@ struct Int32Vect2 guidance_h_pos_err;
 struct Int32Vect2 guidance_h_speed_err;
 struct Int32Vect2 guidance_h_trim_att_integrator;
 float wind_heading = 0.0;
+float wind_heading_deg = 0.0;
 
 /** horizontal guidance command.
  * In north/east with #INT32_ANGLE_FRAC
@@ -837,9 +838,31 @@ void guidance_h_set_nav_throttle_curve(void) {
 }
 
 void change_heading_in_wind(void) {
+  /*
   //find the angle of the integrator
   struct FloatVect2 pos_integrator = {guidance_h_trim_att_integrator.x, guidance_h_trim_att_integrator.y};
   wind_heading = atan2f(pos_integrator.y, pos_integrator.x);
   FLOAT_ANGLE_NORMALIZE(wind_heading);
+  */
+  wind_heading = RadOfDeg(wind_heading_deg);
+  FLOAT_ANGLE_NORMALIZE(wind_heading);
+
+  int32_t desired_heading1 = ANGLE_BFP_OF_REAL(wind_heading) + ANGLE_BFP_OF_REAL(M_PI_2);
+  int32_t desired_heading2 = ANGLE_BFP_OF_REAL(wind_heading) - ANGLE_BFP_OF_REAL(M_PI_2);
+  INT32_ANGLE_NORMALIZE(desired_heading1);
+  INT32_ANGLE_NORMALIZE(desired_heading2);
+
+  int32_t heading_error = desired_heading1 - nav_heading;
+  INT32_ANGLE_NORMALIZE(heading_error);
+  if(ANGLE_FLOAT_OF_BFP(abs(heading_error)) > M_PI_2) {
+    heading_error = desired_heading2 - nav_heading;
+    INT32_ANGLE_NORMALIZE(heading_error);
+  }
+
+  if(heading_error>0){
+    nav_heading += 1;
+  } else if(heading_error<0){
+    nav_heading -= 1;
+  }
 }
 

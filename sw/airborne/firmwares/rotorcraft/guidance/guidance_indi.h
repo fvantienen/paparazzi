@@ -36,6 +36,7 @@
 
 extern float guidance_indi_pos_gain;
 extern float guidance_indi_speed_gain;
+extern float filter_omega;
 
 extern void guidance_indi_enter(void);
 extern void guidance_indi_run(bool in_flight, int32_t heading);
