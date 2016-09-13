@@ -31,6 +31,7 @@
       </module>
       <module name="ins" type="hff"/>
       <module name="guidance" type="hybrid"/>
+      <module name="guidance" type="indi"/>
       <module name="intermcu" type="uart"/>
       <module name="telemetry" type="intermcu"/>
       <module name="current_sensor"/>
@@ -351,6 +352,11 @@
     <define name="HOVER_KI" value="12"/>
     <define name="NOMINAL_HOVER_THROTTLE" value="0.53"/>
     <define name="ADAPT_THROTTLE_ENABLED" value="FALSE"/>
+  </section>
+
+  <section name="GUIDANCE_INDI" prefix="GUIDANCE_INDI_">
+    <define name="POS_GAIN" value="0.5"/>
+    <define name="SPEED_GAIN" value="1.8"/>
   </section>
 
   <section name="GUIDANCE_H" prefix="GUIDANCE_H_">

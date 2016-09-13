@@ -506,11 +506,8 @@ void guidance_h_run(bool  in_flight)
           guidance_hybrid_reset_heading(&sp_cmd_i);
           last_hover_heading = sp_cmd_i.psi;
 
-          /* compute x,y earth commands */
-          guidance_h_traj_run(in_flight);
-          /* set final attitude setpoint */
-          stabilization_attitude_set_earth_cmd_i(&guidance_h_cmd_earth,
-                                                 guidance_h.sp.heading);
+          //Run INDI guidance for hover
+          guidance_indi_run(in_flight, guidance_h.sp.heading);
         }
 #else //OUTBACK_GUIDANCE
 #if HYBRID_NAVIGATION

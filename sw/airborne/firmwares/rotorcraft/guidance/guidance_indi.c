@@ -41,8 +41,8 @@
 #include "autopilot.h"
 #include "stabilization/stabilization_attitude_ref_quat_int.h"
 
-float guidance_indi_pos_gain = 0.5;
-float guidance_indi_speed_gain = 1.8;
+float guidance_indi_pos_gain = GUIDANCE_INDI_POS_GAIN;
+float guidance_indi_speed_gain = GUIDANCE_INDI_SPEED_GAIN;
 struct FloatVect3 sp_accel = {0.0,0.0,0.0};
 
 struct FloatVect3 filt_accel_ned;
@@ -62,8 +62,8 @@ struct FloatMat33 Ga;
 struct FloatMat33 Ga_inv;
 struct FloatVect3 euler_cmd;
 
-float filter_omega = 20.0;
-float filter_zeta = 0.65;
+float filter_omega = 15.0;
+float filter_zeta = 0.80;
 
 struct FloatEulers guidance_euler_cmd;
 
@@ -104,7 +104,7 @@ void guidance_indi_run(bool in_flight, int32_t heading) {
   guidance_indi_calcG(&Ga);
   MAT33_INV(Ga_inv, Ga);
 
-  float altitude_sp = POS_FLOAT_OF_BFP(guidance_v_z_sp);
+  float altitude_sp = POS_FLOAT_OF_BFP(guidance_v_z_ref);
   float vertical_velocity_sp = guidance_indi_pos_gain*(altitude_sp - stateGetPositionNed_f()->z);
 //     float vertical_velocity_rc_euler = -(stabilization_cmd[COMMAND_THRUST]-4500.0)/4500.0*2.0;
   float vertical_velocity_err_euler = vertical_velocity_sp - stateGetSpeedNed_f()->z;
