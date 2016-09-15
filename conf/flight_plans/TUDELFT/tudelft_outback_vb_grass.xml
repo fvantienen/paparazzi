@@ -137,7 +137,7 @@
       <attitude pitch="0" roll="0" throttle="0" until="FALSE" vmode="throttle"/>
     </block>
     <block name="gps loss">
-      <exception cond="stateGetPositionEnu_f()->z > 2.0" deroute="landed"/>
+      <exception cond="2.0 > stateGetPositionEnu_f()->z" deroute="landed"/>
       <exception cond="GpsFixValid()" deroute="Hover here"/>
       <set value="1" var="exception_flag[0]"/>
       <call fun="nav_throttle_curve_set(1)" loop="false"/>
