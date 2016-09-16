@@ -255,7 +255,7 @@
   <aircraft
    name="Outback"
    ac_id="6"
-   airframe="airframes/TUDELFT/tudelft_outback.xml"
+   airframe="airframes/TUDELFT/tudelft_outback_v2.xml"
    radio="radios/dummy.xml"
    telemetry="telemetry/TUDELFT/tudelft_outback.xml"
    flight_plan="flight_plans/TUDELFT/tudelft_outback_vb_grass.xml"
