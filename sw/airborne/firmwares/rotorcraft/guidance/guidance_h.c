@@ -844,14 +844,19 @@ void change_heading_in_wind(void) {
   wind_heading = atan2f(pos_integrator.y, pos_integrator.x);
   FLOAT_ANGLE_NORMALIZE(wind_heading);
   */
+
+  // The wind heading can be set manually
+  // TODO: use the function find_wind_heading instead
   wind_heading = RadOfDeg(wind_heading_deg);
   FLOAT_ANGLE_NORMALIZE(wind_heading);
 
+  // There are two possible ways to fly sideways into the wind
   int32_t desired_heading1 = ANGLE_BFP_OF_REAL(wind_heading) + ANGLE_BFP_OF_REAL(M_PI_2);
   int32_t desired_heading2 = ANGLE_BFP_OF_REAL(wind_heading) - ANGLE_BFP_OF_REAL(M_PI_2);
   INT32_ANGLE_NORMALIZE(desired_heading1);
   INT32_ANGLE_NORMALIZE(desired_heading2);
 
+  // Find the one closest to the current heading
   int32_t heading_error = desired_heading1 - nav_heading;
   INT32_ANGLE_NORMALIZE(heading_error);
   if(ANGLE_FLOAT_OF_BFP(abs(heading_error)) > M_PI_2) {
@@ -859,10 +864,26 @@ void change_heading_in_wind(void) {
     INT32_ANGLE_NORMALIZE(heading_error);
   }
 
+  // slowly change the heading in that direction
   if(heading_error>0){
     nav_heading += 1;
   } else if(heading_error<0){
     nav_heading -= 1;
   }
+}
+
+/** Find the wind heading based on the attitude */
+static void find_wind_heading(struct FloatQuat *attitude) {
+  // Take a vertical vector
+  struct FloatVect3 v_axis = {0.0, 0.0, 1.0};
+  struct FloatVect3 att_vect;
+
+  // Rotate it with the current attitude
+  float_quat_vmult(&att_vect, attitude, &v_axis);
+
+  // find the heading from the xy components
+  wind_heading = atan2f(att_vect.y, att_vect.x);
+  FLOAT_ANGLE_NORMALIZE(wind_heading);
+  float magnitude = 1.0 - att_vect.z;
 }
 
