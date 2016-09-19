@@ -59,12 +59,12 @@
       <call fun="NavResurrect()"/>
       <call fun="nav_heli_spinup_run()"/>
       <call fun="nav_throttle_curve_set(1)" loop="false"/>
-      <manual pitch="0" roll="0" throttle="0" until="stage_time>7" vmode="throttle" yaw="0"/>
+      <manual pitch="0" roll="0" throttle="0" until="stage_time>6" vmode="throttle" yaw="0"/>
     </block>
     <block name="Hold Attitude">
       <call fun="nav_throttle_curve_set(1)" loop="false"/>
       <call fun="nav_set_heading_current()"/>
-      <manual pitch="0" roll="0" throttle="0" until="FALSE" vmode="throttle" yaw="0"/>
+      <manual pitch="0" roll="0" throttle="0" until="stage_time>1" vmode="throttle" yaw="0"/>
     </block>
     <block name="Takeoff" strip_button="Takeoff" strip_icon="takeoff.png">
       <exception cond="stateGetPositionEnu_f()->z > 4.0" deroute="Climb"/>
@@ -110,10 +110,19 @@
       <deroute block="line_p1_p2"/>
     </block>
     <block name="Descent">
+      <exception cond="10.0 > stateGetPositionEnu_f()->z" deroute="Descent_slow"/>
       <call fun="nav_set_heading_current()"/>
       <call fun="NavSetWaypointHere(WP_TD)"/>
       <call fun="GuidanceVSetRef(stateGetPositionNed_i()->z, 0, 0)"/>
       <stay climb="nav_descend_vspeed" vmode="climb" wp="TD"/>
+    </block>
+    <block name="Descent_slow">
+      <stay climb="-0.5" vmode="climb" wp="TD"/>
+    </block>
+    <block name="test landing">
+      <call fun="nav_throttle_curve_set(1)" loop="false"/>
+      <attitude pitch="0" roll="0" throttle="0.45" until="stage_time>2" vmode="throttle"/>
+      <deroute block="landed"/>
     </block>
     <block name="land">
       <go forward="false" wp="TD"/>
@@ -128,11 +137,11 @@
       <attitude pitch="0" roll="0" throttle="0" until="FALSE" vmode="throttle"/>
     </block>
     <block name="gps loss">
-      <exception cond="stateGetPositionEnu_f()->z > 2.0" deroute="landed"/>
+      <exception cond="2.0 > stateGetPositionEnu_f()->z" deroute="landed"/>
       <exception cond="GpsFixValid()" deroute="Hover here"/>
-      <set var="exception_flag[0]" value="1"/>
+      <set value="1" var="exception_flag[0]"/>
       <call fun="nav_throttle_curve_set(1)" loop="false"/>
-      <attitude pitch="0" roll="0" throttle="0.62" until="stage_time>20" vmode="throttle"/>
+      <attitude pitch="0" roll="0" climb="nav_descend_vspeed" until="stage_time>20" vmode="climb"/>
     </block>
     <block name="failsafe">
       <call fun="NavSetFailsafe"/>
