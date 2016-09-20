@@ -188,6 +188,16 @@ static inline void intermcu_parse_msg(void (*rc_frame_handler)(void))
       gps_imcu.sacc = DL_IMCU_REMOTE_GPS_sacc(imcu_msg_buf);
       gps_imcu.num_sv = DL_IMCU_REMOTE_GPS_numsv(imcu_msg_buf);
       gps_imcu.fix = DL_IMCU_REMOTE_GPS_fix(imcu_msg_buf);
+
+      // set gps msg time
+      gps_imcu.last_msg_ticks = sys_time.nb_sec_rem;
+      gps_imcu.last_msg_time = sys_time.nb_sec;
+
+      if (gps_imcu.fix >= GPS_FIX_3D) {
+        gps_imcu.last_3dfix_ticks = sys_time.nb_sec_rem;
+        gps_imcu.last_3dfix_time = sys_time.nb_sec;
+      }
+
       AbiSendMsgGPS(GPS_IMCU_ID, now_ts, &gps_imcu);
       break;
     }
