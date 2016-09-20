@@ -1,25 +1,25 @@
 <!DOCTYPE flight_plan SYSTEM "../flight_plan.dtd">
 
-<flight_plan alt="423.8" ground_alt="343.8" lat0="-27 02 45.8" lon0="151 20 09.6" max_dist_from_home="2260" name="Kalmthout OBC2016test" security_height="10">
+<flight_plan alt="423.8" ground_alt="343.8" lat0="-27.216986" lon0="151.236942" max_dist_from_home="3000" name="Kalmthout OBC2016test" security_height="10">
   <header>
 #include "autopilot.h"
 #include "guidance/guidance_hybrid.h"
 #include "guidance/guidance_v.h"
 </header>
   <waypoints>
-    <waypoint name="HOME" x="57.4" y="69.9"/>
-    <waypoint name="CLIMB" x="106.3" y="117.1"/>
-    <waypoint name="STDBY" x="135.5" y="66.7"/>
-    <waypoint name="p1" x="-0.3" y="53.3"/>
-    <waypoint name="p2" x="318.6" y="203.2"/>
-    <waypoint name="p3" x="427.2" y="46.1"/>
-    <waypoint name="p4" x="78.9" y="-94.6"/>
-    <waypoint name="_s1" x="-551.8" y="446.1"/>
-    <waypoint name="_s2" x="597.9" y="625.6"/>
-    <waypoint name="_s3" x="916.5" y="22.6"/>
-    <waypoint name="_s4" x="-82.7" y="-504.7"/>
-    <waypoint name="TD" x="69.3" y="85.7"/>
-    <waypoint name="HOVER" x="91.8" y="64.9"/>
+    <waypoint name="HOME" x="-35.5" y="-97.2"/>
+    <waypoint name="CLIMB" x="173.8" y="-114.0"/>
+    <waypoint name="STDBY" x="125.2" y="-47.1"/>
+    <waypoint name="p1" x="63.7" y="-266.7"/>
+    <waypoint name="p2" x="512.4" y="-1006.6"/>
+    <waypoint name="p3" x="1098.0" y="-556.7"/>
+    <waypoint name="p4" x="588.4" y="-89.8"/>
+    <waypoint name="_s1" x="-817.3" y="-15.6"/>
+    <waypoint name="_s2" x="583.5" y="677.9"/>
+    <waypoint name="_s3" x="2424.2" y="-320.3"/>
+    <waypoint name="_s4" x="164.9" y="-2183.4"/>
+    <waypoint name="TD" x="240.8" y="-153.8"/>
+    <waypoint name="HOVER" x="268.5" y="27.1"/>
   </waypoints>
   <sectors>
     <sector color="red" name="Safety">
@@ -33,7 +33,7 @@
     <module name="nav" type="heli_spinup"/>
   </modules>
   <exceptions>
-    <!--exception cond="(!InsideSafety(GetPosX(), GetPosY()) && !(nav_block == IndexOfBlock('Wait GPS')) && !(nav_block == IndexOfBlock('Geo init')) )" deroute="Holding point"/-->
+    <exception cond="(!InsideSafety(GetPosX(), GetPosY()) && !(nav_block == IndexOfBlock('Wait GPS')) && !(nav_block == IndexOfBlock('Geo init')) )" deroute="Holding point"/>
     <exception cond="(!GpsFixValid() &&
       !(nav_block == IndexOfBlock('Hold Attitude')) &&
       !(nav_block == IndexOfBlock('Takeoff')) &&
@@ -145,7 +145,7 @@
       <exception cond="2.0 > stateGetPositionEnu_f()->z" deroute="landed"/>
       <exception cond="GpsFixValid()" deroute="Hover here"/>
       <call fun="nav_throttle_curve_set(1)" loop="false"/>
-      <attitude pitch="0" roll="0" climb="nav_descend_vspeed" until="stage_time>20" vmode="climb"/>
+      <attitude climb="nav_descend_vspeed" pitch="0" roll="0" until="stage_time>20" vmode="climb"/>
     </block>
     <block name="failsafe">
       <call fun="NavSetFailsafe"/>
