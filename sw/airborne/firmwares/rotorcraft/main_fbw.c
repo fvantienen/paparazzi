@@ -246,7 +246,7 @@ static void fbw_on_rc_frame(void)
   /* get autopilot fbw mode as set by RADIO_MODE 3-way switch */
   if (radio_control.values[RADIO_FBW_MODE] < (MIN_PPRZ / 2)) {
     fbw_mode = FBW_MODE_MANUAL;
-  } else {
+  } else if(fbw_mode != FBW_MODE_FAILSAFE) {
     fbw_mode = FBW_MODE_AUTO;
   }
 

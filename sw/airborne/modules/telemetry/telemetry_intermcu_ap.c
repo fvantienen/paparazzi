@@ -74,6 +74,12 @@ void telemetry_intermcu_periodic(void)
   periodic_telemetry_send_InterMCU(DefaultPeriodic, &telemetry_intermcu.trans.trans_tx, &telemetry_intermcu.dev);
 }
 
+/* InterMCU event handling of telemetry */
+void telemetry_intermcu_event(void)
+{
+
+}
+
 void telemetry_intermcu_on_msg(uint8_t msg_id __attribute__((unused)), uint8_t* msg __attribute__((unused)), uint8_t size __attribute__((unused)))
 {
 
