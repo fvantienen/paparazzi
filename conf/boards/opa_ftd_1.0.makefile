@@ -42,6 +42,9 @@ MODEM_BAUD ?= B19200
 INTERMCU_PORT ?= UART2
 INTERMCU_BAUD ?= B230400
 
+GPS_PORT ?= UART4
+GPS_BAUD ?= B57600
+
 #
 # default actuator configuration
 #

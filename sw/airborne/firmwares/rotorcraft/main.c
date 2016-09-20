@@ -265,6 +265,11 @@ STATIC_INLINE void main_periodic(void)
   imu_periodic();
 #endif
 
+#if INTER_MCU_AP
+  /* Inter-MCU watchdog */
+  intermcu_periodic();
+#endif
+
   /* run control loops */
   autopilot_periodic();
 

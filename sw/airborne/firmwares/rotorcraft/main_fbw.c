@@ -46,6 +46,9 @@
 #define MODULES_C
 #include "generated/modules.h"
 
+#define ABI_C
+#include "subsystems/abi.h"
+
 /* So one can use these in command_laws section */
 #define And(x, y) ((x) && (y))
 #define Or(x, y) ((x) || (y))

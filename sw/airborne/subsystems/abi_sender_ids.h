@@ -162,12 +162,16 @@
 #define GPS_SIM_ID 11
 #endif
 
+#ifndef GPS_IMCU_ID
+#define GPS_IMCU_ID 12
+#endif
+
 #ifndef GPS_MULTI_ID
-#define GPS_MULTI_ID 12
+#define GPS_MULTI_ID 13
 #endif
 
 #ifndef GPS_VECTORNAV_ID
-#define GPS_VECTORNAV_ID 13
+#define GPS_VECTORNAV_ID 14
 #endif
 
 /*
