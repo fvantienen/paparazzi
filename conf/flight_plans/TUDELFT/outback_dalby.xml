@@ -1,6 +1,6 @@
 <!DOCTYPE flight_plan SYSTEM "../flight_plan.dtd">
 
-<flight_plan alt="80" ground_alt="0" lat0="52 10 18.2" lon0="4 25 06.0" max_dist_from_home="2260" name="Kalmthout OBC2016test" security_height="10">
+<flight_plan alt="423.8" ground_alt="343.8" lat0="-27 02 45.8" lon0="151 20 09.6" max_dist_from_home="2260" name="Kalmthout OBC2016test" security_height="10">
   <header>
 #include "autopilot.h"
 #include "guidance/guidance_hybrid.h"
@@ -33,7 +33,7 @@
     <module name="nav" type="heli_spinup"/>
   </modules>
   <exceptions>
-    <exception cond="(!InsideSafety(GetPosX(), GetPosY()) && !(nav_block == IndexOfBlock('Wait GPS')) && !(nav_block == IndexOfBlock('Geo init')) )" deroute="Holding point"/>
+    <!--exception cond="(!InsideSafety(GetPosX(), GetPosY()) && !(nav_block == IndexOfBlock('Wait GPS')) && !(nav_block == IndexOfBlock('Geo init')) )" deroute="Holding point"/-->
     <exception cond="(!GpsFixValid() && !(nav_block == IndexOfBlock('Hold Attitude')) && !(nav_block == IndexOfBlock('Takeoff')) && (exception_flag[0] == 0) && (autopilot_in_flight == true) )" deroute="gps loss"/>
   </exceptions>
   <blocks>
