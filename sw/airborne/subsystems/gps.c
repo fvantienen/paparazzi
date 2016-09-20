@@ -180,6 +180,15 @@ void gps_periodic_check(struct GpsState *gps_s)
   if (sys_time.nb_sec - gps_s->last_msg_time > GPS_TIMEOUT) {
     gps_s->fix = GPS_FIX_NONE;
   }
+
+#ifdef SECONDARY_GPS
+  current_gps_id = gps_multi_switch(gps_s);
+  if (gps_s->comp_id == current_gps_id) {
+    gps = *gps_s;
+  }
+#else
+  gps = *gps_s;
+#endif
 }
 
 #ifdef SECONDARY_GPS
