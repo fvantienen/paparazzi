@@ -1,0 +1,42 @@
+<!DOCTYPE flight_plan SYSTEM "../../flight_plan.dtd">
+
+<flight_plan alt="660" ground_alt="444" home_mode_height="120" lat0="-27.216986" lon0="151.236942" max_dist_from_home="10000" name="OBC2016" qfu="170" security_height="10">
+  <waypoints>
+    <waypoint name="HOME" x="0" y="0"/>
+    <waypoint alt="448.0" lat="-27.216973" lon="151.237522" name="TD"/>
+    <waypoint lat="-27.214946" lon="151.237390" name="_MB1"/>
+    <waypoint lat="-27.215034" lon="151.240457" name="_MB2"/>
+    <waypoint lat="-27.212156" lon="151.241385" name="_MB3"/>
+    <waypoint lat="-27.212380" lon="151.245010" name="_MB4"/>
+    <waypoint lat="-27.213882" lon="151.244752" name="_MB5"/>
+    <waypoint lat="-27.214204" lon="151.247867" name="_MB6"/>
+    <waypoint lat="-27.216424" lon="151.247389" name="_MB7"/>
+    <waypoint lat="-27.216017" lon="151.243700" name="_MB8"/>
+    <waypoint lat="-27.219605" lon="151.243067" name="_MB9"/>
+    <waypoint lat="-27.220058" lon="151.246655" name="_MB10"/>
+    <waypoint lat="-27.223990" lon="151.245460" name="_MB11"/>
+    <waypoint lat="-27.222759" lon="151.235884" name="_MB12"/>
+    <waypoint lat="-27.220929" lon="151.235870" name="_MB13"/>
+    <waypoint lat="-27.220590" lon="151.233778" name="_MB14"/>
+    <waypoint lat="-27.217722" lon="151.234727" name="_MB15"/>
+    <waypoint lat="-27.217772" lon="151.236650" name="_MB16"/>
+    <waypoint lat="-27.216298" lon="151.240388" name="SA1"/>
+    <waypoint lat="-27.217896" lon="151.240045" name="SA2"/>
+    <waypoint lat="-27.217630" lon="151.238151" name="SA3"/>
+    <waypoint lat="-27.216050" lon="151.238459" name="SA4"/>
+    <waypoint lat="-27.217302" lon="151.237481" name="EL1"/>
+    <waypoint lat="-27.221744" lon="151.237067" name="EL2"/>
+    <waypoint lat="-27.221919" lon="151.238464" name="EL3"/>
+    <waypoint lat="-27.215958" lon="151.239717" name="EL4"/>
+    <waypoint lat="-27.216178" lon="151.241977" name="EL5"/>
+    <waypoint lat="-27.217414" lon="151.241707" name="EL6"/>
+    <waypoint lat="-27.216540" lon="151.237663" name="EL7"/>
+  </waypoints>
+  <includes>
+    <include name="Safety" procedure="include_obc2016_safety.xml"/>
+    <include name="Testing" procedure="include_obc2016_testing.xml"/>
+  </includes>
+  <blocks>
+    <block name="Boot"/>
+  </blocks>
+</flight_plan>
