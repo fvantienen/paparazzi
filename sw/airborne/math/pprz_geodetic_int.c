@@ -311,6 +311,18 @@ void ned_of_lla_point_i(struct NedCoor_i *ned, struct LtpDef_i *def, struct LlaC
   ned_of_ecef_point_i(ned, def, &ecef);
 }
 
+/** Convert a point from LLA to local NED.
+ * @param[out] ned  NED point in POS_FRAC
+ * @param[in]  def  local coordinate system definition
+ * @param[in]  lla  LLA point in 1e7deg and mm
+ */
+void ned_of_lla_pos_i(struct NedCoor_i *ned, struct LtpDef_i *def, struct LlaCoor_i *lla)
+{
+  struct EcefCoor_i ecef;
+  ecef_of_lla_i(&ecef, lla);
+  ned_of_ecef_pos_i(ned, def, &ecef);
+}
+
 void enu_of_lla_vect_i(struct EnuCoor_i *enu, struct LtpDef_i *def, struct LlaCoor_i *lla)
 {
   struct EcefCoor_i ecef;

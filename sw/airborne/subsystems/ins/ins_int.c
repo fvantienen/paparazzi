@@ -340,7 +340,7 @@ static void baro_cb(uint8_t __attribute__((unused)) sender_id, float pressure)
 
       // Convert LLA coordinate to NED frame
       struct NedCoor_i ned;
-      ned_of_lla_point_i(&ned, &state.ned_origin_i, &lla);
+      ned_of_lla_pos_i(&ned, &state.ned_origin_i, &lla);
 
       // The VFF will update in the NED frame
       ins_int.baro_z = POS_FLOAT_OF_BFP(ned.z);
