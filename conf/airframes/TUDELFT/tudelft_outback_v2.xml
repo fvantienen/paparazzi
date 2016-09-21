@@ -44,7 +44,7 @@
       <module name="gain_scheduling"/>
       <module name="kalamos_uart"/>
 
-      <!--module name="geo_mag"/-->
+      <module name="geo_mag"/>
       <module name="air_data">
         <!--define name="AIR_DATA_BARO_ABS_ID" value="IMU_MAG_PITOT_ID"/>
         <define name="AIR_DATA_TEMPERATURE_ID" value="IMU_MAG_PITOT_ID"/-->
@@ -258,9 +258,9 @@
     <define name="PROPAGATE_LOW_PASS_RATES_DIV" value="20"/>
 
     <!-- values used if no GPS fix, on 3D fix is update by geo_mag module -->
-    <define name="H_X" value="0.3770441"/>
-    <define name="H_Y" value="0.0193986"/>
-    <define name="H_Z" value="0.9259921"/>
+    <define name="H_X" value="0.5293"/>
+    <define name="H_Y" value="0.0971"/>
+    <define name="H_Z" value="-0.8429"/>
   </section>
 
   <section name="STABILIZATION_RATE" prefix="STABILIZATION_RATE_">
