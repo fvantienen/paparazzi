@@ -873,7 +873,7 @@ void change_heading_in_wind(void) {
 }
 
 /** Find the wind heading based on the attitude */
-static void find_wind_heading(struct FloatQuat *attitude) {
+static void UNUSED find_wind_heading(struct FloatQuat *attitude) {
   // Take a vertical vector
   struct FloatVect3 v_axis = {0.0, 0.0, 1.0};
   struct FloatVect3 att_vect;
@@ -884,6 +884,6 @@ static void find_wind_heading(struct FloatQuat *attitude) {
   // find the heading from the xy components
   wind_heading = atan2f(att_vect.y, att_vect.x);
   FLOAT_ANGLE_NORMALIZE(wind_heading);
-  float magnitude = 1.0 - att_vect.z;
+  float UNUSED(magnitude) = 1.0 - att_vect.z;
 }
 

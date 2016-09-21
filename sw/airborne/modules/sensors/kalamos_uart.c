@@ -105,12 +105,12 @@ static inline void kalamos_parse_msg(void)
     struct EnuCoor_f *pos = stateGetPositionEnu_f();
 
     float diff_landing = (kalamos_descend_height - k2p_package.height)*kalamos_height_gain;
-    float pprzheight_landing  = pos->z + diff_landing;
+    float UNUSED(pprzheight_landing)  = pos->z + diff_landing;
 
     //waypoint_set_alt(WP_LANDING,pprzheight_landing);
 
     float diff_search = (kalamos_search_height - k2p_package.height)*kalamos_height_gain;
-    float pprzheight_search  = pos->z + diff_search;
+    float UNUSED(pprzheight_search)  = pos->z + diff_search;
     //waypoint_set_alt(WP_JOE,pprzheight_search);
 
     if (kalamos_enable_spotsearch) {
