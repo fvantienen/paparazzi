@@ -424,14 +424,14 @@ static inline void gps_ubx_ucenter_config_port(void)
     case GPS_PORT_UART2:
       UbxSend_CFG_PRT(gps_ubx_ucenter.dev,
           gps_ubx_ucenter.port_id, 0x0, 0x0,
-          UBX_UART_MODE_MASK, UART_SPEED(gps_ubx_ucenter.baud_target), UBX_PROTO_MASK | NMEA_PROTO_MASK,
-          UBX_PROTO_MASK| NMEA_PROTO_MASK, 0x0, 0x0);
+          UBX_UART_MODE_MASK, UART_SPEED(gps_ubx_ucenter.baud_target), UBX_PROTO_MASK,
+          UBX_PROTO_MASK, 0x0, 0x0);
       break;
       // USB Interface
     case GPS_PORT_USB:
       UbxSend_CFG_PRT(gps_ubx_ucenter.dev,
           gps_ubx_ucenter.port_id, 0x0, 0x0, 0x0, 0x0,
-          UBX_PROTO_MASK | NMEA_PROTO_MASK, UBX_PROTO_MASK| NMEA_PROTO_MASK, 0x0, 0x0);
+          UBX_PROTO_MASK, UBX_PROTO_MASK, 0x0, 0x0);
       break;
     case GPS_PORT_SPI:
       DEBUG_PRINT("WARNING: ublox SPI port is currently not supported.\n");
