@@ -761,12 +761,12 @@ let create_ac = fun ?(confirm_kill=true) alert (geomap:G.widget) (acs_notebook:G
             try
               let id = settings_tab#assoc setting_name in
               if setting_name = "kill_throttle" then
-                strip_connect (fun x -> (if x = 1.0 then dl_emergency_cmd ac_id 0; dl_setting_callback id x))
+                strip_connect (fun x -> (dl_setting_callback id x; if x = 1. then dl_emergency_cmd ac_id 0))
               else
                 strip_connect (fun x -> dl_setting_callback id x)
             with Not_found ->
               if setting_name = "kill_throttle" then
-                strip_connect (fun x -> (if x = 1.0 then dl_emergency_cmd ac_id 0));
+                strip_connect (fun x -> (if x = 1. then dl_emergency_cmd ac_id 0));
               if warning then
                 fprintf stderr "Warning: %s not setable from GCS strip (i.e. not listed in the xml settings file)\n" setting_name in
           connect "flight_altitude" (fun f -> ac.strip#connect_shift_alt (fun x -> f (ac.target_alt+.x)));
