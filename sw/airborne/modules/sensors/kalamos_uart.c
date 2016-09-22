@@ -64,6 +64,27 @@ static void kalamos_raw_downlink(struct transport_tx *trans, struct link_device 
 {
   pprz_msg_send_DEBUG(trans, dev, AC_ID, sizeof(struct Kalamos2PPRZPackage), (unsigned char *) &k2p_package);
 }
+
+static void send_kalamos(struct transport_tx *trans, struct link_device *dev)
+{
+  char hoertje = k2p_package.status;
+  hoertje+=48;
+  float dummy = 0.0;
+  pprz_msg_send_KALAMOS(trans, dev, AC_ID,
+                        &hoertje,
+                        &k2p_package.height,
+                        &k2p_package.avoid_psi,
+                        &k2p_package.avoid_rate,
+                        &k2p_package.descend_z,
+                        &k2p_package.joe_enu_x,
+                        &k2p_package.joe_enu_y,
+                        &k2p_package.land_enu_x,
+                        &k2p_package.land_enu_y,
+                        &k2p_package.flow_x,
+                        &k2p_package.flow_y,
+                        &dummy,
+                        &dummy);
+}
 #endif
 
 /* Initialize the Kalamos */
@@ -74,9 +95,10 @@ void kalamos_init() {
 
 #if PERIODIC_TELEMETRY
   register_periodic_telemetry(DefaultPeriodic, PPRZ_MSG_ID_DEBUG, kalamos_raw_downlink);
+  register_periodic_telemetry(DefaultPeriodic, PPRZ_MSG_ID_KALAMOS, send_kalamos);
 #endif
 
-  NavSetWaypointHere(WP_LANDING);
+  NavSetWaypointHere(WP__LANDING);
   k2p_package.height = -0.01;
   k2p_package.status = 1;
 
@@ -131,7 +153,7 @@ static inline void kalamos_parse_msg(void)
       struct FloatVect3 measured_ltp;
       float_rmat_transp_vmult(&measured_ltp, &ltp_to_kalamos_rmat, &joe);
 
-      waypoint_set_xy_i(WP_LANDING,POS_BFP_OF_REAL(measured_ltp.x), POS_BFP_OF_REAL(measured_ltp.y));
+      waypoint_set_xy_i(WP__LANDING,POS_BFP_OF_REAL(measured_ltp.x), POS_BFP_OF_REAL(measured_ltp.y));
       */
 
       land_cmd.x = k2p_package.descend_x * kalamos_land_xy_gain;
@@ -145,10 +167,10 @@ static inline void kalamos_parse_msg(void)
       struct EnuCoor_f target;
       target.x = pos->x + sin(heading_to_go)*k2p_package.avoid_rate*kalamos_land_xy_gain;
       target.y = pos->y + cos(heading_to_go)*k2p_package.avoid_rate*kalamos_land_xy_gain;
-      target.z = waypoint_get_alt(WP_LANDING);
+      target.z = waypoint_get_alt(WP__LANDING);
 
       if((kalamos_land_xy_gain > 0.001) && (k2p_package.avoid_rate > 0.2))
-        waypoint_set_enu(WP_LANDING, &target);
+        waypoint_set_enu(WP__LANDING, &target);
     }
 
     if (kalamos_enable_findjoe) {
@@ -218,9 +240,9 @@ if (kalamos_enable_opticflow)
   }
 
   // Send Telemetry report
-  char hoertje = k2p_package.status;
-  hoertje+=48; //fuck you pprz
-  DOWNLINK_SEND_KALAMOS(DefaultChannel, DefaultDevice, &hoertje, &k2p_package.height,&k2p_package.avoid_psi,&k2p_package.avoid_rate,&k2p_package.descend_z,&k2p_package.joe_enu_x,&k2p_package.joe_enu_y,&k2p_package.land_enu_x,&k2p_package.land_enu_y,&k2p_package.flow_x,&k2p_package.flow_y);
+  //char hoertje = k2p_package.status;
+  //hoertje+=48; //fuck you pprz
+  //DOWNLINK_SEND_KALAMOS(DefaultChannel, DefaultDevice, &hoertje, &k2p_package.height,&k2p_package.avoid_psi,&k2p_package.avoid_rate,&k2p_package.descend_z,&k2p_package.joe_enu_x,&k2p_package.joe_enu_y,&k2p_package.land_enu_x,&k2p_package.land_enu_y,&k2p_package.flow_x,&k2p_package.flow_y);
 
 
   pprz_msg_send_IMCU_DEBUG(&(kalamos.transport.trans_tx), kalamos.device,
