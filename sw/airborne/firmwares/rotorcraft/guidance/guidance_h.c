@@ -111,6 +111,7 @@ static inline void transition_run(bool to_forward);
 static void read_rc_setpoint_speed_i(struct Int32Vect2 *speed_sp, bool in_flight);
 void guidance_h_set_nav_throttle_curve(void);
 void change_heading_in_wind(void);
+static void UNUSED find_wind_heading(struct FloatQuat *attitude);
 
 #if PERIODIC_TELEMETRY
 #include "subsystems/datalink/telemetry.h"
@@ -847,7 +848,9 @@ void change_heading_in_wind(void) {
 
   // The wind heading can be set manually
   // TODO: use the function find_wind_heading instead
-  wind_heading = RadOfDeg(wind_heading_deg);
+  //wind_heading = RadOfDeg(wind_heading_deg);
+  struct FloatQuat *current_quat = stateGetNedToBodyQuat_f();
+  find_wind_heading(current_quat);
   FLOAT_ANGLE_NORMALIZE(wind_heading);
 
   // There are two possible ways to fly sideways into the wind
@@ -882,8 +885,10 @@ static void UNUSED find_wind_heading(struct FloatQuat *attitude) {
   float_quat_vmult(&att_vect, attitude, &v_axis);
 
   // find the heading from the xy components
-  wind_heading = atan2f(att_vect.y, att_vect.x);
-  FLOAT_ANGLE_NORMALIZE(wind_heading);
+  float thrust_heading = atan2f(att_vect.y, att_vect.x);
+  FLOAT_ANGLE_NORMALIZE(thrust_heading);
+  wind_heading = thrust_heading + stabilization_attitude_get_heading_f();
+
   float UNUSED(magnitude) = 1.0 - att_vect.z;
 }
 
