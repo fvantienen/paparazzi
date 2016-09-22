@@ -31,6 +31,7 @@
 #include "generated/airframe.h"
 #include "pprzlink/pprz_transport.h"
 #include "math/pprz_orientation_conversion.h"
+#include "math/pprz_algebra_float.h"
 
 
 /* Main kalamos structure */
@@ -45,11 +46,15 @@ struct kalamos_t {
 //should be exactly the same as pprz.h
 struct Kalamos2PPRZPackage {
     float height;
-    float min_height;
-    float target_x;
-    float target_y;
-    float land_gpsx;
-    float land_gpsy;
+    float descend_x;
+    float descend_y;
+    float descend_z;
+    float joe_enu_x;
+    float joe_enu_y;
+    float land_enu_x;
+    float land_enu_y;
+    float avoid_psi;
+    float avoid_rate;
     float flow_x;
     float flow_y;
     char status;
@@ -71,20 +76,26 @@ struct PPRZ2KalamosPackage {
     unsigned char enables;
 };
 
-extern float kalamos_descend_height;
 extern float kalamos_search_height;
-extern float kalamos_height_gain;
 extern bool kalamos_enable_landing ;
-extern float kalamos_landing_decent_speed ;
-extern float kalamos_pos_gain;
-extern bool kalamos_enable_spotsearch ;
+extern bool kalamos_enable_spotsearch;
+extern bool  kalamos_enable_findjoe;
+extern bool kalamos_enable_opticflow;
+extern float kalamos_land_xy_gain;
+extern float kalamos_land_z_gain;
+extern struct FloatVect3 land_cmd;
 
 extern void kalamos_init(void);
 extern void kalamos_event(void);
 extern void kalamos_periodic(void);
 
-extern void enableLandingspotSearch(bool b);
+extern void enableKalamosLandingspotSearch(bool b);
 extern void enableKalamosDescent(bool b);
+extern void enableKalamosOpticFlow(bool b);
+extern void enableKalamosFindJoe(bool b);
+
+
+extern void setZeroHeight(void);
 
 #endif
 
