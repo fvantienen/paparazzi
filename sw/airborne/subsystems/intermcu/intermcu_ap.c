@@ -182,6 +182,7 @@ static inline void intermcu_parse_msg(void (*rc_frame_handler)(void))
       SetBit(gps_imcu.valid_fields, GPS_VALID_VEL_ECEF_BIT);
 
       gps_imcu.course = DL_IMCU_REMOTE_GPS_course(imcu_msg_buf);
+      gps_imcu.gspeed = DL_IMCU_REMOTE_GPS_gspeed(imcu_msg_buf);
       SetBit(gps_imcu.valid_fields, GPS_VALID_COURSE_BIT);
 
       gps_imcu.pacc = DL_IMCU_REMOTE_GPS_pacc(imcu_msg_buf);
