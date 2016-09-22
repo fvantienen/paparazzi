@@ -1,6 +1,6 @@
 <!DOCTYPE flight_plan SYSTEM "../../flight_plan.dtd">
 
-<flight_plan alt="660" ground_alt="444" home_mode_height="120" lat0="-27.216986" lon0="151.236942" max_dist_from_home="10000" name="OBC2016" qfu="170" security_height="10">
+<flight_plan alt="423.8" ground_alt="343.8" home_mode_height="120" lat0="-27.216986" lon0="151.236942" max_dist_from_home="10000" name="OBC2016" qfu="170" security_height="10">
   <waypoints>
     <waypoint name="HOME" x="0" y="0"/>
     <waypoint alt="448.0" lat="-27.216973" lon="151.237522" name="TD"/>
@@ -24,17 +24,20 @@
     <waypoint lat="-27.217896" lon="151.240045" name="SA2"/>
     <waypoint lat="-27.217630" lon="151.238151" name="SA3"/>
     <waypoint lat="-27.216050" lon="151.238459" name="SA4"/>
-    <waypoint lat="-27.217302" lon="151.237481" name="EL1"/>
-    <waypoint lat="-27.221744" lon="151.237067" name="EL2"/>
-    <waypoint lat="-27.221919" lon="151.238464" name="EL3"/>
-    <waypoint lat="-27.215958" lon="151.239717" name="EL4"/>
-    <waypoint lat="-27.216178" lon="151.241977" name="EL5"/>
-    <waypoint lat="-27.217414" lon="151.241707" name="EL6"/>
-    <waypoint lat="-27.216540" lon="151.237663" name="EL7"/>
+    <waypoint lat="-27.217302" lon="151.237481" name="p1"/>
+    <waypoint lat="-27.221744" lon="151.237067" name="p2"/>
+    <waypoint lat="-27.221919" lon="151.238464" name="p3"/>
+    <waypoint lat="-27.215958" lon="151.239717" name="p4"/>
+    <waypoint lat="-27.216178" lon="151.241977" name="p5"/>
+    <waypoint lat="-27.217414" lon="151.241707" name="p6"/>
+    <waypoint lat="-27.216540" lon="151.237663" name="p7"/>
   </waypoints>
+  <modules>
+    <module name="nav" type="heli_spinup"/>
+  </modules>
   <includes>
+    <include name="Mission" procedure="include_obc2016_mission.xml"/>
     <include name="Safety" procedure="include_obc2016_safety.xml"/>
-    <include name="Testing" procedure="include_obc2016_testing.xml"/>
   </includes>
   <blocks>
     <block name="Boot"/>

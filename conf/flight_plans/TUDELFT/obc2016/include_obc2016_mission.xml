@@ -1,64 +1,82 @@
-<!DOCTYPE flight_plan SYSTEM "../flight_plan.dtd">
+<!DOCTYPE flight_plan SYSTEM "../../flight_plan.dtd">
+<!-- 
+     Australian UAV Outback Challenge of 2014.
 
-<flight_plan alt="423.8" ground_alt="343.8" lat0="-27.216986" lon0="151.236942" max_dist_from_home="3000" name="Kalmthout OBC2016test" security_height="10">
+     * TU Delft University of Technology, L&R http://www.tudelft.nl
+     * MAVLab - http://mavlab.info
+
+-->
+
+<procedure>
+<!-- ******************************** HEADERS ****************************** -->
   <header>
 #include "autopilot.h"
 #include "guidance/guidance_hybrid.h"
 #include "guidance/guidance_v.h"
-</header>
+
+// States
+#define AircraftIsBooting()  LessThan(nav_block,4)
+
+  </header>
+<!-- ******************************* WAYPOINTS ***************************** -->
   <waypoints>
-    <waypoint name="HOME" x="-35.5" y="-97.2"/>
-    <waypoint name="CLIMB" x="173.8" y="-114.0"/>
-    <waypoint name="STDBY" x="125.2" y="-47.1"/>
-    <waypoint name="p1" x="63.7" y="-266.7"/>
-    <waypoint name="p2" x="512.4" y="-1006.6"/>
-    <waypoint name="p3" x="1098.0" y="-556.7"/>
-    <waypoint name="p4" x="588.4" y="-89.8"/>
-    <waypoint name="_s1" x="-817.3" y="-15.6"/>
-    <waypoint name="_s2" x="583.5" y="677.9"/>
-    <waypoint name="_s3" x="2424.2" y="-320.3"/>
-    <waypoint name="_s4" x="164.9" y="-2183.4"/>
-    <waypoint name="TD" x="240.8" y="-153.8"/>
+    <waypoint name="OUTBACKJOE" x="222." y="333."/>
+    <waypoint name="PICKUP" x="500." y="333."/>
+
+    <waypoint name="CLIMB" x="100" y="300"/>
+    <waypoint name="STDBY" x="0" y="0"/>
     <waypoint name="HOVER" x="268.5" y="27.1"/>
   </waypoints>
+
+<!-- ******************************** SECTORS ****************************** -->
   <sectors>
-    <sector color="red" name="Safety">
-      <corner name="_s1"/>
-      <corner name="_s2"/>
-      <corner name="_s3"/>
-      <corner name="_s4"/>
+    <sector name="SurveyArea" color="green">
+      <corner name="SA1"/>
+      <corner name="SA2"/>
+      <corner name="SA3"/>
+      <corner name="SA4"/>
     </sector>
   </sectors>
-  <modules>
-    <module name="nav" type="heli_spinup"/>
-  </modules>
+
+
+<!-- ****************************** EXCEPTIONS ***************************** -->
   <exceptions>
-    <exception cond="(!InsideSafety(GetPosX(), GetPosY()) && !(nav_block == IndexOfBlock('Wait GPS')) && !(nav_block == IndexOfBlock('Geo init')) )" deroute="HoldingPoint"/>
-    <exception cond="(!GpsFixValid() &&
-      !(nav_block == IndexOfBlock('Hold Attitude')) &&
-      !(nav_block == IndexOfBlock('Takeoff')) &&
-      !(nav_block == IndexOfBlock('landed')) &&
-      !(nav_block == IndexOfBlock('failsafe')) &&
-      (autopilot_in_flight == true) )" deroute="GpsLoss"/>
+
+    <!-- If datalink is lost for more than 60 seconds and we are in launched state -->
+    <!--exception cond="And((datalink_time/2) > 60, launch > 0) && (!AircraftIsBooting())" deroute="CommsHoldLoiter"/--> <!-- deroute="AirfieldHomeLoiter"/> -->
+
   </exceptions>
+
+
+
+<!-- *********************************************************************** -->
+<!-- ********************** FLIGHTPLAN STARTINGPOINT *********************** -->
+<!-- *********************************************************************** -->
+
+<!-- *********** Wait for GPS fix, 3D by default *********** -->
   <blocks>
+
     <block name="Wait GPS">
       <call fun="NavKillThrottle()"/>
       <call fun="nav_throttle_curve_set(0)" loop="false"/>
       <while cond="!GpsFixValid()"/>
     </block>
+
     <block name="Geo init">
-      <while cond="LessThan(NavBlockTime(), 10)"/>
+      <while cond="LessThan(NavBlockTime(), 3)"/>
       <call fun="nav_throttle_curve_set(0)" loop="false"/>
       <call fun="NavSetAltitudeReferenceHere()"/>
       <call fun="nav_set_heading_current()"/>
+      <set var="air_data.calc_qnh_once" value="TRUE"/>
     </block>
+
     <block name="HoldingPoint">
       <call fun="NavKillThrottle()"/>
       <call fun="nav_throttle_curve_set(0)" loop="false"/>
       <manual pitch="0" roll="0" throttle="0" until="FALSE" vmode="throttle" yaw="0"/>
     </block>
-    <block name="Start Engine">
+
+    <block name="Start Engine"  strip_button="Start Engine" group="TO">
       <call fun="nav_throttle_curve_set(0)" loop="false"/>
       <call fun="nav_heli_spinup_setup(3, 0.07)" loop="false"/>
       <call fun="NavResurrect()"/>
@@ -66,11 +84,29 @@
       <call fun="nav_throttle_curve_set(1)" loop="false"/>
       <manual pitch="0" roll="0" throttle="0" until="stage_time>6" vmode="throttle" yaw="0"/>
     </block>
+
     <block name="Hold Attitude">
       <call fun="nav_throttle_curve_set(1)" loop="false"/>
       <call fun="nav_set_heading_current()"/>
       <manual pitch="0" roll="0" throttle="0" until="stage_time>1" vmode="throttle" yaw="0"/>
     </block>
+
+<!-- *********************************************************
+     *********** Search Area Entry Procedure Start ***********
+     ***************************************************** -->
+    <block name="Start Pickup Flight" strip_button="Pickup" group="TO">
+      <!-- CDW set value="SCRUTENEERING_FLIGHT" var="obc_flight_mode" /-->
+      <call fun="NavSetWaypointHere(WP_TD)"/>
+      <!--set value="DownlinkSendWpNr(WP_TD)" var="unit"/-->
+      <deroute block="Takeoff"/>
+    </block>
+
+    <block name="Start Return Flight" strip_button="Return" group="TO">
+      <!-- CDW set value="SEARCH_FLIGHT" var="obc_flight_mode" /-->
+      <deroute block="Takeoff"/>
+    </block>
+
+
     <block name="Takeoff" strip_button="Takeoff" strip_icon="takeoff.png">
       <exception cond="stateGetPositionEnu_f()->z > 4.0" deroute="Climb"/>
       <call fun="NavSetWaypointHere(WP_CLIMB)"/>
@@ -86,7 +122,7 @@
     <block name="Standby" strip_button="Standby" strip_icon="home.png">
       <stay wp="STDBY"/>
     </block>
-    <block name="Hover here">
+    <block name="HoverHere">
       <call fun="NavSetWaypointHere(WP_HOVER)"/>
       <stay wp="HOVER"/>
     </block>
@@ -121,35 +157,62 @@
       <call fun="GuidanceVSetRef(stateGetPositionNed_i()->z, 0, 0)"/>
       <stay climb="nav_descend_vspeed" vmode="climb" wp="TD"/>
     </block>
+
     <block name="Descent_slow">
       <stay climb="-0.5" vmode="climb" wp="TD"/>
     </block>
+
     <block name="test landing">
       <call fun="nav_throttle_curve_set(1)" loop="false"/>
       <attitude pitch="0" roll="0" throttle="0.45" until="stage_time>2" vmode="throttle"/>
       <deroute block="landed"/>
     </block>
+
     <block name="land">
       <go forward="false" wp="TD"/>
     </block>
+
     <block name="flare">
       <exception cond="NavDetectGround()" deroute="HoldingPoint"/>
       <exception cond="!nav_is_in_flight()" deroute="landed"/>
       <call fun="NavStartDetectGround()"/>
       <stay climb="nav_descend_vspeed" vmode="climb" wp="TD"/>
     </block>
+
     <block name="landed">
       <attitude pitch="0" roll="0" throttle="0" until="FALSE" vmode="throttle"/>
     </block>
-    <block name="GpsLoss">
+
+    <block name="gps loss">
       <exception cond="2.0 > stateGetPositionEnu_f()->z" deroute="landed"/>
-      <exception cond="GpsFixValid()" deroute="Hover here"/>
+      <exception cond="GpsFixValid()" deroute="HoverHere"/>
       <call fun="nav_throttle_curve_set(1)" loop="false"/>
       <attitude climb="nav_descend_vspeed" pitch="0" roll="0" until="stage_time>20" vmode="climb"/>
     </block>
+
     <block name="failsafe">
       <call fun="NavSetFailsafe"/>
       <attitude pitch="0" roll="0" throttle="0" until="FALSE" vmode="throttle"/>
     </block>
+
+
+<!-- *********** Set the ground reference height and the home position *********** -->
+
+      <!--set value="0" var="autopilot_flight_time"/-->
+
+
+    <block name="determineflighttype">
+      <!-- CDW exception cond="(obc_flight_mode == SCRUTENEERING_FLIGHT)" deroute="ScrutineeringAutonomyTriangle"/-->
+      <!-- otherwise goto search area via entry lane -->
+      <deroute block="land"/>
+    </block>
+
+    <block name="determinerescuetype">
+      <!-- CDW exception cond="(obc_flight_mode == DROP_FLIGHT)" deroute="RescueJoe"/-->
+      <deroute block="land" />
+    </block>
+
+
   </blocks>
-</flight_plan>
+</procedure>
+
