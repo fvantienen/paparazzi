@@ -70,7 +70,7 @@ PRINT_CONFIG_VAR(SECONDARY_GPS)
 #endif
 
 #define MSEC_PER_WEEK (1000*60*60*24*7)
-#define TIME_TO_SWITCH 5000 //ten s in ms
+#define TIME_TO_SWITCH 2000 //two s in ms
 
 struct GpsState gps;
 
@@ -190,10 +190,10 @@ static uint8_t gps_multi_switch(struct GpsState *gps_s) {
       return gps.comp_id;
     } else{
       if (get_sys_time_msec() - time_since_last_gps_switch > TIME_TO_SWITCH) {
-        if (gps_s->num_sv > gps.num_sv) {
+        if (gps_s->sacc < gps.sacc) {
           current_gps_id = gps_s->comp_id;
           time_since_last_gps_switch = get_sys_time_msec();
-        } else if (gps.num_sv > gps_s->num_sv) {
+        } else if (gps.sacc < gps_s->sacc) {
           current_gps_id = gps.comp_id;
           time_since_last_gps_switch = get_sys_time_msec();
         }
