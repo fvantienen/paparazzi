@@ -6,6 +6,10 @@
     <sector name="MissionBoundary" color="yellow">
       <corner name="_MB1"/>
       <corner name="_MB2"/>
+      <corner name="_MB3"/>
+      <corner name="_MB4"/>
+      <corner name="_MB5"/>
+      <corner name="_MB6"/>
       <corner name="_MB7"/>
       <corner name="_MB8"/>
       <corner name="_MB9"/>
