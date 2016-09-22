@@ -101,10 +101,10 @@
      <servo name="SW_RIGHTFRONT" no="3" min="1880" neutral="1480" max="1080"/>
      <servo name="TAIL_LEFT" no="4" min="1100" neutral="1500" max="1900"/>
      <servo name="TAIL_RIGHT" no="5" min="1100" neutral="1500" max="1900"/>
-     <servo name="AIL_LEFTLOW" no="6" min="1100" neutral="1475" max="1900"/>
-     <servo name="AIL_RIGHTLOW" no="7" min="1100" neutral="1520" max="1900"/>
-     <servo name="AIL_LEFTUP" no="8" min="1100" neutral="1530" max="1900"/>
-     <servo name="AIL_RIGHTUP" no="9" min="1100" neutral="1565" max="1900"/>
+     <servo name="AIL_LEFTLOW" no="6" min="1075" neutral="1475" max="1875"/>
+     <servo name="AIL_RIGHTLOW" no="7" min="1120" neutral="1520" max="1920"/>
+     <servo name="AIL_LEFTUP" no="8" min="1130" neutral="1530" max="1930"/>
+     <servo name="AIL_RIGHTUP" no="9" min="1165" neutral="1565" max="1965"/>
   </servos>
 
   <section name="RADIO">
