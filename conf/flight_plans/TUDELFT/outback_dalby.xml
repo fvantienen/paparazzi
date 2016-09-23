@@ -47,7 +47,7 @@
   </exceptions>
   <blocks>
     <block name="Wait GPS">
-      <set var="opa_controller_vision_power" value="true"/> 
+      <set var="opa_controller_vision_power" value="true"/>
       <call fun="NavKillThrottle()"/>
       <call fun="nav_throttle_curve_set(0)" loop="false"/>
       <while cond="!GpsFixValid()"/>
@@ -62,6 +62,7 @@
       <while cond="!getKalamosReady()"/>
       <call fun="enableKalamosAttCalib(true)" until="stage_time>15" />
       <call fun="enableKalamosAttCalib(false)" loop="false"/>
+      <set var="opa_controller_vision_power" value="false"/>
     </block>
     <block name="HoldingPoint">
       <call fun="NavKillThrottle()"/>
@@ -94,6 +95,7 @@
       <stay climb="nav_climb_vspeed" vmode="climb" wp="CLIMB"/>
     </block>
     <block name="Standby" strip_button="Standby" strip_icon="home.png">
+      <set var="opa_controller_vision_power" value="true"/>
       <stay wp="STDBY"/>
     </block>
     <block name="Hover here">
@@ -141,6 +143,7 @@
     </block>
 
     <!--block name="Circle_joe">
+      <set var="opa_controller_vision_power" value="true"/>
       <call fun="enableKalamosLandingspotSearch(true)" loop="false"/>
       <call fun="enableKalamosDescent(false)" loop="false"/>
       <call fun="enableKalamosFindJoe(false)" loop="false"/>
