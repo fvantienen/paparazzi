@@ -1,0 +1,89 @@
+<?xml version="1.0"?>
+<!DOCTYPE telemetry SYSTEM "../telemetry.dtd">
+<telemetry>
+
+
+  <process name="Main">
+
+    <mode name="default" key_press="d">
+      <message name="AUTOPILOT_VERSION"      period="25.1"/>
+      <message name="DL_VALUE"               period="3.1"/>
+      <message name="ROTORCRAFT_STATUS"      period="3.2"/>
+      <message name="ROTORCRAFT_FP"          period="0.5"/>
+      <message name="ALIVE"                  period="8.7"/>
+      <message name="INS_REF"                period="10.1"/>
+      <message name="ROTORCRAFT_NAV_STATUS"  period="1.6"/>
+      <message name="WP_MOVED"               period="2.3"/>
+      <message name="DATALINK_REPORT"        period="15.5"/>
+      <message name="AIR_DATA"               period="1.9"/>
+      <message name="TEMP_ADC"               period="3.0"/>
+      <message name="FBW_STATUS"             period="2.4"/>
+      <message name="MOTOR"                  period="3.5"/>
+      <message name="THROTTLE_CURVE"         period="6.4"/>
+    </mode>
+
+    <mode name="minimum" key_press="m">
+      <message name="DL_VALUE"               period="5.1"/>
+      <message name="ROTORCRAFT_STATUS"      period="4.2"/>
+      <message name="ROTORCRAFT_FP_MIN"      period="0.5"/>
+      <message name="ROTORCRAFT_NAV_STATUS"  period="2.6"/>
+      <message name="WP_MOVED"               period="7.3"/>
+      <message name="AIR_DATA"               period="5.3"/>
+      <message name="TEMP_ADC"               period="7.0"/>
+      <message name="FBW_STATUS"             period="4.4"/>
+      <message name="MOTOR"                  period="6.5"/>
+    </mode>
+
+    <mode name="debug">
+      <message name="AUTOPILOT_VERSION"      period="25.1"/>
+      <message name="DL_VALUE"               period="2.5"/>
+      <message name="ROTORCRAFT_STATUS"      period="2.2"/>
+      <message name="ROTORCRAFT_FP"          period="0.5"/>
+      <message name="ALIVE"                  period="8.7"/>
+      <message name="INS_REF"                period="10.1"/>
+      <message name="ROTORCRAFT_NAV_STATUS"  period="1.1"/>
+      <message name="WP_MOVED"               period="1.3"/>
+      <message name="DATALINK_REPORT"        period="15.5"/>
+      <message name="AIR_DATA"               period="1.9"/>
+      <message name="TEMP_ADC"               period="2.0"/>
+      <message name="FBW_STATUS"             period="1.4"/>
+      <message name="MOTOR"                  period="2.5"/>
+      <message name="THROTTLE_CURVE"         period="2.4"/>
+      <message name="KALAMOS"                period="2.5"/>
+      <message name="HYBRID_GUIDANCE"        period="4.2"/>
+      <message name="GPS_INT"                period="5.1"/>
+    </mode>
+
+    <mode name="empty"></mode>
+
+  </process>
+
+  <process name="Logger">
+    <mode name="default">
+       <message name="ROTORCRAFT_STATUS"      period="1.2"/>
+       <message name="IMU_GYRO_SCALED"        period=".02"/>
+       <message name="ROTORCRAFT_CMD"         period=".02"/>
+       <message name="RATE_LOOP"              period=".2"/>
+       <message name="AHRS_REF_QUAT"          period="0.04"/>
+       <message name="MOTOR"                  period=".2"/>
+       <message name="AIR_DATA"               period=".1"/>
+       <message name="THROTTLE_CURVE"         period=".2"/>
+       <message name="AUTOPILOT_VERSION"      period="10.0"/>
+       <message name="GPS"                    period="20.0"/>
+       <message name="KALAMOS"                period="0.016"/>
+    </mode>
+  </process>
+
+  <process name="InterMCU">
+    <mode name="default">
+      <message name="ALIVE"                  period="26.3"/>
+      <message name="INS_REF"                period="25.0"/>
+      <message name="ROTORCRAFT_STATUS"      period="10.1"/>
+      <message name="ROTORCRAFT_NAV_STATUS"  period="5.2"/>
+      <message name="ROTORCRAFT_FP_MIN"      period="0.5"/>
+      <message name="FBW_STATUS"             period="3.4"/>
+    </mode>
+  </process>
+
+</telemetry>
+
