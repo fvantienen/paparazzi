@@ -5,6 +5,7 @@
 #include "autopilot.h"
 #include "guidance/guidance_hybrid.h"
 #include "guidance/guidance_v.h"
+#include "guidance/guidance_h.h"
 
 // States
 #define AircraftIsBooting()  LessThan(nav_block,4)
@@ -73,6 +74,7 @@
     <block name="HoldingPoint">
       <call fun="NavKillThrottle()"/>
       <call fun="nav_throttle_curve_set(0)" loop="false"/>
+      <call fun="set_wind_heading_to_current90()" loop="false"/>
       <manual pitch="0" roll="0" throttle="0" until="FALSE" vmode="throttle" yaw="0"/>
     </block>
     <block name="Start Engine"  strip_button="Start Engine" group="TO">

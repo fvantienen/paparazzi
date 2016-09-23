@@ -113,7 +113,6 @@ static void read_rc_setpoint_speed_i(struct Int32Vect2 *speed_sp, bool in_flight
 void guidance_h_set_nav_throttle_curve(void);
 void change_heading_in_wind(void);
 static void UNUSED find_wind_heading(struct FloatQuat *attitude);
-static void set_wind_heading_to_current90(void);
 
 #if PERIODIC_TELEMETRY
 #include "subsystems/datalink/telemetry.h"
@@ -899,7 +898,7 @@ static void UNUSED find_wind_heading(struct FloatQuat *attitude) {
 }
 
 /** Set wind heading to current heading */
-static void set_wind_heading_to_current90(void) {
+void set_wind_heading_to_current90(void) {
   wind_heading = stateGetNedToBodyEulers_f()->psi + M_PI_2;
   FLOAT_ANGLE_NORMALIZE(wind_heading);
   wind_heading_deg = DegOfRad(wind_heading);
