@@ -761,7 +761,7 @@ let create_ac = fun ?(confirm_kill=true) alert (geomap:G.widget) (acs_notebook:G
             try
               let id = settings_tab#assoc setting_name in
               if setting_name = "kill_throttle" then
-                strip_connect (fun x -> (dl_setting_callback id x; if x = 1. then dl_emergency_cmd ac_id 0))
+                strip_connect (fun x -> (dl_setting_callback id x; dl_emergency_cmd ac_id 0))
               else
                 strip_connect (fun x -> dl_setting_callback id x)
             with Not_found ->
