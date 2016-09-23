@@ -20,9 +20,9 @@
     <waypoint name="_s4" x="164.9" y="-2183.4"/>
     <waypoint name="TD" x="240.8" y="-153.8"/>
     <waypoint name="HOVER" x="268.5" y="27.1"/>
-    <waypoint name="LANDSPOT" x="268.5" y="27.1"/>
-    <waypoint name="JOE" x="268.5" y="27.1"/>
-    <waypoint name="_LANDING" x="268.5" y="27.1"/>
+    <waypoint name="LANDSPOT" x="268.5" y="127.1"/>
+    <waypoint name="JOE" x="268.5" y="127.1"/>
+    <waypoint name="LANDING" x="268.5" y="127.1"/>
   </waypoints>
   <sectors>
     <sector color="red" name="Safety">

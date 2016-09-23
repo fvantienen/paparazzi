@@ -50,13 +50,12 @@ bool kalamos_enable_landing = false;
 bool kalamos_enable_spotsearch = false;
 bool kalamos_enable_findjoe = false;
 bool kalamos_enable_opticflow = false;
+bool kalamos_enable_attcalib = false;
 float kalamos_search_height = 35.0;
-float kalamos_land_xy_gain = 1.5f;
-float kalamos_land_z_gain = 0.5f;
+float kalamos_land_xy_gain = 4.5f;
+float kalamos_land_z_gain = 1.5f;
 struct FloatVect3 land_cmd;
 
-
-int32_t zeroheight;
 #if PERIODIC_TELEMETRY
 #include "subsystems/datalink/telemetry.h"
 
@@ -67,11 +66,8 @@ static void kalamos_raw_downlink(struct transport_tx *trans, struct link_device 
 
 static void send_kalamos(struct transport_tx *trans, struct link_device *dev)
 {
-  char hoertje = k2p_package.status;
-  hoertje+=48;
-  float dummy = 0.0;
   pprz_msg_send_KALAMOS(trans, dev, AC_ID,
-                        &hoertje,
+                        &k2p_package.status,
                         &k2p_package.height,
                         &k2p_package.avoid_psi,
                         &k2p_package.avoid_rate,
@@ -82,8 +78,8 @@ static void send_kalamos(struct transport_tx *trans, struct link_device *dev)
                         &k2p_package.land_enu_y,
                         &k2p_package.flow_x,
                         &k2p_package.flow_y,
-                        &dummy,
-                        &dummy);
+                        &k2p_package.att_calib_phi,
+                        &k2p_package.att_calib_theta);
 }
 #endif
 
@@ -98,7 +94,7 @@ void kalamos_init() {
   register_periodic_telemetry(DefaultPeriodic, PPRZ_MSG_ID_KALAMOS, send_kalamos);
 #endif
 
-  NavSetWaypointHere(WP__LANDING);
+  NavSetWaypointHere(WP_LANDING);
   k2p_package.height = -0.01;
   k2p_package.status = 1;
 
@@ -127,7 +123,7 @@ static inline void kalamos_parse_msg(void)
     for(uint8_t i = 0; i < size; i++) {
       tmp[i] = msg[i];
     }
-    timeoutcount = 1000;
+    timeoutcount = 100;
 
     struct EnuCoor_f *pos = stateGetPositionEnu_f();
 
@@ -153,7 +149,7 @@ static inline void kalamos_parse_msg(void)
       struct FloatVect3 measured_ltp;
       float_rmat_transp_vmult(&measured_ltp, &ltp_to_kalamos_rmat, &joe);
 
-      waypoint_set_xy_i(WP__LANDING,POS_BFP_OF_REAL(measured_ltp.x), POS_BFP_OF_REAL(measured_ltp.y));
+      waypoint_set_xy_i(WP_LANDING,POS_BFP_OF_REAL(measured_ltp.x), POS_BFP_OF_REAL(measured_ltp.y));
       */
 
       land_cmd.x = k2p_package.descend_x * kalamos_land_xy_gain;
@@ -161,16 +157,17 @@ static inline void kalamos_parse_msg(void)
       land_cmd.z = -k2p_package.descend_z * kalamos_land_z_gain;
 
       float psi = stateGetNedToBodyEulers_f()->psi;
-      float heading_to_go = psi + k2p_package.avoid_psi + M_PI;
+      //
+      float heading_to_go = psi + k2p_package.avoid_psi - 0.5 * M_PI;
       FLOAT_ANGLE_NORMALIZE(heading_to_go);
 
       struct EnuCoor_f target;
       target.x = pos->x + sin(heading_to_go)*k2p_package.avoid_rate*kalamos_land_xy_gain;
       target.y = pos->y + cos(heading_to_go)*k2p_package.avoid_rate*kalamos_land_xy_gain;
-      target.z = waypoint_get_alt(WP__LANDING);
+      target.z = waypoint_get_alt(WP_LANDING);
 
       if((kalamos_land_xy_gain > 0.001) && (k2p_package.avoid_rate > 0.2))
-        waypoint_set_enu(WP__LANDING, &target);
+        waypoint_set_enu(WP_LANDING, &target);
     }
 
     if (kalamos_enable_findjoe) {
@@ -224,6 +221,19 @@ void kalamos_periodic() {
   p2k_package.gpsx = pos->x;
   p2k_package.gpsy = pos->y;
   p2k_package.gpsz = pos->z;
+
+  if (state.ned_initialized_f) {
+    p2k_package.geo_init_gpsx = state.ned_origin_f.lla.lat;
+    p2k_package.geo_init_gpsy = state.ned_origin_f.lla.lon;
+    p2k_package.geo_init_gpsz = state.ned_origin_f.lla.alt;
+  } else {
+    p2k_package.geo_init_gpsx = 0;
+    p2k_package.geo_init_gpsy = 0;
+    p2k_package.geo_init_gpsz = 0;
+  }
+
+
+
   p2k_package.enables = 0;
   if (kalamos_enable_landing)
     p2k_package.enables |= 0b1;
@@ -231,19 +241,16 @@ void kalamos_periodic() {
     p2k_package.enables |= 0b10;
   if (kalamos_enable_findjoe)
     p2k_package.enables |= 0b100;
-if (kalamos_enable_opticflow)
+  if (kalamos_enable_opticflow)
     p2k_package.enables |= 0b1000;
+  if (kalamos_enable_attcalib)
+    p2k_package.enables |= 0b10000;
+
   if (timeoutcount > 0) {
     timeoutcount--;
   } else {
     k2p_package.status = 1;
   }
-
-  // Send Telemetry report
-  //char hoertje = k2p_package.status;
-  //hoertje+=48; //fuck you pprz
-  //DOWNLINK_SEND_KALAMOS(DefaultChannel, DefaultDevice, &hoertje, &k2p_package.height,&k2p_package.avoid_psi,&k2p_package.avoid_rate,&k2p_package.descend_z,&k2p_package.joe_enu_x,&k2p_package.joe_enu_y,&k2p_package.land_enu_x,&k2p_package.land_enu_y,&k2p_package.flow_x,&k2p_package.flow_y);
-
 
   pprz_msg_send_IMCU_DEBUG(&(kalamos.transport.trans_tx), kalamos.device,
                                          1, sizeof(struct PPRZ2KalamosPackage), (unsigned char *)(&p2k_package));
@@ -265,7 +272,11 @@ void enableKalamosOpticFlow(bool b) {
   kalamos_enable_opticflow = b;
 }
 
-void setZeroHeight(void){
-  zeroheight = gps.hmsl;
+bool enableKalamosAttCalib(bool b) {
+  kalamos_enable_attcalib = b;
+  return true; // klote pprz flight plan
 }
 
+bool getKalamosReady(void) {
+  return k2p_package.status == 0;
+}

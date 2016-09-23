@@ -57,8 +57,10 @@ struct Kalamos2PPRZPackage {
     float avoid_rate;
     float flow_x;
     float flow_y;
-    char status;
-};
+    float att_calib_phi;
+    float att_calib_theta;
+    uint8_t status;
+} __attribute__((__packed__));
 extern struct Kalamos2PPRZPackage k2p_package;
 
 //should be exactly the same as pprz.h
@@ -73,14 +75,18 @@ struct PPRZ2KalamosPackage {
     float gpsx;
     float gpsy;
     float gpsz;
+    float geo_init_gpsx;
+    float geo_init_gpsy;
+    float geo_init_gpsz;
     unsigned char enables;
-};
+}__attribute__((__packed__));
 
 extern float kalamos_search_height;
 extern bool kalamos_enable_landing ;
 extern bool kalamos_enable_spotsearch;
 extern bool  kalamos_enable_findjoe;
 extern bool kalamos_enable_opticflow;
+extern bool kalamos_enable_attcalib;
 extern float kalamos_land_xy_gain;
 extern float kalamos_land_z_gain;
 extern struct FloatVect3 land_cmd;
@@ -93,9 +99,9 @@ extern void enableKalamosLandingspotSearch(bool b);
 extern void enableKalamosDescent(bool b);
 extern void enableKalamosOpticFlow(bool b);
 extern void enableKalamosFindJoe(bool b);
+extern bool enableKalamosAttCalib(bool b);
 
-
-extern void setZeroHeight(void);
+extern bool getKalamosReady(void);
 
 #endif
 
