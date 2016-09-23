@@ -51,6 +51,7 @@ bool kalamos_enable_spotsearch = false;
 bool kalamos_enable_findjoe = false;
 bool kalamos_enable_opticflow = false;
 bool kalamos_enable_attcalib = false;
+bool kalamos_enable_videorecord = false;
 float kalamos_search_height = 35.0;
 float kalamos_land_xy_gain = 4.5f;
 float kalamos_land_z_gain = 1.5f;
@@ -245,6 +246,8 @@ void kalamos_periodic() {
     p2k_package.enables |= 0b1000;
   if (kalamos_enable_attcalib)
     p2k_package.enables |= 0b10000;
+  if (kalamos_enable_videorecord)
+    p2k_package.enables |= 0b100000;
 
   if (timeoutcount > 0) {
     timeoutcount--;
@@ -274,6 +277,11 @@ void enableKalamosOpticFlow(bool b) {
 
 bool enableKalamosAttCalib(bool b) {
   kalamos_enable_attcalib = b;
+  return true; // klote pprz flight plan
+}
+
+bool enableKalamosVideoRecord(bool b) {
+  kalamos_enable_videorecord = b;
   return true; // klote pprz flight plan
 }
 

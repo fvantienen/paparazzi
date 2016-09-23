@@ -87,6 +87,7 @@ extern bool kalamos_enable_spotsearch;
 extern bool  kalamos_enable_findjoe;
 extern bool kalamos_enable_opticflow;
 extern bool kalamos_enable_attcalib;
+extern bool kalamos_enable_videorecord;
 extern float kalamos_land_xy_gain;
 extern float kalamos_land_z_gain;
 extern struct FloatVect3 land_cmd;
@@ -100,6 +101,7 @@ extern void enableKalamosDescent(bool b);
 extern void enableKalamosOpticFlow(bool b);
 extern void enableKalamosFindJoe(bool b);
 extern bool enableKalamosAttCalib(bool b);
+extern bool enableKalamosVideoRecord(bool b);
 
 extern bool getKalamosReady(void);
 
