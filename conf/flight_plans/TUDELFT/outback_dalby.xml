@@ -23,6 +23,7 @@
     <waypoint name="LANDSPOT" x="268.5" y="127.1"/>
     <waypoint name="JOE" x="268.5" y="127.1"/>
     <waypoint name="LANDING" x="268.5" y="127.1"/>
+    <waypoint name="CIRCLE" x="0.0" y="-50.0"/>
   </waypoints>
   <sectors>
     <sector color="red" name="Safety">
@@ -55,6 +56,11 @@
       <call fun="nav_throttle_curve_set(0)" loop="false"/>
       <call fun="NavSetAltitudeReferenceHere()"/>
       <call fun="nav_set_heading_current()"/>
+    </block>
+    <block name="Delft tah Kopter. SLAM dunk, init">
+      <while cond="!getKalamosReady()"/>
+      <call fun="enableKalamosAttCalib(true)" until="stage_time>15" />
+      <call fun="enableKalamosAttCalib(false)" loop="false"/>
     </block>
     <block name="HoldingPoint">
       <call fun="NavKillThrottle()"/>
@@ -132,6 +138,36 @@
       <attitude pitch="0" roll="0" throttle="0.45" until="stage_time>2" vmode="throttle"/>
       <deroute block="landed"/>
     </block>
+
+
+
+
+    <block name="Circle_joe" pre_call="nav_set_heading_towards(POS_FLOAT_OF_BFP(navigation_target.x),POS_FLOAT_OF_BFP(navigation_target.y))">
+      <call fun="enableKalamosLandingspotSearch(true)" loop="false"/>
+      <call fun="enableKalamosDescent(false)" loop="false"/>
+      <call fun="enableKalamosFindJoe(false)" loop="false"/>
+      <circle wp="CIRCLE" radius="75" until="block_time>180"/>
+    </block>
+    <block name="HoldPositionOnCircle">
+      <call fun="enableKalamosLandingspotSearch(false)" loop="false"/>
+      <call fun="NavSetWaypointHere(WP_TD)" loop="false"/>
+      <stay wp="TD"/>
+    </block>
+    <block name="land at vision spot">
+      <call fun="enableKalamosDescent(false)" loop="false"/>
+      <call fun="NavCopyWaypoint(WP_LANDING,WP_LANDSPOT)"/>
+      <stay wp="LANDSPOT" until="stage_time > 1"/>
+    </block>
+    <block name="Goto_ vision landing">
+      <call fun="enableKalamosDescent(false)" loop="false"/>
+      <stay wp="LANDING"/>
+    </block>
+    <block name="Do vision landing">
+      <call fun="enableKalamosDescent(true)" loop="false"/>
+      <stay wp="LANDING" vmode="climb" climb="land_cmd.z"/>
+    </block>
+
+
     <block name="land">
       <go forward="false" wp="TD"/>
     </block>
