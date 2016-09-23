@@ -91,6 +91,7 @@ struct Int32Vect2 guidance_h_speed_err;
 struct Int32Vect2 guidance_h_trim_att_integrator;
 float wind_heading = 0.0;
 float wind_heading_deg = 0.0;
+bool reset_wind_heading = false;
 
 /** horizontal guidance command.
  * In north/east with #INT32_ANGLE_FRAC
@@ -112,6 +113,7 @@ static void read_rc_setpoint_speed_i(struct Int32Vect2 *speed_sp, bool in_flight
 void guidance_h_set_nav_throttle_curve(void);
 void change_heading_in_wind(void);
 static void UNUSED find_wind_heading(struct FloatQuat *attitude);
+static void set_wind_heading_to_current90(void);
 
 #if PERIODIC_TELEMETRY
 #include "subsystems/datalink/telemetry.h"
@@ -848,6 +850,10 @@ void change_heading_in_wind(void) {
 
   // The wind heading can be set manually
   // TODO: use the function find_wind_heading instead
+  if(reset_wind_heading) {
+    set_wind_heading_to_current90();
+    reset_wind_heading = false;
+  }
   wind_heading = RadOfDeg(wind_heading_deg);
   //struct FloatQuat *current_quat = stateGetNedToBodyQuat_f();
   //find_wind_heading(current_quat);
@@ -890,5 +896,12 @@ static void UNUSED find_wind_heading(struct FloatQuat *attitude) {
   wind_heading = thrust_heading + stabilization_attitude_get_heading_f();
 
   float UNUSED(magnitude) = 1.0 - att_vect.z;
+}
+
+/** Set wind heading to current heading */
+static void set_wind_heading_to_current90(void) {
+  wind_heading = stateGetNedToBodyEulers_f()->psi + M_PI_2;
+  FLOAT_ANGLE_NORMALIZE(wind_heading);
+  wind_heading_deg = DegOfRad(wind_heading);
 }
 
