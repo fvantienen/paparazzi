@@ -134,7 +134,7 @@
       <stay climb="nav_descend_vspeed" vmode="climb" wp="TD"/>
     </block>
     <block name="Descent_slow">
-      <exception cond="((0.6 + abs(stateGetNedToBodyEulers_f()->phi)/2) > k2p_package.height) && (k2p_package.height > 0.0) && getKalamosReady()" deroute="test landing"/>
+      <exception cond="((0.6 + fabs(stateGetNedToBodyEulers_f()->phi)/2) > k2p_package.height) && (k2p_package.height > 0.0) && getKalamosReady()" deroute="test landing"/>
       <stay climb="-0.5" vmode="climb" wp="TD"/>
     </block>
     <block name="test landing">

@@ -212,8 +212,8 @@ void kalamos_periodic() {
 
 
   struct PPRZ2KalamosPackage p2k_package;
-  p2k_package.phi = attE->phi;
-  p2k_package.theta = attE->theta;
+  p2k_package.phi = attE->theta;
+  p2k_package.theta = attE->phi;
   p2k_package.psi = attE->psi;
   p2k_package.qi = att->qi;
   p2k_package.qx = att->qx;
