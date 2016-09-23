@@ -848,9 +848,9 @@ void change_heading_in_wind(void) {
 
   // The wind heading can be set manually
   // TODO: use the function find_wind_heading instead
-  //wind_heading = RadOfDeg(wind_heading_deg);
-  struct FloatQuat *current_quat = stateGetNedToBodyQuat_f();
-  find_wind_heading(current_quat);
+  wind_heading = RadOfDeg(wind_heading_deg);
+  //struct FloatQuat *current_quat = stateGetNedToBodyQuat_f();
+  //find_wind_heading(current_quat);
   FLOAT_ANGLE_NORMALIZE(wind_heading);
 
   // There are two possible ways to fly sideways into the wind
