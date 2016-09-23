@@ -304,8 +304,10 @@ void guidance_hybrid_attitude_outback(struct Int32Eulers *ypr_sp)
   float perpendicular = - north * sinh + east * cosh;
 
   dperpendicular = (perpendicular - perpendicular_prev)*PERIODIC_FREQUENCY;
-
   perpendicular_prev = perpendicular;
+  // dperpendicular should be bounded to get rid of spikes when switching waypoints
+  float heading_diff_d = dperpendicular * perpen_dgain;
+  BoundAbs(heading_diff_d, 20.0/180.0*M_PI);
 
   // towp = 4*4/5 + 3 * 3/5 = 16+9 / 5 = 5
   // perpendic = -4 * 3/5 + 3 * 4/5 = 0/5 = 0
@@ -316,7 +318,7 @@ void guidance_hybrid_attitude_outback(struct Int32Eulers *ypr_sp)
   // perpendicular = -5*3/5 + 0*4/5 = -3 : we vliegen teveel naar links
 
   // linearize atan (angle less than 45 degree
-  float heading_diff = - (perpendicular / 20.0f + dperpendicular * perpen_dgain);  // m/s
+  float heading_diff = - (perpendicular / 20.0f + heading_diff_d);  // m/s
 
 /*
   Even proberen vervangen: als het niet werkt moet dit weer aan.
