@@ -217,6 +217,7 @@
 <!--     For hybrid guidance -->
     <define name="MAX_AIRSPEED" value="18.0"/>
     <define name="OUTBACK_FORWARD_VERTICAL_GAIN" value="0.1"/>
+    <define name="OUTBACK_TURN_BANK_GAIN" value="0.6"/>
     <define name="OUTBACK_FORWARD_VERTICAL_DGAIN" value="0.04"/>
     <define name="NOMINAL_FORWARD_THRUST" value="7000"/>
     <define name="OUTBACK_GUIDANCE" value="TRUE"/>
