@@ -1,14 +1,9 @@
 <!DOCTYPE flight_plan SYSTEM "../../flight_plan.dtd">
 
-<flight_plan alt="660" ground_alt="444" home_mode_height="120" lat0="-27.2737" lon0="151.29" max_dist_from_home="12038" name="OBC2016" qfu="170" security_height="10">
-  <header>
-#include "autopilot.h"
-#include "guidance/guidance_hybrid.h"
-#include "guidance/guidance_v.h"
-</header>
+<flight_plan alt="423.8" ground_alt="343.8" home_mode_height="120" lat0="-27.2737" lon0="151.29" max_dist_from_home="12038" name="OBC2016" qfu="170" security_height="10">
   <waypoints>
     <waypoint name="HOME" x="0" y="0"/>
-    <waypoint alt="448.0" lat="-27.274012" lon="151.290038" name="TD"/>
+    <waypoint lat="-27.274012" lon="151.290038" name="TD"/>
     <waypoint lat="-27.277713" lon="151.284228" name="_MB1"/>
     <waypoint lat="-27.268885" lon="151.285839" name="_MB2"/>
     <waypoint lat="-27.276401" lon="151.339654" name="_MB3"/>
@@ -29,17 +24,20 @@
     <waypoint lat="-27.332360" lon="151.381549" name="SA2"/>
     <waypoint lat="-27.336764" lon="151.375577" name="SA3"/>
     <waypoint lat="-27.331488" lon="151.370911" name="SA4"/>
-    <waypoint lat="-27.272921" lon="151.295320" name="EL1"/>
-    <waypoint lat="-27.278427" lon="151.336516" name="EL2"/>
-    <waypoint lat="-27.282258" lon="151.335891" name="EL3"/>
-    <waypoint lat="-27.276066" lon="151.290101" name="EL4"/>
-    <waypoint lat="-27.296240" lon="151.286415" name="EL5"/>
-    <waypoint lat="-27.306031" lon="151.353727" name="EL6"/>
-    <waypoint lat="-27.331830" lon="151.376081" name="EL7"/>
+    <waypoint lat="-27.272921" lon="151.295320" name="p1"/>
+    <waypoint lat="-27.278427" lon="151.336516" name="p2"/>
+    <waypoint lat="-27.282258" lon="151.335891" name="p3"/>
+    <waypoint lat="-27.276066" lon="151.290101" name="p4"/>
+    <waypoint lat="-27.296240" lon="151.286415" name="p5"/>
+    <waypoint lat="-27.306031" lon="151.353727" name="p6"/>
+    <waypoint lat="-27.331830" lon="151.376081" name="p7"/>
   </waypoints>
+  <modules>
+    <module name="nav" type="heli_spinup"/>
+  </modules>
   <includes>
+    <include name="Mission" procedure="include_obc2016_mission.xml"/>
     <include name="Safety" procedure="include_obc2016_safety.xml"/>
-    <include name="Testing" procedure="include_obc2016_testing.xml"/>
   </includes>
   <blocks>
     <block name="Boot"/>

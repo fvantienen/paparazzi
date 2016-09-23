@@ -1,0 +1,218 @@
+<!DOCTYPE flight_plan SYSTEM "../../flight_plan.dtd">
+<!-- 
+     Australian UAV Outback Challenge of 2014.
+
+     * TU Delft University of Technology, L&R http://www.tudelft.nl
+     * MAVLab - http://mavlab.info
+
+-->
+
+<procedure>
+<!-- ******************************** HEADERS ****************************** -->
+  <header>
+#include "autopilot.h"
+#include "guidance/guidance_hybrid.h"
+#include "guidance/guidance_v.h"
+
+// States
+#define AircraftIsBooting()  LessThan(nav_block,4)
+
+  </header>
+<!-- ******************************* WAYPOINTS ***************************** -->
+  <waypoints>
+    <waypoint name="OUTBACKJOE" x="222." y="333."/>
+    <waypoint name="PICKUP" x="500." y="333."/>
+
+    <waypoint name="CLIMB" x="100" y="300"/>
+    <waypoint name="STDBY" x="0" y="0"/>
+    <waypoint name="HOVER" x="268.5" y="27.1"/>
+  </waypoints>
+
+<!-- ******************************** SECTORS ****************************** -->
+  <sectors>
+    <sector name="SurveyArea" color="green">
+      <corner name="SA1"/>
+      <corner name="SA2"/>
+      <corner name="SA3"/>
+      <corner name="SA4"/>
+    </sector>
+  </sectors>
+
+
+<!-- ****************************** EXCEPTIONS ***************************** -->
+  <exceptions>
+
+    <!-- If datalink is lost for more than 60 seconds and we are in launched state -->
+    <!--exception cond="And((datalink_time/2) > 60, launch > 0) && (!AircraftIsBooting())" deroute="CommsHoldLoiter"/--> <!-- deroute="AirfieldHomeLoiter"/> -->
+
+  </exceptions>
+
+
+
+<!-- *********************************************************************** -->
+<!-- ********************** FLIGHTPLAN STARTINGPOINT *********************** -->
+<!-- *********************************************************************** -->
+
+<!-- *********** Wait for GPS fix, 3D by default *********** -->
+  <blocks>
+
+    <block name="Wait GPS">
+      <call fun="NavKillThrottle()"/>
+      <call fun="nav_throttle_curve_set(0)" loop="false"/>
+      <while cond="!GpsFixValid()"/>
+    </block>
+
+    <block name="Geo init">
+      <while cond="LessThan(NavBlockTime(), 3)"/>
+      <call fun="nav_throttle_curve_set(0)" loop="false"/>
+      <call fun="NavSetAltitudeReferenceHere()"/>
+      <call fun="nav_set_heading_current()"/>
+      <set var="air_data.calc_qnh_once" value="TRUE"/>
+    </block>
+
+    <block name="HoldingPoint">
+      <call fun="NavKillThrottle()"/>
+      <call fun="nav_throttle_curve_set(0)" loop="false"/>
+      <manual pitch="0" roll="0" throttle="0" until="FALSE" vmode="throttle" yaw="0"/>
+    </block>
+
+    <block name="Start Engine"  strip_button="Start Engine" group="TO">
+      <call fun="nav_throttle_curve_set(0)" loop="false"/>
+      <call fun="nav_heli_spinup_setup(3, 0.07)" loop="false"/>
+      <call fun="NavResurrect()"/>
+      <call fun="nav_heli_spinup_run()"/>
+      <call fun="nav_throttle_curve_set(1)" loop="false"/>
+      <manual pitch="0" roll="0" throttle="0" until="stage_time>6" vmode="throttle" yaw="0"/>
+    </block>
+
+    <block name="Hold Attitude">
+      <call fun="nav_throttle_curve_set(1)" loop="false"/>
+      <call fun="nav_set_heading_current()"/>
+      <manual pitch="0" roll="0" throttle="0" until="stage_time>1" vmode="throttle" yaw="0"/>
+    </block>
+
+<!-- *********************************************************
+     *********** Search Area Entry Procedure Start ***********
+     ***************************************************** -->
+    <block name="Start Pickup Flight" strip_button="Pickup" group="TO">
+      <!-- CDW set value="SCRUTENEERING_FLIGHT" var="obc_flight_mode" /-->
+      <call fun="NavSetWaypointHere(WP_TD)"/>
+      <!--set value="DownlinkSendWpNr(WP_TD)" var="unit"/-->
+      <deroute block="Takeoff"/>
+    </block>
+
+    <block name="Start Return Flight" strip_button="Return" group="TO">
+      <!-- CDW set value="SEARCH_FLIGHT" var="obc_flight_mode" /-->
+      <deroute block="Takeoff"/>
+    </block>
+
+
+    <block name="Takeoff" strip_button="Takeoff" strip_icon="takeoff.png">
+      <exception cond="stateGetPositionEnu_f()->z > 4.0" deroute="Climb"/>
+      <call fun="NavSetWaypointHere(WP_CLIMB)"/>
+      <call fun="nav_throttle_curve_set(1)" loop="false"/>
+      <attitude pitch="0" roll="0" throttle="0.73" until="stage_time>2" vmode="throttle"/>
+    </block>
+    <block name="Climb">
+      <exception cond="stateGetPositionEnu_f()->z > 20.0" deroute="Standby"/>
+      <call fun="nav_set_heading_current()"/>
+      <call fun="GuidanceVSetRef(stateGetPositionNed_i()->z, 0, 0)"/>
+      <stay climb="nav_climb_vspeed" vmode="climb" wp="CLIMB"/>
+    </block>
+    <block name="Standby" strip_button="Standby" strip_icon="home.png">
+      <stay wp="STDBY"/>
+    </block>
+    <block name="HoverHere">
+      <call fun="NavSetWaypointHere(WP_HOVER)"/>
+      <stay wp="HOVER"/>
+    </block>
+    <block name="go_p1">
+      <go forward="true" wp="p1"/>
+      <deroute block="go_p2"/>
+    </block>
+    <block name="go_p2">
+      <go forward="true" wp="p2"/>
+      <deroute block="go_p1"/>
+    </block>
+    <block name="line_p1_p2">
+      <go forward="true" from="p1" hmode="route" wp="p2"/>
+      <deroute block="line_p2_p3"/>
+    </block>
+    <block name="line_p2_p3">
+      <go forward="true" from="p2" hmode="route" wp="p3"/>
+      <deroute block="line_p3_p4"/>
+    </block>
+    <block name="line_p3_p4">
+      <go forward="true" from="p3" hmode="route" wp="p4"/>
+      <deroute block="line_p4_p1"/>
+    </block>
+    <block name="line_p4_p1">
+      <go forward="true" from="p4" hmode="route" wp="p1"/>
+      <deroute block="line_p1_p2"/>
+    </block>
+    <block name="Descent">
+      <exception cond="10.0 > stateGetPositionEnu_f()->z" deroute="Descent_slow"/>
+      <call fun="nav_set_heading_current()"/>
+      <call fun="NavSetWaypointHere(WP_TD)"/>
+      <call fun="GuidanceVSetRef(stateGetPositionNed_i()->z, 0, 0)"/>
+      <stay climb="nav_descend_vspeed" vmode="climb" wp="TD"/>
+    </block>
+
+    <block name="Descent_slow">
+      <stay climb="-0.5" vmode="climb" wp="TD"/>
+    </block>
+
+    <block name="test landing">
+      <call fun="nav_throttle_curve_set(1)" loop="false"/>
+      <attitude pitch="0" roll="0" throttle="0.45" until="stage_time>2" vmode="throttle"/>
+      <deroute block="landed"/>
+    </block>
+
+    <block name="land">
+      <go forward="false" wp="TD"/>
+    </block>
+
+    <block name="flare">
+      <exception cond="NavDetectGround()" deroute="HoldingPoint"/>
+      <exception cond="!nav_is_in_flight()" deroute="landed"/>
+      <call fun="NavStartDetectGround()"/>
+      <stay climb="nav_descend_vspeed" vmode="climb" wp="TD"/>
+    </block>
+
+    <block name="landed">
+      <attitude pitch="0" roll="0" throttle="0" until="FALSE" vmode="throttle"/>
+    </block>
+
+    <block name="gps loss">
+      <exception cond="2.0 > stateGetPositionEnu_f()->z" deroute="landed"/>
+      <exception cond="GpsFixValid()" deroute="HoverHere"/>
+      <call fun="nav_throttle_curve_set(1)" loop="false"/>
+      <attitude climb="nav_descend_vspeed" pitch="0" roll="0" until="stage_time>20" vmode="climb"/>
+    </block>
+
+    <block name="failsafe">
+      <call fun="NavSetFailsafe"/>
+      <attitude pitch="0" roll="0" throttle="0" until="FALSE" vmode="throttle"/>
+    </block>
+
+
+<!-- *********** Set the ground reference height and the home position *********** -->
+
+      <!--set value="0" var="autopilot_flight_time"/-->
+
+
+    <block name="determineflighttype">
+      <!-- CDW exception cond="(obc_flight_mode == SCRUTENEERING_FLIGHT)" deroute="ScrutineeringAutonomyTriangle"/-->
+      <!-- otherwise goto search area via entry lane -->
+      <deroute block="land"/>
+    </block>
+
+    <block name="determinerescuetype">
+      <!-- CDW exception cond="(obc_flight_mode == DROP_FLIGHT)" deroute="RescueJoe"/-->
+      <deroute block="land" />
+    </block>
+
+
+  </blocks>
+</procedure>
+
