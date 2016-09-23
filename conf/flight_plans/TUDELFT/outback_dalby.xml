@@ -33,13 +33,13 @@
     <module name="nav" type="heli_spinup"/>
   </modules>
   <exceptions>
-    <exception cond="(!InsideSafety(GetPosX(), GetPosY()) && !(nav_block == IndexOfBlock('Wait GPS')) && !(nav_block == IndexOfBlock('Geo init')) )" deroute="Holding point"/>
+    <exception cond="(!InsideSafety(GetPosX(), GetPosY()) && !(nav_block == IndexOfBlock('Wait GPS')) && !(nav_block == IndexOfBlock('Geo init')) )" deroute="HoldingPoint"/>
     <exception cond="(!GpsFixValid() &&
       !(nav_block == IndexOfBlock('Hold Attitude')) &&
       !(nav_block == IndexOfBlock('Takeoff')) &&
       !(nav_block == IndexOfBlock('landed')) &&
       !(nav_block == IndexOfBlock('failsafe')) &&
-      (autopilot_in_flight == true) )" deroute="gps loss"/>
+      (autopilot_in_flight == true) )" deroute="GpsLoss"/>
   </exceptions>
   <blocks>
     <block name="Wait GPS">
@@ -53,7 +53,7 @@
       <call fun="NavSetAltitudeReferenceHere()"/>
       <call fun="nav_set_heading_current()"/>
     </block>
-    <block name="Holding point">
+    <block name="HoldingPoint">
       <call fun="NavKillThrottle()"/>
       <call fun="nav_throttle_curve_set(0)" loop="false"/>
       <manual pitch="0" roll="0" throttle="0" until="FALSE" vmode="throttle" yaw="0"/>
@@ -133,7 +133,7 @@
       <go forward="false" wp="TD"/>
     </block>
     <block name="flare">
-      <exception cond="NavDetectGround()" deroute="Holding point"/>
+      <exception cond="NavDetectGround()" deroute="HoldingPoint"/>
       <exception cond="!nav_is_in_flight()" deroute="landed"/>
       <call fun="NavStartDetectGround()"/>
       <stay climb="nav_descend_vspeed" vmode="climb" wp="TD"/>
@@ -141,7 +141,7 @@
     <block name="landed">
       <attitude pitch="0" roll="0" throttle="0" until="FALSE" vmode="throttle"/>
     </block>
-    <block name="gps loss">
+    <block name="GpsLoss">
       <exception cond="2.0 > stateGetPositionEnu_f()->z" deroute="landed"/>
       <exception cond="GpsFixValid()" deroute="Hover here"/>
       <call fun="nav_throttle_curve_set(1)" loop="false"/>
