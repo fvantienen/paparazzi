@@ -139,7 +139,7 @@
     </block>
     <block name="test landing">
       <call fun="nav_throttle_curve_set(1)" loop="false"/>
-      <attitude pitch="0" roll="0" throttle="0.45" until="stage_time>1" vmode="throttle"/>
+      <attitude pitch="0" roll="0" throttle="0.45" until="stage_time>2" vmode="throttle"/>
       <deroute block="landed"/>
     </block>
 
