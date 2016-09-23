@@ -80,16 +80,20 @@ static bool force_forward_flight;
 int32_t v_control_pitch = 0;
 float low_airspeed_pitch_gain = OUTBACK_LOW_AIRSPEED_PITCH_GAIN;
 struct NedCoor_i ned_gps_vel;
+float dperpendicular = 0.0;
+float perpendicular_prev = 0.0;
+float perpen_dgain = 0.0;
 
 #if PERIODIC_TELEMETRY
 #include "subsystems/datalink/telemetry.h"
 
 static void send_hybrid_guidance(struct transport_tx *trans, struct link_device *dev)
 {
+  int32_t dperpen_show = dperpendicular;
   struct NedCoor_i *pos = stateGetPositionNed_i();
   struct NedCoor_i *speed = stateGetSpeedNed_i();
   pprz_msg_send_HYBRID_GUIDANCE(trans, dev, AC_ID,
-                                &(pos->x), &(pos->y),
+                                &dperpen_show, &(pos->y),
                                 &(speed->x), &(speed->y),
                                 &wind_estimate.x, &wind_estimate.y,
                                 &guidance_h_pos_err.x,
@@ -123,6 +127,9 @@ void guidance_hybrid_init(void)
   INT_VECT2_ZERO(wind_estimate);
   INT_VECT2_ZERO(guidance_hybrid_ref_airspeed);
   INT_VECT2_ZERO(wind_estimate_high_res);
+
+  dperpendicular = 0.0;
+  perpendicular_prev = 0.0;
 
 #if PERIODIC_TELEMETRY
   register_periodic_telemetry(DefaultPeriodic, PPRZ_MSG_ID_HYBRID_GUIDANCE, send_hybrid_guidance);
@@ -296,6 +303,10 @@ void guidance_hybrid_attitude_outback(struct Int32Eulers *ypr_sp)
   float to_wp         =   north * cosh + east * sinh;
   float perpendicular = - north * sinh + east * cosh;
 
+  dperpendicular = (perpendicular - perpendicular_prev)*PERIODIC_FREQUENCY;
+
+  perpendicular_prev = perpendicular;
+
   // towp = 4*4/5 + 3 * 3/5 = 16+9 / 5 = 5
   // perpendic = -4 * 3/5 + 3 * 4/5 = 0/5 = 0
 
@@ -305,7 +316,7 @@ void guidance_hybrid_attitude_outback(struct Int32Eulers *ypr_sp)
   // perpendicular = -5*3/5 + 0*4/5 = -3 : we vliegen teveel naar links
 
   // linearize atan (angle less than 45 degree
-  float heading_diff = - perpendicular / 20.0f;  // m/s
+  float heading_diff = - (perpendicular / 20.0f + dperpendicular * perpen_dgain);  // m/s
 
 /*
   Even proberen vervangen: als het niet werkt moet dit weer aan.

@@ -48,6 +48,7 @@ extern float low_airspeed_pitch_gain;
 enum hybrid_mode {HB_HOVER, HB_FORWARD};
 extern enum hybrid_mode outback_hybrid_mode;
 extern struct Int32Eulers guidance_hybrid_ypr_sp;
+extern float perpen_dgain;
 
 /** Runs the Hybrid Guidance main functions.
  */
