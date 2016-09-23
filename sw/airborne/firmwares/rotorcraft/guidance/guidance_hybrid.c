@@ -89,10 +89,11 @@ float perpen_dgain = 0.0;
 
 static void send_hybrid_guidance(struct transport_tx *trans, struct link_device *dev)
 {
+  int32_t dperpen_show = dperpendicular;
   struct NedCoor_i *pos = stateGetPositionNed_i();
   struct NedCoor_i *speed = stateGetSpeedNed_i();
   pprz_msg_send_HYBRID_GUIDANCE(trans, dev, AC_ID,
-                                &(pos->x), &(pos->y),
+                                &dperpen_show, &(pos->y),
                                 &(speed->x), &(speed->y),
                                 &wind_estimate.x, &wind_estimate.y,
                                 &guidance_h_pos_err.x,
