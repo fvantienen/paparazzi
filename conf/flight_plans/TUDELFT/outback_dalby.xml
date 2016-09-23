@@ -47,6 +47,7 @@
   </exceptions>
   <blocks>
     <block name="Wait GPS">
+      <set var="opa_controller_vision_power" value="true"/> 
       <call fun="NavKillThrottle()"/>
       <call fun="nav_throttle_curve_set(0)" loop="false"/>
       <while cond="!GpsFixValid()"/>
@@ -57,7 +58,7 @@
       <call fun="NavSetAltitudeReferenceHere()"/>
       <call fun="nav_set_heading_current()"/>
     </block>
-    <block name="Delft tah Kopter. SLAM dunk, init">
+    <block name="Delft tah Kopter SLAM dunk init">
       <while cond="!getKalamosReady()"/>
       <call fun="enableKalamosAttCalib(true)" until="stage_time>15" />
       <call fun="enableKalamosAttCalib(false)" loop="false"/>
