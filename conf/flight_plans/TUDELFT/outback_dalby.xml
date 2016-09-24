@@ -181,6 +181,7 @@
     <block name="landed">
       <call fun="NavKillThrottle()"/>
       <call fun="nav_throttle_curve_set(0)" loop="false"/>
+      <set var="opa_controller_vision_power" value="false"/>
       <attitude pitch="0" roll="0" throttle="0" until="stage_time>2" vmode="throttle"/>
     </block>
     <block name="inert">
