@@ -22,7 +22,7 @@
       <module name="telemetry" type="xbee_api"/>
       <module name="imu" type="mpu6000"/>
       <module name="gps" type="ublox">
-        <define name="GPS_TIMEOUT" value="5"/>
+        <define name="GPS_TIMEOUT" value="2"/>
       </module>
       <module name="stabilization" type="int_quat"/>
       <module name="stabilization" type="rate"/>
@@ -205,7 +205,7 @@
     <define name="OUTBACK_GROUND_PITCH_CONTROL_GAIN" value="70000.0"/>
     <define name="OUTBACK_MIN_HOVER_THROTTLE" value="4000"/>
     <define name="OUTBACK_MAX_HOVER_THROTTLE" value="7700"/>
-    <define name="MAX_TURN_BANK" value="30.0"/>
+    <define name="MAX_TURN_BANK" value="25.0"/>
     <define name="ARRIVED_AT_WAYPOINT" value="50"/>
     <define name="NO_GPS_LOST_WITH_RC_VALID" value="TRUE"/>
     <define name="NAVIGATION_LINE_FOLLOWING_DIST" value="85.0"/>
@@ -223,7 +223,7 @@
     <define name="OUTBACK_FORWARD_VERTICAL_GAIN" value="0.1"/>
     <define name="OUTBACK_TURN_BANK_GAIN" value="0.6"/>
     <define name="OUTBACK_FORWARD_VERTICAL_DGAIN" value="0.04"/>
-    <define name="NOMINAL_FORWARD_THRUST" value="7000"/>
+    <define name="NOMINAL_FORWARD_THRUST" value="7300"/>
     <define name="OUTBACK_FORWARD_PITCH_OF_ROLL" value="0.0"/>
     <define name="OUTBACK_GUIDANCE" value="TRUE"/>
     <define name="OUTBACK_LOW_AIRSPEED_PITCH_GAIN" value="0.0"/>

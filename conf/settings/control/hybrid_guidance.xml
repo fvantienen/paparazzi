@@ -10,9 +10,8 @@
       <dl_setting var="alt_pitch_gain" MIN="0" STEP="0.01" MAX="5.0" module="guidance/guidance_hybrid" shortname="alt_pitch_gain"/>
       <dl_setting var="max_turn_bank" MIN="10.0" STEP="1.0" MAX="60.0" module="guidance/guidance_hybrid" shortname="max_turn_bank"/>
       <dl_setting var="turn_bank_gain" MIN="0.1" STEP="0.01" MAX="3.0" module="guidance/guidance_hybrid" shortname="turn_bank_gain"/>
-      <dl_setting var="guidance_indi_pos_gain" MIN="0.0" STEP="0.1" MAX="5.0" module="guidance/guidance_indi" shortname="indi_posgain"/>
-      <dl_setting var="guidance_indi_speed_gain" MIN="0.0" STEP="0.1" MAX="5.0" module="guidance/guidance_indi" shortname="indi_speedgain"/>
-      <dl_setting var="filter_omega" MIN="1.0" STEP="0.1" MAX="50.0" module="guidance/guidance_indi" shortname="indi_omega"/>
+      <dl_setting var="vertical_gain" MIN="0.0" STEP="0.01" MAX="3.0" module="guidance/guidance_hybrid" shortname="vertical_gain"/>
+      <dl_setting var="vertical_dgain" MIN="0.0" STEP="0.01" MAX="3.0" module="guidance/guidance_hybrid" shortname="vertical_dgain"/>
       <dl_setting var="wind_heading_deg" MIN="0.0" STEP="0.1" MAX="360.0" module="guidance/guidance_h" shortname="wind_heading"/>
       <dl_setting var="perpen_dgain" MIN="0.0" STEP="0.01" MAX="360.0" module="guidance/guidance_h" shortname="perpen_dgain"/>
       <dl_setting var="vertical_pitch_of_roll" MIN="0.0" STEP="0.01" MAX="0.25" module="guidance/guidance_h" shortname="theta_of_abs_pitch"/>

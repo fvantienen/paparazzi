@@ -92,12 +92,12 @@
     </block>
     <block name="Takeoff" strip_button="Takeoff" strip_icon="takeoff.png">
       <exception cond="stateGetPositionEnu_f()->z > 4.0" deroute="Climb"/>
-      <call fun="NavSetWaypointHere(WP_CLIMB)"/>
       <call fun="nav_throttle_curve_set(1)" loop="false"/>
-      <attitude pitch="0" roll="0" throttle="0.73" until="stage_time>2" vmode="throttle"/>
+      <attitude pitch="0" roll="0" throttle="0.83" until="stage_time>2" vmode="throttle"/>
     </block>
     <block name="Climb">
       <exception cond="stateGetPositionEnu_f()->z > 20.0" deroute="Standby"/>
+      <call fun="NavSetWaypointHere(WP_CLIMB)"/>
       <call fun="nav_set_heading_current()"/>
       <call fun="GuidanceVSetRef(stateGetPositionNed_i()->z - POS_BFP_OF_REAL(5.0), -SPEED_BFP_OF_REAL(3.0), 0)"/>
       <stay climb="nav_climb_vspeed" vmode="climb" wp="CLIMB"/>
@@ -147,7 +147,7 @@
     </block>
     <block name="test landing">
       <call fun="nav_throttle_curve_set(1)" loop="false"/>
-      <attitude pitch="0" roll="0" throttle="0.45" until="stage_time>2" vmode="throttle"/>
+      <attitude pitch="0" roll="0" throttle="0.5" until="stage_time>2" vmode="throttle"/>
       <deroute block="landed"/>
     </block>
 
@@ -187,6 +187,8 @@
       <stay climb="nav_descend_vspeed" vmode="climb" wp="TD"/>
     </block>
     <block name="landed">
+      <call fun="NavKillThrottle()"/>
+      <call fun="nav_throttle_curve_set(0)" loop="false"/>
       <attitude pitch="0" roll="0" throttle="0" until="FALSE" vmode="throttle"/>
     </block>
     <block name="GpsLoss">

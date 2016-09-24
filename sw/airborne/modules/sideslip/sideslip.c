@@ -49,7 +49,7 @@ void sideslip_init() {
 void sideslip_periodic() {
   float acc_lat = ACCEL_FLOAT_OF_BFP(imu.accel.y);            ///< accelerometer measurements in m/s^2 in BFP with #INT32_ACCEL_FRAC
 
-  low_pass_filtered_sideslip_value += (acc_lat - low_pass_filtered_sideslip_value) / 1024;
+  low_pass_filtered_sideslip_value += (acc_lat - low_pass_filtered_sideslip_value) / 100;
 }
 
 
