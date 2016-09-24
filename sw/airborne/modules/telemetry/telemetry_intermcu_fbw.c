@@ -84,6 +84,8 @@ void telemetry_intermcu_event(void)
     }
 
     /* Forward to AP */
+    pprz_msg_send_IMCU_DATALINK(&(intermcu.transport.trans_tx), intermcu.device,
+                            INTERMCU_FBW, telemetry_intermcu.trans.trans_rx.payload_len, telemetry_intermcu.rx_buffer);
 
     telemetry_intermcu.msg_received = false;
   }

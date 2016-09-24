@@ -18,6 +18,7 @@
   <makefile target="ap">
     <file name="telemetry_intermcu_ap.c"/>
     <file name="short_transport.c" dir="pprzlink/src"/>
+    <define name="TELEMETRY_INTERMCU"/>
   </makefile>
   <makefile target="fbw">
     <file name="telemetry_intermcu_fbw.c"/>

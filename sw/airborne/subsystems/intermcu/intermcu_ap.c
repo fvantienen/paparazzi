@@ -164,6 +164,16 @@ static inline void intermcu_parse_msg(void (*rc_frame_handler)(void))
       break;
     }
 
+#if TELEMETRY_INTERMCU
+    case DL_IMCU_DATALINK: {
+      uint8_t size = DL_IMCU_TELEMETRY_msg_length(imcu_msg_buf);
+      uint8_t *msg = DL_IMCU_TELEMETRY_msg(imcu_msg_buf);
+      telemetry_intermcu_on_msg(0, msg, size);
+      break;
+    }
+
+#endif
+
 #if IMCU_GPS
     case DL_IMCU_REMOTE_GPS: {
       uint32_t now_ts = get_sys_time_usec();

@@ -31,6 +31,7 @@
 #include "pprzlink/short_transport.h"
 #include "generated/periodic_telemetry.h"
 #include "subsystems/datalink/telemetry.h"
+#include "subsystems/datalink/datalink.h"
 
 /* Default maximum telemetry message size */
 #ifndef TELEMERTY_INTERMCU_MSG_SIZE
@@ -80,9 +81,9 @@ void telemetry_intermcu_event(void)
 
 }
 
-void telemetry_intermcu_on_msg(uint8_t msg_id __attribute__((unused)), uint8_t* msg __attribute__((unused)), uint8_t size __attribute__((unused)))
+void telemetry_intermcu_on_msg(uint8_t msg_id __attribute__((unused)), uint8_t* msg, uint8_t size __attribute__((unused)))
 {
-
+  DlCheckAndParse(&telemetry_intermcu.dev, &telemetry_intermcu.trans.trans_tx, msg);
 }
 
 static bool telemetry_intermcu_check_free_space(struct telemetry_intermcu_t *p, long *fd __attribute__((unused)), uint16_t len)
