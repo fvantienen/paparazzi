@@ -6,6 +6,7 @@
 #include "guidance/guidance_hybrid.h"
 #include "guidance/guidance_v.h"
 #include "guidance/guidance_h.h"
+#include "subsystems/electrical.h"
 
 // States
 #define AircraftIsBooting()  LessThan(nav_block,4)
@@ -177,19 +178,21 @@
       <stay wp="LANDING" vmode="climb" climb="land_cmd.z"/>
     </block>
 
-    <block name="land">
-      <go forward="false" wp="TD"/>
-    </block>
-    <block name="flare">
-      <exception cond="NavDetectGround()" deroute="HoldingPoint"/>
-      <exception cond="!nav_is_in_flight()" deroute="landed"/>
-      <call fun="NavStartDetectGround()"/>
-      <stay climb="nav_descend_vspeed" vmode="climb" wp="TD"/>
-    </block>
     <block name="landed">
       <call fun="NavKillThrottle()"/>
       <call fun="nav_throttle_curve_set(0)" loop="false"/>
-      <attitude pitch="0" roll="0" throttle="0" until="FALSE" vmode="throttle"/>
+      <attitude pitch="0" roll="0" throttle="0" until="stage_time>2" vmode="throttle"/>
+    </block>
+    <block name="inert">
+      <call fun="NavKillThrottle()"/>
+      <call fun="NavOpaDisarm(true)"/>
+      <attitude pitch="0" roll="0" throttle="0" until="stage_time>2" vmode="throttle"/>
+      <attitude pitch="0" roll="0" throttle="0" until="electrical.vsupply>220" vmode="throttle"/>
+    </block>
+    <block name="wait_minute">
+      <call fun="NavKillThrottle()"/>
+      <attitude pitch="0" roll="0" throttle="0" until="stage_time>60" vmode="throttle"/>
+      <deroute block="Start Engine"/>
     </block>
     <block name="GpsLoss">
       <exception cond="2.0 > stateGetPositionEnu_f()->z" deroute="landed"/>
