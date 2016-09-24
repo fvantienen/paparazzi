@@ -110,6 +110,7 @@ extern bool nav_set_failsafe(void);
 
 #define NavKillThrottle() ({ if (autopilot_mode == AP_MODE_NAV) { autopilot_set_motors_on(FALSE); } false; })
 #define NavResurrect() ({ if (autopilot_mode == AP_MODE_NAV) { autopilot_set_motors_on(TRUE); } false; })
+#define NavOpaDisarm(_true_or_false) ({ opa_controller_ap_disarm(_true_or_false); false; })
 
 
 #define NavSetGroundReferenceHere() ({ nav_reset_reference(); false; })
