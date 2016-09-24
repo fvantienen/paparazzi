@@ -42,7 +42,7 @@
     <module name="nav" type="heli_spinup"/>
   </modules>
   <exceptions>
-    <exception cond="(!InsideSafety(GetPosX(), GetPosY()) && !(nav_block == IndexOfBlock('Wait GPS')) && !(nav_block == IndexOfBlock('Geo init')) )" deroute="HoldingPoint"/>
+    <exception cond="(!InsideSafety(GetPosX(), GetPosY()) && !(nav_block == IndexOfBlock('Wait GPS')) && !(nav_block == IndexOfBlock('Geo init')) && !(nav_block == IndexOfBlock('SLAMDunk init')) )" deroute="HoldingPoint"/>
     <exception cond="(!GpsFixValid() &&
       !(nav_block == IndexOfBlock('Hold Attitude')) &&
       !(nav_block == IndexOfBlock('Takeoff')) &&
@@ -63,10 +63,8 @@
       <call fun="NavSetAltitudeReferenceHere()"/>
       <call fun="nav_set_heading_current()"/>
     </block>
-    <block name="Delft tah Kopter SLAM dunk init">
-      <while cond="!getKalamosReady()">
-        <manual pitch="0" roll="0" throttle="0" vmode="throttle" yaw="0"/>
-      </while>
+    <block name="SLAMDunk init">
+      <manual pitch="0" roll="0" throttle="0" vmode="throttle" until="getKalamosReady()" yaw="0"/>
       <call fun="enableKalamosAttCalib(true)" until="stage_time>15" />
       <call fun="enableKalamosAttCalib(false)" loop="false"/>
       <set var="opa_controller_vision_power" value="false"/>
