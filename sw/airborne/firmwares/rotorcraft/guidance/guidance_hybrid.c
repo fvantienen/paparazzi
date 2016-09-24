@@ -279,6 +279,44 @@ void guidance_hybrid_airspeed_to_attitude(struct Int32Eulers *ypr_sp)
 /// Convert a required airspeed to a certain attitude for the Quadshot
 void guidance_hybrid_attitude_outback(struct Int32Eulers *ypr_sp)
 {
+  //speed NED in cm/s to m/s
+  float north = ((float)gps.ned_vel.x) / 100.0f;
+  float east =  ((float)gps.ned_vel.y) / 100.0f;
+
+  // e.g. NN-E  n=4, e=3
+
+  float cosh = cosf(ANGLE_FLOAT_OF_BFP(nav_heading));
+  float sinh = sinf(ANGLE_FLOAT_OF_BFP(nav_heading));
+
+  // e.g. good cos = 4/5 sin = 3/5
+
+
+  float to_wp         =   north * cosh + east * sinh;
+  float perpendicular = - north * sinh + east * cosh;
+
+  // When error is so large that we fly away from the waypoint, turn maximum
+  // Solves: when flying perfectly away from waypoint, then perpendicular = 0
+  if (to_wp < 0)
+  {
+    if (perpendicular > 0)
+      perpendicular = 20.0f;
+    else
+      perpendicular = -20.0f;
+  }
+
+  // towp = 4*4/5 + 3 * 3/5 = 16+9 / 5 = 5
+  // perpendic = -4 * 3/5 + 3 * 4/5 = 0/5 = 0
+
+  // e.g. fly north=5, east=0 en we moeten nog steeds 4/3 NNE
+
+  // towp = 5*4/5 + 0 * 3/5 = 4
+  // perpendicular = -5*3/5 + 0*4/5 = -3 : we vliegen teveel naar links
+
+  // linearize atan (angle less than 45 degree
+  float heading_diff = - perpendicular / 20.0f;  // m/s
+
+/*
+  Even proberen vervangen: als het niet werkt moet dit weer aan.
   float meas_course = ((float) gps.course)/1e7;
   FLOAT_ANGLE_NORMALIZE(meas_course);
 
@@ -290,7 +328,7 @@ void guidance_hybrid_attitude_outback(struct Int32Eulers *ypr_sp)
     heading_diff = ANGLE_FLOAT_OF_BFP(nav_heading) - meas_course;
   }
   FLOAT_ANGLE_NORMALIZE(heading_diff);
-
+*/
   //only for debugging
   heading_diff_disp = (int32_t)(heading_diff / 3.14 * 180.0);
 
