@@ -186,6 +186,16 @@
     <define name="JSBSIM_MODEL" value="simple_x_quad_ccw" type="string"/>
     <define name="SENSORS_PARAMS" value="nps_sensors_params_default.h" type="string"/>
   </section>
+  
+  <section name="SIM_OUTBACK">
+    <define name="nav_throttle_curve_set(X)" value="{}" />
+    <define name="nav_heli_spinup_setup(X,Y)" value="1" />
+    <define name="nav_heli_spinup_run(X)" value="1" />
+    <define name="OUTBACK_MAX_HOVER_THROTTLE" value="1.0" />
+    <define name="OUTBACK_MIN_HOVER_THROTTLE" value="0.0" />
+    <define name="OUTBACK_GROUND_PITCH_CONTROL_GAIN" value="0" />
+    <define name="GUIDANCE_H_TOTAL_MAX_BANK" value="30" unit="deg" />
+  </section>
 
   <section name="AUTOPILOT">
     <define name="MODE_STARTUP" value="AP_MODE_NAV"/>
