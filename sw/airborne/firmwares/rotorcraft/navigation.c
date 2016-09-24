@@ -85,7 +85,7 @@ int32_t nav_heading;
 int32_t nav_cmd_roll, nav_cmd_pitch, nav_cmd_yaw;
 float nav_radius;
 float nav_climb_vspeed, nav_descend_vspeed;
-float line_following_dist = 50.0;
+float line_following_dist = NAVIGATION_LINE_FOLLOWING_DIST;
 
 /** default nav_circle_radius in meters */
 #ifndef DEFAULT_CIRCLE_RADIUS
