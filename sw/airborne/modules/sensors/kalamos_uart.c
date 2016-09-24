@@ -60,13 +60,12 @@ struct FloatVect3 land_cmd;
 #if PERIODIC_TELEMETRY
 #include "subsystems/datalink/telemetry.h"
 
-static void kalamos_raw_downlink(struct transport_tx *trans, struct link_device *dev)
-{
-  pprz_msg_send_DEBUG(trans, dev, AC_ID, sizeof(struct Kalamos2PPRZPackage), (unsigned char *) &k2p_package);
-}
-
 static void send_kalamos(struct transport_tx *trans, struct link_device *dev)
 {
+
+  //fix rotated orientation of camera in DelftaCopter
+  float ggmphi = -k2p_package.att_calib_theta;
+  float ggmtheta = k2p_package.att_calib_phi;
   pprz_msg_send_KALAMOS(trans, dev, AC_ID,
                         &k2p_package.status,
                         &k2p_package.height,
@@ -79,8 +78,8 @@ static void send_kalamos(struct transport_tx *trans, struct link_device *dev)
                         &k2p_package.land_enu_y,
                         &k2p_package.flow_x,
                         &k2p_package.flow_y,
-                        &k2p_package.att_calib_phi,
-                        &k2p_package.att_calib_theta);
+                        &ggmphi,
+                        &ggmtheta);
 }
 #endif
 
@@ -91,7 +90,6 @@ void kalamos_init() {
 
 
 #if PERIODIC_TELEMETRY
-  register_periodic_telemetry(DefaultPeriodic, PPRZ_MSG_ID_DEBUG, kalamos_raw_downlink);
   register_periodic_telemetry(DefaultPeriodic, PPRZ_MSG_ID_KALAMOS, send_kalamos);
 #endif
 
@@ -213,7 +211,7 @@ void kalamos_periodic() {
 
   struct PPRZ2KalamosPackage p2k_package;
   p2k_package.phi = attE->theta;
-  p2k_package.theta = attE->phi;
+  p2k_package.theta = -attE->phi;
   p2k_package.psi = attE->psi;
   p2k_package.qi = att->qi;
   p2k_package.qx = att->qx;
