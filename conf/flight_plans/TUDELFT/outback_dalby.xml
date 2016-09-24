@@ -48,6 +48,7 @@
       !(nav_block == IndexOfBlock('Takeoff')) &&
       !(nav_block == IndexOfBlock('landed')) &&
       !(nav_block == IndexOfBlock('failsafe')) &&
+      !(nav_block == IndexOfBlock('GpsLoss')) &&
       (autopilot_in_flight == true) )" deroute="GpsLoss"/>
   </exceptions>
   <blocks>
@@ -84,6 +85,7 @@
       <manual pitch="0" roll="0" throttle="0" until="stage_time>6" vmode="throttle" yaw="0"/>
     </block>
     <block name="Hold Attitude">
+      <exception cond="1200 > throttle_curve.rpm_meas" deroute="Start Engine"/>
       <call fun="nav_throttle_curve_set(1)" loop="false"/>
       <call fun="nav_set_heading_current()"/>
       <manual pitch="0" roll="0" throttle="0" until="stage_time>1" vmode="throttle" yaw="0"/>
