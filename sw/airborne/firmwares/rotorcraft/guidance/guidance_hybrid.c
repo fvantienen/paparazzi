@@ -94,7 +94,7 @@ static void send_hybrid_guidance(struct transport_tx *trans, struct link_device 
   int32_t dperpen_show = POS_BFP_OF_REAL(dperpendicular);
   int32_t perpen_show = POS_BFP_OF_REAL(perpendicular);
   int32_t perpen_prev_show = POS_BFP_OF_REAL(perpendicular_prev);
-  struct NedCoor_i *pos = stateGetPositionNed_i();
+  //struct NedCoor_i *pos = stateGetPositionNed_i();
   struct NedCoor_i *speed = stateGetSpeedNed_i();
   pprz_msg_send_HYBRID_GUIDANCE(trans, dev, AC_ID,
                                 &dperpen_show, &perpen_show,
