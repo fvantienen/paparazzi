@@ -83,18 +83,21 @@ struct NedCoor_i ned_gps_vel;
 float dperpendicular = 0.0;
 float perpendicular_prev = 0.0;
 float perpen_dgain = 0.0;
+float perpendicular = 0.0;
 
 #if PERIODIC_TELEMETRY
 #include "subsystems/datalink/telemetry.h"
 
 static void send_hybrid_guidance(struct transport_tx *trans, struct link_device *dev)
 {
-  int32_t dperpen_show = dperpendicular;
+  int32_t dperpen_show = POS_BFP_OF_REAL(dperpendicular);
+  int32_t perpen_show = POS_BFP_OF_REAL(perpendicular);
+  int32_t perpen_prev_show = POS_BFP_OF_REAL(perpendicular_prev);
   struct NedCoor_i *pos = stateGetPositionNed_i();
   struct NedCoor_i *speed = stateGetSpeedNed_i();
   pprz_msg_send_HYBRID_GUIDANCE(trans, dev, AC_ID,
-                                &dperpen_show, &(pos->y),
-                                &(speed->x), &(speed->y),
+                                &dperpen_show, &perpen_show,
+                                &perpen_prev_show, &(speed->y),
                                 &wind_estimate.x, &wind_estimate.y,
                                 &guidance_h_pos_err.x,
                                 &guidance_h_pos_err.y,
@@ -301,7 +304,7 @@ void guidance_hybrid_attitude_outback(struct Int32Eulers *ypr_sp)
   // e.g. good cos = 4/5 sin = 3/5
 
   float to_wp         =   north * cosh + east * sinh;
-  float perpendicular = - north * sinh + east * cosh;
+  perpendicular = - north * sinh + east * cosh;
 
   dperpendicular = (perpendicular - perpendicular_prev)*PERIODIC_FREQUENCY;
   perpendicular_prev = perpendicular;
