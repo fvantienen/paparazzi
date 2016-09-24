@@ -32,6 +32,7 @@
       <message name="STAB_ATTITUDE_INT"      period="0.5"/>
       <message name="GUIDANCE_H_INT"         period="2.0"/>
       <message name="KALAMOS"                period="0.5"/>
+      <message name="SIDESLIP"               period="0.5"/>
     </mode>
 
     <mode name="ppm">
