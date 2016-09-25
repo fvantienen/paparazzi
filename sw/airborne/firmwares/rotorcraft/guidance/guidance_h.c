@@ -487,6 +487,8 @@ void guidance_h_run(bool  in_flight)
           /* set nav_heading to current heading*/
           nav_heading = stabilization_attitude_get_heading_i();
           INT32_ANGLE_NORMALIZE(nav_heading);
+          //reset roll (fwd yaw) integrator
+          stabilization_att_sum_err_quat.qx = 0;
         } else if(outback_hybrid_mode == HB_FORWARD) {
           INT32_VECT2_NED_OF_ENU(guidance_h.sp.pos, navigation_target);
           guidance_hybrid_run();
