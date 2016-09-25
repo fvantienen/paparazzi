@@ -329,8 +329,8 @@ bool nav_approaching_from(struct EnuCoor_i *wp, struct EnuCoor_i *from, int16_t 
   /* compute distance of estimated/current pos to target wp
    * distance with half metric precision (6.25 cm)
    */
-  struct FloatVect2 diff_f = {POS_FLOAT_OF_BFP(diff.x), POS_FLOAT_OF_BFP(diff.y)};
-  dist_to_point = float_vect2_norm(&diff_f);
+  INT32_VECT2_RSHIFT(diff, diff, INT32_POS_FRAC / 2);
+  dist_to_point = int32_vect2_norm(&diff);
 
   /* return TRUE if we have arrived */
   if (dist_to_point < BFP_OF_REAL(ARRIVED_AT_WAYPOINT, INT32_POS_FRAC / 2)) {
@@ -343,7 +343,7 @@ bool nav_approaching_from(struct EnuCoor_i *wp, struct EnuCoor_i *from, int16_t 
     struct Int32Vect2 from_diff;
     VECT2_DIFF(from_diff, *wp, *from);
     INT32_VECT2_RSHIFT(from_diff, from_diff, INT32_POS_FRAC / 2);
-    return (diff_f.x * from_diff.x + diff_f.y * from_diff.y < 0);
+    return (diff.x * from_diff.x + diff.y * from_diff.y < 0);
   }
 
   return false;
@@ -356,16 +356,16 @@ bool nav_check_wp_time(struct EnuCoor_i *wp, uint16_t stay_time)
   static uint16_t wp_entry_time = 0;
   static bool wp_reached = false;
   static struct EnuCoor_i wp_last = { 0, 0, 0 };
-  struct FloatVect2 diff_f;
+  struct Int32Vect2 diff;
 
   if ((wp_last.x != wp->x) || (wp_last.y != wp->y)) {
     wp_reached = false;
     wp_last = *wp;
   }
-
-  VECT2_DIFF(diff_f, *wp, *stateGetPositionEnu_f());
-  dist_to_point = float_vect2_norm(&diff_f);
-  if (dist_to_point < ARRIVED_AT_WAYPOINT) {
+  VECT2_DIFF(diff, *wp, *stateGetPositionEnu_i());
+  INT32_VECT2_RSHIFT(diff, diff, INT32_POS_FRAC / 2);
+  dist_to_point = int32_vect2_norm(&diff);
+  if (dist_to_point < BFP_OF_REAL(ARRIVED_AT_WAYPOINT, INT32_POS_FRAC / 2)) {
     if (!wp_reached) {
       wp_reached = true;
       wp_entry_time = autopilot_flight_time;
