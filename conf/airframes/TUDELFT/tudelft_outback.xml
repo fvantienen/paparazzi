@@ -204,7 +204,7 @@
     <define name="OUTBACK_Q_ON_P_COUPLING" value="0.0"/>
     <define name="OUTBACK_GROUND_PITCH_CONTROL_GAIN" value="70000.0"/>
     <define name="OUTBACK_MIN_HOVER_THROTTLE" value="4000"/>
-    <define name="OUTBACK_MAX_HOVER_THROTTLE" value="7700"/>
+    <define name="OUTBACK_MAX_HOVER_THROTTLE" value="8700"/>
     <define name="MAX_TURN_BANK" value="25.0"/>
     <define name="ARRIVED_AT_WAYPOINT" value="50"/>
     <define name="NO_GPS_LOST_WITH_RC_VALID" value="TRUE"/>
