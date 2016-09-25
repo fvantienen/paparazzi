@@ -209,6 +209,7 @@
     <define name="ARRIVED_AT_WAYPOINT" value="50"/>
     <define name="NO_GPS_LOST_WITH_RC_VALID" value="TRUE"/>
     <define name="NAVIGATION_LINE_FOLLOWING_DIST" value="85.0"/>
+    <define name="USE_AIRSPEED_AIR_DATA" value="TRUE"/>
   </section>
 
   <section name="FORWARD">
