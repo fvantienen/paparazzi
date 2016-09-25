@@ -61,6 +61,8 @@
       <module name="gps_ubx_ucenter"/>
       <module name="heli_throttle_curve"/>
       <define name="ROTORCRAFT_IS_HELI" value="TRUE"/>
+
+      <define name="RC_LOST_MODE" value="AP_MODE_NAV" />
     </target>
 
     <!-- FBW (Flight by Wire) part of the board -->
