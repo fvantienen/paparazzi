@@ -7,7 +7,7 @@ import math
 import pynotify
 import socket
 
-UDP_IP = "192.168.127.255"
+UDP_IP = "127.0.0.1"
 UDP_PORT = 32000
 
 print "UDP target IP:", UDP_IP
@@ -23,12 +23,30 @@ from pprzlink.ivy import IvyMessagesInterface
 WIDTH = 300
 
 
+class ThumbNailFromPayload:
+
+    def add_payload(self, lst):
+        self.pay = lst
+        #values = bytearray(lst)
+        print('PAYLOAD', lst)
+
+    def __init__(self):
+
+        self.w = WIDTH
+     
+
+
 class PayloadDecoderFrame(wx.Frame):
 
     def message_recv(self, ac_id, msg):
         if msg.name == "PAYLOAD":
-            print('PAYLOAD', msg)
-            sock.sendto(msg, (UDP_IP, UDP_PORT))
+            pld = msg.get_field(0).split(",")
+            b = []
+            for p in pld:
+                b.append(int(p))
+            self.thumb.add_payload(b)
+            self.data = b
+            sock.sendto(bytearray(b), (UDP_IP, UDP_PORT))
             wx.CallAfter(self.update)
 
     def update(self):
@@ -53,18 +71,22 @@ class PayloadDecoderFrame(wx.Frame):
 
         # Background
         dc.SetBrush(wx.Brush(wx.Colour(0,0,0), wx.TRANSPARENT))
-        dc.DrawCircle(w/2,w/2,w/2-1)
+        #dc.DrawCircle(w/2,w/2,w/2-1)
         font = wx.Font(11, wx.ROMAN, wx.BOLD, wx.NORMAL)
         dc.SetFont(font)
         dc.DrawText("PAYLOAD",2,2)
+        dc.DrawText(str(self.data),2,20)
 
-        c = wx.Colour(0,0,0)
-        dc.SetBrush(wx.Brush(c, wx.SOLID))
-        dc.DrawCircle(int(w/2),int(w/2),10)
+        #c = wx.Colour(0,0,0)
+        #dc.SetBrush(wx.Brush(c, wx.SOLID))
+        #dc.DrawCircle(int(w/2),int(w/2),10)
 
 
 
     def __init__(self):
+
+        self.thumb = ThumbNailFromPayload()
+        self.data = [];
 
         self.w = WIDTH
         self.h = WIDTH
