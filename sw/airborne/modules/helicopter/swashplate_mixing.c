@@ -85,7 +85,7 @@ void swashplate_mixing_run(pprz_t in_cmd[])
   int16_t cmd_roll;
   int16_t cmd_pitch;
 
-  float compensation_angle_p = 0.733;//(radio_control.values[8]+9600.0)/(2*9600.0)*1.2472;
+  float compensation_angle_p = 0.9042;//(radio_control.values[8]+9600.0)/(2*9600.0)*1.2472;
   float compensation_angle_q = 0;//(radio_control.values[9]+9600.0)/(2*9600.0)*1.0472;
   //float compensation_angle = 0.733;
 
