@@ -342,7 +342,7 @@ bool nav_approaching_from(struct EnuCoor_i *wp, struct EnuCoor_i *from, int16_t 
     /* return TRUE if normal line at the end of the segment is crossed */
     struct Int32Vect2 from_diff;
     VECT2_DIFF(from_diff, *wp, *from);
-    INT32_VECT2_RSHIFT(from_diff, from_diff, INT32_POS_FRAC / 2);
+    struct FloatVect2 from_diff_f = {POS_FLOAT_OF_BFP(from_diff_f.x), POS_FLOAT_OF_BFP(from_diff_f.y)};
     return (diff_f.x * from_diff.x + diff_f.y * from_diff.y < 0);
   }
 
