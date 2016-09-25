@@ -104,6 +104,8 @@ void kalamos_init() {
 
 static int timeoutcount = 0;
 
+static int payload_package_per_sixtieth_second = 0;
+
 /* Parse the InterMCU message */
 static inline void kalamos_parse_msg(void)
 {
@@ -112,6 +114,26 @@ static inline void kalamos_parse_msg(void)
   uint8_t msg_id = mp_msg_buf[1];
 
   switch (msg_id) {
+
+  /* Received a part of a thumbnail: forward to 900MHz and irridium... */
+  case DL_IMCU_PAYLOAD:
+    payload_package_per_sixtieth_second++;
+
+    // Do not overflow our datalinks
+    if (payload_package_per_sixtieth_second < 2)
+    {
+      ////////////////////////////////////
+      // Forward to 900MHz (or XBee)
+      uint8_t size = DL_IMCU_PAYLOAD_data_length(mp_msg_buf);
+      uint8_t *data = DL_IMCU_PAYLOAD_data(mp_msg_buf);
+
+      DOWNLINK_SEND_PAYLOAD(DefaultChannel, DefaultDevice, size, data);
+
+      ////////////////////////////////////
+      // Forward to FBW with IRRIDIUM
+
+    }
+    break;
 
   /* Got a kalamos message */
   case DL_IMCU_DEBUG: {
@@ -203,6 +225,7 @@ void kalamos_event() {
 
 void kalamos_periodic() {
 
+  payload_package_per_sixtieth_second = 0;
 
   struct FloatEulers *attE = stateGetNedToBodyEulers_f();
   struct FloatQuat *att = stateGetNedToBodyQuat_f();
