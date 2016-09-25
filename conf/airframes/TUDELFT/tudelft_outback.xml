@@ -58,6 +58,7 @@
       </module>
       <module name="gps_ubx_ucenter"/>
       <module name="heli_throttle_curve"/>
+      <module name="sideslip"/>
       <define name="ROTORCRAFT_IS_HELI" value="TRUE"/>
 
       <define name="RC_LOST_MODE" value="AP_MODE_NAV" />
