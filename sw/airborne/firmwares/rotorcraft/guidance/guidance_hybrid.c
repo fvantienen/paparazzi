@@ -59,6 +59,7 @@ float max_turn_bank;
 float turn_bank_gain;
 float vertical_gain = OUTBACK_FORWARD_VERTICAL_GAIN;
 float vertical_dgain = OUTBACK_FORWARD_VERTICAL_DGAIN;
+float vertical_pitch_of_roll = OUTBACK_FORWARD_PITCH_OF_ROLL;
 int32_t nominal_forward_thrust = NOMINAL_FORWARD_THRUST;
 
 // Private variables
@@ -386,6 +387,9 @@ void guidance_hybrid_attitude_outback(struct Int32Eulers *ypr_sp)
 
   // go back to angle_frac
   ypr_sp->psi = high_res_psi >> (INT32_ANGLE_HIGH_RES_FRAC - INT32_ANGLE_FRAC);
+
+  float pitch_up_from_roll = vertical_pitch_of_roll * fabs(ANGLE_REAL_OF_BFP(ypr_sp->phi)); // radians
+  ypr_sp->theta = ypr_sp->theta + ANGLE_BFP_OF_REAL(pitch_up_from_roll);
   ypr_sp->theta = ypr_sp->theta + v_control_pitch;
 }
 

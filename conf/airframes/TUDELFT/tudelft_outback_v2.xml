@@ -222,6 +222,7 @@
     <define name="OUTBACK_TURN_BANK_GAIN" value="0.6"/>
     <define name="OUTBACK_FORWARD_VERTICAL_DGAIN" value="0.04"/>
     <define name="NOMINAL_FORWARD_THRUST" value="7000"/>
+    <define name="OUTBACK_FORWARD_PITCH_OF_ROLL" value="0.0"/>
     <define name="OUTBACK_GUIDANCE" value="TRUE"/>
     <define name="OUTBACK_LOW_AIRSPEED_PITCH_GAIN" value="0.0"/>
     <define name="OUTBACK_LOW_AIRSPEED" value="20.0"/>
