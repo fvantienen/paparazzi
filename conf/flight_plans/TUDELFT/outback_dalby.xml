@@ -33,7 +33,7 @@
     <waypoint name="CIRCLE" x="0.0" y="-50.0"/>
   </waypoints>
   <sectors>
-    <sector color="red" name="Safety">
+    <sector color="red" name="Safety" type="dynamic">
       <corner name="_s1"/>
       <corner name="_s2"/>
       <corner name="_s3"/>
@@ -52,7 +52,9 @@
       !(nav_block == IndexOfBlock('failsafe')) &&
       !(nav_block == IndexOfBlock('GpsLoss')) &&
       (autopilot_in_flight == true) )" deroute="GpsLoss"/>
-    <exception cond="((outback_hybrid_mode == HB_FORWARD) && (14.0 > stateGetAirspeed_f()) )" deroute="Hover here"/>
+    <exception cond="((outback_hybrid_mode == HB_FORWARD) &&
+      (14.0 > stateGetAirspeed_f()) &&
+      has_transitioned)" deroute="Hover here"/>
   </exceptions>
   <blocks>
     <block name="Wait GPS">

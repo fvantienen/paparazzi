@@ -92,6 +92,8 @@ struct Int32Vect2 guidance_h_trim_att_integrator;
 float wind_heading = 0.0;
 float wind_heading_deg = 0.0;
 bool reset_wind_heading = false;
+int32_t transition_time = 0;
+bool has_transitioned = false;
 
 /** horizontal guidance command.
  * In north/east with #INT32_ANGLE_FRAC
@@ -473,6 +475,11 @@ void guidance_h_run(bool  in_flight)
           transition_att_sp.theta = transition_theta_offset;
           transition_att_sp.psi = last_hover_heading;
           stabilization_attitude_set_rpy_setpoint_i(&transition_att_sp);
+
+          //reset just transitioned timer
+          transition_time = 0;
+          has_transitioned = false;
+
         } else if((outback_hybrid_mode == HB_HOVER) && (transition_percentage > 0)) {
           //transition to hover
           transition_run(false);
@@ -493,8 +500,19 @@ void guidance_h_run(bool  in_flight)
           INT32_VECT2_NED_OF_ENU(guidance_h.sp.pos, navigation_target);
           guidance_hybrid_run();
           last_forward_heading = guidance_hybrid_ypr_sp.psi;
+
+          // need 3 seconds in forward flight to get speed
+          if(transition_time < 3*PERIODIC_FREQUENCY) {
+            transition_time += 1;
+          } else {
+            has_transitioned = true;
+          }
         }
         else {
+          //reset just transitioned timer
+          transition_time = 0;
+          has_transitioned = false;
+
           INT32_VECT2_NED_OF_ENU(guidance_h.sp.pos, navigation_carrot);
 
           guidance_h_update_reference();

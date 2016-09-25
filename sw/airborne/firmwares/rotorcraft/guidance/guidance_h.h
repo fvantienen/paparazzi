@@ -109,6 +109,7 @@ extern int32_t transition_theta_offset;
 extern float ground_pitch_control_gain;
 extern float wind_heading_deg;
 extern bool reset_wind_heading;
+extern bool has_transitioned;
 
 extern void guidance_h_init(void);
 extern void guidance_h_mode_changed(uint8_t new_mode);
