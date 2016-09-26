@@ -26,6 +26,7 @@
 
 #include "modules/sensors/kalamos_uart.h"
 
+#include "modules/telemetry/telemetry_intermcu_ap.h"
 #include "pprzlink/pprz_transport.h"
 #include "pprzlink/intermcu_msg.h"
 #include "mcu_periph/uart.h"
@@ -131,6 +132,7 @@ static inline void kalamos_parse_msg(void)
 
       ////////////////////////////////////
       // Forward to FBW with IRRIDIUM
+      pprz_msg_send_PAYLOAD(&(telemetry_intermcu.trans.trans_tx), &telemetry_intermcu.dev, AC_ID, size, data);
 
     }
     break;
