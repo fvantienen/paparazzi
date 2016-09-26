@@ -8,6 +8,9 @@
 #include "guidance/guidance_h.h"
 #include "subsystems/electrical.h"
 #include "guidance/guidance_indi.h"
+#include "subsystems/navigation/waypoints.h"
+#include "subsystems/datalink/datalink.h"
+#include "modules/sensors/temp_adc.h"
 // States
 #define AircraftIsBooting()  LessThan(nav_block,4)
 </header>
@@ -47,7 +50,23 @@
       !(IndexOfBlock('Takeoff') > nav_block) &&
       !(nav_block >= IndexOfBlock('landed')) &&
       !(nav_block == IndexOfBlock('GpsLoss')) &&
+      !(nav_block == IndexOfBlock('Descent_noGPS')) &&
+      !(nav_block == IndexOfBlock('Descent_slow_noGPS')) &&
+      !(nav_block == IndexOfBlock('landing moment_noGPS')) &&
       (autopilot_in_flight == true) )" deroute="GpsLoss"/>
+    <exception cond="(datalink_time > 60 &&
+      !(IndexOfBlock('Takeoff') > nav_block) &&
+      !(nav_block >= IndexOfBlock('landed')) &&
+      !(nav_block == IndexOfBlock('GpsLoss')) &&
+      (autopilot_in_flight == true) )" deroute="DatalinkLoss"/>
+    <exception cond="(100 > throttle_curve.rpm_meas &&
+      !(IndexOfBlock('Takeoff') > nav_block) &&
+      !(nav_block >= IndexOfBlock('landed')) &&
+      !(nav_block == IndexOfBlock('GpsLoss')) &&
+      !(nav_block == IndexOfBlock('inert')) &&
+      !(nav_block == IndexOfBlock('wait_minute')) &&
+      !(nav_block == IndexOfBlock('failsafe')) &&
+      (autopilot_in_flight == true) )" deroute="failsafe"/>
     <exception cond="((outback_hybrid_mode == HB_FORWARD) &&
       (14.0 > stateGetAirspeed_f()) &&
       has_transitioned &&
@@ -64,7 +83,7 @@
       <while cond="LessThan(NavBlockTime(), 10)"/>
       <call fun="nav_throttle_curve_set(0)" loop="false"/>
       <call fun="NavSetAltitudeReferenceHere()"/>
-      <call fun="nav_set_heading_current()"/>
+      <call fun="nav_set_heading_current()" loop="false"/>
     </block>
     <block name="SLAMDunk init">
       <manual pitch="0" roll="0" throttle="0" until="getKalamosReady()" vmode="throttle" yaw="0"/>
@@ -89,7 +108,7 @@
     <block name="Hold Attitude">
       <exception cond="1200 > throttle_curve.rpm_meas" deroute="Start Engine"/>
       <call fun="nav_throttle_curve_set(1)" loop="false"/>
-      <call fun="nav_set_heading_current()"/>
+      <call fun="nav_set_heading_current()" loop="false"/>
       <manual pitch="0" roll="0" throttle="0" until="stage_time>1" vmode="throttle" yaw="0"/>
     </block>
     <block name="Takeoff" strip_button="Takeoff" strip_icon="takeoff.png">
@@ -99,8 +118,8 @@
     </block>
     <block name="Climb">
       <exception cond="stateGetPositionEnu_f()->z > 20.0" deroute="Standby"/>
-      <call fun="NavSetWaypointHere(WP_CLIMB)"/>
-      <call fun="nav_set_heading_current()"/>
+      <call fun="NavSetWaypointHere(WP_CLIMB)" loop="false"/>
+      <call fun="nav_set_heading_current()" loop="false"/>
       <set value="RadOfDeg(35)" var="guidance_indi_max_bank"/>
       <call fun="GuidanceVSetRef(stateGetPositionNed_i()->z - POS_BFP_OF_REAL(5.0), -SPEED_BFP_OF_REAL(3.0), 0)"/>
       <stay climb="nav_climb_vspeed" vmode="climb" wp="CLIMB"/>
@@ -111,7 +130,7 @@
       <stay wp="STDBY"/>
     </block>
     <block name="Hover here">
-      <call fun="NavSetWaypointHere(WP_HOVER)"/>
+      <call fun="NavSetWaypointHere(WP_HOVER)" loop="false"/>
       <stay wp="HOVER"/>
     </block>
     <block name="line_p1_p2">
@@ -132,20 +151,47 @@
     </block>
     <block name="Descent">
       <exception cond="10.0 > stateGetPositionEnu_f()->z" deroute="Descent_slow"/>
-      <call fun="nav_set_heading_current()"/>
-      <call fun="NavSetWaypointHere(WP_TD)"/>
+      <call fun="nav_set_heading_current()" loop="false"/>
+      <call fun="NavSetWaypointHere(WP_TD)" loop="false"/>
       <call fun="GuidanceVSetRef(stateGetPositionNed_i()->z, 0, 0)"/>
       <stay climb="nav_descend_vspeed" vmode="climb" wp="TD"/>
     </block>
     <block name="Descent_slow">
-      <exception cond="((0.6 + fabs(stateGetNedToBodyEulers_f()->phi)/2) > k2p_package.height) && (k2p_package.height > 0.0) && getKalamosReady()" deroute="landing moment"/>
+      <exception cond="((0.6 + fabs(stateGetNedToBodyEulers_f()->phi)/2) > k2p_package.height ) && (k2p_package.height > 0.0) && getKalamosReady()" deroute="landing moment"/>
+      <exception cond="(fabs(stateGetNedToBodyEulers_f()->theta) > 0.6) && ( 2.5 > k2p_package.height) && (!last_block==IndexOfBlock('Descent_pause'))" deroute="Descent_pause"/>
       <stay climb="-0.5" vmode="climb" wp="TD"/>
+    </block>
+    <block name="Descent_pause">
+      <exception cond="(0.3 > fabs(stateGetNedToBodyEulers_f()->theta) )" deroute="Descent_pause"/>
+      <stay climb="0.0" vmode="climb" wp="TD" until="stage_time>30"/>
+      <deroute block="Descent_slow"/>
     </block>
     <block name="landing moment">
       <call fun="nav_throttle_curve_set(1)" loop="false"/>
       <attitude pitch="0" roll="0" throttle="0.5" until="stage_time>2" vmode="throttle"/>
       <deroute block="landed"/>
     </block>
+
+<block name="Descent_noGPS">
+      <exception cond="10.0 > stateGetPositionEnu_f()->z" deroute="Descent_slow"/>
+      <call fun="nav_set_heading_current()" loop="false"/>
+      <call fun="NavSetWaypointHere(WP_TD)" loop="false"/>
+      <call fun="GuidanceVSetRef(stateGetPositionNed_i()->z, 0, 0)"/>
+      <stay climb="nav_descend_vspeed" vmode="climb" wp="TD"/>
+    </block>
+    <block name="Descent_slow_noGPS">
+      <exception cond="((0.6 + fabs(stateGetNedToBodyEulers_f()->phi)/2) > k2p_package.height) && (k2p_package.height > 0.0) && getKalamosReady()" deroute="landing moment"/>
+      <stay climb="-0.5" vmode="climb" wp="TD"/>
+    </block>
+    <block name="landing moment_noGPS">
+      <call fun="nav_throttle_curve_set(1)" loop="false"/>
+      <attitude pitch="0" roll="0" throttle="0.5" until="stage_time>2" vmode="throttle"/>
+      <deroute block="landed"/>
+    </block>
+
+
+
+
     <block name="HoldPositionOnCircle">
       <call fun="enableKalamosLandingspotSearch(false)" loop="false"/>
       <call fun="NavSetWaypointHere(WP_TD)" loop="false"/>
@@ -184,10 +230,21 @@
     <block name="GpsLoss">
       <exception cond="2.0 > stateGetPositionEnu_f()->z" deroute="landed"/>
       <exception cond="GpsFixValid() && (20.0 > stateGetPositionEnu_f()->z)" deroute="Hover here"/>
-      <exception cond="block_time>20" deroute="failsafe"/>
+      <exception cond="block_time>20" deroute="Descent_noGPS"/>
       <call fun="nav_throttle_curve_set(1)" loop="false"/>
       <attitude climb="nav_descend_vspeed" pitch="0" roll="0" until="GpsFixValid() && (stateGetPositionEnu_f()->z > 20.0)" vmode="climb"/>
       <call fun="ReturnToStartPrevBlock()"/>
+    </block>
+    <block name="DatalinkLoss">
+      <exception cond="block_time>60" deroute="DatalinkLoss_return_to_base"/>
+       <exception cond="temp_c1 > 100" deroute="DatalinkLoss_return_to_base"/>
+      <call fun="NavSetWaypointHere(WP_HOVER)" loop="false"/>
+      <call fun="waypoint_set_alt(WP_HOVER,200)" loop="false"/> <!-- Todo: current height +20, bounded geofence -->
+      <stay wp="HOVER" until="datalink_time > 60"/>
+      <call fun="ReturnToStartPrevBlock()"/>
+    </block>
+    <block name="DatalinkLoss_return_to_base">
+      <go forward="true" from="HOVER" hmode="route" wp="STDBY"/> <!-- Todo: retrace steps back to base -->
     </block>
     <block name="failsafe">
       <call fun="NavSetFailsafe"/>
