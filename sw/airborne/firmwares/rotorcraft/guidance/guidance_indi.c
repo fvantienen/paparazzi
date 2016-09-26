@@ -65,6 +65,8 @@ struct FloatVect3 euler_cmd;
 float filter_omega = 5.0;
 float filter_zeta = 0.80;
 
+float guidance_indi_max_bank = GUIDANCE_H_MAX_BANK;
+
 struct FloatEulers guidance_euler_cmd;
 
 void guidance_indi_enter(void) {
@@ -123,8 +125,8 @@ void guidance_indi_run(bool in_flight, int32_t heading) {
   guidance_euler_cmd.psi = 0;//stateGetNedToBodyEulers_f()->psi;
 
   //Bound euler angles to prevent flipping and keep upright
-  Bound(guidance_euler_cmd.phi, -GUIDANCE_H_MAX_BANK, GUIDANCE_H_MAX_BANK);
-  Bound(guidance_euler_cmd.theta, -GUIDANCE_H_MAX_BANK, GUIDANCE_H_MAX_BANK);
+  Bound(guidance_euler_cmd.phi, -guidance_indi_max_bank, guidance_indi_max_bank);
+  Bound(guidance_euler_cmd.theta, -guidance_indi_max_bank, guidance_indi_max_bank);
 
   stabilization_attitude_set_setpoint_rp_quat_f(in_flight, heading);
 

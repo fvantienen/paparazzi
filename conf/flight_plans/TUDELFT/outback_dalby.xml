@@ -7,6 +7,7 @@
 #include "guidance/guidance_v.h"
 #include "guidance/guidance_h.h"
 #include "subsystems/electrical.h"
+#include "guidance/guidance_indi.h"
 
 // States
 #define AircraftIsBooting()  LessThan(nav_block,4)
@@ -32,7 +33,7 @@
     <waypoint name="CIRCLE" x="0.0" y="-50.0"/>
   </waypoints>
   <sectors>
-    <sector color="red" name="Safety">
+    <sector color="red" name="Safety" type="dynamic">
       <corner name="_s1"/>
       <corner name="_s2"/>
       <corner name="_s3"/>
@@ -51,6 +52,9 @@
       !(nav_block == IndexOfBlock('failsafe')) &&
       !(nav_block == IndexOfBlock('GpsLoss')) &&
       (autopilot_in_flight == true) )" deroute="GpsLoss"/>
+    <exception cond="((outback_hybrid_mode == HB_FORWARD) &&
+      (14.0 > stateGetAirspeed_f()) &&
+      has_transitioned)" deroute="Hover here"/>
   </exceptions>
   <blocks>
     <block name="Wait GPS">
@@ -100,11 +104,13 @@
       <exception cond="stateGetPositionEnu_f()->z > 20.0" deroute="Standby"/>
       <call fun="NavSetWaypointHere(WP_CLIMB)"/>
       <call fun="nav_set_heading_current()"/>
+      <set var="guidance_indi_max_bank" value="RadOfDeg(35)"/>
       <call fun="GuidanceVSetRef(stateGetPositionNed_i()->z - POS_BFP_OF_REAL(5.0), -SPEED_BFP_OF_REAL(3.0), 0)"/>
       <stay climb="nav_climb_vspeed" vmode="climb" wp="CLIMB"/>
     </block>
     <block name="Standby" strip_button="Standby" strip_icon="home.png">
       <set var="opa_controller_vision_power" value="true"/>
+      <set var="guidance_indi_max_bank" value="GUIDANCE_H_MAX_BANK"/>
       <stay wp="STDBY"/>
     </block>
     <block name="Hover here">

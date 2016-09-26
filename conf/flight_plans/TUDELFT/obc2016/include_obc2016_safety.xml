@@ -3,7 +3,7 @@
 <procedure>
 
   <sectors>
-    <sector name="MissionBoundary" color="yellow">
+    <sector name="MissionBoundary" color="yellow" type="dynamic">
       <corner name="_MB1"/>
       <corner name="_MB2"/>
       <corner name="_MB3"/>

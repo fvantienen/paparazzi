@@ -550,18 +550,27 @@ void guidance_hybrid_vertical_quadshot(void)
   }
 }
 
+#define OUTBACK_MIN_FWD_PITCH -15.0
+#define OUTBACK_MAX_FWD_PITCH 10.0
+
 void guidance_hybrid_vertical_simple(void)
 {
   int32_t vertical_err = -(guidance_v_z_ref - stateGetPositionNed_i()->z);
   v_control_pitch = ANGLE_BFP_OF_REAL( POS_FLOAT_OF_BFP(vertical_err) * vertical_gain + stateGetSpeedNed_f()->z * vertical_dgain);
 
-  float airspeed = stateGetAirspeed_f();
+  Bound(v_control_pitch, ANGLE_BFP_OF_REAL(RadOfDeg(OUTBACK_MIN_FWD_PITCH)), ANGLE_BFP_OF_REAL(RadOfDeg(OUTBACK_MAX_FWD_PITCH)));
 
+  float airspeed = stateGetAirspeed_f();
   if(airspeed<OUTBACK_LOW_AIRSPEED) {
     v_control_pitch -= ANGLE_BFP_OF_REAL((OUTBACK_LOW_AIRSPEED - airspeed)*RadOfDeg(low_airspeed_pitch_gain));
   }
 
-  Bound(v_control_pitch, ANGLE_BFP_OF_REAL(RadOfDeg(-15.0)), ANGLE_BFP_OF_REAL(RadOfDeg(15.0)));
+  Bound(v_control_pitch, ANGLE_BFP_OF_REAL(RadOfDeg(OUTBACK_MIN_FWD_PITCH)), ANGLE_BFP_OF_REAL(RadOfDeg(OUTBACK_MAX_FWD_PITCH)));
 
   stabilization_cmd[COMMAND_THRUST] = nominal_forward_thrust;
+  // Extra thrust when pitching up
+  if(v_control_pitch > 0) {
+    stabilization_cmd[COMMAND_THRUST] += ANGLE_FLOAT_OF_BFP(v_control_pitch)/M_PI*180.0*100.0;
+  }
+  Bound(stabilization_cmd[COMMAND_THRUST], 0, 9600);
 }

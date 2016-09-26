@@ -200,15 +200,16 @@
     <define name="NAV_DESCEND_VSPEED" value="-1.5"/>
     <define name="NO_RC_THRUST_LIMIT" value="TRUE"/>
     <define name="MilliAmpereOfAdc(_adc)" value="(DefaultMilliAmpereOfAdc(_adc) + 417)"/>
-    <define name="OUTBACK_P_ON_Q_COUPLING" value="6.0"/>
+    <define name="OUTBACK_P_ON_Q_COUPLING" value="0.0"/>
     <define name="OUTBACK_Q_ON_P_COUPLING" value="0.0"/>
     <define name="OUTBACK_GROUND_PITCH_CONTROL_GAIN" value="70000.0"/>
     <define name="OUTBACK_MIN_HOVER_THROTTLE" value="4000"/>
-    <define name="OUTBACK_MAX_HOVER_THROTTLE" value="7700"/>
+    <define name="OUTBACK_MAX_HOVER_THROTTLE" value="8700"/>
     <define name="MAX_TURN_BANK" value="25.0"/>
     <define name="ARRIVED_AT_WAYPOINT" value="50"/>
     <define name="NO_GPS_LOST_WITH_RC_VALID" value="TRUE"/>
     <define name="NAVIGATION_LINE_FOLLOWING_DIST" value="85.0"/>
+    <define name="USE_AIRSPEED_AIR_DATA" value="TRUE"/>
   </section>
 
   <section name="FORWARD">
@@ -221,13 +222,13 @@
 <!--     For hybrid guidance -->
     <define name="MAX_AIRSPEED" value="18.0"/>
     <define name="OUTBACK_FORWARD_VERTICAL_GAIN" value="0.1"/>
-    <define name="OUTBACK_TURN_BANK_GAIN" value="0.6"/>
-    <define name="OUTBACK_FORWARD_VERTICAL_DGAIN" value="0.04"/>
+    <define name="OUTBACK_TURN_BANK_GAIN" value="0.5"/>
+    <define name="OUTBACK_FORWARD_VERTICAL_DGAIN" value="0.015"/>
     <define name="NOMINAL_FORWARD_THRUST" value="7300"/>
-    <define name="OUTBACK_FORWARD_PITCH_OF_ROLL" value="0.0"/>
+    <define name="OUTBACK_FORWARD_PITCH_OF_ROLL" value="0.02"/>
     <define name="OUTBACK_GUIDANCE" value="TRUE"/>
-    <define name="OUTBACK_LOW_AIRSPEED_PITCH_GAIN" value="0.0"/>
-    <define name="OUTBACK_LOW_AIRSPEED" value="20.0"/>
+    <define name="OUTBACK_LOW_AIRSPEED_PITCH_GAIN" value="2.0"/>
+    <define name="OUTBACK_LOW_AIRSPEED" value="17.0"/>
   </section>
 
   <section name="IMU" prefix="IMU_">
@@ -342,7 +343,7 @@
 
     <define name="PHI_P" value="{854, 358}"/>
     <define name="PHI_D" value="{369, 293}"/>
-    <define name="PHI_I" value="{180, 180}"/>
+    <define name="PHI_I" value="{180, 0}"/>
     <define name="PHI_DD" value="{0, 0}"/>
 
     <define name="THETA_P" value="{1605, 950}"/>
