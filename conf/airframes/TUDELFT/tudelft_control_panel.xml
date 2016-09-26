@@ -56,7 +56,9 @@
       <arg flag="4252" />
     </program>
     <program name="Iridium Link" command="sw/tools/iridium/iridium_link.py"/>
+    <program name="IVY2UDP" command="sw/ground_segment/tmtc/ivy2udp"/>
     <program name="SVInfo" command="sw/ground_segment/python/svinfo/svinfo.py"/>
+    <program name="PayloadForward" command="sw/ground_segment/python/payload_decoder/payload.py"/>
   </section>
 
   <section name="sessions">
