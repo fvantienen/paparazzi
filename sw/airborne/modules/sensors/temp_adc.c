@@ -32,7 +32,8 @@
 #include BOARD_CONFIG
 
 bool temp_adc_sync_send = false;
-static float temp_c1, temp_c2, temp_c3;
+static float temp_c2, temp_c3;
+float temp_c1;
 
 #if PERIODIC_TELEMETRY
 #include "subsystems/datalink/telemetry.h"

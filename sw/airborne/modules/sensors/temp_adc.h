@@ -31,5 +31,6 @@
 extern bool temp_adc_sync_send;
 void temp_adc_init(void);
 void temp_adc_periodic(void);
+extern float temp_c1;
 
 #endif /* TEMP_ADC_H */

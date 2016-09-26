@@ -364,6 +364,7 @@
     <define name="HOVER_KI" value="12"/>
     <define name="NOMINAL_HOVER_THROTTLE" value="0.65"/>
     <define name="ADAPT_THROTTLE_ENABLED" value="FALSE"/>
+    <define name="REF_MAX_ZD" value="1.5"/>
   </section>
 
   <section name="GUIDANCE_INDI" prefix="GUIDANCE_INDI_">
