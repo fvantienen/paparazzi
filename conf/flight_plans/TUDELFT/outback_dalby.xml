@@ -8,19 +8,17 @@
 #include "guidance/guidance_h.h"
 #include "subsystems/electrical.h"
 #include "guidance/guidance_indi.h"
-
 // States
 #define AircraftIsBooting()  LessThan(nav_block,4)
-
 </header>
   <waypoints>
     <waypoint name="HOME" x="-35.5" y="-97.2"/>
     <waypoint name="CLIMB" x="173.8" y="-114.0"/>
     <waypoint name="STDBY" x="125.2" y="-47.1"/>
-    <waypoint name="p1" x="63.7" y="-266.7"/>
-    <waypoint name="p2" x="512.4" y="-1006.6"/>
-    <waypoint name="p3" x="1098.0" y="-556.7"/>
-    <waypoint name="p4" x="588.4" y="-89.8"/>
+    <waypoint name="p1" x="88.5" y="-83.8"/>
+    <waypoint name="p2" x="91.7" y="-310.5"/>
+    <waypoint name="p3" x="470.8" y="-297.4"/>
+    <waypoint name="p4" x="448.5" y="-75.4"/>
     <waypoint name="_s1" x="-817.3" y="-15.6"/>
     <waypoint name="_s2" x="583.5" y="677.9"/>
     <waypoint name="_s3" x="2424.2" y="-320.3"/>
@@ -57,7 +55,7 @@
   </exceptions>
   <blocks>
     <block name="Wait GPS">
-      <set var="opa_controller_vision_power" value="true"/>
+      <set value="true" var="opa_controller_vision_power"/>
       <call fun="NavKillThrottle()"/>
       <call fun="nav_throttle_curve_set(0)" loop="false"/>
       <while cond="!GpsFixValid()"/>
@@ -69,10 +67,10 @@
       <call fun="nav_set_heading_current()"/>
     </block>
     <block name="SLAMDunk init">
-      <manual pitch="0" roll="0" throttle="0" vmode="throttle" until="getKalamosReady()" yaw="0"/>
-      <call fun="enableKalamosAttCalib(true)" until="stage_time>15" />
+      <manual pitch="0" roll="0" throttle="0" until="getKalamosReady()" vmode="throttle" yaw="0"/>
+      <call fun="enableKalamosAttCalib(true)" until="stage_time>15"/>
       <call fun="enableKalamosAttCalib(false)" loop="false"/>
-      <set var="opa_controller_vision_power" value="false"/>
+      <set value="false" var="opa_controller_vision_power"/>
     </block>
     <block name="HoldingPoint">
       <call fun="NavKillThrottle()"/>
@@ -80,7 +78,7 @@
       <call fun="set_wind_heading_to_current90()" loop="false"/>
       <manual pitch="0" roll="0" throttle="0" until="FALSE" vmode="throttle" yaw="0"/>
     </block>
-    <block name="Start Engine"  strip_button="Start Engine" group="TO">
+    <block group="TO" name="Start Engine" strip_button="Start Engine">
       <call fun="nav_throttle_curve_set(0)" loop="false"/>
       <call fun="nav_heli_spinup_setup(3, 0.07)" loop="false"/>
       <call fun="NavResurrect()"/>
@@ -103,13 +101,13 @@
       <exception cond="stateGetPositionEnu_f()->z > 20.0" deroute="Standby"/>
       <call fun="NavSetWaypointHere(WP_CLIMB)"/>
       <call fun="nav_set_heading_current()"/>
-      <set var="guidance_indi_max_bank" value="RadOfDeg(35)"/>
+      <set value="RadOfDeg(35)" var="guidance_indi_max_bank"/>
       <call fun="GuidanceVSetRef(stateGetPositionNed_i()->z - POS_BFP_OF_REAL(5.0), -SPEED_BFP_OF_REAL(3.0), 0)"/>
       <stay climb="nav_climb_vspeed" vmode="climb" wp="CLIMB"/>
     </block>
     <block name="Standby" strip_button="Standby" strip_icon="home.png">
-      <set var="opa_controller_vision_power" value="true"/>
-      <set var="guidance_indi_max_bank" value="GUIDANCE_H_MAX_BANK"/>
+      <set value="true" var="opa_controller_vision_power"/>
+      <set value="GUIDANCE_H_MAX_BANK" var="guidance_indi_max_bank"/>
       <stay wp="STDBY"/>
     </block>
     <block name="Hover here">
@@ -148,14 +146,6 @@
       <attitude pitch="0" roll="0" throttle="0.5" until="stage_time>2" vmode="throttle"/>
       <deroute block="landed"/>
     </block>
-
-    <!--block name="Circle_joe">
-      <set var="opa_controller_vision_power" value="true"/>
-      <call fun="enableKalamosLandingspotSearch(true)" loop="false"/>
-      <call fun="enableKalamosDescent(false)" loop="false"/>
-      <call fun="enableKalamosFindJoe(false)" loop="false"/>
-      <circle wp="CIRCLE" radius="75" until="block_time>180"/>
-    </block-->
     <block name="HoldPositionOnCircle">
       <call fun="enableKalamosLandingspotSearch(false)" loop="false"/>
       <call fun="NavSetWaypointHere(WP_TD)" loop="false"/>
@@ -164,7 +154,7 @@
     <block name="land at vision spot">
       <call fun="enableKalamosDescent(false)" loop="false"/>
       <call fun="NavCopyWaypoint(WP_LANDING,WP_LANDSPOT)"/>
-      <stay wp="LANDSPOT" until="stage_time > 1"/>
+      <stay until="stage_time > 1" wp="LANDSPOT"/>
     </block>
     <block name="Goto_ vision landing">
       <call fun="enableKalamosDescent(false)" loop="false"/>
@@ -172,13 +162,12 @@
     </block>
     <block name="Do vision landing">
       <call fun="enableKalamosDescent(true)" loop="false"/>
-      <stay wp="LANDING" vmode="climb" climb="land_cmd.z"/>
+      <stay climb="land_cmd.z" vmode="climb" wp="LANDING"/>
     </block>
-
     <block name="landed">
       <call fun="NavKillThrottle()"/>
       <call fun="nav_throttle_curve_set(0)" loop="false"/>
-      <set var="opa_controller_vision_power" value="false"/>
+      <set value="false" var="opa_controller_vision_power"/>
       <attitude pitch="0" roll="0" throttle="0" until="stage_time>2" vmode="throttle"/>
     </block>
     <block name="inert">
@@ -189,7 +178,7 @@
     </block>
     <block name="wait_minute">
       <call fun="NavKillThrottle()"/>
-      <attitude pitch="0" roll="0" throttle="0" until="stage_time>60" vmode="throttle"/>
+      <attitude pitch="0" roll="0" throttle="0" until="(stage_time>60) && GpsFixValid()" vmode="throttle"/>
       <deroute block="Start Engine"/>
     </block>
     <block name="GpsLoss">
