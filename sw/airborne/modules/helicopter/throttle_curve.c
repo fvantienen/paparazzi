@@ -79,6 +79,7 @@ void throttle_curve_init(void)
   throttle_curve.rpm_err_sum = 0;
   throttle_curve.rpm_measured = false;
   throttle_curve.throttle_trim = 0;
+  throttle_curve.coll_trim = 0;
 
   AbiBindMsgRPM(THROTTLE_CURVE_RPM_ID, &rpm_ev, rpm_cb);
 
@@ -152,6 +153,10 @@ void throttle_curve_run(pprz_t cmds[], uint8_t ap_mode)
     int32_t trimmed_throttle = throttle_curve.throttle + throttle_curve.throttle_trim;
     Bound(trimmed_throttle, 0, MAX_PPRZ);
     throttle_curve.throttle = trimmed_throttle;
+
+    int32_t trimmed_collective = throttle_curve.collective + throttle_curve.coll_trim;
+    Bound(trimmed_collective, 0, MAX_PPRZ);
+    throttle_curve.collective = trimmed_collective;
   }
 
   // Update RPM feedback

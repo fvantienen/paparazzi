@@ -57,6 +57,7 @@ struct throttle_curve_t {
   float rpm_fb_i;
 
   int32_t throttle_trim;                             ///< RPM feedback i gain
+  int32_t coll_trim;                          ///< Collective trim
 };
 extern struct throttle_curve_t throttle_curve;
 
