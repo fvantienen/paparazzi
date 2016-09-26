@@ -308,7 +308,7 @@ void nav_route(struct EnuCoor_i *wp_start, struct EnuCoor_i *wp_end)
 
 bool nav_approaching_from(struct EnuCoor_i *wp, struct EnuCoor_i *from, int16_t approaching_time)
 {
-  int32_t dist_to_point;
+  float dist_to_point;
   struct Int32Vect2 diff;
   struct EnuCoor_i *pos = stateGetPositionEnu_i();
 
@@ -333,7 +333,7 @@ bool nav_approaching_from(struct EnuCoor_i *wp, struct EnuCoor_i *from, int16_t 
   dist_to_point = float_vect2_norm(&diff_f);
 
   /* return TRUE if we have arrived */
-  if (dist_to_point < BFP_OF_REAL(ARRIVED_AT_WAYPOINT, INT32_POS_FRAC / 2)) {
+  if (dist_to_point < ARRIVED_AT_WAYPOINT) {
     return true;
   }
 
@@ -342,8 +342,8 @@ bool nav_approaching_from(struct EnuCoor_i *wp, struct EnuCoor_i *from, int16_t 
     /* return TRUE if normal line at the end of the segment is crossed */
     struct Int32Vect2 from_diff;
     VECT2_DIFF(from_diff, *wp, *from);
-    struct FloatVect2 from_diff_f = {POS_FLOAT_OF_BFP(from_diff_f.x), POS_FLOAT_OF_BFP(from_diff_f.y)};
-    return (diff_f.x * from_diff.x + diff_f.y * from_diff.y < 0);
+    struct FloatVect2 from_diff_f = {POS_FLOAT_OF_BFP(from_diff.x), POS_FLOAT_OF_BFP(from_diff.y)};
+    return (diff_f.x * from_diff_f.x + diff_f.y * from_diff_f.y < 0);
   }
 
   return false;
@@ -352,7 +352,7 @@ bool nav_approaching_from(struct EnuCoor_i *wp, struct EnuCoor_i *from, int16_t 
 bool nav_check_wp_time(struct EnuCoor_i *wp, uint16_t stay_time)
 {
   uint16_t time_at_wp;
-  uint32_t dist_to_point;
+  float dist_to_point;
   static uint16_t wp_entry_time = 0;
   static bool wp_reached = false;
   static struct EnuCoor_i wp_last = { 0, 0, 0 };
