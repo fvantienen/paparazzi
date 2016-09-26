@@ -83,7 +83,9 @@ void telemetry_intermcu_event(void)
 
 void telemetry_intermcu_on_msg(uint8_t msg_id __attribute__((unused)), uint8_t* msg, uint8_t size __attribute__((unused)))
 {
-  DlCheckAndParse(&telemetry_intermcu.dev, &telemetry_intermcu.trans.trans_tx, msg);
+  datalink_time = 0;
+  datalink_nb_msgs++;
+  dl_parse_msg(&telemetry_intermcu.dev, &telemetry_intermcu.trans.trans_tx, msg);
 }
 
 static bool telemetry_intermcu_check_free_space(struct telemetry_intermcu_t *p, long *fd __attribute__((unused)), uint16_t len)
