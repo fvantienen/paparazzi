@@ -46,15 +46,14 @@
   <exceptions>
     <exception cond="(!InsideSafety(GetPosX(), GetPosY()) && !(nav_block == IndexOfBlock('Wait GPS')) && !(nav_block == IndexOfBlock('Geo init')) && !(nav_block == IndexOfBlock('SLAMDunk init')) )" deroute="HoldingPoint"/>
     <exception cond="(!GpsFixValid() &&
-      !(nav_block == IndexOfBlock('Hold Attitude')) &&
-      !(nav_block == IndexOfBlock('Takeoff')) &&
-      !(nav_block == IndexOfBlock('landed')) &&
-      !(nav_block == IndexOfBlock('failsafe')) &&
+      !(IndexOfBlock('Takeoff') > nav_block) &&
+      !(nav_block >= IndexOfBlock('landed')) &&
       !(nav_block == IndexOfBlock('GpsLoss')) &&
       (autopilot_in_flight == true) )" deroute="GpsLoss"/>
     <exception cond="((outback_hybrid_mode == HB_FORWARD) &&
       (14.0 > stateGetAirspeed_f()) &&
-      has_transitioned)" deroute="Hover here"/>
+      has_transitioned &&
+      !(nav_block == IndexOfBlock('Hover here')) )" deroute="Hover here"/>
   </exceptions>
   <blocks>
     <block name="Wait GPS">
@@ -117,14 +116,6 @@
       <call fun="NavSetWaypointHere(WP_HOVER)"/>
       <stay wp="HOVER"/>
     </block>
-    <block name="go_p1">
-      <go forward="true" wp="p1"/>
-      <deroute block="go_p2"/>
-    </block>
-    <block name="go_p2">
-      <go forward="true" wp="p2"/>
-      <deroute block="go_p1"/>
-    </block>
     <block name="line_p1_p2">
       <go forward="true" from="p1" hmode="route" wp="p2"/>
       <deroute block="line_p2_p3"/>
@@ -149,10 +140,10 @@
       <stay climb="nav_descend_vspeed" vmode="climb" wp="TD"/>
     </block>
     <block name="Descent_slow">
-      <exception cond="((0.6 + fabs(stateGetNedToBodyEulers_f()->phi)/2) > k2p_package.height) && (k2p_package.height > 0.0) && getKalamosReady()" deroute="test landing"/>
+      <exception cond="((0.6 + fabs(stateGetNedToBodyEulers_f()->phi)/2) > k2p_package.height) && (k2p_package.height > 0.0) && getKalamosReady()" deroute="landing moment"/>
       <stay climb="-0.5" vmode="climb" wp="TD"/>
     </block>
-    <block name="test landing">
+    <block name="landing moment">
       <call fun="nav_throttle_curve_set(1)" loop="false"/>
       <attitude pitch="0" roll="0" throttle="0.5" until="stage_time>2" vmode="throttle"/>
       <deroute block="landed"/>
@@ -203,9 +194,11 @@
     </block>
     <block name="GpsLoss">
       <exception cond="2.0 > stateGetPositionEnu_f()->z" deroute="landed"/>
-      <exception cond="GpsFixValid()" deroute="Hover here"/>
+      <exception cond="GpsFixValid() && (20.0 > stateGetPositionEnu_f()->z)" deroute="Hover here"/>
+      <exception cond="block_time>20" deroute="failsafe"/>
       <call fun="nav_throttle_curve_set(1)" loop="false"/>
-      <attitude climb="nav_descend_vspeed" pitch="0" roll="0" until="stage_time>20" vmode="climb"/>
+      <attitude climb="nav_descend_vspeed" pitch="0" roll="0" until="GpsFixValid() && (stateGetPositionEnu_f()->z > 20.0)" vmode="climb"/>
+      <call fun="ReturnToStartPrevBlock()"/>
     </block>
     <block name="failsafe">
       <call fun="NavSetFailsafe"/>
