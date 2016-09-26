@@ -61,6 +61,7 @@ float vertical_gain = OUTBACK_FORWARD_VERTICAL_GAIN;
 float vertical_dgain = OUTBACK_FORWARD_VERTICAL_DGAIN;
 float vertical_pitch_of_roll = OUTBACK_FORWARD_PITCH_OF_ROLL;
 int32_t nominal_forward_thrust = NOMINAL_FORWARD_THRUST;
+float throttle_from_pitch_up = 0.0;
 
 // Private variables
 struct Int32Eulers guidance_hybrid_ypr_sp;
@@ -570,7 +571,7 @@ void guidance_hybrid_vertical_simple(void)
   stabilization_cmd[COMMAND_THRUST] = nominal_forward_thrust;
   // Extra thrust when pitching up
   if(v_control_pitch > 0) {
-    stabilization_cmd[COMMAND_THRUST] += ANGLE_FLOAT_OF_BFP(v_control_pitch)/M_PI*180.0*100.0;
+    stabilization_cmd[COMMAND_THRUST] += ANGLE_FLOAT_OF_BFP(v_control_pitch)/M_PI*180.0*throttle_from_pitch_up;
   }
   Bound(stabilization_cmd[COMMAND_THRUST], 0, 9600);
 }

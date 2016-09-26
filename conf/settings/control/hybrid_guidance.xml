@@ -15,6 +15,7 @@
       <dl_setting var="wind_heading_deg" MIN="0.0" STEP="0.1" MAX="360.0" module="guidance/guidance_h" shortname="wind_heading"/>
       <dl_setting var="perpen_dgain" MIN="0.0" STEP="0.01" MAX="360.0" module="guidance/guidance_h" shortname="perpen_dgain"/>
       <dl_setting var="vertical_pitch_of_roll" MIN="0.0" STEP="0.01" MAX="0.25" module="guidance/guidance_h" shortname="theta_of_abs_pitch"/>
+      <dl_setting var="throttle_from_pitch_up" MIN="0.0" STEP="1.0" MAX="500.0" module="guidance/guidance_h" shortname="throttle_pitch_up"/>
     </dl_settings>
   </dl_settings>
 </settings>

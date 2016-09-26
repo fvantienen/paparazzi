@@ -50,6 +50,7 @@ enum hybrid_mode {HB_HOVER, HB_FORWARD};
 extern enum hybrid_mode outback_hybrid_mode;
 extern struct Int32Eulers guidance_hybrid_ypr_sp;
 extern float perpen_dgain;
+extern float throttle_from_pitch_up;
 
 /** Runs the Hybrid Guidance main functions.
  */
