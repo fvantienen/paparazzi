@@ -103,7 +103,7 @@
       <manual pitch="0" roll="0" throttle="0" until="getKalamosReady()" vmode="throttle" yaw="0"/>
       <call fun="enableKalamosAttCalib(true)" until="stage_time>15"/>
       <call fun="enableKalamosAttCalib(false)" loop="false"/>
-      <set value="false" var="opa_controller_vision_power"/>
+      <!--set value="false" var="opa_controller_vision_power"/-->
     </block>
     <block name="HoldingPoint">
       <call fun="NavKillThrottle()"/>
@@ -165,7 +165,7 @@
     <block group="to_joe" name="line_p4_p5">
       <go forward="true" from="p4" hmode="route" wp="p5"/>
       <set value="5" var="last_wp_reached_in_route"/>
-      <deroute block="line_p5_p6"/>
+      <deroute block="line_p1_p2"/>
     </block>
     <block group="to_joe" name="line_p5_p6">
       <go forward="true" from="p5" hmode="route" wp="p6"/>
@@ -232,6 +232,7 @@
       <exception cond="10.0 > stateGetPositionEnu_f()->z" deroute="Descent_slow"/>
       <call fun="nav_set_heading_current()" loop="false"/>
       <call fun="NavSetWaypointHere(WP_TD)" loop="false"/>
+      <call fun="enableKalamosDescent(true)" loop="false"/>
       <call fun="GuidanceVSetRef(stateGetPositionNed_i()->z, 0, 0)"/>
       <stay climb="nav_descend_vspeed" vmode="climb" wp="TD"/>
     </block>
@@ -252,6 +253,7 @@
     </block>
 
     <block name="Descent_noGPS">
+      <call fun="enableKalamosDescent(true)" loop="false"/>
       <exception cond="10.0 > stateGetPositionEnu_f()->z" deroute="Descent_slow"/>
       <call fun="nav_set_heading_current()" loop="false"/>
       <call fun="NavSetWaypointHere(WP_TD)" loop="false"/>
