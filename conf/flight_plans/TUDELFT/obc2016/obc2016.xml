@@ -5,13 +5,12 @@
     <waypoint name="HOME" x="0" y="0"/>
     <waypoint lat="-27.274012" lon="151.290038" name="TD"/>
     <waypoint lat="-27.3581" lon="151.240624" name="REPORT_JOE"/>
-    <waypoint lat="-27.358430" lon="151.243385" name="j1" height="40"/>
-    <waypoint lat="-27.358142" lon="151.239663" name="j2" height="40"/>
-    <waypoint lat="-27.356831" lon="151.238937" name="j3" height="40"/>
-    <waypoint lat="-27.355721" lon="151.240242" name="j4" height="40"/>
-    <waypoint lat="-27.359051" lon="151.240683" name="j5" height="40"/>
-    <waypoint lat="-27.357720" lon="151.242751" name="j6" height="40"/>
-    <waypoint lat="-27.358936" lon="151.239268" name="j7" height="40"/>
+    <waypoint lat="-27.358357" lon="151.239732" name="j1" height="40"/>
+    <waypoint lat="-27.357885" lon="151.241427" name="j2" height="40"/>
+    <waypoint lat="-27.360014" lon="151.240522" name="j3" height="40"/>
+    <waypoint lat="-27.357827" lon="151.247775" name="j4" height="40"/>
+    <waypoint lat="-27.356253" lon="151.246831" name="j5" height="40"/>
+    <waypoint lat="-27.282360" lon="151.289117" name="intermediate_wp" height="50"/>
     <waypoint lat="-27.270220" lon="151.295874" name="_MB1"/>
     <waypoint lat="-27.279114" lon="151.294158" name="_MB2"/>
     <waypoint lat="-27.319091" lon="151.286441" name="_MB3"/>
