@@ -185,6 +185,10 @@ STATIC_INLINE void fbw_safety_check(void)
       fbw_mode = RC_LOST_IN_AUTO_FBW_MODE;
     }
   }
+  if(INTERMCU_GET_CMD_STATUS(INTERMCU_CMD_FAILSAFE)) {
+    fbw_mode = FBW_MODE_FAILSAFE;
+  }
+
 }
 
 /* Sets the actual actuator commands */
@@ -224,6 +228,7 @@ STATIC_INLINE void main_periodic(void)
   /* Set failsafe commands */
   if (fbw_mode == FBW_MODE_FAILSAFE) {
     fbw_motors_on = false;
+    INTERMCU_CLR_CMD_STATUS(INTERMCU_CMD_TIPPROPS);
     SetCommands(commands_failsafe);
   }
 
