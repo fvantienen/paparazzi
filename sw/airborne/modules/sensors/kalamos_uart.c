@@ -197,8 +197,8 @@ static inline void kalamos_parse_msg(void)
       waypoint_set_xy_i(WP_JOE,POS_BFP_OF_REAL(k2p_package.joe_enu_x), POS_BFP_OF_REAL(k2p_package.joe_enu_y));
 
       uint8_t wp_id = WP_JOE;
-      DOWNLINK_SEND_WP_MOVED_ENU(DefaultChannel, DefaultDevice, &wp_id,&(waypoints[WP_JOE].enu_i.x),
-                                 &(waypoints[WP_JOE].enu_i.y), &(waypoints[WP_JOE].enu_i.z));
+      RunOnceEvery(60, DOWNLINK_SEND_WP_MOVED_ENU(DefaultChannel, DefaultDevice, &wp_id,&(waypoints[WP_JOE].enu_i.x),
+                                 &(waypoints[WP_JOE].enu_i.y), &(waypoints[WP_JOE].enu_i.z)));
     }
 
     // Send ABI message
