@@ -255,7 +255,8 @@
     <block name="failsafe">
       <call fun="NavKillThrottle()"/>
       <call fun="NavSetFailsafe"/>
-      <attitude pitch="0" roll="0" throttle="0" until="FALSE" vmode="throttle"/>
+      <attitude pitch="0" roll="0" throttle="0" until="stage_time>60" vmode="throttle"/>
+      <deroute block="inert"/>
     </block>
   </blocks>
 </flight_plan>
