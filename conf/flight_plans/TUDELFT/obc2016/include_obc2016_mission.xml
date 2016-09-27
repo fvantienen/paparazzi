@@ -142,9 +142,10 @@
       <stay climb="nav_climb_vspeed" vmode="climb" wp="CLIMB"/>
     </block>
 
+    <!-- Decide where the takeoff was used for -->
     <block name="decide_there_or_back">
-      <exception cond="last_wp_reached_in_route > 5" deroute="line_p1_p2"/>
-      <exception cond="6 > last_wp_reached_in_route" deroute="line_p9_p8"/>
+      <exception cond="6 > last_wp_reached_in_route" deroute="line_p1_p2"/> <!-- Deroute back corridor to joe -->
+      <exception cond="last_wp_reached_in_route > 5" deroute="line_p9_p8"/> <!-- Deroute back corridor to home -->
       <call fun="NavSetWaypointHere(WP_HOVER)" loop="false"/>
       <stay wp="HOVER" until="stage_time<1"/>
     </block>
