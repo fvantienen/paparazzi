@@ -129,7 +129,7 @@
     <axis name="THRUST" failsafe_value="0"/>
     <axis name="ROLL" failsafe_value="0"/>
     <axis name="PITCH" failsafe_value="0"/>
-    <axis name="YAW" failsafe_value="9600"/>
+    <axis name="YAW" failsafe_value="4000"/>
     <axis name="COLLECTIVE" failsafe_value="-9600"/>
   </commands>
 

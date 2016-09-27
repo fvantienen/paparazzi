@@ -42,11 +42,12 @@
 <!-- ****************************** EXCEPTIONS ***************************** -->
   <exceptions>
 
-    <!--exception cond="(!InsideSafety(GetPosX(), GetPosY()) &&
+    <exception cond="(!InsideSafety(GetPosX(), GetPosY()) &&
       !(nav_block == IndexOfBlock('Wait_GPS')) &&
       !(nav_block == IndexOfBlock('Geo_init')) &&
+      !(nav_block == IndexOfBlock('HoldingPoint')) &&
       !(nav_block == IndexOfBlock('failsafe')) &&
-      !(nav_block == IndexOfBlock('SLAMDunk_init')) )" deroute="failsafe"/-->
+      !(nav_block == IndexOfBlock('SLAMDunk_init')) )" deroute="failsafe"/>
     <exception cond="(!GpsFixValid() &&
       !(IndexOfBlock('Takeoff') > nav_block) &&
       !(nav_block >= IndexOfBlock('landed')) &&
@@ -103,7 +104,7 @@
       <manual pitch="0" roll="0" throttle="0" until="getKalamosReady()" vmode="throttle" yaw="0"/>
       <call fun="enableKalamosAttCalib(true)" until="stage_time>15"/>
       <call fun="enableKalamosAttCalib(false)" loop="false"/>
-      <!--set value="false" var="opa_controller_vision_power"/-->
+      <set value="false" var="opa_controller_vision_power"/>
     </block>
     <block name="HoldingPoint">
       <call fun="NavKillThrottle()"/>
@@ -188,36 +189,43 @@
       <deroute block="search_joe"/>
     </block>
     <block group="return" name="line_p9_p8">
+      <exception cond="9 > last_wp_reached_in_route" deroute="line_p8_p7"/>
       <go forward="true" from="p9" hmode="route" wp="p8"/>
       <set value="8" var="last_wp_reached_in_route"/>
       <deroute block="line_p8_p7"/>
     </block>
     <block group="return" name="line_p8_p7">
+      <exception cond="8 > last_wp_reached_in_route" deroute="line_p7_p6"/>
       <go forward="true" from="p8" hmode="route" wp="p7"/>
       <set value="7" var="last_wp_reached_in_route"/>
       <deroute block="line_p7_p8"/>
     </block>
     <block group="return" name="line_p7_p6">
+      <exception cond="7 > last_wp_reached_in_route" deroute="line_p6_p5"/>
       <go forward="true" from="p7" hmode="route" wp="p6"/>
       <set value="6" var="last_wp_reached_in_route"/>
       <deroute block="line_p6_p5"/>
     </block>
     <block group="return" name="line_p6_p5">
+      <exception cond="6 > last_wp_reached_in_route" deroute="line_p5_p4"/>
       <go forward="true" from="p6" hmode="route" wp="p5"/>
       <set value="5" var="last_wp_reached_in_route"/>
       <deroute block="line_p5_p4"/>
     </block>
     <block group="return" name="line_p5_p4">
+      <exception cond="5 > last_wp_reached_in_route" deroute="line_p4_p3"/>
       <go forward="true" from="p5" hmode="route" wp="p4"/>
       <set value="4" var="last_wp_reached_in_route"/>
       <deroute block="line_p4_p3"/>
     </block>
     <block group="return" name="line_p4_p3">
+      <exception cond="4 > last_wp_reached_in_route" deroute="line_p3_p2"/>
       <go forward="true" from="p4" hmode="route" wp="p3"/>
       <set value="3" var="last_wp_reached_in_route"/>
       <deroute block="line_p3_p2"/>
     </block>
     <block group="return" name="line_p3_p2">
+      <exception cond="3 > last_wp_reached_in_route" deroute="line_p2_p1"/>
       <go forward="true" from="p3" hmode="route" wp="p2"/>
       <set value="2" var="last_wp_reached_in_route"/>
       <deroute block="line_p2_p1"/>
@@ -323,8 +331,8 @@
       <call fun="ReturnToStartPrevBlock()"/>
     </block>
     <block name="DatalinkLoss">
-      <exception cond="block_time>60" deroute="DatalinkLoss_return_to_base"/>
-      <exception cond="temp_c1 > 100" deroute="DatalinkLoss_return_to_base"/>
+      <exception cond="block_time>60" deroute="line_p9_p8"/> <!-- fly back home -->
+      <exception cond="temp_c1 > 100" deroute="line_p9_p8"/> <!-- fly back home -->
       <call fun="NavSetWaypointHere(WP_HOVER)" loop="false"/>
       <call fun="waypoint_set_alt(WP_HOVER,200)" loop="false"/> <!-- Todo: current height +20, bounded geofence -->
       <stay wp="HOVER" until="datalink_time > 60"/>

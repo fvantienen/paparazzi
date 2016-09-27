@@ -87,7 +87,7 @@ float nav_radius;
 float nav_climb_vspeed, nav_descend_vspeed;
 float line_following_dist = NAVIGATION_LINE_FOLLOWING_DIST;
 
-uint32_t last_wp_reached_in_route = 0;
+uint32_t last_wp_reached_in_route = 1;
 
 /** default nav_circle_radius in meters */
 #ifndef DEFAULT_CIRCLE_RADIUS

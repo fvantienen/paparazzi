@@ -65,7 +65,6 @@
   </modules>
   <includes>
     <include name="Mission" procedure="include_obc2016_mission.xml"/>
-    <include name="Safety" procedure="include_obc2016_safety.xml"/>
   </includes>
   <blocks>
     <block name="Boot"/>
