@@ -1,5 +1,5 @@
 <!DOCTYPE flight_plan SYSTEM "../../flight_plan.dtd">
-<!-- 
+<!--
      Australian UAV Outback Challenge of 2014.
 
      * TU Delft University of Technology, L&R http://www.tudelft.nl
@@ -87,7 +87,7 @@
 <!-- *********** Wait for GPS fix, 3D by default *********** -->
   <blocks>
 
-    
+    <!-- Initialization (No Geofence check, No datalink check, No RPM check, No stall check) -->
     <block name="Wait_GPS">
       <set value="true" var="opa_controller_vision_power"/>
       <call fun="NavKillThrottle()"/>
@@ -112,6 +112,8 @@
       <call fun="set_wind_heading_to_current90()" loop="false"/>
       <manual pitch="0" roll="0" throttle="0" until="FALSE" vmode="throttle" yaw="0"/>
     </block>
+
+    <!-- Takeoff (No RPM check, No stall check) -->
     <block group="TO" name="Start_Engine" strip_button="Start_Engine">
       <call fun="nav_throttle_curve_set(0)" loop="false"/>
       <call fun="nav_heli_spinup_setup(3, 0.07)" loop="false"/>
@@ -120,7 +122,7 @@
       <call fun="nav_throttle_curve_set(1)" loop="false"/>
       <manual pitch="0" roll="0" throttle="0" until="stage_time>6" vmode="throttle" yaw="0"/>
     </block>
-    <block name="Hold Attitude">
+    <block name="Hold_Attitude">
       <exception cond="1200 > throttle_curve.rpm_meas" deroute="Start_Engine"/>
       <call fun="nav_throttle_curve_set(1)" loop="false"/>
       <call fun="nav_set_heading_current()" loop="false"/>
@@ -139,6 +141,9 @@
       <call fun="GuidanceVSetRef(stateGetPositionNed_i()->z - POS_BFP_OF_REAL(5.0), -SPEED_BFP_OF_REAL(3.0), 0)"/>
       <stay climb="nav_climb_vspeed" vmode="climb" wp="CLIMB"/>
     </block>
+    <!-- TODO: what next? goto joe? -->
+
+    <!-- Safety blocks -->
     <block name="Standby" strip_button="Standby" strip_icon="home.png">
       <set value="true" var="opa_controller_vision_power"/>
       <set value="GUIDANCE_H_MAX_BANK" var="guidance_indi_max_bank"/>
@@ -148,6 +153,8 @@
       <call fun="NavSetWaypointHere(WP_HOVER)" loop="false"/>
       <stay wp="HOVER"/>
     </block>
+
+    <!-- Flightpath to joe -->
     <block group="to_joe" name="line_p1_p2">
       <go forward="true" from="p1" hmode="route" wp="p2"/>
       <set value="2" var="last_wp_reached_in_route"/>
@@ -166,7 +173,7 @@
     <block group="to_joe" name="line_p4_p5">
       <go forward="true" from="p4" hmode="route" wp="p5"/>
       <set value="5" var="last_wp_reached_in_route"/>
-      <deroute block="line_p1_p2"/>
+      <deroute block="line_p5_p6"/>
     </block>
     <block group="to_joe" name="line_p5_p6">
       <go forward="true" from="p5" hmode="route" wp="p6"/>
@@ -188,6 +195,8 @@
       <set value="9" var="last_wp_reached_in_route"/>
       <deroute block="search_joe"/>
     </block>
+
+    <!-- Flightpath from Joe -->
     <block group="return" name="line_p9_p8">
       <exception cond="9 > last_wp_reached_in_route" deroute="line_p8_p7"/>
       <go forward="true" from="p9" hmode="route" wp="p8"/>
@@ -236,6 +245,7 @@
       <deroute block="Descent"/>
     </block>
 
+    <!-- Landing -->
     <block name="Descent">
       <exception cond="10.0 > stateGetPositionEnu_f()->z" deroute="Descent_slow"/>
       <call fun="nav_set_heading_current()" loop="false"/>
@@ -260,6 +270,7 @@
       <deroute block="landed"/>
     </block>
 
+    <!-- Descent without GPS -->
     <block name="Descent_noGPS">
       <call fun="enableKalamosDescent(true)" loop="false"/>
       <exception cond="10.0 > stateGetPositionEnu_f()->z" deroute="Descent_slow"/>
@@ -278,39 +289,43 @@
       <deroute block="landed"/>
     </block>
 
+    <!-- Search for joe -->
     <block name="search_joe">
       <call fun="enableKalamosLandingspotSearch(true)" loop="false"/>
       <call fun="enableKalamosFindJoe(true)" loop="false"/>
       <call fun="enableKalamosDescent(false)" loop="false"/>
-      <stay wp="TD"/>
-      <go forward="true" from="j1" hmode="route" wp="p2"/>
-      <go forward="true" from="j2" hmode="route" wp="p3"/>
-      <go forward="true" from="j3" hmode="route" wp="p4"/>
-      <go forward="true" from="j4" hmode="route" wp="p1"/>
-      <deroute block="land_at_vision_spot"/>
+      <go forward="true" from="j1" hmode="route" wp="j2"/>
+      <go forward="true" from="j2" hmode="route" wp="j3"/>
+      <go forward="true" from="j3" hmode="route" wp="j4"/>
+      <go forward="true" from="j4" hmode="route" wp="j5"/>
+      <go forward="true" from="j5" hmode="route" wp="j6"/>
+      <go forward="true" from="j6" hmode="route" wp="j7"/>
+      <go forward="true" from="j7" hmode="route" wp="j1"/>
+      <deroute block="Goto_vision_landing"/>
     </block>
 
-    <block name="land_at_vision_spot">
+    <!-- Vision based landing -->
+    <block name="Goto_vision_landing">
+      <call fun="enableKalamosLandingspotSearch(false)" loop="false"/>
+      <call fun="enableKalamosFindJoe(false)" loop="false"/>
       <call fun="enableKalamosDescent(false)" loop="false"/>
-      <call fun="NavCopyWaypoint(WP_LANDING,WP_LANDSPOT)"/>
-      <stay until="stage_time > 1" wp="LANDSPOT"/>
-    </block>
-    <block name="Goto_ vision_landing">
-      <call fun="enableKalamosDescent(false)" loop="false"/>
-      <call fun="NavSetWaypointHere(WP_j7)" loop="false"/>
-      <go forward="true" from="j7" hmode="route" wp="LANDING"/>
-      <stay wp="LANDING"/>
+      <call fun="NavSetWaypointHere(WP_j1)" loop="false"/>
+      <go forward="true" from="j1" hmode="route" wp="LANDING"/>
+      <stay wp="LANDING"/> <!-- TODO until.... -->
     </block>
     <block name="Do_vision_landing">
       <call fun="enableKalamosDescent(true)" loop="false"/>
       <stay climb="land_cmd.z" vmode="climb" wp="LANDING"/>
     </block>
+    <!-- TODO landing moment -->
     <block name="landed">
       <call fun="NavKillThrottle()"/>
       <call fun="nav_throttle_curve_set(0)" loop="false"/>
       <set value="false" var="opa_controller_vision_power"/>
       <attitude pitch="0" roll="0" throttle="0" until="stage_time>2" vmode="throttle"/>
     </block>
+
+    <!-- Inert and wait minute -->
     <block name="inert">
       <call fun="NavKillThrottle()"/>
       <call fun="NavOpaDisarm(true)"/>
@@ -320,28 +335,37 @@
     <block name="wait_minute">
       <call fun="NavKillThrottle()"/>
       <attitude pitch="0" roll="0" throttle="0" until="(stage_time>60) && GpsFixValid()" vmode="throttle"/>
-      <deroute block="Start_Engine"/>
+      <deroute block="Start_Engine"/> <!-- TODO make sure go back -->
     </block>
+
+    <!-- Emergency modes -->
     <block name="GpsLoss">
-      <exception cond="2.0 > stateGetPositionEnu_f()->z" deroute="landed"/>
+      <!-- Less than 2 meters goto failsafe -->
+      <exception cond="2.0 > stateGetPositionEnu_f()->z" deroute="failsafe"/>
+      <!-- Deroute to hover here if below 20 meters and GPS fix becomes valid -->
       <exception cond="GpsFixValid() && (20.0 > stateGetPositionEnu_f()->z)" deroute="Hover_here"/>
+      <!-- Goto descent without GPS after 20 seconds without GPS -->
       <exception cond="block_time>20" deroute="Descent_noGPS"/>
+      <!-- Set throttle curve 1 (hover) and descend with vspeed -->
       <call fun="nav_throttle_curve_set(1)" loop="false"/>
       <attitude climb="nav_descend_vspeed" pitch="0" roll="0" until="GpsFixValid() && (stateGetPositionEnu_f()->z > 20.0)" vmode="climb"/>
+      <!-- If GPS fix becomes valid and we are above 20 meters return to previous block -->
       <call fun="ReturnToStartPrevBlock()"/>
     </block>
     <block name="DatalinkLoss">
+      <!-- If we have another 60 seconds datalink loss fly home through corridor -->
       <exception cond="block_time>60" deroute="line_p9_p8"/> <!-- fly back home -->
+      <!-- If motor temperature becomes higher 100 degrees goto forwared and fly to home in corridor -->
       <exception cond="temp_c1 > 100" deroute="line_p9_p8"/> <!-- fly back home -->
+      <!-- Set Hover waypoint to current positions and set height -->
       <call fun="NavSetWaypointHere(WP_HOVER)" loop="false"/>
       <call fun="waypoint_set_alt(WP_HOVER,200)" loop="false"/> <!-- Todo: current height +20, bounded geofence -->
       <stay wp="HOVER" until="datalink_time > 60"/>
+      <!-- Return to previous block if datalink is OK -->
       <call fun="ReturnToStartPrevBlock()"/>
     </block>
-    <block name="DatalinkLoss_return_to_base">
-      <go forward="true" from="HOVER" hmode="route" wp="STDBY"/> <!-- Todo: retrace steps back to base -->
-    </block>
     <block name="failsafe">
+      <!-- Ultimate KILL MODE -->
       <call fun="NavKillThrottle()"/>
       <call fun="NavSetFailsafe"/>
       <call fun="INTERMCU_SET_CMD_STATUS(INTERMCU_CMD_FAILSAFE)" loop="false"/>
