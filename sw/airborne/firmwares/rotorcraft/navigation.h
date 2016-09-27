@@ -91,6 +91,7 @@ unit_t nav_reset_alt(void) __attribute__((unused));
 void nav_periodic_task(void);
 bool nav_detect_ground(void);
 bool nav_is_in_flight(void);
+extern uint32_t last_wp_reached_in_route;
 
 extern bool exception_flag[10];
 extern void set_exception_flag(uint8_t flag_num);

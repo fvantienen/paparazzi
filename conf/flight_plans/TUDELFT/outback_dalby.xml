@@ -141,14 +141,17 @@
     </block>
     <block name="line_p1_p2">
       <go forward="true" from="p1" hmode="route" wp="p2"/>
+      <set value="2" var="last_wp_reached_in_route"/>
       <deroute block="line_p2_p3"/>
     </block>
     <block name="line_p2_p3">
       <go forward="true" from="p2" hmode="route" wp="p3"/>
+      <set value="3" var="last_wp_reached_in_route"/>
       <deroute block="line_p3_p4"/>
     </block>
     <block name="line_p3_p4">
       <go forward="true" from="p3" hmode="route" wp="p4"/>
+      <set value="4" var="last_wp_reached_in_route"/>
       <deroute block="line_p4_p1"/>
     </block>
     <block name="line_p4_p1">

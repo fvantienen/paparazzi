@@ -38,6 +38,27 @@
     <waypoint lat="-27.354436" lon="151.253030" name="p8"/>
     <waypoint lat="-27.358100" lon="151.240624" name="p9"/>
   </waypoints>
+  <sectors>
+    <sector color="red" name="Safety" type="dynamic">
+      <corner name="_MB1"/>
+      <corner name="_MB2"/>
+      <corner name="_MB3"/>
+      <corner name="_MB4"/>
+      <corner name="_MB5"/>
+      <corner name="_MB6"/>
+      <corner name="_MB7"/>
+      <corner name="_MB8"/>
+      <corner name="_MB9"/>
+      <corner name="_MB10"/>
+      <corner name="_MB11"/>
+      <corner name="_MB12"/>
+      <corner name="_MB13"/>
+      <corner name="_MB14"/>
+      <corner name="_MB15"/>
+      <corner name="_MB16"/>
+      <corner name="_MB17"/>
+    </sector>
+  </sectors>
   <modules>
     <module name="nav" type="heli_spinup"/>
   </modules>
