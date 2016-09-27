@@ -211,6 +211,7 @@
     <define name="NO_GPS_LOST_WITH_RC_VALID" value="TRUE"/>
     <define name="NAVIGATION_LINE_FOLLOWING_DIST" value="85.0"/>
     <define name="USE_AIRSPEED_AIR_DATA" value="TRUE"/>
+    <define name="THROTTLE_FROM_PITCH_UP" value="50.0"/>
   </section>
 
   <section name="FORWARD">
@@ -342,7 +343,7 @@
     <define name="SCHEDULING_POINTS" value="{1.4, 1.5}"/>
     <define name="SCHEDULING_VARIABLE_FRAC" value="0"/>
 
-    <define name="PHI_P" value="{854, 358}"/>
+    <define name="PHI_P" value="{854, 458}"/>
     <define name="PHI_D" value="{369, 293}"/>
     <define name="PHI_I" value="{180, 0}"/>
     <define name="PHI_DD" value="{0, 0}"/>
@@ -352,7 +353,7 @@
     <define name="THETA_I" value="{180, 220}"/>
     <define name="THETA_DD" value="{0, 0}"/>
 
-    <define name="PSI_P" value="{500, 500}"/>
+    <define name="PSI_P" value="{500, 800}"/>
     <define name="PSI_D" value="{1360, 432}"/>
     <define name="PSI_I" value="{151, 151}"/>
     <define name="PSI_DD" value="{0, 0}"/>

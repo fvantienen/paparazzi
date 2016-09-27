@@ -95,7 +95,7 @@
       <manual pitch="0" roll="0" throttle="0" until="getKalamosReady()" vmode="throttle" yaw="0"/>
       <call fun="enableKalamosAttCalib(true)" until="stage_time>15"/>
       <call fun="enableKalamosAttCalib(false)" loop="false"/>
-      <set value="false" var="opa_controller_vision_power"/>
+      <!--set value="false" var="opa_controller_vision_power"/-->
     </block>
     <block name="HoldingPoint">
       <call fun="NavKillThrottle()"/>
@@ -168,6 +168,7 @@
     <block name="Descent_slow">
       <exception cond="((0.6 + fabs(stateGetNedToBodyEulers_f()->phi)/2) > k2p_package.height ) && (k2p_package.height > 0.0) && getKalamosReady()" deroute="landing moment"/>
       <exception cond="(fabs(stateGetNedToBodyEulers_f()->theta) > 0.6) && ( 2.5 > k2p_package.height) && (!last_block==IndexOfBlock('Descent_pause'))" deroute="Descent_pause"/>
+      <call fun="enableKalamosDescent(true)" loop="false"/>
       <stay climb="-0.5" vmode="climb" wp="TD"/>
     </block>
     <block name="Descent_pause">
