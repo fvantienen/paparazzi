@@ -134,13 +134,21 @@
       <attitude pitch="0" roll="0" throttle="0.83" until="stage_time>2" vmode="throttle"/>
     </block>
     <block name="Climb">
-      <exception cond="stateGetPositionEnu_f()->z > 50.0" deroute="line_p1_p2"/>
+      <exception cond="stateGetPositionEnu_f()->z > 50.0" deroute="decide_there_or_back"/>
       <call fun="NavSetWaypointHere(WP_CLIMB)" loop="false"/>
       <call fun="nav_set_heading_current()" loop="false"/>
       <set value="RadOfDeg(35)" var="guidance_indi_max_bank"/>
       <call fun="GuidanceVSetRef(stateGetPositionNed_i()->z - POS_BFP_OF_REAL(5.0), -SPEED_BFP_OF_REAL(3.0), 0)"/>
       <stay climb="nav_climb_vspeed" vmode="climb" wp="CLIMB"/>
     </block>
+
+    <block name="decide_there_or_back">
+      <exception cond="last_wp_reached_in_route > 5" deroute="line_p1_p2"/>
+      <exception cond="6 > last_wp_reached_in_route" deroute="line_p9_p8"/>
+      <call fun="NavSetWaypointHere(WP_HOVER)" loop="false"/>
+      <stay wp="HOVER" until="stage_time<1"/>
+    </block>
+
     <!-- TODO: check altitude before climbing to p2 -->
 
     <!-- Safety blocks -->
