@@ -287,6 +287,8 @@
     </block>
     <block name="Goto_ vision_landing">
       <call fun="enableKalamosDescent(false)" loop="false"/>
+      <call fun="NavSetWaypointHere(WP_j7)" loop="false"/>
+      <go forward="true" from="j7" hmode="route" wp="LANDING"/>
       <stay wp="LANDING"/>
     </block>
     <block name="Do_vision_landing">
