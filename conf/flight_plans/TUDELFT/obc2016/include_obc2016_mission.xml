@@ -265,7 +265,7 @@
       <deroute block="Descent"/>
     </block>
 
-    <!-- Landing -->
+    <!-- Landing at base-->
     <block name="Descent">
       <exception cond="12.0 > stateGetPositionEnu_f()->z" deroute="Descent_slow"/>
       <call fun="NavSetWaypointHere(WP_TD)" loop="false"/>
@@ -289,8 +289,9 @@
       <deroute block="landed"/> <!-- Todo: Deroute to other landed to avoid takeoff by pressing arm -->
     </block>
 
-    <!-- Descent without GPS -->
+    <!-- Landing without GPS -->
     <block name="Descent_noGPS">
+      <set value="true" var="opa_controller_vision_power"/> <!-- Vision power when no gps auto landing -->
       <call fun="enableKalamosDescent(true)" loop="false"/>
       <exception cond="10.0 > stateGetPositionEnu_f()->z" deroute="Descent_slow"/>
       <call fun="nav_set_heading_current()" loop="false"/>
@@ -333,7 +334,7 @@
       <go forward="true" from="j5" hmode="route" wp="j1"/>
     </block>
 
-    <!-- Vision based landing -->
+    <!-- Vision based landing at remote landing site-->
     <block name="Goto_vision_landing">
       <call fun="enableKalamosLandingspotSearch(false)" loop="false"/>
       <call fun="enableKalamosFindJoe(false)" loop="false"/>
