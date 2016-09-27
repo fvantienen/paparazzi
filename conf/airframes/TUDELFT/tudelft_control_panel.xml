@@ -82,13 +82,13 @@
       </program>
       <program name="Ivy2Nmea">
         <arg flag="--port" constant="/dev/paparazzi/nmea"/>
-        <arg flag="--id" constant="@AIRCRAFT"/>
+        <arg flag="--id" constant="@AC_ID"/>
       </program>
       <program name="IVY2UDP">
         <arg flag="-h" constant="10.0.0.1"/>
         <arg flag="-p" constant="5252"/>
         <arg flag="-dp" constant="5253"/>
-        <arg flag="-id" constant="@AIRCRAFT"/>
+        <arg flag="-id" constant="@AC_ID"/>
       </program>
     </session>
     <session name="Flight Iridium">
