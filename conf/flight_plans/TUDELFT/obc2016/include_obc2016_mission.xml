@@ -282,6 +282,7 @@
 
     <!-- Descent without GPS -->
     <block name="Descent_noGPS">
+      <set value="true" var="opa_controller_vision_power"/> <!-- Vision power when no gps auto landing -->
       <call fun="enableKalamosDescent(true)" loop="false"/>
       <exception cond="10.0 > stateGetPositionEnu_f()->z" deroute="Descent_slow"/>
       <call fun="nav_set_heading_current()" loop="false"/>
