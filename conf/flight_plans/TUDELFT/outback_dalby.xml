@@ -45,7 +45,11 @@
     <module name="nav" type="heli_spinup"/>
   </modules>
   <exceptions>
-    <exception cond="(!InsideSafety(GetPosX(), GetPosY()) && !(nav_block == IndexOfBlock('Wait GPS')) && !(nav_block == IndexOfBlock('Geo init')) && !(nav_block == IndexOfBlock('SLAMDunk init')) )" deroute="HoldingPoint"/>
+    <exception cond="(!InsideSafety(GetPosX(), GetPosY()) &&
+      !(nav_block == IndexOfBlock('Wait GPS')) &&
+      !(nav_block == IndexOfBlock('Geo init')) &&
+      !(nav_block == IndexOfBlock('failsafe')) &&
+      !(nav_block == IndexOfBlock('SLAMDunk init')) )" deroute="failsafe"/>
     <exception cond="(!GpsFixValid() &&
       !(IndexOfBlock('Takeoff') > nav_block) &&
       !(nav_block >= IndexOfBlock('landed')) &&
@@ -53,11 +57,13 @@
       !(nav_block == IndexOfBlock('Descent_noGPS')) &&
       !(nav_block == IndexOfBlock('Descent_slow_noGPS')) &&
       !(nav_block == IndexOfBlock('landing moment_noGPS')) &&
+      !(nav_block == IndexOfBlock('failsafe')) &&
       (autopilot_in_flight == true) )" deroute="GpsLoss"/>
     <exception cond="(datalink_time > 60 &&
       !(IndexOfBlock('Takeoff') > nav_block) &&
       !(nav_block >= IndexOfBlock('landed')) &&
       !(nav_block == IndexOfBlock('GpsLoss')) &&
+      !(nav_block == IndexOfBlock('failsafe')) &&
       (autopilot_in_flight == true) )" deroute="DatalinkLoss"/>
     <exception cond="(100 > throttle_curve.rpm_meas &&
       !(IndexOfBlock('Takeoff') > nav_block) &&
@@ -247,6 +253,7 @@
       <go forward="true" from="HOVER" hmode="route" wp="STDBY"/> <!-- Todo: retrace steps back to base -->
     </block>
     <block name="failsafe">
+      <call fun="NavKillThrottle()"/>
       <call fun="NavSetFailsafe"/>
       <attitude pitch="0" roll="0" throttle="0" until="FALSE" vmode="throttle"/>
     </block>

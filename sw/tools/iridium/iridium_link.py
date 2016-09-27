@@ -9,10 +9,12 @@ from socket import SOL_SOCKET, SO_BROADCAST
 import serial
 import pygtk
 import gtk
+import os
 pygtk.require('2.0')
 
 
-DEFAULT_DEVICE = "/dev/ttyUSB0"
+
+DEFAULT_DEVICE = "/dev/ttyUSB1"
 DEFAULT_BAUD = "19200"
 DEFAULT_NUMBER = "00881693689909"
 UDP_IN = 4243
@@ -183,6 +185,8 @@ class IridiumCtrl:
     self.btn_csq.connect("clicked", self.csq, None)
     self.btn_csq.set_sensitive(False)
     self.toolbar.add(self.btn_csq)
+
+    self.window.set_icon_from_file(os.getenv("PAPARAZZI_HOME") + "/sw/tools/iridium/sat.ico")
 
     # Show the window everything
     self.window.show_all()
