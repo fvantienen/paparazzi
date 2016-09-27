@@ -29,7 +29,7 @@
     <waypoint name="PICKUP" x="500." y="333."/>
 
     <waypoint name="CLIMB" x="100" y="300"/>
-    <waypoint name="STDBY" x="0" y="0"/>
+    <waypoint name="STDBY" x="30" y="30"/>
     <waypoint name="HOVER" x="268.5" y="27.1"/>
     <waypoint name="LANDSPOT" x="268.5" y="127.1"/>
     <waypoint name="LANDING" x="268.5" y="127.1"/>
@@ -43,7 +43,7 @@
   <exceptions>
 
     <exception cond="(!InsideSafety(GetPosX(), GetPosY()) &&
-      !(nav_block == IndexOfBlock('Wait_GPS')) &&
+      !(AircraftIsBooting()) &&
       !(nav_block == IndexOfBlock('Geo_init')) &&
       !(nav_block == IndexOfBlock('HoldingPoint')) &&
       !(nav_block == IndexOfBlock('failsafe')) &&
@@ -63,14 +63,14 @@
       !(nav_block == IndexOfBlock('GpsLoss')) &&
       !(nav_block == IndexOfBlock('failsafe')) &&
       (autopilot_in_flight == true) )" deroute="DatalinkLoss"/>
-    <!--exception cond="(100 > throttle_curve.rpm_meas &&
+    <exception cond="(100 > throttle_curve.rpm_meas &&
       !(IndexOfBlock('Takeoff') > nav_block) &&
       !(nav_block >= IndexOfBlock('landed')) &&
       !(nav_block == IndexOfBlock('GpsLoss')) &&
       !(nav_block == IndexOfBlock('inert')) &&
       !(nav_block == IndexOfBlock('wait_minute')) &&
       !(nav_block == IndexOfBlock('failsafe')) &&
-      (autopilot_in_flight == true) )" deroute="failsafe"/-->
+      (autopilot_in_flight == true) )" deroute="failsafe"/>
     <exception cond="((outback_hybrid_mode == HB_FORWARD) &&
       (14.0 > stateGetAirspeed_f()) &&
       has_transitioned &&
@@ -134,14 +134,14 @@
       <attitude pitch="0" roll="0" throttle="0.83" until="stage_time>2" vmode="throttle"/>
     </block>
     <block name="Climb">
-      <exception cond="stateGetPositionEnu_f()->z > 20.0" deroute="Standby"/>
+      <exception cond="stateGetPositionEnu_f()->z > 50.0" deroute="line_p1_p2"/>
       <call fun="NavSetWaypointHere(WP_CLIMB)" loop="false"/>
       <call fun="nav_set_heading_current()" loop="false"/>
       <set value="RadOfDeg(35)" var="guidance_indi_max_bank"/>
       <call fun="GuidanceVSetRef(stateGetPositionNed_i()->z - POS_BFP_OF_REAL(5.0), -SPEED_BFP_OF_REAL(3.0), 0)"/>
       <stay climb="nav_climb_vspeed" vmode="climb" wp="CLIMB"/>
     </block>
-    <!-- TODO: what next? goto joe? -->
+    <!-- TODO: check altitude before climbing to p2 -->
 
     <!-- Safety blocks -->
     <block name="Standby" strip_button="Standby" strip_icon="home.png">
@@ -247,8 +247,7 @@
 
     <!-- Landing -->
     <block name="Descent">
-      <exception cond="10.0 > stateGetPositionEnu_f()->z" deroute="Descent_slow"/>
-      <call fun="nav_set_heading_current()" loop="false"/>
+      <exception cond="12.0 > stateGetPositionEnu_f()->z" deroute="Descent_slow"/>
       <call fun="NavSetWaypointHere(WP_TD)" loop="false"/>
       <call fun="enableKalamosDescent(true)" loop="false"/>
       <call fun="GuidanceVSetRef(stateGetPositionNed_i()->z, 0, 0)"/>
@@ -311,18 +310,33 @@
       <call fun="enableKalamosDescent(false)" loop="false"/>
       <call fun="NavSetWaypointHere(WP_j1)" loop="false"/>
       <go forward="true" from="j1" hmode="route" wp="LANDING"/>
-      <stay wp="LANDING"/> <!-- TODO until.... -->
+      <stay wp="LANDING" until="stage_time>10"/>
     </block>
     <block name="Do_vision_landing">
+      <exception cond="10.0 > stateGetPositionEnu_f()->z" deroute="Descent_slow_remote"/>
       <call fun="enableKalamosDescent(true)" loop="false"/>
       <stay climb="land_cmd.z" vmode="climb" wp="LANDING"/>
     </block>
-    <!-- TODO landing moment -->
+    <block name="Descent_slow_remote">
+      <exception cond="((0.6 + fabs(stateGetNedToBodyEulers_f()->phi)/2) > k2p_package.height ) && (k2p_package.height > 0.0) && getKalamosReady()" deroute="landing_moment_remote"/>
+      <exception cond="(fabs(stateGetNedToBodyEulers_f()->theta) > 0.6) && ( 2.5 > k2p_package.height) && (!last_block==IndexOfBlock('Descent_pause'))" deroute="Descent_pause_remote"/>
+      <stay climb="-0.5" vmode="climb" wp="TD"/>
+    </block>
+    <block name="Descent_pause_remote">
+      <exception cond="(0.3 > fabs(stateGetNedToBodyEulers_f()->theta) )" deroute="Descent_slow_remote"/>
+      <stay climb="0.0" vmode="climb" wp="TD" until="stage_time>30"/>
+      <deroute block="Descent_slow_remote"/>
+    </block>
+    <block name="landing_moment_remote">
+      <call fun="nav_throttle_curve_set(1)" loop="false"/>
+      <attitude pitch="0" roll="0" throttle="0.5" until="stage_time>2" vmode="throttle"/>
+      <deroute block="landed"/>
+    </block>
     <block name="landed">
       <call fun="NavKillThrottle()"/>
       <call fun="nav_throttle_curve_set(0)" loop="false"/>
       <set value="false" var="opa_controller_vision_power"/>
-      <attitude pitch="0" roll="0" throttle="0" until="stage_time>2" vmode="throttle"/>
+      <attitude pitch="0" roll="0" throttle="0" until="stage_time>5" vmode="throttle"/>
     </block>
 
     <!-- Inert and wait minute -->
