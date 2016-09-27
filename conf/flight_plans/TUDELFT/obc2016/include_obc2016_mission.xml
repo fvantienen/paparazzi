@@ -30,10 +30,10 @@
 
     <waypoint name="CLIMB" x="100" y="300"/>
     <waypoint name="STDBY" x="30" y="30"/>
-    <waypoint name="HOVER" x="268.5" y="27.1"/>
-    <waypoint name="LANDSPOT" x="268.5" y="127.1"/>
-    <waypoint name="LANDING" x="268.5" y="127.1"/>
-    <waypoint name="JOE" x="268.5" y="127.1"/>
+    <waypoint name="HOVER" x="268.5" y="27.1" height="60"/>
+    <waypoint name="LANDSPOT" x="268.5" y="127.1" height="40"/>
+    <waypoint name="LANDING" x="268.5" y="127.1" height="40"/>
+    <waypoint name="JOE" x="268.5" y="127.1" height="40"/>
   </waypoints>
 
 <!-- ******************************** SECTORS ****************************** -->
@@ -61,6 +61,7 @@
       !(IndexOfBlock('Takeoff') > nav_block) &&
       !(nav_block >= IndexOfBlock('landed')) &&
       !(nav_block == IndexOfBlock('GpsLoss')) &&
+      !(nav_block == IndexOfBlock('inert')) &&
       !(nav_block == IndexOfBlock('failsafe')) &&
       (autopilot_in_flight == true) )" deroute="DatalinkLoss"/>
     <exception cond="(100 > throttle_curve.rpm_meas &&
@@ -187,6 +188,7 @@
     <block group="to_joe" name="line_p5_p6">
       <go forward="true" from="p5" hmode="route" wp="p6"/>
       <set value="6" var="last_wp_reached_in_route"/>
+      <set value="true" var="opa_controller_vision_power"/>
       <deroute block="line_p6_p7"/>
     </block>
     <block group="to_joe" name="line_p6_p7">
@@ -246,6 +248,7 @@
       <exception cond="3 > last_wp_reached_in_route" deroute="line_p2_p1"/>
       <go forward="true" from="p3" hmode="route" wp="p2"/>
       <set value="2" var="last_wp_reached_in_route"/>
+      <set value="true" var="opa_controller_vision_power"/>
       <deroute block="line_p2_p1"/>
     </block>
     <block group="return" name="line_p2_p1">
@@ -299,17 +302,24 @@
 
     <!-- Search for joe -->
     <block name="search_joe">
-      <call fun="enableKalamosLandingspotSearch(true)" loop="false"/>
-      <call fun="enableKalamosFindJoe(true)" loop="false"/>
+      <call fun="enableKalamosLandingspotSearch(false)" loop="false"/>
+      <call fun="enableKalamosFindJoe(false)" loop="false"/>
       <call fun="enableKalamosDescent(false)" loop="false"/>
-      <go forward="true" from="j1" hmode="route" wp="j2"/>
-      <go forward="true" from="j2" hmode="route" wp="j3"/>
+      <go forward="true" from="p9" hmode="route" wp="j1"/>
+      <stay wp="j1" until="stage_time>4"/>
+      <call fun="enableKalamosFindJoe(true)" loop="false"/>
+      <go wp="j2" hmode="route" from="j1"/>
+      <stay wp="j2" until="stage_time>10"/>
+      <call fun="enableKalamosFindJoe(false)" loop="false"/>
+      <go wp="LANDING"/>
+      <stay wp="LANDING" until="stage_time > 30"/>
+    </block>
+
+    <block name="Circle_around">
+      <go forward="true" from="j2" hmode="route" wp="j1"/>
+      <go forward="true" from="j1" hmode="route" wp="j3"/>
       <go forward="true" from="j3" hmode="route" wp="j4"/>
-      <go forward="true" from="j4" hmode="route" wp="j5"/>
-      <go forward="true" from="j5" hmode="route" wp="j6"/>
-      <go forward="true" from="j6" hmode="route" wp="j7"/>
-      <go forward="true" from="j7" hmode="route" wp="j1"/>
-      <deroute block="Goto_vision_landing"/>
+      <go forward="true" from="j5" hmode="route" wp="j1"/>
     </block>
 
     <!-- Vision based landing -->
@@ -317,8 +327,6 @@
       <call fun="enableKalamosLandingspotSearch(false)" loop="false"/>
       <call fun="enableKalamosFindJoe(false)" loop="false"/>
       <call fun="enableKalamosDescent(false)" loop="false"/>
-      <call fun="NavSetWaypointHere(WP_j1)" loop="false"/>
-      <go forward="true" from="j1" hmode="route" wp="LANDING"/>
       <stay wp="LANDING" until="stage_time>10"/>
     </block>
     <block name="Do_vision_landing">
@@ -358,7 +366,7 @@
     <block name="wait_minute">
       <call fun="NavKillThrottle()"/>
       <attitude pitch="0" roll="0" throttle="0" until="(stage_time>60) && GpsFixValid()" vmode="throttle"/>
-      <deroute block="Start_Engine"/> <!-- TODO make sure go back -->
+      <deroute block="Start_Engine"/>
     </block>
 
     <!-- Emergency modes -->
