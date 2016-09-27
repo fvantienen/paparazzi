@@ -64,25 +64,31 @@
   </section>
 
   <section name="sessions">
-    <session name="helidd">
-      <program name="BluegigaUsbDongle">
-        <arg flag="/dev/ttyACM0" constant="00:07:80:2d:d6:d9"/>
-        <arg flag="4242" constant="4252"/>
-      </program>
+    <session name="OUTBACK">
       <program name="Data Link">
-        <arg flag="-udp"/>
-        <arg flag="-udp_port" constant="4242"/>
-        <arg flag="-udp_uplink_port" constant="4252"/>
+        <arg flag="-d" constant="/dev/paparazzi/longrange"/>
+        <arg flag="-s" constant="9600"/>
       </program>
       <program name="Server"/>
-      <program name="Messages"/>
       <program name="GCS">
         <arg flag="-speech"/>
+        <arg flag="-maps_zoom" constant="18"/>
+        <arg flag="-layout" constant="bottom_settings.xml"/>
       </program>
-      <program name="Joystick">
-        <arg flag="-d" constant="2"/>
-        <arg flag="-ac" constant="GeniusDD"/>
-        <arg flag="hobbyking.xml"/>
+      <program name="Messages"/>
+      <program name="Iridium Link"/>
+      <program name="Data Link">
+        <arg flag="-udp"/>
+      </program>
+      <program name="Ivy2Nmea">
+        <arg flag="--port" constant="/dev/paparazzi/nmea"/>
+        <arg flag="--id" constant="@AIRCRAFT"/>
+      </program>
+      <program name="IVY2UDP">
+        <arg flag="-h" constant="10.0.0.1"/>
+        <arg flag="-p" constant="5252"/>
+        <arg flag="-dp" constant="5253"/>
+        <arg flag="-id" constant="@AIRCRAFT"/>
       </program>
     </session>
     <session name="Flight Iridium">
@@ -95,35 +101,6 @@
         <arg flag="-speech" />
         <arg flag="-maps_zoom" constant="18"/>
         <arg flag="-layout"  constant="bottom_settings.xml" />
-      </program>
-    </session>
-    <session name="Bluegiga">
-      <program name="BluegigaUsbDongle">
-        <arg flag="/dev/ttyACM2" constant="all"/>
-        <arg flag="4242" constant="4252"/>
-      </program>
-      <program name="Data Link">
-        <arg flag="-udp"/>
-        <arg flag="-udp_port" constant="4242"/>
-        <arg flag="-udp_uplink_port" constant="4252"/>
-      </program>
-      <program name="Server"/>
-      <program name="Messages"/>
-      <program name="GCS">
-        <arg flag="-speech" />
-        <arg flag="-maps_zoom" constant="18"/>
-        <arg flag="-layout"  constant="bottom_settings.xml" />
-      </program>
-      <program name="NatNet">
-        <arg flag="-ac" constant="1"/>
-        <arg flag="12"/>
-        <arg flag="-small"/>
-        <arg flag="-tf" constant="5"/>
-      </program>
-      <program name="Joystick">
-        <arg flag="-d" constant="2"/>
-        <arg flag="-ac" constant="@AIRCRAFT"/>
-        <arg flag="hobbyking.xml"/>
       </program>
     </session>
     <session name="Flight USB0 @9600">

@@ -14,7 +14,7 @@ pygtk.require('2.0')
 
 
 
-DEFAULT_DEVICE = "/dev/ttyUSB1"
+DEFAULT_DEVICE = "/dev/paparazzi/iridium"
 DEFAULT_BAUD = "19200"
 DEFAULT_NUMBER = "00881693689909"
 UDP_IN = 4243
