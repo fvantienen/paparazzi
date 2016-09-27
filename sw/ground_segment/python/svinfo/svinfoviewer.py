@@ -9,6 +9,7 @@ import pynotify
 
 sys.path.append(os.getenv("PAPARAZZI_HOME") + "/sw/ext/pprzlink/lib/v1.0/python")
 
+
 from pprzlink.ivy import IvyMessagesInterface
 
 WIDTH = 300
@@ -121,6 +122,9 @@ class SVInfoFrame(wx.Frame):
         self.Bind(wx.EVT_PAINT, self.OnPaint) 
         self.Bind(wx.EVT_SIZE, self.OnSize)
         self.Bind(wx.EVT_CLOSE, self.OnClose)
+
+        ico = wx.Icon(os.getenv("PAPARAZZI_HOME") + "/sw/ground_segment/python/svinfo/gps.ico", wx.BITMAP_TYPE_ICO)
+        self.SetIcon(ico)
 
         self.sv = {}
 

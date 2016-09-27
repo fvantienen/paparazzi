@@ -149,9 +149,15 @@ class PayloadDecoderFrame(wx.Frame):
 
         wx.Frame.__init__(self, id=-1, parent=None, name=u'PayloadDecoder',
                           size=wx.Size(self.w, self.h), title=u'Payload Decoder')
+
+        ico = wx.Icon(os.getenv("PAPARAZZI_HOME") + "/sw/ground_segment/python/payload_decoder/camera.ico", wx.BITMAP_TYPE_ICO)
+        self.SetIcon(ico)
+
+
         self.Bind(wx.EVT_PAINT, self.OnPaint)
         self.Bind(wx.EVT_SIZE, self.OnSize)
         self.Bind(wx.EVT_CLOSE, self.OnClose)
+
 
         self.interface = IvyMessagesInterface("PayloadDecoder")
         self.interface.subscribe(self.message_recv)

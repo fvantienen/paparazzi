@@ -92,8 +92,13 @@ class AtcFrame(wx.Frame):
 
         wx.Frame.__init__(self, id=-1, parent=None, name=u'ATC Center',
                           size=wx.Size(self.w, self.h), title=u'ATC Center')
+
+
         self.Bind(wx.EVT_PAINT, self.OnPaint)
         self.Bind(wx.EVT_CLOSE, self.OnClose)
+
+        ico = wx.Icon(os.getenv("PAPARAZZI_HOME") + "/sw/ground_segment/python/atc/atc.ico", wx.BITMAP_TYPE_ICO)
+        self.SetIcon(ico)
 
         self.interface = IvyMessagesInterface("ATC-Center")
         self.interface.subscribe(self.message_recv)
