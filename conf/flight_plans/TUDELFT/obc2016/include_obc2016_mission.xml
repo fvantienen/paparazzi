@@ -155,7 +155,6 @@
 
     <!-- Safety blocks -->
     <block name="Standby" strip_button="Standby" strip_icon="home.png">
-      <set value="true" var="opa_controller_vision_power"/>
       <set value="GUIDANCE_H_MAX_BANK" var="guidance_indi_max_bank"/>
       <stay wp="STDBY"/>
     </block>
@@ -189,7 +188,7 @@
     <block group="to_joe" name="line_p5_p6">
       <go forward="true" from="p5" hmode="route" wp="p6"/>
       <set value="6" var="last_wp_reached_in_route"/>
-      <set value="true" var="opa_controller_vision_power"/>
+      <set value="true" var="opa_controller_vision_power"/> <!-- Vision power on at P6 -->
       <deroute block="line_p6_p7"/>
     </block>
     <block group="to_joe" name="line_p6_p7">
@@ -249,7 +248,6 @@
       <exception cond="3 > last_wp_reached_in_route" deroute="line_p2_p1"/>
       <go forward="true" from="p3" hmode="route" wp="p2"/>
       <set value="2" var="last_wp_reached_in_route"/>
-      <set value="true" var="opa_controller_vision_power"/>
       <deroute block="line_p2_p1"/>
     </block>
     <block group="return" name="line_p2_p1">
@@ -264,22 +262,22 @@
       <call fun="NavSetWaypointHere(WP_TD)" loop="false"/>
       <call fun="enableKalamosDescent(true)" loop="false"/>
       <call fun="GuidanceVSetRef(stateGetPositionNed_i()->z, 0, 0)"/>
-      <stay climb="nav_descend_vspeed" vmode="climb" wp="TD"/>
+      <stay climb="nav_descend_vspeed" vmode="climb" wp="TD"/> <!-- Todo: Waypoint TD used twice?? Position ok? -->
     </block>
     <block name="Descent_slow">
       <exception cond="((0.6 + fabs(stateGetNedToBodyEulers_f()->phi)/2) > k2p_package.height ) && (k2p_package.height > 0.0) && getKalamosReady()" deroute="landing_moment"/>
       <exception cond="(fabs(stateGetNedToBodyEulers_f()->theta) > 0.6) && ( 2.5 > k2p_package.height) && (!last_block==IndexOfBlock('Descent_pause'))" deroute="Descent_pause"/>
-      <stay climb="-0.5" vmode="climb" wp="TD"/>
+      <stay climb="-0.5" vmode="climb" wp="TD"/> <!-- Todo: Check TD point -->
     </block>
     <block name="Descent_pause">
       <exception cond="(0.3 > fabs(stateGetNedToBodyEulers_f()->theta) )" deroute="Descent_pause"/>
-      <stay climb="0.0" vmode="climb" wp="TD" until="stage_time>30"/>
+      <stay climb="0.0" vmode="climb" wp="TD" until="stage_time>30"/>  <!-- Todo: Check TD point -->
       <deroute block="Descent_slow"/>
     </block>
     <block name="landing_moment">
       <call fun="nav_throttle_curve_set(1)" loop="false"/>
       <attitude pitch="0" roll="0" throttle="0.5" until="stage_time>2" vmode="throttle"/>
-      <deroute block="landed"/>
+      <deroute block="landed"/> <!-- Todo: Deroute to other landed to avoid takeoff by pressing arm -->
     </block>
 
     <!-- Descent without GPS -->
@@ -300,7 +298,7 @@
       <attitude pitch="0" roll="0" throttle="0.5" until="stage_time>2" vmode="throttle"/>
       <deroute block="landed"/>
     </block>
-
+<!-- Todo: LANDING SPOT OP DE CORRECTE PLEK EN LANDING OOK -->
     <!-- Search for joe -->
     <block name="search_joe">
       <call fun="enableKalamosLandingspotSearch(false)" loop="false"/>
@@ -316,6 +314,8 @@
       <stay wp="LANDING" until="stage_time > 30"/>
     </block>
 
+    <!-- Todo: why circle??? -->
+
     <block name="Circle_around">
       <go forward="true" from="j2" hmode="route" wp="j1"/>
       <go forward="true" from="j1" hmode="route" wp="j3"/>
@@ -329,7 +329,7 @@
       <call fun="enableKalamosLandingspotSearch(false)" loop="false"/>
       <call fun="enableKalamosFindJoe(false)" loop="false"/>
       <call fun="enableKalamosDescent(false)" loop="false"/>
-      <stay wp="LANDING" until="stage_time>10"/>
+      <stay wp="LANDING" until="stage_time>10"/> <!-- Todo: why wait again.. already waited 30 seconds.. -->
     </block>
     <block name="Do_vision_landing">
       <exception cond="10.0 > stateGetPositionEnu_f()->z" deroute="Descent_slow_remote"/>
@@ -338,12 +338,12 @@
     </block>
     <block name="Descent_slow_remote">
       <exception cond="((0.6 + fabs(stateGetNedToBodyEulers_f()->phi)/2) > k2p_package.height ) && (k2p_package.height > 0.0) && getKalamosReady()" deroute="landing_moment_remote"/>
-      <exception cond="(fabs(stateGetNedToBodyEulers_f()->theta) > 0.6) && ( 2.5 > k2p_package.height) && (!last_block==IndexOfBlock('Descent_pause'))" deroute="Descent_pause_remote"/>
-      <stay climb="-0.5" vmode="climb" wp="TD"/>
+      <exception cond="(fabs(stateGetNedToBodyEulers_f()->theta) > 0.6) && ( 2.5 > k2p_package.height) && (!last_block==IndexOfBlock('Descent_pause_remote'))" deroute="Descent_pause_remote"/>
+      <stay climb="-0.5" vmode="climb" wp="TD"/> <!-- Todo: where do we set TD???? -->
     </block>
     <block name="Descent_pause_remote">
       <exception cond="(0.3 > fabs(stateGetNedToBodyEulers_f()->theta) )" deroute="Descent_slow_remote"/>
-      <stay climb="0.0" vmode="climb" wp="TD" until="stage_time>30"/>
+      <stay climb="0.0" vmode="climb" wp="TD" until="stage_time>30"/> <!-- Todo: where do we set TD???? -->
       <deroute block="Descent_slow_remote"/>
     </block>
     <block name="landing_moment_remote">
@@ -354,7 +354,7 @@
     <block name="landed">
       <call fun="NavKillThrottle()"/>
       <call fun="nav_throttle_curve_set(0)" loop="false"/>
-      <set value="false" var="opa_controller_vision_power"/>
+      <set value="false" var="opa_controller_vision_power"/> <!-- Vision power off at remote landing -->
       <attitude pitch="0" roll="0" throttle="0" until="stage_time>5" vmode="throttle"/>
     </block>
 
@@ -363,7 +363,7 @@
       <call fun="NavKillThrottle()"/>
       <call fun="NavOpaDisarm(true)"/>
       <attitude pitch="0" roll="0" throttle="0" until="stage_time>2" vmode="throttle"/>
-      <attitude pitch="0" roll="0" throttle="0" until="electrical.vsupply>220" vmode="throttle"/>
+      <attitude pitch="0" roll="0" throttle="0" until="electrical.vsupply>220" vmode="throttle"/> <!-- Todo: 22V?? -->
     </block>
     <block name="wait_minute">
       <call fun="NavKillThrottle()"/>
