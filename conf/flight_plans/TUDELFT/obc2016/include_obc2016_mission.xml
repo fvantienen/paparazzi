@@ -89,7 +89,7 @@
 
     <!-- Initialization (No Geofence check, No datalink check, No RPM check, No stall check) -->
     <block name="Wait_GPS">
-      <set value="true" var="opa_controller_vision_power"/>
+      <set value="true" var="opa_controller_vision_power"/> <!-- Power on the Kalamos -->
       <call fun="NavKillThrottle()"/>
       <call fun="nav_throttle_curve_set(0)" loop="false"/>
       <while cond="!GpsFixValid()"/>
@@ -101,15 +101,15 @@
       <call fun="nav_set_heading_current()" loop="false"/>
     </block>
     <block name="SLAMDunk_init">
-      <manual pitch="0" roll="0" throttle="0" until="getKalamosReady()" vmode="throttle" yaw="0"/>
-      <call fun="enableKalamosAttCalib(true)" until="stage_time>15"/>
-      <call fun="enableKalamosAttCalib(false)" loop="false"/>
-      <set value="false" var="opa_controller_vision_power"/>
+      <manual pitch="0" roll="0" throttle="0" until="getKalamosReady()" vmode="throttle" yaw="0"/> <!-- Check if Kalamos is booted -->
+      <call fun="enableKalamosAttCalib(true)" until="stage_time>15"/> <!-- Enable Kalamos calibration for 15 seconds -->
+      <call fun="enableKalamosAttCalib(false)" loop="false"/> <!-- Disable Kalamos calibration -->
+      <set value="false" var="opa_controller_vision_power"/> <!-- Poweroff the Kalamos -->
     </block>
     <block name="HoldingPoint">
       <call fun="NavKillThrottle()"/>
       <call fun="nav_throttle_curve_set(0)" loop="false"/>
-      <call fun="set_wind_heading_to_current90()" loop="false"/>
+      <call fun="set_wind_heading_to_current90()" loop="false"/> <!-- Set heading based on wind -->
       <manual pitch="0" roll="0" throttle="0" until="FALSE" vmode="throttle" yaw="0"/>
     </block>
 
