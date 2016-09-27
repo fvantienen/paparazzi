@@ -280,15 +280,15 @@
     <block name="Descent_noGPS">
       <set value="true" var="opa_controller_vision_power"/> <!-- Vision power when no gps auto landing -->
       <call fun="enableKalamosDescent(true)" loop="false"/>
-      <exception cond="10.0 > stateGetPositionEnu_f()->z" deroute="Descent_slow"/>
+      <exception cond="10.0 > stateGetPositionEnu_f()->z" deroute="Descent_slow_noGPS"/>
       <call fun="nav_set_heading_current()" loop="false"/>
       <call fun="NavSetWaypointHere(WP_TD)" loop="false"/>
       <call fun="GuidanceVSetRef(stateGetPositionNed_i()->z, 0, 0)"/>
-      <stay climb="nav_descend_vspeed" vmode="climb" wp="TD"/>
+      <attitude pitch="0" roll="0" climb="nav_descend_vspeed" vmode="climb"/>
     </block>
     <block name="Descent_slow_noGPS">
       <exception cond="((0.6 + fabs(stateGetNedToBodyEulers_f()->phi)/2) > k2p_package.height) && (k2p_package.height > 0.0) && getKalamosReady()" deroute="landing_moment"/>
-      <stay climb="-0.5" vmode="climb" wp="TD"/>
+      <attitude pitch="0" roll="0" climb="-0.5" vmode="climb"/>
     </block>
     <block name="landing_moment_noGPS">
       <call fun="nav_throttle_curve_set(1)" loop="false"/>
