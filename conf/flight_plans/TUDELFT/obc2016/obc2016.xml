@@ -31,10 +31,10 @@
     <waypoint lat="-27.273826" lon="151.290156" name="p1" height="60"/>
     <waypoint lat="-27.316738" lon="151.281871" name="p2" height="120"/>
     <waypoint lat="-27.317045" lon="151.283862" name="p3" height="120"/>
-    <waypoint lat="-27.278580" lon="151.291288" name="p4" height="200"/>
-    <waypoint lat="-27.273606" lon="151.290506" name="p5" height="200"/>
-    <waypoint lat="-27.271136" lon="151.274482" name="p6" height="200"/>
-    <waypoint lat="-27.324690" lon="151.254661" name="p7" height="200"/>
+    <waypoint lat="-27.278580" lon="151.291288" name="p4" height="120"/>
+    <waypoint lat="-27.273606" lon="151.290506" name="p5" height="120"/>
+    <waypoint lat="-27.271136" lon="151.274482" name="p6" height="120"/>
+    <waypoint lat="-27.324690" lon="151.254661" name="p7" height="120"/>
     <waypoint lat="-27.354436" lon="151.253030" name="p8" height="120"/>
     <waypoint lat="-27.358100" lon="151.240624" name="p9" height="50"/>
   </waypoints>
