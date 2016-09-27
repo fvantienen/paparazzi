@@ -4,11 +4,14 @@
   <waypoints>
     <waypoint name="HOME" x="0" y="0"/>
     <waypoint lat="-27.274012" lon="151.290038" name="TD"/>
-
-    <!-- General waypoints -->
     <waypoint lat="-27.3581" lon="151.240624" name="REPORT_JOE"/>
-
-    <!-- Geofence -->
+    <waypoint lat="-27.358430" lon="151.243385" name="j1"/>
+    <waypoint lat="-27.358142" lon="151.239663" name="j2"/>
+    <waypoint lat="-27.356831" lon="151.238937" name="j3"/>
+    <waypoint lat="-27.355721" lon="151.240242" name="j4"/>
+    <waypoint lat="-27.359051" lon="151.240683" name="j5"/>
+    <waypoint lat="-27.357720" lon="151.242751" name="j6"/>
+    <waypoint lat="-27.358936" lon="151.239268" name="j7"/>
     <waypoint lat="-27.270220" lon="151.295874" name="_MB1"/>
     <waypoint lat="-27.279114" lon="151.294158" name="_MB2"/>
     <waypoint lat="-27.319091" lon="151.286441" name="_MB3"/>
@@ -26,8 +29,6 @@
     <waypoint lat="-27.324265" lon="151.252104" name="_MB15"/>
     <waypoint lat="-27.266754" lon="151.273390" name="_MB16"/>
     <waypoint lat="-27.268686" lon="151.285921" name="_MB17"/>
-
-    <!-- Flightpath waypoints -->
     <waypoint lat="-27.273826" lon="151.290156" name="p1"/>
     <waypoint lat="-27.316738" lon="151.281871" name="p2"/>
     <waypoint lat="-27.317045" lon="151.283862" name="p3"/>

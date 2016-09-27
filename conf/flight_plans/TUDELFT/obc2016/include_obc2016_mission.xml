@@ -227,6 +227,7 @@
       <set value="1" var="last_wp_reached_in_route"/>
       <deroute block="Descent"/>
     </block>
+
     <block name="Descent">
       <exception cond="10.0 > stateGetPositionEnu_f()->z" deroute="Descent_slow"/>
       <call fun="nav_set_heading_current()" loop="false"/>
@@ -250,7 +251,7 @@
       <deroute block="landed"/>
     </block>
 
-<block name="Descent_noGPS">
+    <block name="Descent_noGPS">
       <exception cond="10.0 > stateGetPositionEnu_f()->z" deroute="Descent_slow"/>
       <call fun="nav_set_heading_current()" loop="false"/>
       <call fun="NavSetWaypointHere(WP_TD)" loop="false"/>
@@ -267,24 +268,28 @@
       <deroute block="landed"/>
     </block>
 
-
-
-
-    <block name="HoldPositionOnCircle">
-      <call fun="enableKalamosLandingspotSearch(false)" loop="false"/>
-      <call fun="NavSetWaypointHere(WP_TD)" loop="false"/>
+    <block name="search_joe">
+      <call fun="enableKalamosLandingspotSearch(true)" loop="false"/>
+      <call fun="enableKalamosFindJoe(true)" loop="false"/>
+      <call fun="enableKalamosDescent(false)" loop="false"/>
       <stay wp="TD"/>
+      <go forward="true" from="j1" hmode="route" wp="p2"/>
+      <go forward="true" from="j2" hmode="route" wp="p3"/>
+      <go forward="true" from="j3" hmode="route" wp="p4"/>
+      <go forward="true" from="j4" hmode="route" wp="p1"/>
+      <deroute block="land_at_vision_spot"/>
     </block>
-    <block name="land at vision spot">
+
+    <block name="land_at_vision_spot">
       <call fun="enableKalamosDescent(false)" loop="false"/>
       <call fun="NavCopyWaypoint(WP_LANDING,WP_LANDSPOT)"/>
       <stay until="stage_time > 1" wp="LANDSPOT"/>
     </block>
-    <block name="Goto_ vision landing">
+    <block name="Goto_ vision_landing">
       <call fun="enableKalamosDescent(false)" loop="false"/>
       <stay wp="LANDING"/>
     </block>
-    <block name="Do vision landing">
+    <block name="Do_vision_landing">
       <call fun="enableKalamosDescent(true)" loop="false"/>
       <stay climb="land_cmd.z" vmode="climb" wp="LANDING"/>
     </block>
@@ -327,7 +332,7 @@
     <block name="failsafe">
       <call fun="NavKillThrottle()"/>
       <call fun="NavSetFailsafe"/>
-      <cal fun="INTERMCU_SET_CMD_STATUS(INTERMCU_CMD_FAILSAFE)" loop="false"/>
+      <call fun="INTERMCU_SET_CMD_STATUS(INTERMCU_CMD_FAILSAFE)" loop="false"/>
       <attitude pitch="0" roll="0" throttle="0" until="FALSE" vmode="throttle"/>
     </block>
 
