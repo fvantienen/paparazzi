@@ -50,6 +50,7 @@
         <define name="AIR_DATA_TEMPERATURE_ID" value="IMU_MAG_PITOT_ID"/-->
         <define name="AIR_DATA_BARO_ABS_ID" value="BARO_BOARD_SENDER_ID"/>
         <define name="AIR_DATA_TEMPERATURE_ID" value="BARO_BOARD_SENDER_ID"/>
+        <define name="AIR_DATA_CALC_AMSL_BARO" value="TRUE"/>
       </module>
 
       <module name="temp_adc"/>

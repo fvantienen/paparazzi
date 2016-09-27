@@ -58,7 +58,9 @@
     <program name="Iridium Link" command="sw/tools/iridium/iridium_link.py"/>
     <program name="IVY2UDP" command="sw/ground_segment/tmtc/ivy2udp"/>
     <program name="SVInfo" command="sw/ground_segment/python/svinfo/svinfo.py"/>
+    <program name="ATC" command="sw/ground_segment/python/atc/atc.py"/>
     <program name="PayloadForward" command="sw/ground_segment/python/payload_decoder/payload.py"/>
+    <program name="SmartUAV" command="../SmartUAV/go.sh"/>
   </section>
 
   <section name="sessions">
