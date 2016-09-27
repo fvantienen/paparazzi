@@ -1,84 +1,43 @@
 <!DOCTYPE flight_plan SYSTEM "../../flight_plan.dtd">
 
-<flight_plan alt="423.8" ground_alt="343.8" lat0="-27.216986" lon0="151.236942" max_dist_from_home="12000" name="Kalmthout OBC2016test" qfu="170" security_height="10">
+<flight_plan alt="423.8" ground_alt="343.8" home_mode_height="120" lat0="-27.2739" lon0="151.290039" max_dist_from_home="12038" name="OBC2016" qfu="170" security_height="10">
   <waypoints>
     <waypoint name="HOME" x="0" y="0"/>
-    <waypoint lat="-27.220164" lon="151.236533" name="TD"/>
-    <waypoint lat="-27.219324" lon="151.246446" name="REPORT_JOE"/>
-    <waypoint lat="-27.219175" lon="151.244139" name="j1"/>
-    <waypoint lat="-27.220640" lon="151.245537" name="j2"/>
-    <waypoint lat="-27.219483" lon="151.245792" name="j3"/>
-    <waypoint lat="-27.218237" lon="151.246927" name="j4"/>
-    <waypoint lat="-27.218091" lon="151.245340" name="j5"/>
-    <waypoint lat="-27.219201" lon="151.247872" name="j6"/>
-    <waypoint lat="-27.220591" lon="151.247040" name="j7"/>
-    <waypoint lat="-27.183625" lon="151.276160" name="_MB1"/>
-    <waypoint lat="-27.195906" lon="151.300571" name="_MB2"/>
-    <waypoint lat="-27.230422" lon="151.327295" name="_MB3"/>
-    <waypoint lat="-27.236022" lon="151.317640" name="_MB4"/>
-    <waypoint lat="-27.239527" lon="151.297094" name="_MB5"/>
-    <waypoint lat="-27.241052" lon="151.280166" name="_MB6"/>
-    <waypoint lat="-27.246861" lon="151.269854" name="_MB7"/>
-    <waypoint lat="-27.251374" lon="151.266190" name="_MB8"/>
-    <waypoint lat="-27.258311" lon="151.260731" name="_MB9"/>
-    <waypoint lat="-27.261357" lon="151.244274" name="_MB10"/>
-    <waypoint lat="-27.259751" lon="151.228205" name="_MB11"/>
-    <waypoint lat="-27.252072" lon="151.211856" name="_MB12"/>
-    <waypoint lat="-27.238949" lon="151.190515" name="_MB13"/>
-    <waypoint lat="-27.224025" lon="151.185473" name="_MB14"/>
-    <waypoint lat="-27.212103" lon="151.195276" name="_MB15"/>
-    <waypoint lat="-27.192622" lon="151.227429" name="_MB16"/>
-    <waypoint lat="-27.180400" lon="151.251718" name="_MB17"/>
-    <waypoint lat="-27.217552" lon="151.237405" name="p1"/>
-    <waypoint lat="-27.216627" lon="151.240786" name="p2"/>
-    <waypoint lat="-27.219038" lon="151.240283" name="p3"/>
-    <waypoint lat="-27.218744" lon="151.236761" name="p4"/>
-    <waypoint lat="-27.217070" lon="151.239394" name="p5"/>
-    <waypoint lat="-27.218885" lon="151.241939" name="p6"/>
-    <waypoint lat="-27.220314" lon="151.238357" name="p7"/>
-    <waypoint lat="-27.218162" lon="151.237963" name="p8"/>
-    <waypoint lat="-27.219949" lon="151.242417" name="p9"/>
-
-    <!--
-<flight_plan alt="423.8" ground_alt="343.8" home_mode_height="120" lat0="-27.2739" lon0="151.290039" max_dist_from_home="12038" name="OBC2016" qfu="170" security_height="10">
-   <waypoints>
-     <waypoint name="HOME" x="0" y="0"/>
-     <waypoint lat="-27.274012" lon="151.290038" name="TD"/>
-     <waypoint lat="-27.3581" lon="151.240624" name="REPORT_JOE"/>
-     <waypoint lat="-27.358430" lon="151.243385" name="j1"/>
-     <waypoint lat="-27.358142" lon="151.239663" name="j2"/>
-     <waypoint lat="-27.356831" lon="151.238937" name="j3"/>
-     <waypoint lat="-27.355721" lon="151.240242" name="j4"/>
-     <waypoint lat="-27.359051" lon="151.240683" name="j5"/>
-     <waypoint lat="-27.357720" lon="151.242751" name="j6"/>
-     <waypoint lat="-27.358936" lon="151.239268" name="j7"/>
-     <waypoint lat="-27.270220" lon="151.295874" name="_MB1"/>
-     <waypoint lat="-27.279114" lon="151.294158" name="_MB2"/>
-     <waypoint lat="-27.319091" lon="151.286441" name="_MB3"/>
-     <waypoint lat="-27.317933" lon="151.278923" name="_MB4"/>
-     <waypoint lat="-27.277956" lon="151.286643" name="_MB5"/>
-     <waypoint lat="-27.277580" lon="151.284204" name="_MB6"/>
-     <waypoint lat="-27.276210" lon="151.275317" name="_MB7"/>
-     <waypoint lat="-27.325115" lon="151.257217" name="_MB8"/>
-     <waypoint lat="-27.358508" lon="151.255387" name="_MB9"/>
-     <waypoint lat="-27.361077" lon="151.246946" name="_MB10"/>
-     <waypoint lat="-27.363744" lon="151.237290" name="_MB11"/>
-     <waypoint lat="-27.355123" lon="151.234302" name="_MB12"/>
-     <waypoint lat="-27.352455" lon="151.243958" name="_MB13"/>
-     <waypoint lat="-27.350364" lon="151.250673" name="_MB14"/>
-     <waypoint lat="-27.324265" lon="151.252104" name="_MB15"/>
-     <waypoint lat="-27.266754" lon="151.273390" name="_MB16"/>
-     <waypoint lat="-27.268686" lon="151.285921" name="_MB17"/>
-     <waypoint lat="-27.273826" lon="151.290156" name="p1"/>
-     <waypoint lat="-27.316738" lon="151.281871" name="p2"/>
-     <waypoint lat="-27.317045" lon="151.283862" name="p3"/>
-     <waypoint lat="-27.278580" lon="151.291288" name="p4"/>
-     <waypoint lat="-27.273606" lon="151.290506" name="p5"/>
-     <waypoint lat="-27.271136" lon="151.274482" name="p6"/>
-     <waypoint lat="-27.324690" lon="151.254661" name="p7"/>
-     <waypoint lat="-27.354436" lon="151.253030" name="p8"/>
-     <waypoint lat="-27.358100" lon="151.240624" name="p9"/>
--->
+    <waypoint lat="-27.274012" lon="151.290038" name="TD"/>
+    <waypoint lat="-27.3581" lon="151.240624" name="REPORT_JOE"/>
+    <waypoint lat="-27.358430" lon="151.243385" name="j1"/>
+    <waypoint lat="-27.358142" lon="151.239663" name="j2"/>
+    <waypoint lat="-27.356831" lon="151.238937" name="j3"/>
+    <waypoint lat="-27.355721" lon="151.240242" name="j4"/>
+    <waypoint lat="-27.359051" lon="151.240683" name="j5"/>
+    <waypoint lat="-27.357720" lon="151.242751" name="j6"/>
+    <waypoint lat="-27.358936" lon="151.239268" name="j7"/>
+    <waypoint lat="-27.270220" lon="151.295874" name="_MB1"/>
+    <waypoint lat="-27.279114" lon="151.294158" name="_MB2"/>
+    <waypoint lat="-27.319091" lon="151.286441" name="_MB3"/>
+    <waypoint lat="-27.317933" lon="151.278923" name="_MB4"/>
+    <waypoint lat="-27.277956" lon="151.286643" name="_MB5"/>
+    <waypoint lat="-27.277580" lon="151.284204" name="_MB6"/>
+    <waypoint lat="-27.276210" lon="151.275317" name="_MB7"/>
+    <waypoint lat="-27.325115" lon="151.257217" name="_MB8"/>
+    <waypoint lat="-27.358508" lon="151.255387" name="_MB9"/>
+    <waypoint lat="-27.361077" lon="151.246946" name="_MB10"/>
+    <waypoint lat="-27.363744" lon="151.237290" name="_MB11"/>
+    <waypoint lat="-27.355123" lon="151.234302" name="_MB12"/>
+    <waypoint lat="-27.352455" lon="151.243958" name="_MB13"/>
+    <waypoint lat="-27.350364" lon="151.250673" name="_MB14"/>
+    <waypoint lat="-27.324265" lon="151.252104" name="_MB15"/>
+    <waypoint lat="-27.266754" lon="151.273390" name="_MB16"/>
+    <waypoint lat="-27.268686" lon="151.285921" name="_MB17"/>
+    <waypoint lat="-27.273826" lon="151.290156" name="p1"/>
+    <waypoint lat="-27.316738" lon="151.281871" name="p2"/>
+    <waypoint lat="-27.317045" lon="151.283862" name="p3"/>
+    <waypoint lat="-27.278580" lon="151.291288" name="p4"/>
+    <waypoint lat="-27.273606" lon="151.290506" name="p5"/>
+    <waypoint lat="-27.271136" lon="151.274482" name="p6"/>
+    <waypoint lat="-27.324690" lon="151.254661" name="p7"/>
+    <waypoint lat="-27.354436" lon="151.253030" name="p8"/>
+    <waypoint lat="-27.358100" lon="151.240624" name="p9"/>
   </waypoints>
   <sectors>
     <sector color="red" name="Safety" type="dynamic">
