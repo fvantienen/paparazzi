@@ -191,12 +191,10 @@ static inline void kalamos_parse_msg(void)
 
       if((kalamos_land_xy_gain > 0.001) && (k2p_package.avoid_rate > 0.2))
         waypoint_set_enu(WP_LANDING, &target);
-#warning Check WP_LANDING is ok in flight plan
     }
 
     if (kalamos_enable_findjoe) {
       waypoint_set_xy_i(WP_JOE, POS_BFP_OF_REAL(k2p_package.joe_enu_x), POS_BFP_OF_REAL(k2p_package.joe_enu_y));
-#warning Check WP_JOE is ok in flight plan
 
       uint8_t wp_id = WP_JOE;
       RunOnceEvery(60, DOWNLINK_SEND_WP_MOVED_ENU(DefaultChannel, DefaultDevice, &wp_id,&(waypoints[WP_JOE].enu_i.x),
