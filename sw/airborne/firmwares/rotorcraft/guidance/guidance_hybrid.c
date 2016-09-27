@@ -61,7 +61,7 @@ float vertical_gain = OUTBACK_FORWARD_VERTICAL_GAIN;
 float vertical_dgain = OUTBACK_FORWARD_VERTICAL_DGAIN;
 float vertical_pitch_of_roll = OUTBACK_FORWARD_PITCH_OF_ROLL;
 int32_t nominal_forward_thrust = NOMINAL_FORWARD_THRUST;
-float throttle_from_pitch_up = 0.0;
+float throttle_from_pitch_up = THROTTLE_FROM_PITCH_UP;
 
 // Private variables
 struct Int32Eulers guidance_hybrid_ypr_sp;
