@@ -35,7 +35,7 @@
       <message name="MOTOR"                  period="8"   phase="0.90"/>
     </mode>
 
-    <mode name="debug">
+    <mode name="debug" key_press="s">
       <message name="AUTOPILOT_VERSION"      period="60"  phase="0.00"/>
       <message name="DL_VALUE"               period="3"   phase="0.50"/>
       <message name="ROTORCRAFT_STATUS"      period="2"   phase="0.20"/>
