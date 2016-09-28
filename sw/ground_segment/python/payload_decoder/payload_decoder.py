@@ -10,7 +10,7 @@ import array
 import Image
 from cStringIO import StringIO
 
-UDP_IP = "127.0.0.1"
+UDP_IP = "10.0.0.3"
 UDP_PORT = 32000
 
 print "UDP target IP:", UDP_IP
@@ -47,11 +47,11 @@ class ThumbNailFromPayload:
 
     def get_image(self):
 
-        self.jpgdata = jpegheader + bytearray(self.thumb) 
+        self.jpgdata = jpegheader + bytearray(self.thumb)
         file_jpgdata = StringIO(self.jpgdata)
         img = Image.open(file_jpgdata)
         return img
-     
+
 
 
 class PayloadDecoderFrame(wx.Frame):
