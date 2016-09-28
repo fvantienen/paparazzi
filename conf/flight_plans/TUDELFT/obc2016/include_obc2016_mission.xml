@@ -60,6 +60,7 @@
 
     <!-- Datalink loss -->
     <exception cond="(datalink_time > 60 &&
+      !(datalink_time > 120) &&
       !(IndexOfBlock('Takeoff') > nav_block) &&
       !(nav_block >= IndexOfBlock('landed')) &&
       !(nav_block == IndexOfBlock('GpsLoss')) &&
@@ -366,7 +367,7 @@
     <!-- Emergency modes -->
     <block name="GpsLoss">
       <!-- Less than 2 meters goto failsafe -->
-      <exception cond="2.0 > stateGetPositionEnu_f()->z" deroute="failsafe"/>
+      <exception cond="2.0 > stateGetPositionEnu_f()->z" deroute="landing_moment_noGPS"/>
       <!-- Deroute to hover here if below 20 meters and GPS fix becomes valid -->
       <exception cond="GpsFixValid() && (20.0 > stateGetPositionEnu_f()->z)" deroute="Hover_here"/>
       <!-- Goto descent without GPS after 20 seconds without GPS -->
@@ -379,15 +380,17 @@
     </block>
     <block name="DatalinkLoss">
       <!-- If we have another 60 seconds datalink loss fly home through corridor -->
-      <exception cond="block_time>60" deroute="line_p9_p8"/> <!-- fly back home -->
+      <exception cond="block_time>120" deroute="line_p9_p8"/> <!-- fly back home -->
       <!-- If motor temperature becomes higher 100 degrees goto forwared and fly to home in corridor -->
       <exception cond="temp_c1 > 100" deroute="line_p9_p8"/> <!-- fly back home -->
       <!-- Set Hover waypoint to current positions and set height -->
       <call fun="NavSetWaypointHere(WP_HOVER)" loop="false"/>
       <call fun="waypoint_set_alt(WP_HOVER,stateGetPositionEnu_f()->z + 20)" loop="false"/>
-      <stay wp="HOVER" until="datalink_time > 60"/>
+      <stay wp="HOVER" until="60 > datalink_time"/>
       <!-- Return to previous block if datalink is OK -->
       <call fun="ReturnToStartPrevBlock()"/>
+<!-- if the function above did not work, keep in this block -->
+      <stay wp="HOVER"/>
     </block>
     <block name="failsafe">
       <!-- Ultimate KILL MODE -->
