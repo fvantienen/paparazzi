@@ -16,7 +16,8 @@ pygtk.require('2.0')
 
 DEFAULT_DEVICE = "/dev/paparazzi/iridium"
 DEFAULT_BAUD = "19200"
-DEFAULT_NUMBER = "00881693689909"
+#DEFAULT_NUMBER = "00881693689909" # first this was the ground, during the competition we swapped sim cards
+DEFAULT_NUMBER = "00881692588711"
 UDP_IN = 4243
 UDP_OUT = 4242
 
