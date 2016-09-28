@@ -266,7 +266,7 @@
     </block>
     <block name="Descent_slow">
       <exception cond="((0.6 + fabs(stateGetNedToBodyEulers_f()->phi)/2) > k2p_package.height ) && (k2p_package.height > 0.0) && getKalamosReady()" deroute="landing_moment"/>
-      <exception cond="(fabs(stateGetNedToBodyEulers_f()->theta) > 0.6) && ( 2.5 > k2p_package.height) && (!last_block==IndexOfBlock('Descent_pause'))" deroute="Descent_pause"/>
+      <exception cond="(fabs(stateGetNedToBodyEulers_f()->theta) > 0.6) && ( 2.5 > k2p_package.height) && (!(last_block==IndexOfBlock('Descent_pause')))" deroute="Descent_pause"/>
       <stay climb="-0.5" vmode="climb" wp="TD"/>
     </block>
     <block name="Descent_pause">
@@ -334,7 +334,7 @@
     </block>
     <block name="Descent_slow_remote">
       <exception cond="((0.6 + fabs(stateGetNedToBodyEulers_f()->phi)/2) > k2p_package.height ) && (k2p_package.height > 0.0) && getKalamosReady()" deroute="landing_moment_remote"/>
-      <exception cond="(fabs(stateGetNedToBodyEulers_f()->theta) > 0.6) && ( 2.5 > k2p_package.height) && (!last_block==IndexOfBlock('Descent_pause_remote'))" deroute="Descent_pause_remote"/>
+      <exception cond="(fabs(stateGetNedToBodyEulers_f()->theta) > 0.6) && ( 2.5 > k2p_package.height) && (!(last_block==IndexOfBlock('Descent_pause_remote')))" deroute="Descent_pause_remote"/>
       <stay climb="-0.5" vmode="climb" wp="LANDING"/>
     </block>
     <block name="Descent_pause_remote">
