@@ -157,6 +157,7 @@
       <stay wp="STDBY"/>
     </block>
     <block name="Hover_here">
+      <call fun="waypoint_set_alt(WP_HOVER,stateGetPositionEnu_f()->z)" loop="false"/>
       <call fun="NavSetWaypointHere(WP_HOVER)" loop="false"/>
       <stay wp="HOVER"/>
     </block>
