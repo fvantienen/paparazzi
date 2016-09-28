@@ -323,7 +323,7 @@
 
     <!-- Vision based landing -->
     <block name="Do_vision_landing">
-      <exception cond="10.0 > stateGetPositionEnu_f()->z" deroute="Descent_slow_remote"/>
+      <exception cond="6.0 > stateGetPositionEnu_f()->z" deroute="Descent_slow_remote"/>
       <call fun="enableKalamosFindJoe(false)" loop="false"/>
       <call fun="enableKalamosLandingspotSearch(false)" loop="false"/>
       <call fun="enableKalamosDescent(true)" loop="false"/>
