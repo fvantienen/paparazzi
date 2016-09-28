@@ -29,7 +29,7 @@
     <waypoint name="STDBY" x="30" y="30"/>
     <waypoint name="HOVER" x="268.5" y="27.1" height="60"/>
     <waypoint name="LANDSPOT" x="268.5" y="127.1" height="40"/>
-    <waypoint name="LANDING" x="-4731.0" y="-9402.9" height="40"/>
+    <waypoint name="LANDING" x="-4800.1" y="-9409.5" height="40"/>
     <waypoint name="JOE" x="268.5" y="127.1" height="40"/>
   </waypoints>
 
