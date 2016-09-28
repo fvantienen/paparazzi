@@ -138,6 +138,8 @@
       <call fun="nav_set_heading_current()" loop="false"/>
       <set value="RadOfDeg(35)" var="guidance_indi_max_bank"/>
       <call fun="GuidanceVSetRef(stateGetPositionNed_i()->z - POS_BFP_OF_REAL(5.0), -SPEED_BFP_OF_REAL(3.0), 0)"/>
+      <stay climb="nav_climb_vspeed" vmode="climb" wp="CLIMB" until="stateGetPositionEnu_f()->z > 20.0"/>
+      <set value="GUIDANCE_H_MAX_BANK" var="guidance_indi_max_bank"/>
       <stay climb="nav_climb_vspeed" vmode="climb" wp="CLIMB"/>
     </block>
 
