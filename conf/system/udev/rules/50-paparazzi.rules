@@ -32,6 +32,9 @@ SUBSYSTEM=="tty", ATTRS{idVendor}=="0403", ATTRS{idProduct}=="6011", ATTRS{produ
 
 # Recent Digi XBee pro modems (XBP24-PKC-001-UA)
 SUBSYSTEM=="tty", ATTRS{idVendor}=="0403", ATTRS{idProduct}=="6001", ATTRS{product}=="USB <-> Serial", SYMLINK+="paparazzi/xbee", GROUP="plugdev"
+SUBSYSTEM=="tty", ATTRS{idVendor}=="0403", ATTRS{idProduct}=="6001", ATTRS{product}=="PAPARAZZI_LONGRANGE", SYMLINK+="paparazzi/longrange", GROUP="plugdev"
+SUBSYSTEM=="tty", ATTRS{idVendor}=="0403", ATTRS{idProduct}=="6001", ATTRS{product}=="PAPARAZZI_IRIDIUM", SYMLINK+="paparazzi/iridium", GROUP="plugdev"
+SUBSYSTEM=="tty", ATTRS{idVendor}=="0403", ATTRS{idProduct}=="6001", ATTRS{product}=="PAPARAZZI_NMEA", SYMLINK+="paparazzi/nmea", GROUP="plugdev"
 
 LABEL="tty_FTDI232_end"
 
