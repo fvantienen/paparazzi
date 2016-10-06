@@ -31,6 +31,7 @@
 #include "generated/airframe.h"
 #include "EKF/ekf.h"
 #include "math/pprz_isa.h"
+#include "mcu_periph/sys_time.h"
 
 #if defined SITL && USE_NPS
 //#include "nps_fdm.h"
@@ -84,6 +85,7 @@ PRINT_CONFIG_VAR(INS_EKF2_GPS_ID)
 #endif
 PRINT_CONFIG_VAR(INS_EKF2_VEL_ID)
 
+/* All registered ABI events */
 static abi_event sonar_ev;
 static abi_event baro_ev;
 static abi_event gyro_ev;
@@ -93,6 +95,7 @@ static abi_event gps_ev;
 static abi_event body_to_imu_ev;
 static abi_event opticflow_ekf_ev;
 
+/* All ABI callbacks */
 static void sonar_cb(uint8_t sender_id, uint32_t stamp, float distance);
 static void baro_cb(uint8_t sender_id, uint32_t stamp, float pressure);
 static void gyro_cb(uint8_t sender_id, uint32_t stamp, struct Int32Rates *gyro);
@@ -102,25 +105,103 @@ static void gps_cb(uint8_t sender_id, uint32_t stamp, struct GpsState *gps_s);
 static void body_to_imu_cb(uint8_t sender_id, struct FloatQuat *q_b2i_f);
 static void opticflow_ekf_cb(uint8_t sender_id, uint32_t stamp, float flow_x_integral, float flow_y_integral, uint8_t quality, float gyro_x_integral, float gyro_y_integral, float gyro_z_integral, uint32_t timespan);
 
-static Ekf ekf;
-parameters *ekf2_params;
+static Ekf ekf;           ///< EKF class itself
+parameters *ekf2_params;  ///< The EKF parameters
 
 struct ekf2_t {
-    uint32_t gyro_stamp;
-    uint32_t gyro_dt;
-    uint32_t accel_stamp;
-    uint32_t accel_dt;
-    FloatRates gyro;
-    FloatVect3 accel;
-    bool gyro_valid;
-    bool accel_valid;
+  uint32_t gyro_stamp;
+  uint32_t gyro_dt;
+  uint32_t accel_stamp;
+  uint32_t accel_dt;
+  FloatRates gyro;
+  FloatVect3 accel;
+  bool gyro_valid;
+  bool accel_valid;
 
-    struct LtpDef_i ltp_def;
+  struct LtpDef_i ltp_def;
 
-    struct OrientationReps body_to_imu;
-    bool got_imu_data;
+  struct OrientationReps body_to_imu;
+  bool got_imu_data;
 };
-static struct ekf2_t ekf2;
+static struct ekf2_t ekf2;  ///< Local EKF INS description
+
+#if EKF2_LOGGING
+/* Log EKF output to a file */
+static void ins_ekf2_log_output(void) {
+   /*// states and ekf output Log
+  uint32_t timestamp;
+  float states[32] = {};
+  float covariances[28] = {};
+  float vel_pos_innov[6] = {};
+  float mag_innov[3] = {};
+  float heading_innov;
+  float vel_pos_innov_var[6] = {};
+  float mag_innov_var[3] = {};
+  float heading_innov_var;
+
+  timestamp = get_sys_time_usec();
+  ekf.get_state_delayed(states);
+  ekf.get_covariances(covariances);
+  ekf.get_vel_pos_innov(vel_pos_innov);
+  ekf.get_mag_innov(mag_innov);
+  ekf.get_heading_innov(&heading_innov);
+  ekf.get_vel_pos_innov_var(vel_pos_innov_var);
+  ekf.get_mag_innov_var(mag_innov_var);
+  ekf.get_heading_innov_var(&heading_innov_var);
+
+
+  int s_len = 32;
+  int c_len = 28;
+  int v_len = 6;
+  int m_len =3;
+  int i;
+
+
+  char log_msg[512000], number[50];
+  snprintf(log_msg, 512000, "%d",timestamp);
+
+  for(i=0; i < s_len; i++)
+  {
+      snprintf(number, 50, ",%.10f", states[i]);
+      strcat(log_msg, number);
+
+  }
+  for(i=0; i < c_len; i++)
+  {
+      snprintf(number, 50, ",%.10f", covariances[i]);
+      strcat(log_msg, number);
+  }
+  for(i=0; i < v_len; i++)
+  {
+      snprintf(number, 50, ",%.10f", vel_pos_innov[i]);
+      strcat(log_msg, number);
+
+  }
+  for(i=0; i < m_len; i++)
+  {
+      snprintf(number, 50, ",%.10f", mag_innov[i]);
+      strcat(log_msg, number);
+
+  }
+  snprintf(number, 50, ",%.10f", heading_innov);
+  strcat(log_msg, number);
+  for(i=0; i < v_len; i++)
+  {
+      snprintf(number, 50, ",%.10f", vel_pos_innov_var[i]);
+      strcat(log_msg, number);
+  }
+  for(i=0; i < m_len; i++)
+  {
+      snprintf(number, 50, ",%.10f", mag_innov_var[i]);
+      strcat(log_msg, number);
+  }
+  snprintf(number, 50, ",%.10f", heading_innov_var);
+  strcat(log_msg, number);
+  fprintf(file_logger, "%s\n", log_msg);
+
+   */
+}
+#endif
 
 #if PERIODIC_TELEMETRY
 #include "subsystems/datalink/telemetry.h"
@@ -149,6 +230,7 @@ static void send_ins_ref(struct transport_tx *trans, struct link_device *dev)
 }
 #endif
 
+/* Initialize the EKF */
 void ins_ekf2_init(void)
 {
   /* Get the ekf parameters */
@@ -237,31 +319,33 @@ void ins_ekf2_init(void)
   AbiBindMsgOPTICAL_FLOW_EKF(ABI_BROADCAST, &opticflow_ekf_ev, opticflow_ekf_cb);
 }
 
+/* Update the INS state */
 void ins_ekf2_update(void)
 {
+  /* Update the EKF */
   if(ekf2.got_imu_data && ekf.update()) {
     /* Get the attitude */
     float att_q[4] = {};
     struct FloatQuat ltp_to_body_quat;
     ekf.copy_quaternion(att_q);
-      ltp_to_body_quat.qi = att_q[0];
-      ltp_to_body_quat.qx = att_q[1];
-      ltp_to_body_quat.qy = att_q[2];
-      ltp_to_body_quat.qz = att_q[3];
+    ltp_to_body_quat.qi = att_q[0];
+    ltp_to_body_quat.qx = att_q[1];
+    ltp_to_body_quat.qy = att_q[2];
+    ltp_to_body_quat.qz = att_q[3];
 
     // Publish it to the state
     stateSetNedToBodyQuat_f(&ltp_to_body_quat);
 
-      /* Get the Body rates */
-      struct FloatRates body_rates;
-      float gyro_bias[3] = {};
-      ekf.get_gyro_bias(gyro_bias);
-      body_rates.p = ekf2.gyro.p - gyro_bias[0];
-      body_rates.q = ekf2.gyro.q - gyro_bias[1];
-      body_rates.r = ekf2.gyro.r - gyro_bias[2];
+    /* Get the Body rates */
+    struct FloatRates body_rates;
+    float gyro_bias[3] = {};
+    ekf.get_gyro_bias(gyro_bias);
+    body_rates.p = ekf2.gyro.p - gyro_bias[0];
+    body_rates.q = ekf2.gyro.q - gyro_bias[1];
+    body_rates.r = ekf2.gyro.r - gyro_bias[2];
 
-      //Publish to state
-      stateSetBodyRates_f(&body_rates);
+    //Publish to state
+    stateSetBodyRates_f(&body_rates);
 
     /* Get the position */
     float pos_f[3] = {};
@@ -275,161 +359,84 @@ void ins_ekf2_update(void)
     stateSetPositionNed_f(&pos);
 
     /* Get the velocity */
-     float vel_f[3] = {};
-      struct NedCoor_f speed;
-      ekf.get_velocity(vel_f);
-      speed.x = vel_f[0];
-      speed.y = vel_f[1];
-      speed.z = vel_f[2];
+    float vel_f[3] = {};
+    struct NedCoor_f speed;
+    ekf.get_velocity(vel_f);
+    speed.x = vel_f[0];
+    speed.y = vel_f[1];
+    speed.z = vel_f[2];
 
-     //Publish to state
+    //Publish to state
     stateSetSpeedNed_f(&speed);
 
-      /* Get the accelrations */
-      struct NedCoor_f accel;
-      float accel_bias[3];
-      ekf.get_accel_bias(accel_bias);
-      accel.x = ekf2.accel.x - accel_bias[0];
-      accel.y = ekf2.accel.y - accel_bias[1];
-      accel.z = ekf2.accel.z - accel_bias[2];
+    /* Get the accelerations */
+    struct NedCoor_f accel;
+    float accel_bias[3];
+    ekf.get_accel_bias(accel_bias);
+    accel.x = ekf2.accel.x - accel_bias[0];
+    accel.y = ekf2.accel.y - accel_bias[1];
+    accel.z = ekf2.accel.z - accel_bias[2];
 
-      //Publish to state
-      stateSetAccelNed_f(&accel);
+    //Publish to state
+    stateSetAccelNed_f(&accel);
 
-      // Get local origin
-      // Position of local NED origin in GPS / WGS84 frame
-      struct map_projection_reference_s ekf_origin = {};
-      float ref_alt;
-      struct LlaCoor_i lla_ref;
-      uint64_t timestamp_orig;
-      // true if position (x, y) is valid and has valid global reference (ref_lat, ref_lon)
-      ekf.get_ekf_origin(&timestamp_orig, &ekf_origin, &ref_alt);
-      lla_ref.lat = ekf_origin.lat_rad * 180.0 / M_PI *1e7; // Reference point latitude in degrees
-      lla_ref.lon = ekf_origin.lon_rad * 180.0 / M_PI *1e7; // Reference point longitude in degrees
-      lla_ref.alt = ref_alt * 1000.0;
-      ltp_def_from_lla_i(&ekf2.ltp_def, &lla_ref);
+    // Get local origin
+    // Position of local NED origin in GPS / WGS84 frame
+    struct map_projection_reference_s ekf_origin = {};
+    float ref_alt;
+    struct LlaCoor_i lla_ref;
+    uint64_t timestamp_orig;
+    // true if position (x, y) is valid and has valid global reference (ref_lat, ref_lon)
+    ekf.get_ekf_origin(&timestamp_orig, &ekf_origin, &ref_alt);
+    lla_ref.lat = ekf_origin.lat_rad * 180.0 / M_PI *1e7; // Reference point latitude in degrees
+    lla_ref.lon = ekf_origin.lon_rad * 180.0 / M_PI *1e7; // Reference point longitude in degrees
+    lla_ref.alt = ref_alt * 1000.0;
+    ltp_def_from_lla_i(&ekf2.ltp_def, &lla_ref);
 
-      /*/ states and ekf output Log
-      uint32_t timestamp;
-      float states[32] = {};
-      float covariances[28] = {};
-      float vel_pos_innov[6] = {};
-      float mag_innov[3] = {};
-      float heading_innov;
-      float vel_pos_innov_var[6] = {};
-      float mag_innov_var[3] = {};
-      float heading_innov_var;
-
-      timestamp = get_sys_time_usec();
-      ekf.get_state_delayed(states);
-      ekf.get_covariances(covariances);
-      ekf.get_vel_pos_innov(vel_pos_innov);
-      ekf.get_mag_innov(mag_innov);
-      ekf.get_heading_innov(&heading_innov);
-      ekf.get_vel_pos_innov_var(vel_pos_innov_var);
-      ekf.get_mag_innov_var(mag_innov_var);
-      ekf.get_heading_innov_var(&heading_innov_var);
-
-
-      int s_len = 32;
-      int c_len = 28;
-      int v_len = 6;
-      int m_len =3;
-      int i;
-
-
-      char log_msg[512000], number[50];
-      snprintf(log_msg, 512000, "%d",timestamp);
-
-      for(i=0; i < s_len; i++)
-      {
-          snprintf(number, 50, ",%.10f", states[i]);
-          strcat(log_msg, number);
-
-      }
-      for(i=0; i < c_len; i++)
-      {
-          snprintf(number, 50, ",%.10f", covariances[i]);
-          strcat(log_msg, number);
-      }
-      for(i=0; i < v_len; i++)
-      {
-          snprintf(number, 50, ",%.10f", vel_pos_innov[i]);
-          strcat(log_msg, number);
-
-      }
-      for(i=0; i < m_len; i++)
-      {
-          snprintf(number, 50, ",%.10f", mag_innov[i]);
-          strcat(log_msg, number);
-
-      }
-      snprintf(number, 50, ",%.10f", heading_innov);
-      strcat(log_msg, number);
-      for(i=0; i < v_len; i++)
-      {
-          snprintf(number, 50, ",%.10f", vel_pos_innov_var[i]);
-          strcat(log_msg, number);
-      }
-      for(i=0; i < m_len; i++)
-      {
-          snprintf(number, 50, ",%.10f", mag_innov_var[i]);
-          strcat(log_msg, number);
-      }
-      snprintf(number, 50, ",%.10f", heading_innov_var);
-      strcat(log_msg, number);
-      fprintf(file_logger, "%s\n", log_msg);
-
-       */
-
-
+#if EKF2_LOGGING
+    /* Log EKF output to a file */
+    ins_ekf2_log_output(void);
+#endif
   }
 
   ekf2.got_imu_data = false;
 }
 
-#include "mcu_periph/sys_time.h"
+/* Update INS based on Baro information */
 static void baro_cb(uint8_t __attribute__((unused)) sender_id, uint32_t stamp, float pressure)
 {
-  /**
-  * FROM: paparazzi/sw/airborne/math/pprz_isa.h
-  * Get relative altitude from pressure (using simplified equation).
-  * Given the current pressure and a reference pressure (at height=0),
-  * calculate the height above the reference in meters.
-  * If you pass QNH as reference pressure, you get the height above sea level.
-  * Using QFE as reference pressure, you get height above the airfield.
-  *
-  * @param pressure current pressure in Pascal (Pa)
-  * @param ref_p reference pressure (QFE) when height=0 or QNH at sea level
-  * @return height in m above reference in ISA conditions
-  */
-   float height_amsl_m = pprz_isa_height_of_pressure(pressure, 101325.0); //101325.0 defined as PPRZ_ISA_SEA_LEVEL_PRESSURE in pprz_isa.h
-   ekf.setBaroData(stamp, &height_amsl_m);
-
+  // Calculate the height above mean sea level based on pressure
+  float height_amsl_m = pprz_isa_height_of_pressure(pressure, 101325.0); //101325.0 defined as PPRZ_ISA_SEA_LEVEL_PRESSURE in pprz_isa.h
+  ekf.setBaroData(stamp, &height_amsl_m);
 }
 
+/* Update INS based on sonar information */
 static void sonar_cb(uint8_t __attribute__((unused)) sender_id, uint32_t stamp, float distance)
 {
   ekf.setRangeData(stamp, &distance);
-
 }
 
+/* Update INS based on Gyro information */
 static void gyro_cb(uint8_t __attribute__((unused)) sender_id,
                     uint32_t stamp, struct Int32Rates *gyro)
 {
-    FloatRates imu_rate;
-    struct FloatRMat *body_to_imu_rmat = orientationGetRMat_f(&ekf2.body_to_imu);
+  FloatRates imu_rate;
+  struct FloatRMat *body_to_imu_rmat = orientationGetRMat_f(&ekf2.body_to_imu);
+
+  // Convert Gyro information to float
   RATES_FLOAT_OF_BFP(imu_rate, *gyro);
 
-    // Rotate with respect to Body To IMU
-    float_rmat_transp_ratemult(&ekf2.gyro, body_to_imu_rmat, &imu_rate);
+  // Rotate with respect to Body To IMU
+  float_rmat_transp_ratemult(&ekf2.gyro, body_to_imu_rmat, &imu_rate);
 
+  // Calculate the Gyro interval
   if(ekf2.gyro_stamp > 0) {
     ekf2.gyro_dt = stamp - ekf2.gyro_stamp;
     ekf2.gyro_valid = true;
   }
   ekf2.gyro_stamp = stamp;
 
+  /* When Gyro and accelerometer are valid enter it into the EKF */
   if(ekf2.gyro_valid && ekf2.accel_valid) {
     float rates_int[3], accel_int[3];
     rates_int[0] = ekf2.gyro.p * ekf2.gyro_dt/1.e6f;
@@ -446,22 +453,27 @@ static void gyro_cb(uint8_t __attribute__((unused)) sender_id,
   }
 }
 
+/* Update INS based on Accelerometer information */
 static void accel_cb(uint8_t sender_id __attribute__((unused)),
                      uint32_t stamp, struct Int32Vect3 *accel)
 {
-    struct FloatRMat *body_to_imu_rmat = orientationGetRMat_f(&ekf2.body_to_imu);
+  struct FloatVect3 accel_imu;
+  struct FloatRMat *body_to_imu_rmat = orientationGetRMat_f(&ekf2.body_to_imu);
 
-    struct FloatVect3 accel_imu;
+  // Convert Accelerometer information to float
   ACCELS_FLOAT_OF_BFP(accel_imu, *accel);
 
-    float_rmat_transp_vmult(&ekf2.accel, body_to_imu_rmat, &accel_imu);
+  // Rotate with respect to Body To IMU
+  float_rmat_transp_vmult(&ekf2.accel, body_to_imu_rmat, &accel_imu);
 
+  // Calculate the Accelerometer interval
   if(ekf2.accel_stamp > 0) {
     ekf2.accel_dt = stamp - ekf2.accel_stamp;
     ekf2.accel_valid = true;
   }
   ekf2.accel_stamp = stamp;
 
+  /* When Gyro and accelerometer are valid enter it into the EKF */
   if(ekf2.gyro_valid && ekf2.accel_valid) {
     float rates_int[3], accel_int[3];
     rates_int[0] = ekf2.gyro.p * ekf2.gyro_dt/1.e6f;
@@ -478,58 +490,45 @@ static void accel_cb(uint8_t sender_id __attribute__((unused)),
   }
 }
 
+/* Update INS based on Magnetometer information */
 static void mag_cb(uint8_t __attribute__((unused)) sender_id,
                    uint32_t stamp,
                    struct FloatVect3 *mag)
 {
-  float mag_r[3];
   struct FloatRMat *body_to_imu_rmat = orientationGetRMat_f(&ekf2.body_to_imu);
   struct FloatVect3 mag_gauss;
+
+  // Rotate with respect to Body To IMU
   float_rmat_transp_vmult(&mag_gauss, body_to_imu_rmat, mag);
+
+  // Publish information to the EKF
+  float mag_r[3];
   mag_r[0] = mag_gauss.x;
   mag_r[1] = mag_gauss.y;
   mag_r[2] = mag_gauss.z;
 
   ekf.setMagData(stamp, mag_r);
-    //CHECKING
-    ekf2.got_imu_data = true;
+  ekf2.got_imu_data = true;
 }
 
-
+/* Update INS based on GPS information */
 static void gps_cb(uint8_t sender_id __attribute__((unused)),
                    uint32_t stamp,
                    struct GpsState *gps_s)
 {
-    /*
-     * struct gps_message {
-	uint64_t time_usec;
-	int32_t lat;                // Latitude in 1E-7 degrees
-	int32_t lon;                // Longitude in 1E-7 degrees
-	int32_t alt;                // Altitude in 1E-3 meters (millimeters) above MSL
-	uint8_t fix_type;           // 0-1: no fix, 2: 2D fix, 3: 3D fix, 4: RTCM code differential, 5: Real-Time
-	float eph;                  // GPS horizontal position accuracy in m
-	float epv;                  // GPS vertical position accuracy in m
-	float sacc;                 // GPS speed accuracy in m/s
-	float vel_m_s;              // GPS ground speed (m/s)
-	float vel_ned[3];           // GPS ground speed NED (m/s)
-	bool vel_ned_valid;         // GPS ground speed is valid
-	uint8_t nsats;              // number of satellites used
-	float gdop;                 // geometric dilution of precision
-};
-     */
   struct gps_message gps_msg = {};
   gps_msg.time_usec = stamp;
   gps_msg.lat = gps_s->lla_pos.lat;
   gps_msg.lon = gps_s->lla_pos.lon;
   gps_msg.alt = gps_s->hmsl;
   gps_msg.fix_type = gps_s->fix;
-  gps_msg.eph = gps_s->hacc/1000.0;
-  gps_msg.epv = gps_s->vacc/1000.0;
-  gps_msg.sacc = gps_s->sacc/100.0;
-  gps_msg.vel_m_s = gps_s->gspeed/100.0;
-  gps_msg.vel_ned[0] = (gps_s->ned_vel.x)/100.0;//SPEED_FLOAT_OF_BFP(gps_s->ned_vel.x)/100.0;
-  gps_msg.vel_ned[1] = (gps_s->ned_vel.y)/100.0;//SPEED_FLOAT_OF_BFP(gps_s->ned_vel.y)/100.0;
-  gps_msg.vel_ned[2] = (gps_s->ned_vel.z)/100.0;//SPEED_FLOAT_OF_BFP(gps_s->ned_vel.z)/100.0;
+  gps_msg.eph = gps_s->hacc / 1000.0;
+  gps_msg.epv = gps_s->vacc / 1000.0;
+  gps_msg.sacc = gps_s->sacc / 100.0;
+  gps_msg.vel_m_s = gps_s->gspeed / 100.0;
+  gps_msg.vel_ned[0] = (gps_s->ned_vel.x) / 100.0;
+  gps_msg.vel_ned[1] = (gps_s->ned_vel.y) / 100.0;
+  gps_msg.vel_ned[2] = (gps_s->ned_vel.z) / 100.0;
   gps_msg.vel_ned_valid = bit_is_set(gps_s->valid_fields, GPS_VALID_VEL_NED_BIT);
   gps_msg.nsats = gps_s->num_sv;
   //TODO add gdop to gps topic
@@ -538,6 +537,7 @@ static void gps_cb(uint8_t sender_id __attribute__((unused)),
   ekf.setGpsData(stamp, &gps_msg);
 }
 
+/* Update INS based on Optical flow information */
 static void opticflow_ekf_cb(uint8_t sender_id,
                              uint32_t stamp,
                              float flow_x_integral,
@@ -548,57 +548,19 @@ static void opticflow_ekf_cb(uint8_t sender_id,
                              float gyro_z_integral,
                              uint32_t timespan)
 {
+  flow_message flow;
+  flow.flowdata(0) = flow_x_integral;      // accumulated optical flow in radians around x axis
+  flow.flowdata(1) = flow_y_integral;
+  flow.quality = quality;
+  flow.gyrodata(0) = gyro_x_integral;
+  flow.gyrodata(1) = gyro_y_integral;
+  flow.gyrodata(2) = gyro_z_integral;
+  flow.dt = timespan;
 
-/*
- *
-struct flow_message {
-  uint8_t quality;			// Quality of Flow data
-  Vector2f flowdata;			// Flow data received
-  Vector3f gyrodata;			// Gyro data from flow sensor
-  uint32_t dt;				// integration time of flow samples
-};
-
-////
-
- struct flowSample {
-  uint8_t  quality; // quality indicator between 0 and 255
-  Vector2f flowRadXY; // measured delta angle of the image about the X and Y body axes (rad), RH rotaton is positive
-  Vector2f flowRadXYcomp;	// measured delta angle of the image about the X and Y body axes after removal of body rotation (rad), RH rotation is positive
-  Vector3f gyroXYZ; // measured delta angle of the inertial frame about the body axes obtained from rate gyro measurements (rad), RH rotation is positive
-  float    dt; // amount of integration time (sec)
-  uint64_t time_us; // timestamp in microseconds of the integration period mid-point
-};
-
-
-//////
-
-if (optical_flow_updated) {
-          flow_message flow;
-
-
-          if (PX4_ISFINITE(optical_flow.pixel_flow_y_integral) &&
-              PX4_ISFINITE(optical_flow.pixel_flow_x_integral)) {
-              _ekf.setOpticalFlowData(optical_flow.timestamp, &flow);
-          }
-      }
-
- *
- *
- */
-
-    flow_message flow;
-    flow.flowdata(0) = flow_x_integral;      // accumulated optical flow in radians around x axis
-    flow.flowdata(1) = flow_y_integral;
-    flow.quality = quality;
-    flow.gyrodata(0) = gyro_x_integral;
-    flow.gyrodata(1) = gyro_y_integral;
-    flow.gyrodata(2) = gyro_z_integral;
-    flow.dt = timespan;
-
-    ekf.setOpticalFlowData(stamp, &flow);
-
+  ekf.setOpticalFlowData(stamp, &flow);
 }
 
+/* Save the Body to IMU information */
 static void body_to_imu_cb(uint8_t sender_id __attribute__((unused)),
                            struct FloatQuat *q_b2i_f)
 {
