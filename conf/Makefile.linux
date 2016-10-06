@@ -37,7 +37,7 @@ OPT ?= 3
 # Slightly bigger .elf files but gains the ability to decode macros
 DEBUG_FLAGS ?= -ggdb3
 CSTANDARD ?= -std=gnu99
-CXXSTANDARD ?= -std=c++11
+CXXSTANDARD ?= -std=c++0x
 CINCS = $(INCLUDES) -I$(PAPARAZZI_SRC)/sw/include
 
 #

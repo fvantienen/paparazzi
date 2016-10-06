@@ -84,9 +84,6 @@ PRINT_CONFIG_VAR(INS_EKF2_GPS_ID)
 #endif
 PRINT_CONFIG_VAR(INS_EKF2_VEL_ID)
 
-/** The file pointer */
-static FILE *file_logger = NULL;
-
 static abi_event sonar_ev;
 static abi_event baro_ev;
 static abi_event gyro_ev;
