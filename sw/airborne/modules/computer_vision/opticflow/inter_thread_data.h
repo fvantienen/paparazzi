@@ -44,6 +44,15 @@ struct opticflow_result_t {
   int16_t flow_der_x;     ///< The derotated flow calculation in the x direction (in subpixels)
   int16_t flow_der_y;     ///< The derotated flow calculation in the y direction (in subpixels)
 
+  /*** Variables required for ekf ***/
+  float flow_x_integral; ///< Integrated optic flow in radians, x axis
+  float flow_y_integral; ///< Integrated optic flow in radians, y axis
+  float gyro_x_integral; ///< Accumulated gyro value in radians around x axis
+  float gyro_y_integral; ///< Accumulated gyro value in radians around y axis
+  float gyro_z_integral; ///< Accumulated gyro value in radians around z axis
+  uint32_t timespan;          ///< Accumulation timespan in microseconds
+  /*** --- ***/
+
   float vel_x;            ///< The velocity in the x direction (image coordinates)
   float vel_y;            ///< The velocity in the y direction (image coordinates)
 

@@ -79,6 +79,7 @@ void baro_init(void)
 
 void baro_periodic(void)
 {
+  uint32_t now_ts = get_sys_time_usec();
 
   baro_board.absolute = baro_board.buf.sum / baro_board.buf.av_nb_sample;
   baro_board.value_filtered = (3 * baro_board.value_filtered + baro_board.absolute) / 4;
@@ -86,7 +87,7 @@ void baro_periodic(void)
     RunOnceEvery(10, { baro_board_calibrate();});
   } else {
     float pressure = 101325.0 - BOOZ_BARO_SENS * (BOOZ_ANALOG_BARO_THRESHOLD - baro_board.absolute);
-    AbiSendMsgBARO_ABS(BARO_BOARD_SENDER_ID, pressure);
+    AbiSendMsgBARO_ABS(BARO_BOARD_SENDER_ID, now_ts, pressure);
   }
 }
 

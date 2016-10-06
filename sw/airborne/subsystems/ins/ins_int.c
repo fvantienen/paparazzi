@@ -65,7 +65,7 @@
 #define INS_INT_SONAR_ID ABI_BROADCAST
 #endif
 abi_event sonar_ev;
-static void sonar_cb(uint8_t sender_id, float distance);
+static void sonar_cb(uint8_t sender_id, uint32_t stamp, float distance);
 
 #ifdef INS_SONAR_THROTTLE_THRESHOLD
 #include "firmwares/rotorcraft/stabilization.h"
@@ -119,7 +119,7 @@ PRINT_CONFIG_MSG("USE_INS_NAV_INIT defaulting to TRUE")
 #endif
 PRINT_CONFIG_VAR(INS_INT_BARO_ID)
 abi_event baro_ev;
-static void baro_cb(uint8_t sender_id, float pressure);
+static void baro_cb(uint8_t sender_id, uint32_t stamp, float pressure);
 
 /** ABI binding for IMU data.
  * Used accel ABI messages.
@@ -313,7 +313,7 @@ void ins_int_propagate(struct Int32Vect3 *accel, float dt)
   }
 }
 
-static void baro_cb(uint8_t __attribute__((unused)) sender_id, float pressure)
+static void baro_cb(uint8_t __attribute__((unused)) sender_id, uint32_t __attribute__((unused)) stamp, float pressure)
 {
   if (!ins_int.baro_initialized && pressure > 1e-7) {
     // wait for a first positive value
@@ -424,7 +424,7 @@ void ins_int_update_gps(struct GpsState *gps_s __attribute__((unused))) {}
 
 
 #if USE_SONAR
-static void sonar_cb(uint8_t __attribute__((unused)) sender_id, float distance)
+static void sonar_cb(uint8_t __attribute__((unused)) sender_id, uint32_t __attribute__((unused)) stamp, float distance)
 {
   static float last_offset = 0.;
 

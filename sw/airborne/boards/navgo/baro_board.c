@@ -81,12 +81,13 @@ void baro_periodic(void)
 
 void navgo_baro_event(void)
 {
+  uint32_t now_ts = get_sys_time_usec();
   mcp355x_event();
   if (mcp355x_data_available) {
     if (startup_cnt == 0) {
       // Send data when init phase is done
       float pressure = NAVGO_BARO_SENS * (mcp355x_data + NAVGO_BARO_OFFSET);
-      AbiSendMsgBARO_ABS(BARO_BOARD_SENDER_ID, pressure);
+      AbiSendMsgBARO_ABS(BARO_BOARD_SENDER_ID, now_ts, pressure);
     }
     mcp355x_data_available = false;
   }

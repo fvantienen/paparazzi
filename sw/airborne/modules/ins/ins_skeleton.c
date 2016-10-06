@@ -189,7 +189,7 @@ static void ins_ned_to_state(void)
  * ABI callback functions
  **********************************************************/
 
-static void baro_cb(uint8_t __attribute__((unused)) sender_id, float pressure)
+static void baro_cb(uint8_t __attribute__((unused)) sender_id, uint32_t __attribute__((unused)) stamp, float pressure)
 {
   /* call module implementation */
   ins_module_update_baro(pressure);

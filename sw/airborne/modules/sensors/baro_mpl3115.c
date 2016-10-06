@@ -61,10 +61,11 @@ void baro_mpl3115_read_periodic(void)
 
 void baro_mpl3115_read_event(void)
 {
+  uint32_t now_ts = get_sys_time_usec();
   mpl3115_event(&baro_mpl);
   if (baro_mpl.data_available) {
     float pressure = (float)baro_mpl.pressure / (1 << 2);
-    AbiSendMsgBARO_ABS(BARO_MPL3115_SENDER_ID, pressure);
+    AbiSendMsgBARO_ABS(BARO_MPL3115_SENDER_ID, now_ts, pressure);
     float temp = (float)baro_mpl.pressure / 16.0f;
     AbiSendMsgTEMPERATURE(BARO_MPL3115_SENDER_ID, temp);
 #ifdef SENSOR_SYNC_SEND

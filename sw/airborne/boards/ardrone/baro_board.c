@@ -91,6 +91,7 @@ static inline int32_t baro_apply_calibration_temp(int32_t tmp_raw)
 
 void ardrone_baro_event(void)
 {
+  uint32_t now_ts = get_sys_time_usec();
   if (navdata.baro_available) {
     if (navdata.baro_calibrated) {
       // first read temperature because pressure calibration depends on temperature
@@ -101,7 +102,7 @@ void ardrone_baro_event(void)
       press_pascal = update_median_filter(&baro_median, press_pascal);
 #endif
       float pressure = (float)press_pascal;
-      AbiSendMsgBARO_ABS(BARO_BOARD_SENDER_ID, pressure);
+      AbiSendMsgBARO_ABS(BARO_BOARD_SENDER_ID, now_ts, pressure);
     }
     navdata.baro_available = false;
   }

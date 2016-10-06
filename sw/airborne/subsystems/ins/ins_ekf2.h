@@ -29,10 +29,17 @@
 #ifndef INS_EKF2_H
 #define INS_EKF2_H
 
-#include "subsystems/ins.h"
-#include "EKF/ekf.h"
+#ifdef __cplusplus
+extern "C" {
+#endif
 
-extern parameters *ekf2_params;
+#include "subsystems/ins.h"
+
 extern void ins_ekf2_init(void);
+extern void ins_ekf2_update(void);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif /* INS_EKF2_H */

@@ -116,7 +116,7 @@ static abi_event agl_ev; ///< The altitude ABI event
 static abi_event optical_flow_ev;
 
 /// Callback function of the ground altitude
-static void vertical_ctrl_agl_cb(uint8_t sender_id __attribute__((unused)), float distance);
+static void vertical_ctrl_agl_cb(uint8_t sender_id __attribute__((unused)), uint32_t stamp __attribute__((unused)) , float distance);
 // Callback function of the optical flow estimate:
 static void vertical_ctrl_optical_flow_cb(uint8_t sender_id __attribute__((unused)), uint32_t stamp, int16_t flow_x, int16_t flow_y, int16_t flow_der_x, int16_t flow_der_y, uint8_t quality, float size_divergence, float dist);
 
@@ -476,7 +476,7 @@ float get_cov(float *a, float *b, int n_elements)
 
 
 // Reading from "sensors":
-static void vertical_ctrl_agl_cb(uint8_t sender_id, float distance)
+static void vertical_ctrl_agl_cb(uint8_t sender_id, uint32_t stamp __attribute__((unused)), float distance)
 {
   of_landing_ctrl.agl = distance;
 }

@@ -42,6 +42,7 @@
 #include <math.h>
 #include <stdlib.h>
 
+#define NMEA_PRINT printf
 #ifndef NMEA_PRINT
 #define NMEA_PRINT(...) {};
 #endif
@@ -62,6 +63,7 @@ static bool nmea_parse_GSA(void);
 static bool nmea_parse_RMC(void);
 static bool nmea_parse_GGA(void);
 static bool nmea_parse_GSV(void);
+static bool nmea_parse_GxACC(void);
 
 void gps_nmea_init(void)
 {
@@ -133,6 +135,7 @@ bool WEAK nmea_parse_prop_msg(void)
 bool nmea_parse_msg(void)
 {
   bool msg_valid = false;
+    //NMEA_PRINT("MSG BUFFER: \"%s\" \n\r", gps_nmea.msg_buf);
 
   if (gps_nmea.msg_len > 5 && !strncmp(&gps_nmea.msg_buf[2] , "RMC", 3)) {
     gps_nmea.msg_buf[gps_nmea.msg_len] = 0;
@@ -151,6 +154,10 @@ bool nmea_parse_msg(void)
     gps_nmea.have_gsv = true;
     NMEA_PRINT("GSV: \"%s\" \n\r", gps_nmea.msg_buf);
     msg_valid = nmea_parse_GSV();
+  } else if (gps_nmea.msg_len > 5 && !strncmp(&gps_nmea.msg_buf[8] , "GPACC", 5)) {
+      gps_nmea.msg_buf[gps_nmea.msg_len] = 0;
+      NMEA_PRINT("GPACC: \"%s\" \n\r", gps_nmea.msg_buf);
+      msg_valid = nmea_parse_GxACC();
   } else {
     gps_nmea.msg_buf[gps_nmea.msg_len] = 0;
     NMEA_PRINT("Other/propriarty message: len=%i \n\r \"%s\" \n\r", gps_nmea.msg_len, gps_nmea.msg_buf);
@@ -308,13 +315,15 @@ static bool nmea_parse_GSA(void)
   nmea_read_until(&i);
 
   // HDOP
-  float hdop __attribute__((unused)) = strtof(&gps_nmea.msg_buf[i], NULL);
+  float hdop = strtof(&gps_nmea.msg_buf[i], NULL);
   NMEA_PRINT("p_GSA() - hdop=%f\n\r", hdop);
+  gps_nmea.state.hdop = hdop * 100;
   nmea_read_until(&i);
 
   // VDOP
-  float vdop __attribute__((unused)) = strtof(&gps_nmea.msg_buf[i], NULL);
+  float vdop = strtof(&gps_nmea.msg_buf[i], NULL);
   NMEA_PRINT("p_GSA() - vdop=%f\n\r", vdop);
+  gps_nmea.state.vdop = vdop * 100;
   nmea_read_until(&i);
 
   /* indicate that msg was valid and gps_nmea.state updated */
@@ -450,8 +459,9 @@ static bool nmea_parse_GGA(void)
 
   // get HDOP, but we use PDOP from GSA message
   nmea_read_until(&i);
-  //float hdop = strtof(&gps_nmea.msg_buf[i], NULL);
+  float hdop = strtof(&gps_nmea.msg_buf[i], NULL);
   //gps_nmea.state.pdop = hdop * 100;
+  gps_nmea.state.gga_hdop = hdop * 100;
 
   // get altitude (in meters) above geoid (MSL)
   nmea_read_until(&i);
@@ -561,3 +571,34 @@ static bool nmea_parse_GSV(void)
   /* indicate that msg was valid and gps_nmea.state updated */
   return true;
 }
+
+//// ACC function
+static bool nmea_parse_GxACC(void)
+{
+    NMEA_PRINT("p_GxACC() - now in nmea_parse_GxACC\n\r");
+    int i = 6;     // current position in the message, start after: GxACC,
+
+    // attempt to reject empty packets right away
+    if (gps_nmea.msg_buf[i] == ',' && gps_nmea.msg_buf[i + 1] == ',') {
+        NMEA_PRINT("p_GxACC() - skipping empty message\n\r");
+        return false;
+    }
+
+    // check what satellites this messages contains
+    // GPACC -> GPS
+    // GLACC -> GLONASS
+    // GQACC -> QZSS
+    // GSACC -> SBAS
+    bool is_glonass = false;
+    if (!strncmp(&gps_nmea.msg_buf[0] , "GL", 2)) {
+        is_glonass = true;
+    }
+
+    // accuracy
+    int my_accuracy = (int)strtol(&gps_nmea.msg_buf[i], NULL, 16);
+    NMEA_PRINT("p_GxACC() - my_accuracy=%i\n\r", my_accuracy);
+    nmea_read_until(&i);
+
+    return true;
+}
+

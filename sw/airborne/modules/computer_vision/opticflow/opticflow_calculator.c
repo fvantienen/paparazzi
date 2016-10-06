@@ -386,6 +386,17 @@ void calc_fast9_lukas_kanade(struct opticflow_t *opticflow, struct opticflow_sta
                   OPTICFLOW_FOV_H;// * img->h / OPTICFLOW_FOV_H;
   }
 
+  /*******************************
+   * Variables required for ekf
+   *******************************/
+  result->flow_x_integral = (float)result->flow_x/opticflow->subpixel_factor/OPTICFLOW_FX;
+  result->flow_y_integral = (float)result->flow_y/opticflow->subpixel_factor/OPTICFLOW_FY;
+  result->gyro_x_integral = (float)(state->rates.p + opticflow->prev_rates.p) / 2.0f / result->fps;
+  result->gyro_y_integral = (float)(state->rates.q + opticflow->prev_rates.q) / 2.0f / result->fps;
+  result->gyro_z_integral = 0;
+  result->timespan = (timeval_diff(&opticflow->prev_timestamp, &img->ts) * 1000.);
+  /*******************************/
+
   result->flow_der_x = result->flow_x - diff_flow_x * opticflow->subpixel_factor *
                        opticflow->derotation_correction_factor_x;
   result->flow_der_y = result->flow_y - diff_flow_y * opticflow->subpixel_factor *

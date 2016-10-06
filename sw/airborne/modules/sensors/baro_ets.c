@@ -150,6 +150,7 @@ void baro_ets_read_periodic(void)
 
 void baro_ets_read_event(void)
 {
+  uint32_t now_ts = get_sys_time_usec();
   // Get raw altimeter from buffer
   baro_ets_adc = ((uint16_t)(baro_ets_i2c_trans.buf[1]) << 8) | (uint16_t)(baro_ets_i2c_trans.buf[0]);
   // Check if this is valid altimeter
@@ -187,7 +188,7 @@ void baro_ets_read_event(void)
       baro_ets_altitude = ground_alt + BARO_ETS_ALT_SCALE * (float)(baro_ets_offset - baro_ets_adc);
       // New value available
       float pressure = BARO_ETS_SCALE * (float) baro_ets_adc + BARO_ETS_PRESSURE_OFFSET;
-      AbiSendMsgBARO_ABS(BARO_ETS_SENDER_ID, pressure);
+      AbiSendMsgBARO_ABS(BARO_ETS_SENDER_ID, now_ts, pressure);
 #ifdef BARO_ETS_SYNC_SEND
       DOWNLINK_SEND_BARO_ETS(DefaultChannel, DefaultDevice, &baro_ets_adc, &baro_ets_offset, &baro_ets_altitude);
 #endif

@@ -5,6 +5,7 @@
   <msg_class name="airborne">
 
     <message name="BARO_ABS" id="0">
+      <field name="stamp" type="uint32_t" unit="us"/>
       <field name="pressure" type="float" unit="Pa"/>
     </message>
 
@@ -13,6 +14,7 @@
     </message>
 
     <message name="AGL" id="2">
+      <field name="stamp" type="uint32_t" unit="us"/>
       <field name="distance" type="float" unit="m"/>
     </message>
 
@@ -86,6 +88,22 @@
 
     <message name="RPM" id="15">
       <field name="rpm" type="uint16_t" unit="rpm"/>
+    </message>
+
+    <message name="OPTICAL_FLOW_EKF" id="16">
+      <field name="stamp" type="uint32_t" unit="us"/>
+      <field name="flow_x_integral" type="float">Integrated optic flow in radians, x axis</field>
+      <field name="flow_y_integral" type="float">Integrated optic flow in radians, y axis</field>
+      <field name="quality" type="uint8_t">0: bad quality, 255: maximum quality</field>
+      <field name="gyro_x_integral" type="float">Accumulated gyro value in radians around x axis</field>
+      <field name="gyro_y_integral" type="float">Accumulated gyro value in radians around y axis</field>
+      <field name="gyro_z_integral" type="float">Accumulated gyro value in radians around z axis</field>
+      <field name="timespan" type="uint32_t" unit="us"/>
+    </message>
+
+    <message name="IMU_MAG_GAUSS" id="17">
+      <field name="stamp" type="uint32_t" unit="us"/>
+      <field name="mag_gauss" type="struct FloatVect3 *"/>
     </message>
 
   </msg_class>

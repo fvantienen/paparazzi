@@ -137,6 +137,7 @@ void baro_amsys_read_periodic(void)
 
 void baro_amsys_read_event(void)
 {
+  uint32_t now_ts = get_sys_time_usec();
   pBaroRaw = 0;
   // Get raw altimeter from buffer
   pBaroRaw = (baro_amsys_i2c_trans.buf[0] << 8) | baro_amsys_i2c_trans.buf[1];
@@ -172,7 +173,7 @@ void baro_amsys_read_event(void)
     baro_amsys_p = (float)(pBaroRaw - BARO_AMSYS_OFFSET_MIN) * BARO_AMSYS_MAX_PRESSURE / (float)(
                      BARO_AMSYS_OFFSET_MAX - BARO_AMSYS_OFFSET_MIN);
     // Send pressure over ABI
-    AbiSendMsgBARO_ABS(BARO_AMSYS_SENDER_ID, baro_amsys_p);
+    AbiSendMsgBARO_ABS(BARO_AMSYS_SENDER_ID, now_ts, baro_amsys_p);
     // compute altitude localy
     if (!baro_amsys_offset_init) {
       --baro_amsys_cnt;

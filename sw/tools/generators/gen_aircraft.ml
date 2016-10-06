@@ -195,6 +195,7 @@ let modules_xml2mk = fun f target xml fp ->
   let dir_list = Gen_common.get_modules_dir modules in
   (** include modules directory for ALL targets, not just the defined ones **)
   fprintf f "$(TARGET).CFLAGS += -Imodules -Iarch/$(ARCH)/modules\n";
+  fprintf f "$(TARGET).CXXFLAGS += -Imodules -Iarch/$(ARCH)/modules\n";
   List.iter
     (fun dir -> fprintf f "%s_DIR = modules/%s\n" (Compat.bytes_uppercase dir) dir
     ) dir_list;

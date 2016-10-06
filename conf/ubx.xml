@@ -33,15 +33,23 @@
       <field name="Frac" format="I4" unit="ns"/>
       <field name="week" format="I2"/>
       <field name="GPSfix" format="U1"/>
+      <!--GPSfix Type, range 0..5
+      0x00 = No Fix
+      0x01 = Dead Reckoning only
+      0x02 = 2D-Fix
+      0x03 = 3D-Fix
+      0x04 = GPS + dead reckoning combined
+      0x05 = Time only fix
+      0x06..0xff: reserved-->
       <field name="Flags" format="U1"/>
       <field name="ECEF_X" format="I4" unit="cm"/>
       <field name="ECEF_Y" format="I4" unit="cm"/>
       <field name="ECEF_Z" format="I4" unit="cm"/>
-      <field name="Pacc" format="U4"/>
+      <field name="Pacc" format="U4" unit ="cm"/>
       <field name="ECEFVX" format="I4" unit="cm/s"/>
       <field name="ECEFVY" format="I4" unit="cm/s"/>
       <field name="ECEFVZ" format="I4" unit="cm/s"/>
-      <field name="Sacc" format="U4"/>
+      <field name="Sacc" format="U4" unit="cm/s"/>
       <field name="PDOP" format="U2"/>
       <field name="res1" format="U1"/>
       <field name="numSV" format="U1"/>

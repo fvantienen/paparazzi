@@ -341,6 +341,7 @@ static void navdata_publish_imu(void)
  */
 void navdata_update()
 {
+  uint32_t now_ts = get_sys_time_usec();
   /* Check if initialized */
   if (!navdata.is_initialized) {
     navdata_init();
@@ -388,7 +389,7 @@ void navdata_update()
     /* Check if there is a new sonar measurement and update the sonar */
     if (navdata.measure.ultrasound >> 15) {
       float sonar_meas = (float)((navdata.measure.ultrasound & 0x7FFF) - SONAR_OFFSET) * SONAR_SCALE;
-      AbiSendMsgAGL(AGL_SONAR_ARDRONE2_ID, sonar_meas);
+      AbiSendMsgAGL(AGL_SONAR_ARDRONE2_ID, now_ts, sonar_meas);
     }
 #endif
 

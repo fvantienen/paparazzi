@@ -42,7 +42,7 @@ static const char *gps_furuno_settings[GPS_FURUNO_SETTINGS_NB] = {
   "PERDAPI,PIN,OFF",
   "PERDAPI,GNSS,AUTO,2,2,0,-1,-1",
   "PERDSYS,ANTSEL,FORCE1L",
-  "PERDAPI,CROUT,ALLOFF",       // Disable all propriarty output
+  "PERDAPI,CROUT,F",       // Enable propriarty PERDCRF output
   "PERDAPI,CROUT,V",            // Enable proprietary PERDCRV raw velocity message
   "PERDCFG,NMEAOUT,GGA,1",      // Enable GGA every fix
   "PERDCFG,NMEAOUT,RMC,1",      // Enable RMC every fix

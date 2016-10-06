@@ -77,6 +77,7 @@ void baro_hca_read_periodic(void)
 
 void baro_hca_read_event(void)
 {
+  uint32_t now_ts = get_sys_time_usec();
   pBaroRaw = 0;
   // Get raw altimeter from buffer
   pBaroRaw = ((uint16_t)baro_hca_i2c_trans.buf[0] << 8) | baro_hca_i2c_trans.buf[1];
@@ -98,7 +99,7 @@ void baro_hca_read_event(void)
     }
 
     float pressure = BARO_HCA_SCALE * (float)pBaroRaw + BARO_HCA_PRESSURE_OFFSET;
-    AbiSendMsgBARO_ABS(BARO_HCA_SENDER_ID, pressure);
+    AbiSendMsgBARO_ABS(BARO_HCA_SENDER_ID, now_ts, pressure);
   }
   baro_hca_i2c_trans.status = I2CTransDone;
 

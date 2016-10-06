@@ -86,6 +86,8 @@ void nps_autopilot_run_systime_step(void)
 void nps_autopilot_run_step(double time)
 {
 
+  uint32_t now_ts = get_sys_time_usec();
+
   nps_electrical_run_step(time);
 
 #if RADIO_CONTROL && !RADIO_CONTROL_TYPE_DATALINK
@@ -107,7 +109,7 @@ void nps_autopilot_run_step(double time)
 
   if (nps_sensors_baro_available()) {
     float pressure = (float) sensors.baro.value;
-    AbiSendMsgBARO_ABS(BARO_SIM_SENDER_ID, pressure);
+    AbiSendMsgBARO_ABS(BARO_SIM_SENDER_ID, now_ts, pressure);
     main_event();
   }
 
@@ -124,7 +126,7 @@ void nps_autopilot_run_step(double time)
 #if USE_SONAR
   if (nps_sensors_sonar_available()) {
     float dist = (float) sensors.sonar.value;
-    AbiSendMsgAGL(AGL_SONAR_NPS_ID, dist);
+    AbiSendMsgAGL(AGL_SONAR_NPS_ID, now_ts, dist);
 
     uint16_t foo = 0;
     DOWNLINK_SEND_SONAR(DefaultChannel, DefaultDevice, &foo, &dist);

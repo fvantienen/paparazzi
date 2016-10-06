@@ -67,6 +67,7 @@ void sonar_bebop_init(void)
  */
 static void *sonar_bebop_read(void *data __attribute__((unused)))
 {
+  uint32_t now_ts = get_sys_time_usec();
   while(true) {
 
 #ifndef SITL
@@ -127,7 +128,7 @@ static void *sonar_bebop_read(void *data __attribute__((unused)))
     if(peek_distance > 0)
     {
       // Send ABI message
-      AbiSendMsgAGL(AGL_SONAR_ADC_ID, sonar_bebop.distance);
+      AbiSendMsgAGL(AGL_SONAR_ADC_ID, now_ts, sonar_bebop.distance);
 
 #ifdef SENSOR_SYNC_SEND_SONAR
       // Send Telemetry report

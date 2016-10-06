@@ -262,6 +262,7 @@ void baro_MS5534A_event_task(void)
 
 void baro_MS5534A_event(void)
 {
+  uint32_t now_ts = get_sys_time_usec();
   if (spi_message_received) {
     /* Got a message on SPI. */
     spi_message_received = false;
@@ -273,7 +274,7 @@ void baro_MS5534A_event(void)
       DOWNLINK_SEND_BARO_MS5534A(DefaultChannel, DefaultDevice, &baro_MS5534A_pressure, &baro_MS5534A_temp, &baro_MS5534A_z);
 #endif
       float pressure = (float)baro_MS5534A_pressure;
-      AbiSendMsgBARO_ABS(BARO_MS5534A_SENDER_ID, pressure);
+      AbiSendMsgBARO_ABS(BARO_MS5534A_SENDER_ID, now_ts, pressure);
     }
   }
 }

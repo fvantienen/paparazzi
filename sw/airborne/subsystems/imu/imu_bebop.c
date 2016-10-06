@@ -153,9 +153,13 @@ void imu_bebop_event(void)
 #else //BEBOP regular first verion
     VECT3_ASSIGN(imu.mag_unscaled, -imu_bebop.ak.data.vect.y, imu_bebop.ak.data.vect.x, imu_bebop.ak.data.vect.z);
 #endif
-
+    struct FloatVect3 mag_gauss;
+    mag_gauss.x = (imu.mag_unscaled.x - imu.mag_neutral.x) * 0.6 * 0.01;
+    mag_gauss.y = (imu.mag_unscaled.y - imu.mag_neutral.y) * 0.6 * 0.01;
+    mag_gauss.z = (imu.mag_unscaled.z - imu.mag_neutral.z) * 0.6 * 0.01;
     imu_bebop.ak.data_available = false;
     imu_scale_mag(&imu);
     AbiSendMsgIMU_MAG_INT32(IMU_BOARD_ID, now_ts, &imu.mag);
+    AbiSendMsgIMU_MAG_GAUSS(IMU_BOARD_ID, now_ts, &mag_gauss);
   }
 }

@@ -90,7 +90,7 @@ void gps_ubx_read_message(void)
       gps_ubx_time_sync.t0_tow_frac   = UBX_NAV_SOL_Frac(gps_ubx.msg_buf);
       gps_ubx.state.tow        = UBX_NAV_SOL_ITOW(gps_ubx.msg_buf);
       gps_ubx.state.week       = UBX_NAV_SOL_week(gps_ubx.msg_buf);
-      gps_ubx.state.fix        = UBX_NAV_SOL_GPSfix(gps_ubx.msg_buf);
+      gps_ubx.state.fix        = UBX_NAV_SOL_GPSfix(gps_ubx.msg_buf);//this fix message is NOT being used
       gps_ubx.state.ecef_pos.x = UBX_NAV_SOL_ECEF_X(gps_ubx.msg_buf);
       gps_ubx.state.ecef_pos.y = UBX_NAV_SOL_ECEF_Y(gps_ubx.msg_buf);
       gps_ubx.state.ecef_pos.z = UBX_NAV_SOL_ECEF_Z(gps_ubx.msg_buf);
@@ -102,7 +102,7 @@ void gps_ubx_read_message(void)
       SetBit(gps_ubx.state.valid_fields, GPS_VALID_VEL_ECEF_BIT);
       gps_ubx.state.sacc       = UBX_NAV_SOL_Sacc(gps_ubx.msg_buf);
       gps_ubx.state.pdop       = UBX_NAV_SOL_PDOP(gps_ubx.msg_buf);
-      gps_ubx.state.num_sv     = UBX_NAV_SOL_numSV(gps_ubx.msg_buf);
+      gps_ubx.state.num_sv     = UBX_NAV_SOL_numSV(gps_ubx.msg_buf); //This one is used
 #ifdef GPS_LED
       if (gps_ubx.state.fix == GPS_FIX_3D) {
         LED_ON(GPS_LED);
@@ -114,6 +114,8 @@ void gps_ubx_read_message(void)
       gps_ubx.state.lla_pos.lat = UBX_NAV_POSLLH_LAT(gps_ubx.msg_buf);
       gps_ubx.state.lla_pos.lon = UBX_NAV_POSLLH_LON(gps_ubx.msg_buf);
       gps_ubx.state.lla_pos.alt = UBX_NAV_POSLLH_HEIGHT(gps_ubx.msg_buf);
+      gps_ubx.state.hacc       = UBX_NAV_POSLLH_Hacc(gps_ubx.msg_buf);  //mm
+      gps_ubx.state.vacc       = UBX_NAV_POSLLH_Vacc(gps_ubx.msg_buf);  //mm
       SetBit(gps_ubx.state.valid_fields, GPS_VALID_POS_LLA_BIT);
       gps_ubx.state.hmsl        = UBX_NAV_POSLLH_HMSL(gps_ubx.msg_buf);
       SetBit(gps_ubx.state.valid_fields, GPS_VALID_HMSL_BIT);
@@ -157,7 +159,7 @@ void gps_ubx_read_message(void)
         gps_ubx.state.svinfos[i].azim = UBX_NAV_SVINFO_Azim(gps_ubx.msg_buf, i);
       }
     } else if (gps_ubx.msg_id == UBX_NAV_STATUS_ID) {
-      gps_ubx.state.fix = UBX_NAV_STATUS_GPSfix(gps_ubx.msg_buf);
+      gps_ubx.state.fix = UBX_NAV_STATUS_GPSfix(gps_ubx.msg_buf); //this fix message is being used
       gps_ubx.status_flags = UBX_NAV_STATUS_Flags(gps_ubx.msg_buf);
       gps_ubx.sol_flags = UBX_NAV_SOL_Flags(gps_ubx.msg_buf);
     }
@@ -167,7 +169,7 @@ void gps_ubx_read_message(void)
     if (gps_ubx.msg_id == UBX_RXM_RAW_ID) {
       gps_ubx_raw.iTOW = UBX_RXM_RAW_iTOW(gps_ubx.msg_buf);
       gps_ubx_raw.week = UBX_RXM_RAW_week(gps_ubx.msg_buf);
-      gps_ubx_raw.numSV = UBX_RXM_RAW_numSV(gps_ubx.msg_buf);
+      gps_ubx_raw.numSV = UBX_RXM_RAW_numSV(gps_ubx.msg_buf); //NOT used
       uint8_t i;
       uint8_t max_SV = Min(gps_ubx_raw.numSV, GPS_UBX_NB_CHANNELS);
       for (i = 0; i < max_SV; i++) {

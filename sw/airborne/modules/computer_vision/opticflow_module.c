@@ -75,7 +75,7 @@ static pthread_mutex_t opticflow_mutex;            ///< Mutex lock fo thread saf
 
 /* Static functions */
 struct image_t *opticflow_module_calc(struct image_t *img);     ///< The main optical flow calculation thread
-static void opticflow_agl_cb(uint8_t sender_id, float distance);    ///< Callback function of the ground altitude
+static void opticflow_agl_cb(uint8_t sender_id, uint32_t stamp __attribute__((unused)), float distance);    ///< Callback function of the ground altitude
 static void opticflow_imu_accel_cb(uint8_t sender_id, uint32_t stamp,
                                    struct Int32Vect3 *accel); ///< Callback function of the IMU's accelerometers
 static void opticflow_body_to_imu_cb(uint8_t sender_id,
@@ -143,6 +143,7 @@ void opticflow_module_run(void)
   // Update the stabilization loops on the current calculation
   if (opticflow_got_result) {
     uint32_t now_ts = get_sys_time_usec();
+    uint8_t quality_ekf = opticflow_result.noise_measurement * 255;
     AbiSendMsgOPTICAL_FLOW(OPTICFLOW_SEND_ABI_ID, now_ts,
                            opticflow_result.flow_x,
                            opticflow_result.flow_y,
@@ -151,6 +152,15 @@ void opticflow_module_run(void)
                            opticflow_result.noise_measurement,// FIXME, scale to some quality measure 0-255
                            opticflow_result.div_size,
                            opticflow_state.agl);
+
+    AbiSendMsgOPTICAL_FLOW_EKF(OPTICFLOW_SEND_ABI_ID, now_ts,
+                           opticflow_result.flow_x_integral,
+                           opticflow_result.flow_y_integral,
+                           quality_ekf,
+                           opticflow_result.gyro_x_integral,
+                           opticflow_result.gyro_y_integral,
+                           opticflow_result.gyro_z_integral,
+                           opticflow_result.timespan);
     //TODO Find an appropiate quality measure for the noise model in the state filter, for now it is tracked_cnt
     if (opticflow_result.noise_measurement < 0.8) {
       AbiSendMsgVELOCITY_ESTIMATE(OPTICFLOW_SEND_ABI_ID, now_ts,
@@ -201,7 +211,7 @@ struct image_t *opticflow_module_calc(struct image_t *img)
  * @param[in] sender_id The id that send the ABI message (unused)
  * @param[in] distance The distance above ground level in meters
  */
-static void opticflow_agl_cb(uint8_t sender_id __attribute__((unused)), float distance)
+static void opticflow_agl_cb(uint8_t sender_id __attribute__((unused)), uint32_t stamp __attribute__((unused)), float distance)
 {
   // Update the distance if we got a valid measurement
   if (distance > 0) {

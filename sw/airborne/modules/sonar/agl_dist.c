@@ -50,7 +50,7 @@ float agl_dist_value_filtered;
 
 abi_event sonar_ev;
 
-static void sonar_cb(uint8_t sender_id, float distance);
+static void sonar_cb(uint8_t sender_id, uint32_t stamp, float distance);
 
 void agl_dist_init(void)
 {
@@ -63,7 +63,7 @@ void agl_dist_init(void)
 }
 
 
-static void sonar_cb(uint8_t __attribute__((unused)) sender_id, float distance)
+static void sonar_cb(uint8_t __attribute__((unused)) sender_id, uint32_t stamp __attribute__((unused)), float distance)
 {
   if (distance < AGL_DIST_SONAR_MAX_RANGE && distance > AGL_DIST_SONAR_MIN_RANGE) {
     agl_dist_value = distance;

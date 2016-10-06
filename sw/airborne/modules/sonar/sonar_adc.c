@@ -67,6 +67,7 @@ void sonar_adc_init(void)
  */
 void sonar_adc_read(void)
 {
+  uint32_t now_ts = get_sys_time_usec();
 #ifndef SITL
   sonar_adc.meas = sonar_adc_buf.sum / sonar_adc_buf.av_nb_sample;
   sonar_adc.distance = (float)(sonar_adc.meas - sonar_adc.offset) * SONAR_SCALE;
@@ -76,7 +77,7 @@ void sonar_adc_read(void)
 #endif // SITL
 
   // Send ABI message
-  AbiSendMsgAGL(AGL_SONAR_ADC_ID, sonar_adc.distance);
+  AbiSendMsgAGL(AGL_SONAR_ADC_ID, now_ts, sonar_adc.distance);
 
 #ifdef SENSOR_SYNC_SEND_SONAR
   // Send Telemetry report

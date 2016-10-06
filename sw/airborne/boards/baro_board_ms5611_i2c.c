@@ -98,12 +98,13 @@ void baro_periodic(void)
 
 void baro_event(void)
 {
+  uint32_t now_ts = get_sys_time_usec();
   if (sys_time.nb_sec > 1) {
     ms5611_i2c_event(&bb_ms5611);
 
     if (bb_ms5611.data_available) {
       float pressure = (float)bb_ms5611.data.pressure;
-      AbiSendMsgBARO_ABS(BARO_BOARD_SENDER_ID, pressure);
+      AbiSendMsgBARO_ABS(BARO_BOARD_SENDER_ID, now_ts, pressure);
       float temp = bb_ms5611.data.temperature / 100.0f;
       AbiSendMsgTEMPERATURE(BARO_BOARD_SENDER_ID, temp);
       bb_ms5611.data_available = false;
