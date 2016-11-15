@@ -1,6 +1,6 @@
 <!DOCTYPE flight_plan SYSTEM "../../flight_plan.dtd">
 
-<flight_plan alt="423.8" ground_alt="343.8" home_mode_height="120" lat0="-27.273900" lon0="151.290039" max_dist_from_home="12038" name="OBC2016" qfu="170" security_height="10">
+<flight_plan alt="80" ground_alt="0" home_mode_height="80" lat0="-27.273900" lon0="151.290039" max_dist_from_home="12038" name="OBC2016" qfu="170" security_height="10">
 
 <!-- ******************************** HEADERS ****************************** -->
   <header>
@@ -22,27 +22,30 @@
 
   <waypoints>
     <waypoint name="HOME" x="0" y="0"/>
-    <waypoint lat="-27.274012" lon="151.290038" name="TD"/>
-    <waypoint lat="-27.3581" lon="151.240624" name="REPORT_JOE"/>
-    <waypoint lat="-27.358357" lon="151.239732" name="j1" height="40"/>
-    <waypoint lat="-27.357885" lon="151.241427" name="j2" height="40"/>
-    <waypoint lat="-27.360014" lon="151.240522" name="j3" height="40"/>
-    <waypoint lat="-27.357827" lon="151.247775" name="j4" height="40"/>
-    <waypoint lat="-27.356253" lon="151.246831" name="j5" height="40"/>
-    <waypoint lat="-27.282360" lon="151.289117" name="intermediate_wp" height="50"/>
-    <waypoint lat="-27.270220" lon="151.295874" name="_MB1"/>
-    <waypoint lat="-27.279114" lon="151.294158" name="_MB2"/>
-    <waypoint lat="-27.319091" lon="151.286441" name="_MB3"/>
-    <waypoint lat="-27.317933" lon="151.278923" name="_MB4"/>
-    <waypoint lat="-27.273826" lon="151.290156" name="p1" height="60"/>
-    <waypoint lat="-27.316738" lon="151.281871" name="p2" height="120"/>
-    <waypoint lat="-27.317045" lon="151.283862" name="p3" height="120"/>
-    <waypoint lat="-27.278580" lon="151.291288" name="p4" height="120"/>
-    <waypoint lat="-27.273606" lon="151.290506" name="p5" height="120"/>
-    <waypoint lat="-27.271136" lon="151.274482" name="p6" height="120"/>
-    <waypoint lat="-27.324690" lon="151.254661" name="p7" height="120"/>
-    <waypoint lat="-27.354436" lon="151.253030" name="p8" height="120"/>
-    <waypoint lat="-27.358100" lon="151.240624" name="p9" height="50"/>
+    <waypoint x="0" y="0" name="TD"/>
+    <waypoint x="100" y="300" name="REPORT_JOE"/>
+    <waypoint x="100" y="300" name="j1" height="40"/>
+    <waypoint x="100" y="300" name="j2" height="40"/>
+    <waypoint x="100" y="300" name="j3" height="40"/>
+    <waypoint x="100" y="300" name="j4" height="40"/>
+    <waypoint x="100" y="300" name="j5" height="40"/>
+    <waypoint x="100" y="300" name="intermediate_wp" height="50"/>
+
+    <waypoint x="-500" y="-500" name="_MB1"/>
+    <waypoint x="-500" y="500" name="_MB2"/>
+    <waypoint x="500" y="500" name="_MB3"/>
+    <waypoint x="500" y="-500" name="_MB4"/>
+
+    <waypoint x="100" y="-100" name="p1" height="80"/>
+    <waypoint x="100" y="100" name="p2" height="80"/>
+    <waypoint x="-100" y="100" name="p3" height="80"/>
+    <waypoint x="-100" y="-100" name="p4" height="80"/>
+
+    <waypoint x="100" y="300" name="p5" height="80"/>
+    <waypoint x="100" y="300" name="p6" height="80"/>
+    <waypoint x="100" y="300" name="p7" height="80"/>
+    <waypoint x="100" y="300" name="p8" height="80"/>
+    <waypoint x="100" y="300" name="p9" height="50"/>
 
     <waypoint name="CLIMB" x="100" y="300"/>
     <waypoint name="STDBY" x="30" y="30"/>
@@ -131,7 +134,8 @@
       <while cond="LessThan(NavBlockTime(), 10)"/>
       <call fun="nav_throttle_curve_set(0)" loop="false"/>
       <call fun="NavSetAltitudeReferenceHere()"/>
-      <call fun="nav_set_heading_current()" loop="false"/>
+      <call fun="NavSetGroundReferenceHere()"/>
+      <call_once fun="nav_set_heading_current()" />
     </block>
     <block name="SLAMDunk_init">
       <manual pitch="0" roll="0" throttle="0" until="getKalamosReady()" vmode="throttle" yaw="0"/> <!-- Check if Kalamos is booted -->
