@@ -42,7 +42,7 @@
     <waypoint name="STDBY" x="-10" y="70"/>
 
     <waypoint x="50"  y="50" name="REPORT_JOE"/>
-    <waypoint name="HOVER" x="100" y="240" height="60"/>
+    <waypoint name="HOVER" x="100" y="220" height="60"/>
 
     <waypoint name="KALAMOS_LANDSPOT" x="100" y="260" height="40"/>
     <waypoint name="KALAMOS_LANDING" x="100" y="240" height="40"/>
