@@ -94,7 +94,7 @@ void kalamos_init() {
   register_periodic_telemetry(DefaultPeriodic, PPRZ_MSG_ID_KALAMOS, send_kalamos);
 #endif
 
-  NavSetWaypointHere(WP_LANDING);
+  NavSetWaypointHere(WP_KALAMOS_LANDING);
   k2p_package.height = -0.01;
   k2p_package.status = 1;
 
@@ -153,7 +153,7 @@ static inline void kalamos_parse_msg(void)
     //float diff_search = (kalamos_search_height - k2p_package.height)*kalamos_height_gain;
 
     if (kalamos_enable_spotsearch) {
-      waypoint_set_xy_i(WP_LANDSPOT, POS_BFP_OF_REAL(k2p_package.land_enu_x), POS_BFP_OF_REAL(k2p_package.land_enu_y));
+      waypoint_set_xy_i(WP_KALAMOS_LANDSPOT, POS_BFP_OF_REAL(k2p_package.land_enu_x), POS_BFP_OF_REAL(k2p_package.land_enu_y));
     }
 
     if (kalamos_enable_landing) {
@@ -172,7 +172,7 @@ static inline void kalamos_parse_msg(void)
       struct FloatVect3 measured_ltp;
       float_rmat_transp_vmult(&measured_ltp, &ltp_to_kalamos_rmat, &joe);
 
-      waypoint_set_xy_i(WP_LANDING,POS_BFP_OF_REAL(measured_ltp.x), POS_BFP_OF_REAL(measured_ltp.y));
+      waypoint_set_xy_i(WP_KALAMOS_LANDING,POS_BFP_OF_REAL(measured_ltp.x), POS_BFP_OF_REAL(measured_ltp.y));
       */
 
       land_cmd.x = k2p_package.descend_x * kalamos_land_xy_gain;
@@ -187,18 +187,18 @@ static inline void kalamos_parse_msg(void)
       struct EnuCoor_f target;
       target.x = pos->x + sin(heading_to_go)*k2p_package.avoid_rate*kalamos_land_xy_gain;
       target.y = pos->y + cos(heading_to_go)*k2p_package.avoid_rate*kalamos_land_xy_gain;
-      target.z = waypoint_get_alt(WP_LANDING);
+      target.z = waypoint_get_alt(WP_KALAMOS_LANDING);
 
       if((kalamos_land_xy_gain > 0.001) && (k2p_package.avoid_rate > 0.2))
-        waypoint_set_enu(WP_LANDING, &target);
+        waypoint_set_enu(WP_KALAMOS_LANDING, &target);
     }
 
     if (kalamos_enable_findjoe) {
-      waypoint_set_xy_i(WP_JOE, POS_BFP_OF_REAL(k2p_package.joe_enu_x), POS_BFP_OF_REAL(k2p_package.joe_enu_y));
+      waypoint_set_xy_i(WP_KALAMOS_JOE, POS_BFP_OF_REAL(k2p_package.joe_enu_x), POS_BFP_OF_REAL(k2p_package.joe_enu_y));
 
-      uint8_t wp_id = WP_JOE;
-      RunOnceEvery(60, DOWNLINK_SEND_WP_MOVED_ENU(DefaultChannel, DefaultDevice, &wp_id,&(waypoints[WP_JOE].enu_i.x),
-                                 &(waypoints[WP_JOE].enu_i.y), &(waypoints[WP_JOE].enu_i.z)));
+      uint8_t wp_id = WP_KALAMOS_JOE;
+      RunOnceEvery(60, DOWNLINK_SEND_WP_MOVED_ENU(DefaultChannel, DefaultDevice, &wp_id,&(waypoints[WP_KALAMOS_JOE].enu_i.x),
+                                 &(waypoints[WP_KALAMOS_JOE].enu_i.y), &(waypoints[WP_KALAMOS_JOE].enu_i.z)));
     }
 
     // Send ABI message

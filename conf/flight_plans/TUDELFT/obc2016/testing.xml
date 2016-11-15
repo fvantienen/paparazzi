@@ -1,6 +1,6 @@
 <!DOCTYPE flight_plan SYSTEM "../../flight_plan.dtd">
 
-<flight_plan alt="80" ground_alt="0" home_mode_height="80" lat0="-27.273900" lon0="151.290039" max_dist_from_home="12038" name="OBC2016" qfu="170" security_height="10">
+<flight_plan alt="80" ground_alt="0" home_mode_height="80" lat0="-27.273900" lon0="151.290039" max_dist_from_home="570" name="OBC2016" qfu="170" security_height="10">
 
 <!-- ******************************** HEADERS ****************************** -->
   <header>
@@ -22,46 +22,34 @@
 
   <waypoints>
     <waypoint name="HOME" x="0" y="0"/>
-    <waypoint x="0" y="0" name="TD"/>
-    <waypoint x="100" y="300" name="REPORT_JOE"/>
-    <waypoint x="100" y="300" name="j1" height="40"/>
-    <waypoint x="100" y="300" name="j2" height="40"/>
-    <waypoint x="100" y="300" name="j3" height="40"/>
-    <waypoint x="100" y="300" name="j4" height="40"/>
-    <waypoint x="100" y="300" name="j5" height="40"/>
-    <waypoint x="100" y="300" name="intermediate_wp" height="50"/>
+    <waypoint x="-10" y="10" name="TD"/>
+    <waypoint x="100" y="320" name="j1" height="40"/>
+    <waypoint x="100" y="340" name="j2" height="40"/>
+    <waypoint x="100" y="360" name="j3" height="40"/>
+    <waypoint x="100" y="380" name="j4" height="40"/>
 
-    <waypoint x="-500" y="-500" name="_MB1"/>
-    <waypoint x="-500" y="500" name="_MB2"/>
-    <waypoint x="500" y="500" name="_MB3"/>
-    <waypoint x="500" y="-500" name="_MB4"/>
+    <waypoint x="-400" y="-400" name="_MB1"/>
+    <waypoint x="-400" y="400" name="_MB2"/>
+    <waypoint x="400" y="400" name="_MB3"/>
+    <waypoint x="400" y="-400" name="_MB4"/>
 
-    <waypoint x="100" y="-100" name="p1" height="80"/>
+    <waypoint x="100" y="0" name="p1" height="80"/>
     <waypoint x="100" y="100" name="p2" height="80"/>
     <waypoint x="-100" y="100" name="p3" height="80"/>
-    <waypoint x="-100" y="-100" name="p4" height="80"/>
-
-    <waypoint x="100" y="300" name="p5" height="80"/>
-    <waypoint x="100" y="300" name="p6" height="80"/>
-    <waypoint x="100" y="300" name="p7" height="80"/>
-    <waypoint x="100" y="300" name="p8" height="80"/>
-    <waypoint x="100" y="300" name="p9" height="50"/>
+    <waypoint x="-100" y="0" name="p4" height="80"/>
 
     <waypoint name="CLIMB" x="100" y="300"/>
-    <waypoint name="STDBY" x="30" y="30"/>
-    <waypoint name="HOVER" x="268.5" y="27.1" height="60"/>
-    <waypoint name="LANDSPOT" x="268.5" y="127.1" height="40"/>
-    <waypoint name="LANDING" x="-4800.1" y="-9409.5" height="40"/>
-    <waypoint name="JOE" x="268.5" y="127.1" height="40"/>
+    <waypoint name="STDBY" x="-10" y="70"/>
+
+    <waypoint x="50"  y="50" name="REPORT_JOE"/>
+    <waypoint name="HOVER" x="100" y="240" height="60"/>
+
+    <waypoint name="KALAMOS_LANDSPOT" x="100" y="260" height="40"/>
+    <waypoint name="KALAMOS_LANDING" x="100" y="240" height="40"/>
+    <waypoint name="KALAMOS_JOE" x="100" y="280" height="40"/>
 
   </waypoints>
   <sectors>
-    <sector color="red" name="Safety" type="dynamic">
-      <corner name="_MB1"/>
-      <corner name="_MB2"/>
-      <corner name="_MB3"/>
-      <corner name="_MB4"/>
-    </sector>
     <sector name="MissionBoundary" color="yellow" type="dynamic">
       <corner name="_MB1"/>
       <corner name="_MB2"/>
@@ -78,7 +66,7 @@
   <exceptions>
 
     <!-- Geofence -->
-    <exception cond="(!InsideSafety(GetPosX(), GetPosY()) &&
+    <exception cond="(!InsideMissionBoundary(GetPosX(), GetPosY()) &&
       !(AircraftIsBooting()) &&
       !(nav_block == IndexOfBlock('Geo_init')) &&
       !(nav_block == IndexOfBlock('HoldingPoint')) &&
@@ -95,7 +83,6 @@
       !(nav_block == IndexOfBlock('landing_moment_noGPS')) &&
       !(nav_block == IndexOfBlock('failsafe')) &&
       (autopilot_in_flight == true) )" deroute="GpsLoss"/>
-
     <!-- Datalink loss -->
     <exception cond="(datalink_time > 60 &&
       !(datalink_time > 120) &&
@@ -183,8 +170,8 @@
 
     <!-- Decide where the takeoff was used for -->
     <block name="decide_there_or_back">
-      <exception cond="6 > last_wp_reached_in_route" deroute="line_p1_p2"/> <!-- Deroute back corridor to joe -->
-      <exception cond="last_wp_reached_in_route > 5" deroute="line_p9_p8"/> <!-- Deroute back corridor to home -->
+      <exception cond="2 > last_wp_reached_in_route" deroute="line_p1_p2"/> <!-- Deroute back corridor to joe -->
+      <exception cond="last_wp_reached_in_route > 5" deroute="line_p4_p3"/> <!-- Deroute back corridor to home -->
       <call fun="NavSetWaypointHere(WP_HOVER)" loop="false"/>
       <stay wp="HOVER" until="stage_time > 1"/>
     </block>
@@ -202,7 +189,6 @@
 
     <!-- Flightpath to joe -->
     <block group="to_joe" name="line_p1_p2">
-      <go forward="true" from="p1" hmode="route" wp="intermediate_wp"/>
       <go forward="true" from="p1" hmode="route" wp="p2"/>
       <set value="2" var="last_wp_reached_in_route"/>
       <deroute block="line_p2_p3"/>
@@ -215,66 +201,15 @@
     <block group="to_joe" name="line_p3_p4">
       <go forward="true" from="p3" hmode="route" wp="p4"/>
       <set value="4" var="last_wp_reached_in_route"/>
-      <deroute block="line_p4_p5"/>
+      <deroute block="line_p4_p1"/>
     </block>
-    <block group="to_joe" name="line_p4_p5">
-      <go forward="true" from="p4" hmode="route" wp="p5"/>
-      <set value="5" var="last_wp_reached_in_route"/>
-      <deroute block="line_p5_p6"/>
-    </block>
-    <block group="to_joe" name="line_p5_p6">
-      <go forward="true" from="p5" hmode="route" wp="p6"/>
-      <set value="6" var="last_wp_reached_in_route"/>
-      <set value="true" var="opa_controller_vision_power"/>
-      <deroute block="line_p6_p7"/>
-    </block>
-    <block group="to_joe" name="line_p6_p7">
-      <go forward="true" from="p6" hmode="route" wp="p7"/>
-      <set value="7" var="last_wp_reached_in_route"/>
-      <deroute block="line_p7_p8"/>
-    </block>
-    <block group="to_joe" name="line_p7_p8">
-      <go forward="true" from="p7" hmode="route" wp="p8"/>
-      <set value="8" var="last_wp_reached_in_route"/>
-      <deroute block="line_p8_p9"/>
-    </block>
-    <block group="to_joe" name="line_p8_p9">
-      <go forward="true" from="p8" hmode="route" wp="p9"/>
-      <set value="9" var="last_wp_reached_in_route"/>
-      <deroute block="search_joe"/>
+    <block group="to_joe" name="line_p4_p1">
+      <go forward="true" from="p3" hmode="route" wp="p4"/>
+      <set value="4" var="last_wp_reached_in_route"/>
+      <deroute block="line_p1_p2"/>
     </block>
 
     <!-- Flightpath from Joe -->
-    <block group="return" name="line_p9_p8">
-      <exception cond="9 > last_wp_reached_in_route" deroute="line_p8_p7"/>
-      <go forward="true" from="p9" hmode="route" wp="p8"/>
-      <set value="8" var="last_wp_reached_in_route"/>
-      <deroute block="line_p8_p7"/>
-    </block>
-    <block group="return" name="line_p8_p7">
-      <exception cond="8 > last_wp_reached_in_route" deroute="line_p7_p6"/>
-      <go forward="true" from="p8" hmode="route" wp="p7"/>
-      <set value="7" var="last_wp_reached_in_route"/>
-      <deroute block="line_p7_p8"/>
-    </block>
-    <block group="return" name="line_p7_p6">
-      <exception cond="7 > last_wp_reached_in_route" deroute="line_p6_p5"/>
-      <go forward="true" from="p7" hmode="route" wp="p6"/>
-      <set value="6" var="last_wp_reached_in_route"/>
-      <deroute block="line_p6_p5"/>
-    </block>
-    <block group="return" name="line_p6_p5">
-      <exception cond="6 > last_wp_reached_in_route" deroute="line_p5_p4"/>
-      <go forward="true" from="p6" hmode="route" wp="p5"/>
-      <set value="5" var="last_wp_reached_in_route"/>
-      <deroute block="line_p5_p4"/>
-    </block>
-    <block group="return" name="line_p5_p4">
-      <exception cond="5 > last_wp_reached_in_route" deroute="line_p4_p3"/>
-      <go forward="true" from="p5" hmode="route" wp="p4"/>
-      <set value="4" var="last_wp_reached_in_route"/>
-      <deroute block="line_p4_p3"/>
-    </block>
     <block group="return" name="line_p4_p3">
       <exception cond="4 > last_wp_reached_in_route" deroute="line_p3_p2"/>
       <go forward="true" from="p4" hmode="route" wp="p3"/>
@@ -285,7 +220,6 @@
       <exception cond="3 > last_wp_reached_in_route" deroute="line_p2_p1"/>
       <go forward="true" from="p3" hmode="route" wp="p2"/>
       <set value="2" var="last_wp_reached_in_route"/>
-      <set value="true" var="opa_controller_vision_power"/>
       <deroute block="line_p2_p1"/>
     </block>
     <block group="return" name="line_p2_p1">
@@ -293,6 +227,16 @@
       <set value="1" var="last_wp_reached_in_route"/>
       <deroute block="Descent"/>
     </block>
+
+    <block name="EnableVision">
+      <set value="true" var="opa_controller_vision_power"/>
+      <deroute block="Standby"/>
+    </block>
+    <block name="DisableVision">
+      <set value="false" var="opa_controller_vision_power"/>
+      <deroute block="Standby"/>
+    </block>
+
 
     <!-- Landing at base-->
     <block name="Descent">
@@ -342,24 +286,23 @@
       <call fun="enableKalamosLandingspotSearch(false)" loop="false"/>
       <call fun="enableKalamosFindJoe(false)" loop="false"/>
       <call fun="enableKalamosDescent(false)" loop="false"/>
-      <go forward="true" from="p9" hmode="route" wp="j1"/>
+      <go forward="true" from="p4" hmode="route" wp="j1"/>
       <stay wp="j1" until="stage_time>4"/>
       <call fun="enableKalamosFindJoe(true)" loop="false"/>
       <go wp="j2" hmode="route" from="j1"/>
       <stay wp="j2" until="stage_time>10"/>
       <call fun="enableKalamosFindJoe(false)" loop="false"/>
-      <go wp="LANDING"/>
-      <stay wp="LANDING" until="stage_time > 30"/>
+      <go wp="KALAMOS_LANDING"/>
+      <stay wp="KALAMOS_LANDING" until="stage_time > 30"/>
       <deroute block="Do_vision_landing"/>
     </block>
 
     <!-- Circle in case necessary, to be commanded by operator-->
     <block name="Circle_around">
-      <go forward="true" from="j2" hmode="route" wp="j1"/>
-      <go forward="true" from="j1" hmode="route" wp="j3"/>
+      <go forward="true" from="j1" hmode="route" wp="j2"/>
+      <go forward="true" from="j2" hmode="route" wp="j3"/>
       <go forward="true" from="j3" hmode="route" wp="j4"/>
-      <go forward="true" from="j4" hmode="route" wp="j5"/>
-      <go forward="true" from="j5" hmode="route" wp="j1"/>
+      <go forward="true" from="j4" hmode="route" wp="j1"/>
     </block>
 
     <!-- Vision based landing -->
@@ -368,16 +311,16 @@
       <call fun="enableKalamosFindJoe(false)" loop="false"/>
       <call fun="enableKalamosLandingspotSearch(false)" loop="false"/>
       <call fun="enableKalamosDescent(true)" loop="false"/>
-      <stay climb="land_cmd.z" vmode="climb" wp="LANDING"/>
+      <stay climb="land_cmd.z" vmode="climb" wp="KALAMOS_LANDING"/>
     </block>
     <block name="Descent_slow_remote">
       <exception cond="((0.6 + fabs(stateGetNedToBodyEulers_f()->phi)/2) > k2p_package.height ) && (k2p_package.height > 0.0) && getKalamosReady()" deroute="landing_moment_remote"/>
       <exception cond="(fabs(stateGetNedToBodyEulers_f()->theta) > 0.6) && ( 2.5 > k2p_package.height) && (!(last_block==IndexOfBlock('Descent_pause_remote')))" deroute="Descent_pause_remote"/>
-      <stay climb="-0.5" vmode="climb" wp="LANDING"/>
+      <stay climb="-0.5" vmode="climb" wp="KALAMOS_LANDING"/>
     </block>
     <block name="Descent_pause_remote">
       <exception cond="(0.3 > fabs(stateGetNedToBodyEulers_f()->theta) )" deroute="Descent_slow_remote"/>
-      <stay climb="0.0" vmode="climb" wp="LANDING" until="stage_time>30"/>
+      <stay climb="0.0" vmode="climb" wp="KALAMOS_LANDING" until="stage_time>30"/>
       <deroute block="Descent_slow_remote"/>
     </block>
     <block name="landing_moment_remote">
@@ -421,9 +364,9 @@
     </block>
     <block name="DatalinkLoss">
       <!-- If we have another 60 seconds datalink loss fly home through corridor -->
-      <exception cond="block_time>120" deroute="line_p9_p8"/> <!-- fly back home -->
+      <exception cond="block_time>120" deroute="line_p4_p3"/> <!-- fly back home -->
       <!-- If motor temperature becomes higher 100 degrees goto forwared and fly to home in corridor -->
-      <exception cond="temp_c1 > 100" deroute="line_p9_p8"/> <!-- fly back home -->
+      <exception cond="temp_c1 > 100" deroute="line_p4_p3"/> <!-- fly back home -->
       <!-- Set Hover waypoint to current positions and set height -->
       <call fun="NavSetWaypointHere(WP_HOVER)" loop="false"/>
       <call fun="waypoint_set_alt(WP_HOVER,stateGetPositionEnu_f()->z + 20)" loop="false"/>
