@@ -72,7 +72,11 @@ struct FloatRates stabilization_rate_sum_err;
 
 struct FloatRates stabilization_rate_fb_cmd;
 
-float p_on_q_coupling = OUTBACK_P_ON_Q_COUPLING;
+#if USE_LIGHT_BLADES
+float p_on_q_coupling = OUTBACK_P_ON_Q_COUPLING_LIGHT;
+#else
+float p_on_q_coupling = OUTBACK_P_ON_Q_COUPLING_HEAVY;
+#endif
 float q_on_p_coupling = OUTBACK_Q_ON_P_COUPLING;
 
 #ifndef STABILIZATION_RATE_DEADBAND_P
