@@ -23,6 +23,7 @@
   <waypoints>
     <waypoint name="HOME" x="0" y="0"/>
     <waypoint x="-10" y="10" name="TD"/>
+
     <waypoint x="100" y="320" name="j1" height="40"/>
     <waypoint x="100" y="340" name="j2" height="40"/>
     <waypoint x="100" y="360" name="j3" height="40"/>
@@ -84,8 +85,7 @@
       !(nav_block == IndexOfBlock('failsafe')) &&
       (autopilot_in_flight == true) )" deroute="GpsLoss"/>
     <!-- Datalink loss -->
-    <exception cond="(datalink_time > 60 &&
-      !(datalink_time > 120) &&
+    <exception cond="(datalink_time > 180 &&
       !(IndexOfBlock('Takeoff') > nav_block) &&
       !(nav_block >= IndexOfBlock('landed')) &&
       !(nav_block == IndexOfBlock('GpsLoss')) &&
