@@ -204,8 +204,8 @@
       <deroute block="line_p4_p1"/>
     </block>
     <block group="to_joe" name="line_p4_p1">
-      <go forward="true" from="p3" hmode="route" wp="p4"/>
-      <set value="4" var="last_wp_reached_in_route"/>
+      <go forward="true" from="p4" hmode="route" wp="p1"/>
+      <set value="1" var="last_wp_reached_in_route"/>
       <deroute block="line_p1_p2"/>
     </block>
 
