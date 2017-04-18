@@ -29,10 +29,10 @@
     <waypoint x="100" y="360" name="j3" height="40"/>
     <waypoint x="100" y="380" name="j4" height="40"/>
 
-    <waypoint x="-400" y="-400" name="_MB1"/>
-    <waypoint x="-400" y="400" name="_MB2"/>
-    <waypoint x="400" y="400" name="_MB3"/>
-    <waypoint x="400" y="-400" name="_MB4"/>
+    <waypoint x="-400" y="-400" name="MB1"/>
+    <waypoint x="-400" y="400" name="MB2"/>
+    <waypoint x="400" y="400" name="MB3"/>
+    <waypoint x="400" y="-400" name="MB4"/>
 
     <waypoint x="100" y="0" name="p1" height="80"/>
     <waypoint x="100" y="100" name="p2" height="80"/>
@@ -52,10 +52,10 @@
   </waypoints>
   <sectors>
     <sector name="MissionBoundary" color="yellow" type="dynamic">
-      <corner name="_MB1"/>
-      <corner name="_MB2"/>
-      <corner name="_MB3"/>
-      <corner name="_MB4"/>
+      <corner name="MB1"/>
+      <corner name="MB2"/>
+      <corner name="MB3"/>
+      <corner name="MB4"/>
     </sector>
   </sectors>
   <modules>
