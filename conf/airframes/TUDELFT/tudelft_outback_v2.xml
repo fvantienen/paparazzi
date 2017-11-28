@@ -57,7 +57,7 @@
 
       <module name="temp_adc"/>
       <module name="logger_sd_spi_direct">
-        <define name="SDLOGGER_ON_ARM" value="TRUE"/>
+        <define name="SDLOGGER_ON_ARM" value="FALSE"/>
       </module>
       <module name="gps_ubx_ucenter"/>
       <module name="heli_throttle_curve"/>
