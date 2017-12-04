@@ -113,6 +113,11 @@ Note(22/11/2017): New Tmotor delftAcopter
      <servo name="AIL_RIGHTUP" no="9" min="1100" neutral="1500" max="1900"/>
   </servos>
 
+  <section name="GCS">
+    <define name="SPEECH_NAME" value="Three Mike Mike"/>
+    <define name="AC_ICON" value="flyingwing"/>
+  </section>
+
   <section name="RADIO">
     <define name="RADIO_TH_HOLD" value="RADIO_AUX1"/>
     <define name="RADIO_FMODE" value="RADIO_AUX2"/>
