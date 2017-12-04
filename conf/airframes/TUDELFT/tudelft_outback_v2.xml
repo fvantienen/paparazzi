@@ -8,7 +8,6 @@
      * GPS:         UBlox ??
      * RC:          Spektrum sats (2x)
      * Telemetry:   Iridium (FTD), 900Mhz ??? (AP)
-Note(22/11/2017): New Tmotor delftAcopter
 -->
 
 <airframe name="Outback">
@@ -102,9 +101,9 @@ Note(22/11/2017): New Tmotor delftAcopter
 
   <servos driver="Pwm">
      <servo name="THROTTLE" no="0" min="1000" neutral="1000" max="2000"/>
-     <servo name="SW_BACK" no="1" min="1988" neutral="1535" max="1050"/> <!-- Checked 22/11/2017-->
-     <servo name="SW_LEFTFRONT" no="2" min="1010" neutral="1460" max="1932"/> <!-- Checked 22/11/2017-->
-     <servo name="SW_RIGHTFRONT" no="3" min="1999" neutral="1502" max="1067"/> <!-- Checked 22/11/2017-->
+     <servo name="SW_BACK" no="1" min="1825" neutral="1425" max="1025"/>
+     <servo name="SW_LEFTFRONT" no="2" min="1255" neutral="1655" max="2055"/>
+     <servo name="SW_RIGHTFRONT" no="3" min="1780" neutral="1380" max="980"/>
      <servo name="TAIL_LEFT" no="4" min="1100" neutral="1500" max="1900"/>
      <servo name="TAIL_RIGHT" no="5" min="1100" neutral="1500" max="1900"/>
      <servo name="AIL_LEFTLOW" no="6" min="1060" neutral="1460" max="1860"/>
