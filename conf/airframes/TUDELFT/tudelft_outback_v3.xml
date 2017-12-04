@@ -19,7 +19,9 @@
         <subsystem name="fdm" type="jsbsim"/>
       </target-->
 
-      <module name="telemetry" type="xbee_api"/>
+      <module name="telemetry" type="xbee_api">
+        <!--configure name="MODEM_BAUD" value="B115200"/-->
+      </module>
       <module name="imu" type="mpu6000"/>
       <module name="gps" type="ublox">
         <define name="GPS_TIMEOUT" value="2"/>
@@ -126,7 +128,7 @@
     <axis name="THRUST" failsafe_value="0"/>
     <axis name="ROLL" failsafe_value="0"/>
     <axis name="PITCH" failsafe_value="0"/>
-    <axis name="YAW" failsafe_value="9600"/>
+    <axis name="YAW" failsafe_value="0"/>
     <axis name="COLLECTIVE" failsafe_value="-9600"/>
   </commands>
 
@@ -155,10 +157,10 @@
     <set servo="SW_RIGHTFRONT" value="swashplate_mixing.commands[SW_RIGHTFRONT]"/>
     <set servo="TAIL_LEFT" value="(Or($th_hold, $forward_curve)? 0 : (-@YAW - @THRUST*0.25) )"/>
     <set servo="TAIL_RIGHT" value="(Or($th_hold, $forward_curve)? 0 : (-@YAW - @THRUST*0.25) )"/>
-    <set servo="AIL_LEFTLOW" value=" 2*@PITCH + 3*@YAW"/>
-    <set servo="AIL_RIGHTLOW" value="-2*@PITCH + 3*@YAW"/>
-    <set servo="AIL_LEFTUP" value=" 2*@PITCH + 3*@YAW"/>
-    <set servo="AIL_RIGHTUP" value="-2*@PITCH + 3*@YAW"/>
+    <set servo="AIL_LEFTLOW" value=" 1*@PITCH + 1.5*@YAW"/>
+    <set servo="AIL_RIGHTLOW" value="-1*@PITCH + 1.5*@YAW"/>
+    <set servo="AIL_LEFTUP" value=" 1*@PITCH + 1.5*@YAW"/>
+    <set servo="AIL_RIGHTUP" value="-1*@PITCH + 1.5*@YAW"/>
   </command_laws>
 
   <!-- v3 Pitch RODS black laminated props with straight angle root and 25deg blade-grip handles: 52mm top links 65mm bottom links -->
@@ -199,8 +201,10 @@
     <define name="NAV_CLIMB_VSPEED" value="3.0"/>
     <define name="NAV_DESCEND_VSPEED" value="-1.5"/>
     <define name="NO_RC_THRUST_LIMIT" value="TRUE"/>
-    <define name="MilliAmpereOfAdc(_adc)" value="(DefaultMilliAmpereOfAdc(_adc) + 417)"/>
-    <define name="OUTBACK_P_ON_Q_COUPLING" value="0.0"/>
+    <define name="MilliAmpereOfAdc(_adc)" value="(DefaultMilliAmpereOfAdc(_adc) + 417 - 2000)"/>
+    <define name="USE_LIGHT_BLADES" value="FALSE"/>
+    <define name="OUTBACK_P_ON_Q_COUPLING_LIGHT" value="0.0"/>
+    <define name="OUTBACK_P_ON_Q_COUPLING_HEAVY" value="6.0"/>
     <define name="OUTBACK_Q_ON_P_COUPLING" value="0.0"/>
     <define name="OUTBACK_GROUND_PITCH_CONTROL_GAIN" value="70000.0"/>
     <define name="OUTBACK_MIN_HOVER_THROTTLE" value="4000"/>
