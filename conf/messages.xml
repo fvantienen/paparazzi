@@ -2051,7 +2051,15 @@
     <field name="imageBuffer" type="uint8[]"/>
   </message>
 
-  <!--230 is free -->
+  <message name="CHIRP" id="230">
+    <field name="chirp_active"        type="uint8">Chirp is active</field>
+    <field name="percentage_done"     type="float">Percentage done</field>
+    <field name="current_frequency"   type="float">Current frequency</field>
+    <field name="current_value"       type="float">Current value</field>
+    <field name="axis_1"              type="int32">Current axis 1</field>
+    <field name="axis_2"              type="int32">Current axis 2</field>
+    <field name="axis_3"              type="int32">Current axis 3</field>
+  </message>
 
   <message name="ROTORCRAFT_STATUS" id="231">
     <field name="link_imu_nb_err" type="uint32"/>

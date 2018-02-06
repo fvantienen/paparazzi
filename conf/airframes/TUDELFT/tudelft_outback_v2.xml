@@ -45,6 +45,7 @@
       <module name="rpm_sensor"/>
       <module name="gain_scheduling"/>
       <module name="kalamos_uart"/>
+      <module name="sys_id_chirp"/>
 
       <module name="geo_mag"/>
       <module name="air_data">

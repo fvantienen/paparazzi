@@ -37,6 +37,8 @@
 #include "subsystems/radio_control.h"
 #include "firmwares/rotorcraft/autopilot_rc_helpers.h"
 
+#include "modules/system_identification/sys_id_chirp.h"
+
 #define MAX_SUM_ERR 40000
 
 #ifndef STABILIZATION_RATE_IGAIN_P
@@ -246,6 +248,10 @@ void stabilization_rate_run(bool in_flight)
   // Add euler dynamics compensation
   stabilization_cmd[COMMAND_ROLL] =  stabilization_cmd[COMMAND_ROLL]  + 299*q_on_p_coupling*body_rate->q;
   stabilization_cmd[COMMAND_PITCH] = stabilization_cmd[COMMAND_PITCH] + 337.0*-p_on_q_coupling*body_rate->p;
+
+  stabilization_cmd[COMMAND_ROLL] += current_chirp_values[0];
+  stabilization_cmd[COMMAND_PITCH] += current_chirp_values[1];
+  stabilization_cmd[COMMAND_YAW] += current_chirp_values[2];
 
   // Forward command to aero actuators
   stabilization_cmd[COMMAND_ELEVATOR] = stabilization_cmd[COMMAND_PITCH];
