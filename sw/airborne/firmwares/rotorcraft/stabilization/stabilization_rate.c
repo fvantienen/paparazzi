@@ -242,16 +242,40 @@ void stabilization_rate_run(bool in_flight)
   stabilization_cmd[COMMAND_PITCH] = stabilization_rate_fb_cmd.q;
   stabilization_cmd[COMMAND_YAW]   = stabilization_rate_fb_cmd.r;
 
+
   // Add euler dynamics compensation
   stabilization_cmd[COMMAND_ROLL] =  stabilization_cmd[COMMAND_ROLL]  + 299*q_on_p_coupling*body_rate->q;
   stabilization_cmd[COMMAND_PITCH] = stabilization_cmd[COMMAND_PITCH] + 337.0*-p_on_q_coupling*body_rate->p;
+
+  // Forward command to aero actuators
+  //stabilization_cmd[COMMAND_ELEVATOR] = stabilization_cmd[COMMAND_PITCH];
+  stabilization_cmd[COMMAND_AILERON] = stabilization_cmd[COMMAND_YAW];
+
+  // Compensate rotor effectiveness matrix
+  int16_t cmd_roll;
+  int16_t cmd_pitch;
+
+#if USE_LIGHT_BLADES
+  float compensation_angle_p = 0.9042;//(radio_control.values[8]+9600.0)/(2*9600.0)*1.2472;
+#else
+  float compensation_angle_p = 0.733;//(radio_control.values[8]+9600.0)/(2*9600.0)*1.2472;
+#endif
+  float compensation_angle_q = 0;//(radio_control.values[9]+9600.0)/(2*9600.0)*1.0472;
+  //float compensation_angle = 0.733;
+
+  // Add advance compensation with G matrix
+  cmd_roll  = cosf(compensation_angle_p)*stabilization_cmd[COMMAND_ROLL] - sinf(compensation_angle_q)*stabilization_cmd[COMMAND_PITCH];
+  cmd_pitch = sinf(compensation_angle_p)*stabilization_cmd[COMMAND_ROLL] + cosf(compensation_angle_q)*stabilization_cmd[COMMAND_PITCH];
+
+  stabilization_cmd[COMMAND_ROLL] = cmd_roll;
+  stabilization_cmd[COMMAND_PITCH] = cmd_pitch;
 
   /* bound the result */
   BoundAbs(stabilization_cmd[COMMAND_ROLL], MAX_PPRZ);
   BoundAbs(stabilization_cmd[COMMAND_PITCH], MAX_PPRZ);
   BoundAbs(stabilization_cmd[COMMAND_YAW], MAX_PPRZ);
+  BoundAbs(stabilization_cmd[COMMAND_ELEVATOR], MAX_PPRZ);
+  BoundAbs(stabilization_cmd[COMMAND_AILERON], MAX_PPRZ);
 
-  stabilization_cmd[COMMAND_ELEVATOR] = stabilization_cmd[COMMAND_PITCH];
-  stabilization_cmd[COMMAND_AILERON] = stabilization_cmd[COMMAND_YAW];
 
 }
