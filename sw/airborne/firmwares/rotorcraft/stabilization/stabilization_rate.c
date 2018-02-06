@@ -248,7 +248,7 @@ void stabilization_rate_run(bool in_flight)
   stabilization_cmd[COMMAND_PITCH] = stabilization_cmd[COMMAND_PITCH] + 337.0*-p_on_q_coupling*body_rate->p;
 
   // Forward command to aero actuators
-  //stabilization_cmd[COMMAND_ELEVATOR] = stabilization_cmd[COMMAND_PITCH];
+  stabilization_cmd[COMMAND_ELEVATOR] = stabilization_cmd[COMMAND_PITCH];
   stabilization_cmd[COMMAND_AILERON] = stabilization_cmd[COMMAND_YAW];
 
   // Compensate rotor effectiveness matrix
