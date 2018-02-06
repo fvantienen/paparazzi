@@ -118,6 +118,8 @@ extern uint16_t autopilot_flight_time;
     commands[COMMAND_PITCH] = _cmd[COMMAND_PITCH];              \
     commands[COMMAND_YAW] = _cmd[COMMAND_YAW];                  \
     commands[COMMAND_THRUST] = _cmd[COMMAND_THRUST];            \
+    commands[COMMAND_ELEVATOR] = _cmd[COMMAND_ELEVATOR];        \
+    commands[COMMAND_AILERON] = _cmd[COMMAND_AILERON];          \
   }
 #else
 
@@ -129,6 +131,8 @@ extern uint16_t autopilot_flight_time;
     commands[COMMAND_PITCH] = _cmd[COMMAND_PITCH];              \
     commands[COMMAND_YAW] = _cmd[COMMAND_YAW];                  \
     commands[COMMAND_THRUST] = _cmd[COMMAND_THRUST];            \
+    commands[COMMAND_ELEVATOR] = _cmd[COMMAND_ELEVATOR];        \
+    commands[COMMAND_AILERON] = _cmd[COMMAND_AILERON];          \
   }
 #else
 #define SetRotorcraftCommands(_cmd, _in_flight,  _motor_on) { \
@@ -137,6 +141,8 @@ extern uint16_t autopilot_flight_time;
     commands[COMMAND_PITCH] = _cmd[COMMAND_PITCH];              \
     commands[COMMAND_YAW] = _cmd[COMMAND_YAW];                  \
     commands[COMMAND_THRUST] = _cmd[COMMAND_THRUST];            \
+    commands[COMMAND_ELEVATOR] = _cmd[COMMAND_ELEVATOR];        \
+    commands[COMMAND_AILERON] = _cmd[COMMAND_AILERON];          \
   }
 #endif
 #endif
