@@ -127,6 +127,8 @@
     <set command="ROLL" value="@ROLL"/>
     <set command="PITCH" value="@PITCH"/>
     <set command="YAW" value="@YAW"/>
+    <set command="ELEVATOR" value="@PITCH"/>
+    <set command="AILERON" value="@ROLL"/>
   </rc_commands>
 
   <commands>
@@ -135,6 +137,8 @@
     <axis name="PITCH" failsafe_value="0"/>
     <axis name="YAW" failsafe_value="0"/>
     <axis name="COLLECTIVE" failsafe_value="-9600"/>
+    <axis name="ELEVATOR" failsafe_value="0" />
+    <axis name="AILERON" failsafe_value="0" />
   </commands>
 
   <section name="MIXING" prefix="SW_MIXING_">
@@ -162,10 +166,10 @@
     <set servo="SW_RIGHTFRONT" value="swashplate_mixing.commands[SW_RIGHTFRONT]"/>
     <set servo="TAIL_LEFT" value="(Or($th_hold, $forward_curve)? 0 : (-@YAW - @THRUST*0.25) )"/>
     <set servo="TAIL_RIGHT" value="(Or($th_hold, $forward_curve)? 0 : (-@YAW - @THRUST*0.25) )"/>
-    <set servo="AIL_LEFTLOW" value=" 1*@PITCH + 1.5*@YAW"/>
-    <set servo="AIL_RIGHTLOW" value="-1*@PITCH + 1.5*@YAW"/>
-    <set servo="AIL_LEFTUP" value=" 1*@PITCH + 1.5*@YAW"/>
-    <set servo="AIL_RIGHTUP" value="-1*@PITCH + 1.5*@YAW"/>
+    <set servo="AIL_LEFTLOW" value=" 1*@ELEVATOR + 1.5*@AILERON"/>
+    <set servo="AIL_RIGHTLOW" value="-1*@ELEVATOR + 1.5*@AILERON"/>
+    <set servo="AIL_LEFTUP" value=" 1*@ELEVATOR + 1.5*@AILERON"/>
+    <set servo="AIL_RIGHTUP" value="-1*@ELEVATOR + 1.5*@AILERON"/>
   </command_laws>
 
   <!-- v3 Pitch RODS black laminated props with straight angle root and 25deg blade-grip handles: 52mm top links 65mm bottom links -->

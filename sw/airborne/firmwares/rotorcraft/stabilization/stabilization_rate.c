@@ -251,4 +251,7 @@ void stabilization_rate_run(bool in_flight)
   BoundAbs(stabilization_cmd[COMMAND_PITCH], MAX_PPRZ);
   BoundAbs(stabilization_cmd[COMMAND_YAW], MAX_PPRZ);
 
+  stabilization_cmd[COMMAND_ELEVATOR] = stabilization_cmd[COMMAND_PITCH];
+  stabilization_cmd[COMMAND_AILERON] = stabilization_cmd[COMMAND_YAW];
+
 }
