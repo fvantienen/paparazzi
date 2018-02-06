@@ -123,6 +123,7 @@
   </section>
 
   <rc_commands>
+    <set command="THRUST" value="@THROTTLE"/>
     <set command="COLLECTIVE" value="@THROTTLE-MAX_PPRZ"/>
     <set command="ROLL" value="@ROLL"/>
     <set command="PITCH" value="@PITCH"/>
