@@ -77,8 +77,10 @@ static void stop_chirp(void) {
 
 void sys_id_chirp_chirp_activate_handler(uint8_t activate) {
     chirp_active = activate;
-    if (chirp_active)
+    if (chirp_active) {
+        chirp_init(&chirp, chirp_f0_hz, chirp_f1_hz, chirp_length_s, get_sys_time_float(), CHIRP_EXPONENTIAL, CHIRP_FADEIN);
         start_chirp();
+    }
     else
         stop_chirp();
 }
