@@ -1,4 +1,3 @@
-
 /**
  * A "chirp" or frequency sweep is a sine wave with in time increasing frequency, and can be
  * used for system identification purposes. Using the output of the chirp function
@@ -6,7 +5,7 @@
  * spectrum.
  *
  * Chirps can be made with frequency increasing linearly or exponentially with time. This is set using an argument in
- * the chirp_new method. The latter one is better for system identification, according to [2].
+ * the chirp_init method. The latter one is better for system identification, according to [2].
  *
  * The time length of the chirp is best put at a minimum of 4 / f_minimum such that low-frequency effects
  * can be correctly discovered.
@@ -17,15 +16,13 @@
  *
  * Usage example:
  * // Initialize a chirp between 1 and 5 Hz during 2 seconds (for sys. id. use minimum of 2 * 1/f0)
- * struct chirpt_t* chirp = chirp_new(1, 5, 2, get_current_time());
+ * struct chirpt_t chirp;
+ * chirp_init(&chirp, 1, 5, 2, get_current_time());
  *
  * // During flight loop, add chirp value to stick input
  * while (chirp_is_running(chirp, get_current_time())) {
  *     control[YAW] = stick_control + chirp_update(chirp, get_current_time());
  * }
- *
- * // Delete chirp object
- * chirp_del(chirp);
  *
  * [1] https://en.wikipedia.org/wiki/Chirp for a derivation of the linear chirp
  * [2] Aircraft and Rotorcraft System Identification, 2nd edition by M. Tischler for a derivation of exponential chirp
@@ -38,14 +35,14 @@
 #include <std.h>
 #include <stdbool.h>
 #include <stdlib.h>
-#include <stdio.h>
+#include "mcu_periph/sys_time.h"
 
 // Values for exponential chirp. C2 is based on C1 s.t. the frequency range exactly covers the required range
 #define chirp_C1 4.0f
 #define chirp_C2 1.0f / (exp(chirp_C1) - 1)
 
 /**
- * Initialize with chirp_new, destruct with chirp_del
+ * Initialize with chirp_init
  */
 struct chirp_t {
     float f0_hz;
@@ -72,7 +69,7 @@ struct chirp_t {
  * @param exponential_chirp: If true, use exponential-time chirp, otherwise use linear-time chirp (see wikipedia)
  * @param fade_in: If true, begin the chirp with 2 wavelengths of the lowest frequency, with increasing amplitude
  */
-struct chirp_t* chirp_new(float f0_hz, float f1_hz, float length_s, float current_time_s, bool exponential_chirp, bool fade_in);
+void chirp_init(struct chirp_t* chirp, float f0_hz, float f1_hz, float length_s, float current_time_s, bool exponential_chirp, bool fade_in);
 
 /**
  * Reset the time of the chirp
@@ -80,11 +77,6 @@ struct chirp_t* chirp_new(float f0_hz, float f1_hz, float length_s, float curren
  * @param current_time_s: The time to set the chirp start at
  **/
 void chirp_reset(struct chirp_t* chirp, float current_time_s);
-
-/**
- * Delete a chirp struct, freeing its memory
- */
-void chirp_del(struct chirp_t* chirp);
 
 /**
  * Return if the current_time is within the chirp manoeuvre
@@ -96,10 +88,5 @@ bool chirp_is_running(struct chirp_t* chirp, float current_time_s);
  * @return Current value chirp->current_value
  */
 float chirp_update(struct chirp_t* chirp, float current_time_s);
-
-/**
- * Print all parameters of chirp
- */
-void chirp_print(struct chirp_t* chirp);
 
 #endif

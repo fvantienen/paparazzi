@@ -28,18 +28,22 @@
 
 #include <std.h>
 #include <stdbool.h>
-
+#include "modules/system_identification/pprz_chirp.h"
 #include "generated/airframe.h"
+#include "mcu_periph/sys_time.h"
 
-// The current values for all axes (at least 2 are zero) that should be added to output commands to the UAV
-extern int32_t current_chirp_values[3];
+// Number of axes for which the chirp will generate a signal
+#define CHIRP_NO_AXES 5
+
+// The current values for all axes that should be added to output commands to the UAV
+extern int32_t current_chirp_values[CHIRP_NO_AXES];
 
 extern uint8_t chirp_active;
 extern int32_t chirp_amplitude;
 extern float chirp_noise_stdv_onaxis_ratio;
 extern float chirp_noise_stdv_offaxis_ratio;
 
-// 0: Roll, 1: Pitch, 2: Yaw
+// 0: Roll, 1: Pitch, 2: Yaw, 3: Elevator, 4: Aileron
 extern uint8_t chirp_axis;
 
 void sys_id_chirp_init(void);

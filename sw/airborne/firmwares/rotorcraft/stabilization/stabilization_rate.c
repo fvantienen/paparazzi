@@ -249,13 +249,16 @@ void stabilization_rate_run(bool in_flight)
   stabilization_cmd[COMMAND_ROLL] =  stabilization_cmd[COMMAND_ROLL]  + 299*q_on_p_coupling*body_rate->q;
   stabilization_cmd[COMMAND_PITCH] = stabilization_cmd[COMMAND_PITCH] + 337.0*-p_on_q_coupling*body_rate->p;
 
-  stabilization_cmd[COMMAND_ROLL] += current_chirp_values[0];
-  stabilization_cmd[COMMAND_PITCH] += current_chirp_values[1];
-  stabilization_cmd[COMMAND_YAW] += current_chirp_values[2];
-
   // Forward command to aero actuators
   stabilization_cmd[COMMAND_ELEVATOR] = stabilization_cmd[COMMAND_PITCH];
   stabilization_cmd[COMMAND_AILERON] = stabilization_cmd[COMMAND_YAW];
+
+  // Add chirp system identification values
+  stabilization_cmd[COMMAND_ROLL] += current_chirp_values[0];
+  stabilization_cmd[COMMAND_PITCH] += current_chirp_values[1];
+  stabilization_cmd[COMMAND_YAW] += current_chirp_values[2];
+  stabilization_cmd[COMMAND_ELEVATOR] += current_chirp_values[3];
+  stabilization_cmd[COMMAND_AILERON] += current_chirp_values[4];
 
   // Compensate rotor effectiveness matrix
   int16_t cmd_roll;

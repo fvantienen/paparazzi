@@ -6,7 +6,7 @@ static bool initialized = false;
 static inline void init_random(void)
 {
     if (!initialized) {
-        srand((unsigned) time(NULL));
+        srand(get_sys_time_msec());
         initialized = true;
     }
 }

@@ -5,8 +5,6 @@
     <description>System identification chirp</description>
   </doc>
 
-  <!--  -->
-
   <settings>
     <dl_settings name="System identification">
       <dl_settings name="System chirp">
@@ -14,7 +12,7 @@
           <strip_button icon="sine.png" name="Chirp active" value="1" group="System identification"/>
           <strip_button icon="flat_line.png" name="Chirp inactive" value="0" group="System identification"/>
         </dl_setting>
-        <dl_setting min="0" max="2" step="1" values="Roll|Pitch|Yaw" shortname="Chirp axis" var="chirp_axis" type="uint8_t" module="system_identification/sys_id_chirp"/>
+        <dl_setting min="0" max="4" step="1" values="Roll|Pitch|Yaw|Elevator|Aileron" shortname="Chirp axis" var="chirp_axis" type="uint8_t" module="system_identification/sys_id_chirp"/>
         <dl_setting min="0" max="9600" step="1" shortname="Amplitude" var="chirp_amplitude" type="int32_t" module="system_identification/sys_id_chirp"/>
         <dl_setting min="0" max="1" step="0.001" shortname="Noise stdv fraction on-axis" var="chirp_noise_stdv_onaxis_ratio" type="float" module="system_identification/sys_id_chirp"/>
         <dl_setting min="0" max="1" step="0.001" shortname="Noise stdv fraction off-axis" var="chirp_noise_stdv_offaxis_ratio" type="float" module="system_identification/sys_id_chirp"/>
