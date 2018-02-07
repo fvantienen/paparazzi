@@ -43,6 +43,10 @@ extern int32_t chirp_amplitude;
 extern float chirp_noise_stdv_onaxis_ratio;
 extern float chirp_noise_stdv_offaxis_ratio;
 
+extern float chirp_f0_hz;
+extern float chirp_f1_hz;
+extern float chirp_length_s;
+
 // 0: Roll, 1: Pitch, 2: Yaw, 3: Elevator, 4: Aileron
 extern uint8_t chirp_axis;
 

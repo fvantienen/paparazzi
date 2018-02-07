@@ -13,9 +13,12 @@
           <strip_button icon="flat_line.png" name="Chirp inactive" value="0" group="System identification"/>
         </dl_setting>
         <dl_setting min="0" max="4" step="1" values="Roll|Pitch|Yaw|Elevator|Aileron" shortname="Chirp axis" var="chirp_axis" type="uint8_t" module="system_identification/sys_id_chirp"/>
-        <dl_setting min="0" max="9600" step="1" shortname="Amplitude" var="chirp_amplitude" type="int32_t" module="system_identification/sys_id_chirp"/>
-        <dl_setting min="0" max="1" step="0.001" shortname="Noise stdv fraction on-axis" var="chirp_noise_stdv_onaxis_ratio" type="float" module="system_identification/sys_id_chirp"/>
-        <dl_setting min="0" max="1" step="0.001" shortname="Noise stdv fraction off-axis" var="chirp_noise_stdv_offaxis_ratio" type="float" module="system_identification/sys_id_chirp"/>
+        <dl_setting min="0" max="9600" step="100" shortname="Amplitude" var="chirp_amplitude" type="int32_t" module="system_identification/sys_id_chirp"/>
+        <dl_setting min="0" max="1" step="0.01" shortname="on-axis noise" var="chirp_noise_stdv_onaxis_ratio" type="float" module="system_identification/sys_id_chirp"/>
+        <dl_setting min="0" max="1" step="0.01" shortname="off-axis noise" var="chirp_noise_stdv_offaxis_ratio" type="float" module="system_identification/sys_id_chirp"/>
+        <dl_setting min="0" max="3" step="0.01" shortname="Fstart_hz" var="chirp_f0_hz" type="float" module="system_identification/sys_id_chirp"/>
+        <dl_setting min="3" max="10" step="0.1" shortname="Fend_hz" var="chirp_f1_hz" type="float" module="system_identification/sys_id_chirp"/>
+        <dl_setting min="0" max="100" step="0.5" shortname="Length_s" var="chirp_length_s" type="float" module="system_identification/sys_id_chirp"/>
       </dl_settings>
     </dl_settings>
   </settings>
@@ -28,12 +31,8 @@
   <periodic fun="sys_id_chirp_run()" freq="60" autorun="TRUE"/>
 
   <makefile>
-    <define name="CHIRP_F0" value="0.05" />
-    <define name="CHIRP_F1" value="3.2" />
-    <define name="CHIRP_LENGTH" value="80" />
     <define name="CHIRP_EXPONENTIAL" value="true"/>
     <define name="CHIRP_FADEIN" value="true"/>
-    <define name="CHIRP_FILTER_CUTOFF_HZ" value="3.2"/>
     <file name="random.c"/>
     <file name="pprz_chirp.c"/>
     <file name="sys_id_chirp.c"/>

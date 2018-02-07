@@ -34,7 +34,9 @@ uint8_t chirp_axis = 0;
 int32_t chirp_amplitude = 0;
 float chirp_noise_stdv_onaxis_ratio = 0.1;
 float chirp_noise_stdv_offaxis_ratio = 0.2;
-
+float chirp_f0_hz = 0.05;
+float chirp_f1_hz = 3.2;
+float chirp_length_s = 80;
 
 // Filters used to cut-off the gaussian noise fed into the identification channels
 static struct FirstOrderLowPass filters[CHIRP_NO_AXES];
@@ -82,11 +84,12 @@ void sys_id_chirp_chirp_activate_handler(uint8_t activate) {
 }
 
 void sys_id_chirp_init(void) {
-    chirp_init(&chirp, CHIRP_F0, CHIRP_F1, CHIRP_LENGTH, get_sys_time_float(), CHIRP_EXPONENTIAL, CHIRP_FADEIN);
+    chirp_init(&chirp, chirp_f0_hz, chirp_f1_hz, chirp_length_s, get_sys_time_float(), CHIRP_EXPONENTIAL, CHIRP_FADEIN);
     set_current_chirp_values();
     register_periodic_telemetry(DefaultPeriodic, PPRZ_MSG_ID_CHIRP, send_chirp);
 
-    float tau = 1 / (CHIRP_FILTER_CUTOFF_HZ * 2 * M_PI);
+    // Filter cutoff frequency is the chirp maximum frequency
+    float tau = 1 / (chirp_f1_hz * 2 * M_PI);
     for (uint8_t i = 0; i < CHIRP_NO_AXES; i++) {
         init_first_order_low_pass(&filters[i], tau, SYS_ID_CHIRP_RUN_PERIOD, 0);
         current_chirp_values[i] = 0;
