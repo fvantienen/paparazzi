@@ -293,14 +293,45 @@ void stabilization_attitude_run(bool enable_integrator)
   stabilization_cmd[COMMAND_YAW] = stabilization_att_fb_cmd[COMMAND_YAW] + stabilization_att_ff_cmd[COMMAND_YAW];
 
   // Add euler dynamics compensation
-    // Add euler dynamics compensation
   stabilization_cmd[COMMAND_ROLL] =  stabilization_cmd[COMMAND_ROLL]  + 299*q_on_p_coupling*body_rate_f->q;
   stabilization_cmd[COMMAND_PITCH] = stabilization_cmd[COMMAND_PITCH] + 337.0*-p_on_q_coupling*body_rate_f->p;
+
+  // Forward command to aero actuators
+  stabilization_cmd[COMMAND_ELEVATOR] = stabilization_cmd[COMMAND_PITCH];
+  stabilization_cmd[COMMAND_AILERON] = stabilization_cmd[COMMAND_YAW];
+
+  // Compensate rotor effectiveness matrix
+  int16_t cmd_roll;
+  int16_t cmd_pitch;
+
+#if USE_LIGHT_BLADES
+  float compensation_angle_p = 0.9042;//(radio_control.values[8]+9600.0)/(2*9600.0)*1.2472;
+#else
+  float compensation_angle_p = 0.733;//(radio_control.values[8]+9600.0)/(2*9600.0)*1.2472;
+#endif
+  float compensation_angle_q = 0;//(radio_control.values[9]+9600.0)/(2*9600.0)*1.0472;
+  //float compensation_angle = 0.733;
+
+  // Add advance compensation with G matrix
+  cmd_roll  = cosf(compensation_angle_p)*stabilization_cmd[COMMAND_ROLL] - sinf(compensation_angle_q)*stabilization_cmd[COMMAND_PITCH];
+  cmd_pitch = sinf(compensation_angle_p)*stabilization_cmd[COMMAND_ROLL] + cosf(compensation_angle_q)*stabilization_cmd[COMMAND_PITCH];
+
+  stabilization_cmd[COMMAND_ROLL] = cmd_roll;
+  stabilization_cmd[COMMAND_PITCH] = cmd_pitch;
+
+  // Add chirp system identification values
+  stabilization_cmd[COMMAND_ROLL] += current_chirp_values[0];
+  stabilization_cmd[COMMAND_PITCH] += current_chirp_values[1];
+  stabilization_cmd[COMMAND_YAW] += current_chirp_values[2];
+  stabilization_cmd[COMMAND_ELEVATOR] += current_chirp_values[3];
+  stabilization_cmd[COMMAND_AILERON] += current_chirp_values[4];
 
   /* bound the result */
   BoundAbs(stabilization_cmd[COMMAND_ROLL], MAX_PPRZ);
   BoundAbs(stabilization_cmd[COMMAND_PITCH], MAX_PPRZ);
   BoundAbs(stabilization_cmd[COMMAND_YAW], MAX_PPRZ);
+  BoundAbs(stabilization_cmd[COMMAND_ELEVATOR], MAX_PPRZ);
+  BoundAbs(stabilization_cmd[COMMAND_AILERON], MAX_PPRZ);
 }
 
 void stabilization_attitude_read_rc(bool in_flight, bool in_carefree, bool coordinated_turn)
