@@ -21,6 +21,7 @@
       <message name="FBW_STATUS"             period="2"   phase="0.80"/>
       <message name="MOTOR"                  period="5"   phase="0.90"/>
       <message name="THROTTLE_CURVE"         period="6"   phase="0.95"/>
+      <message name="CHIRP"                  period="0.5" phase="0.30"/>
     </mode>
 
     <mode name="minimum" key_press="m">
@@ -97,6 +98,7 @@
        <message name="THROTTLE_CURVE"         period=".01"/>
        <message name="AUTOPILOT_VERSION"      period="20.0"/>
        <message name="GPS"                    period="10.0"/>
+       <message name="CHIRP"                  period="0.2"/>
     </mode>
   </process>
 
@@ -113,4 +115,3 @@
   </process>
 
 </telemetry>
-
