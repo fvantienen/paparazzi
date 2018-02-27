@@ -219,4 +219,5 @@ void throttle_curve_rpm_setpoint_handler(uint16_t rpm_setpoint) {
   for (uint8_t i = 0; i < throttle_curve.curves[curve_no].nb_points; i++) {
     throttle_curve.curves[curve_no].rpm[i] = rpm_setpoint;
   }
+  rpm_setpoint_mode_1 = rpm_setpoint;
 }
