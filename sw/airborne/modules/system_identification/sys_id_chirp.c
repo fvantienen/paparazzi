@@ -60,7 +60,8 @@ static void set_current_chirp_values(void) {
 }
 
 static void send_chirp(struct transport_tx *trans, struct link_device *dev) {
-    pprz_msg_send_CHIRP(trans, dev, AC_ID, &chirp_active, &chirp.percentage_done, &chirp.current_frequency_hz, &chirp.current_value, &current_chirp_values[0], &current_chirp_values[1], &current_chirp_values[2]);
+    pprz_msg_send_CHIRP(trans, dev, AC_ID, &chirp_active, &chirp.percentage_done, &chirp.current_frequency_hz, 
+        &chirp_axis, &chirp_amplitude, &chirp_f0_hz, &chirp_f1_hz, &chirp_noise_stdv_onaxis_ratio, &chirp_noise_stdv_offaxis_ratio);
 }
 
 static void start_chirp(void) {

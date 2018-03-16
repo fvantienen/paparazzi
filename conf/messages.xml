@@ -2057,10 +2057,12 @@
     <field name="chirp_active"        type="uint8">Chirp is active</field>
     <field name="percentage_done"     type="float">Percentage done</field>
     <field name="current_frequency"   type="float">Current frequency</field>
-    <field name="current_value"       type="float">Current value</field>
-    <field name="axis_1"              type="int32">Current axis 1</field>
-    <field name="axis_2"              type="int32">Current axis 2</field>
-    <field name="axis_3"              type="int32">Current axis 3</field>
+    <field name="chirp_axis"          type="uint8">Current chirp axis</field>
+    <field name="amplitude"           type="int32">Amplitude</field>
+    <field name="f0"                  type="float">Start frequency</field>
+    <field name="f1"                  type="float">Stop frequency</field>
+    <field name="noise_onaxis"        type="float">Noise ratio onaxis</field>
+    <field name="noise_offaxis"       type="float">Noise ratio offaxis</field>
   </message>
 
   <message name="ROTORCRAFT_STATUS" id="231">
