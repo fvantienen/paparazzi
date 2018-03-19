@@ -707,7 +707,7 @@ void SecondaryUart(_ISR)(void) {
   if (((USART_CR1(SecondaryUart(_DEV)) & USART_CR1_RXNEIE) != 0) &&
       ((USART_SR(SecondaryUart(_DEV)) & USART_SR_RXNE) != 0)) {
     uint8_t b = usart_recv(SecondaryUart(_DEV));
-    SpektrumParser(b, &SecondarySpektrumState, TRUE);
+    SpektrumParser(b, &SecondarySpektrumState, FALSE); //TRUE --> FALSE, TMP hack to allow two rc transmitters for BVLOS
   }
 
 }
