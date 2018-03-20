@@ -1,6 +1,6 @@
 <!DOCTYPE flight_plan SYSTEM "../../flight_plan.dtd">
 
-<flight_plan alt="80" ground_alt="0" home_mode_height="80" lat0="53.407997" lon0="6.157195" max_dist_from_home="8500" name="SCHIER2018" qfu="20" security_height="10">
+<flight_plan alt="80" ground_alt="0" home_mode_height="80" lat0="53.408431" lon0="6.156777" max_dist_from_home="8500" name="SCHIER2018" qfu="20" security_height="10">
 
 <!-- ******************************** HEADERS ****************************** -->
   <header>
