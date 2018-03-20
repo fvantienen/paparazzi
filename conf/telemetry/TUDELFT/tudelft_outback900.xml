@@ -98,7 +98,8 @@
        <message name="THROTTLE_CURVE"         period=".01"/>
        <message name="AUTOPILOT_VERSION"      period="20.0"/>
        <message name="GPS"                    period="10.0"/>
-       <message name="CHIRP"                  period="0.2"/>
+       <message name="CHIRP"                  period="0.1"/>
+       <message name="ATTITUDE"               period="0.02"/>
     </mode>
   </process>
 
