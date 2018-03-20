@@ -100,6 +100,7 @@
        <message name="GPS"                    period="10.0"/>
        <message name="CHIRP"                  period="0.1"/>
        <message name="ATTITUDE"               period="0.02"/>
+       <MESSAGE NAME="INS"                    period="0.02"/>
     </mode>
   </process>
 
