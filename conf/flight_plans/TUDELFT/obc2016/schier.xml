@@ -24,15 +24,15 @@
     <waypoint name="HOME" x="0" y="0"/>
     <waypoint x="-10" y="10" name="TD"/>
 
-    <waypoint x="100" y="320" name="j1" height="40"/>
-    <waypoint x="100" y="340" name="j2" height="40"/>
-    <waypoint x="100" y="360" name="j3" height="40"/>
-    <waypoint x="100" y="380" name="j4" height="40"/>
+    <waypoint x="-1100" y="300" name="j1" height="40"/>
+    <waypoint x="-1100" y="400" name="j2" height="40"/>
+    <waypoint x="-1100" y="500" name="j3" height="40"/>
+    <waypoint x="-1100" y="600" name="j4" height="40"/>
 
-    <waypoint x="-400" y="-400" name="MB1"/>
-    <waypoint x="-400" y="400" name="MB2"/>
-    <waypoint x="400" y="400" name="MB3"/>
-    <waypoint x="400" y="-400" name="MB4"/>
+    <waypoint lat="53.4106446" lon="6.1416114" name="MB1"/>
+    <waypoint lat="53.4810852" lon="6.1857690" name="MB2"/>
+    <waypoint lat="53.4753706" lon="6.2165853" name="MB3"/>
+    <waypoint lat="53.4049780" lon="6.1719575" name="MB4"/>
 
     <waypoint lat="53.473150" lon="6.194667" height="10" name="HeliPad"   />
     <waypoint lat="53.434940" lon="6.141985" height="200" name="TP1"      />
@@ -47,20 +47,20 @@
     <waypoint lat="53.5084027778" lon="6.267658333333" name="TGB3"/>  <!-- 53°30'30.25"N 006°16' 3.57"O -->
     <waypoint lat="53.5028252778" lon="6.110375000000" name="TGB4"/>  <!-- 53°30'10.26"N 006°06'37.35"O -->
 
-    <waypoint x="100" y="0" name="p1" height="80"/>
-    <waypoint x="100" y="100" name="p2" height="80"/>
-    <waypoint x="-100" y="100" name="p3" height="80"/>
-    <waypoint x="-100" y="0" name="p4" height="80"/>
+    <waypoint x="100" y="100" name="p1" height="80"/>
+    <waypoint x="2650" y="6927" name="p2" height="80"/>
+    <waypoint x="2600" y="6927" name="p3" height="80"/>
+    <waypoint x="50" y="100" name="p4" height="80"/>
 
     <waypoint name="CLIMB" x="100" y="300"/>
     <waypoint name="STDBY" x="-10" y="70"/>
 
-    <waypoint x="50"  y="50" name="REPORT_JOE"/>
-    <waypoint name="HOVER" x="100" y="220" height="60"/>
+    <waypoint x="-1050"  y="50" name="REPORT_JOE"/>
+    <waypoint name="HOVER" x="-1100" y="220" height="60"/>
 
-    <waypoint name="KALAMOS_LANDSPOT" x="100" y="260" height="40"/>
-    <waypoint name="KALAMOS_LANDING" x="100" y="240" height="40"/>
-    <waypoint name="KALAMOS_JOE" x="100" y="280" height="40"/>
+    <waypoint name="KALAMOS_LANDSPOT" x="-1100" y="260" height="40"/>
+    <waypoint name="KALAMOS_LANDING" x="-1100" y="240" height="40"/>
+    <waypoint name="KALAMOS_JOE" x="-1100" y="280" height="40"/>
 
   </waypoints>
   <sectors>
