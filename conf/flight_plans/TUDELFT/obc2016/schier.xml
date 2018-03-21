@@ -141,12 +141,12 @@
     </block>
 
     <!-- Takeoff (No RPM check, No stall check) -->
-    <block group="TO" name="Start_Engine" strip_button="Start_Lauw">
+    <block group="TO" name="Start_Lauw" strip_button="Start_Lauw">
       <set value="1" var="last_wp_reached_in_route"/>
       <deroute block="Start_Engine"/>
     </block>
 
-    <block group="TO" name="Start_Engine" strip_button="Start_Schier">
+    <block group="TO" name="Start_Schier" strip_button="Start_Schier">
       <set value="3" var="last_wp_reached_in_route"/>
       <deroute block="Start_Engine"/>
     </block>
