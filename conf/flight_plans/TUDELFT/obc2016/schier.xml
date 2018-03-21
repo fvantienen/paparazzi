@@ -141,6 +141,17 @@
     </block>
 
     <!-- Takeoff (No RPM check, No stall check) -->
+    <block group="TO" name="Start_Engine" strip_button="Start_Lauw">
+      <set value="1" var="last_wp_reached_in_route"/>
+      <deroute block="Start_Engine"/>
+    </block>
+
+    <block group="TO" name="Start_Engine" strip_button="Start_Schier">
+      <set value="3" var="last_wp_reached_in_route"/>
+      <deroute block="Start_Engine"/>
+    </block>
+
+    <!-- Takeoff (No RPM check, No stall check) -->
     <block group="TO" name="Start_Engine" strip_button="Start_Engine">
       <call fun="nav_throttle_curve_set(0)" loop="false"/>
       <call fun="nav_heli_spinup_setup(3, 0.07)" loop="false"/>
@@ -180,17 +191,17 @@
     </block>
 
     <!-- Safety blocks -->
-    <block name="Standby" strip_button="Standby" strip_icon="home.png">
+    <block group="Safe" name="Standby" strip_button="Standby" >
       <set value="GUIDANCE_H_MAX_BANK" var="guidance_indi_max_bank"/>
       <stay wp="STDBY"/>
     </block>
-    <block name="Hover_here">
+    <block group="Safe" name="Hover_here"  strip_button="Hover_Here">
       <call fun="waypoint_set_alt(WP_HOVER,stateGetPositionEnu_f()->z)" loop="false"/>
       <call fun="NavSetWaypointHere(WP_HOVER)" loop="false"/>
       <stay wp="HOVER"/>
     </block>
 
-    <block group="Standby" name="Avoid">
+    <block group="Safe" name="Avoid"  strip_button="ToAvoid">
       <go forward="true" wp="AVOID"/>
       <deroute block="Avoid"/>
     </block>
@@ -244,7 +255,7 @@
 
 
     <!-- Landing at Schier-->
-    <block name="DescendSchier">
+    <block name="DescendSchier" group="land" strip_button="ForceLandSchier">
       <exception cond="12.0 > stateGetPositionEnu_f()->z" deroute="DescendSchierSlow"/>
       <go forward="true" from="p2" hmode="route" wp="TDS"/>
       <call fun="GuidanceVSetRef(stateGetPositionNed_i()->z, 0, 0)"  loop="false"/>
@@ -257,7 +268,7 @@
 
 
     <!-- Landing at Lauw-->
-    <block name="DescendLauw">
+    <block name="DescendLauw" group="land" strip_button="ForceLandLauw">
       <exception cond="12.0 > stateGetPositionEnu_f()->z" deroute="DescendLauwSlow"/>
       <go forward="true" from="p2" hmode="route" wp="TDL"/>
       <call fun="GuidanceVSetRef(stateGetPositionNed_i()->z, 0, 0)"  loop="false"/>
@@ -270,7 +281,7 @@
 
 
 
-    <block name="landing_moment">
+    <block name="landing_moment" group="land" strip_button="Moment">
       <call fun="nav_throttle_curve_set(1)" loop="false"/>
       <attitude pitch="0" roll="0" throttle="0.5" until="stage_time>2" vmode="throttle"/>
       <deroute block="landed"/>
