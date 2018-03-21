@@ -166,7 +166,7 @@
       <call fun="nav_set_heading_current()" loop="false"/>
       <manual pitch="0" roll="0" throttle="0" until="stage_time>1" vmode="throttle" yaw="0"/>
     </block>
-    <block name="Takeoff" strip_button="Takeoff" strip_icon="takeoff.png">
+    <block name="Takeoff">
       <exception cond="stateGetPositionEnu_f()->z > 4.0" deroute="Climb"/>
       <call fun="nav_throttle_curve_set(1)" loop="false"/>
       <attitude pitch="0" roll="0" throttle="0.83" until="stage_time>2" vmode="throttle"/>
@@ -203,7 +203,7 @@
 
     <block group="Safe" name="Avoid"  strip_button="ToAvoid">
       <go forward="true" wp="AVOID"/>
-      <stay wp="Avoid"/>
+      <stay wp="AVOID"/>
       <deroute block="Avoid"/>
     </block>
 
