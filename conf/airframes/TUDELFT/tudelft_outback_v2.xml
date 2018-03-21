@@ -44,7 +44,7 @@
       <module name="pwm_meas"/>
       <module name="rpm_sensor"/>
       <module name="gain_scheduling"/>
-      <module name="kalamos_uart"/>
+      <!--<module name="kalamos_uart"/>-->
       <module name="sys_id_chirp"/>
 
       <module name="geo_mag"/>
