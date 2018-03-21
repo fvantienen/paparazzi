@@ -13,6 +13,7 @@
 #include "subsystems/navigation/waypoints.h"
 #include "subsystems/datalink/datalink.h"
 #include "modules/sensors/temp_adc.h"
+#include "subsystems/radio_control.h"
 // States
 #define AircraftIsBooting()  LessThan(nav_block,4)
 
@@ -24,15 +25,13 @@
     <waypoint name="HOME" x="0" y="0"/>
     <waypoint x="-10" y="10" name="TD"/>
 
-    <waypoint x="-1100" y="300" name="j1" height="40"/>
-    <waypoint x="-1100" y="400" name="j2" height="40"/>
-    <waypoint x="-1100" y="500" name="j3" height="40"/>
-    <waypoint x="-1100" y="600" name="j4" height="40"/>
-
     <waypoint lat="53.4106446" lon="6.1416114" name="MB1"/>
     <waypoint lat="53.4810852" lon="6.1857690" name="MB2"/>
     <waypoint lat="53.4753706" lon="6.2165853" name="MB3"/>
     <waypoint lat="53.4049780" lon="6.1719575" name="MB4"/>
+
+    <waypoint lat="53.408431" lon="6.156777" height="50" name="TDL"/>
+    <waypoint lat="53.473150" lon="6.194667" height="50" name="TDS"   />
 
     <waypoint lat="53.473150" lon="6.194667" height="10" name="HeliPad"   />
     <waypoint lat="53.434940" lon="6.141985" height="200" name="TP1"      />
@@ -55,12 +54,8 @@
     <waypoint name="CLIMB" x="100" y="300"/>
     <waypoint name="STDBY" x="-10" y="70"/>
 
-    <waypoint x="-1050"  y="50" name="REPORT_JOE"/>
+    <waypoint name="AVOID" x="1100" y="3000"/>
     <waypoint name="HOVER" x="-1100" y="220" height="60"/>
-
-    <waypoint name="KALAMOS_LANDSPOT" x="-1100" y="260" height="40"/>
-    <waypoint name="KALAMOS_LANDING" x="-1100" y="240" height="40"/>
-    <waypoint name="KALAMOS_JOE" x="-1100" y="280" height="40"/>
 
   </waypoints>
   <sectors>
@@ -84,8 +79,8 @@
       !(AircraftIsBooting()) &&
       !(nav_block == IndexOfBlock('Geo_init')) &&
       !(nav_block == IndexOfBlock('HoldingPoint')) &&
-      !(nav_block == IndexOfBlock('failsafe')) &&
-      !(nav_block == IndexOfBlock('SLAMDunk_init')) )" deroute="failsafe"/>
+      !(nav_block == IndexOfBlock('failsafe'))
+      )" deroute="failsafe"/>
 
     <!-- GPS loss -->
     <exception cond="(!GpsFixValid() &&
@@ -137,13 +132,8 @@
       <call fun="NavSetGroundReferenceHere()"/>
       <call_once fun="nav_set_heading_current()" />
     </block>
-    <block name="SLAMDunk_init">
-      <manual pitch="0" roll="0" throttle="0" until="getKalamosReady()" vmode="throttle" yaw="0"/> <!-- Check if Kalamos is booted -->
-      <call fun="enableKalamosAttCalib(true)" until="stage_time>15"/> <!-- Enable Kalamos calibration for 15 seconds -->
-      <call fun="enableKalamosAttCalib(false)" loop="false"/> <!-- Disable Kalamos calibration -->
-      <set value="false" var="opa_controller_vision_power"/> <!-- Poweroff the Kalamos -->
-    </block>
     <block name="HoldingPoint">
+      <set value="false" var="opa_controller_vision_power"/> <!-- Poweroff the Kalamos -->
       <call fun="NavKillThrottle()"/>
       <call fun="nav_throttle_curve_set(0)" loop="false"/>
       <call fun="set_wind_heading_to_current90()" loop="false"/> <!-- Set heading based on wind -->
@@ -183,8 +173,8 @@
 
     <!-- Decide where the takeoff was used for -->
     <block name="decide_there_or_back">
-      <exception cond="2 > last_wp_reached_in_route" deroute="line_p1_p2"/> <!-- Deroute back corridor to joe -->
-      <exception cond="last_wp_reached_in_route > 5" deroute="line_p4_p3"/> <!-- Deroute back corridor to home -->
+      <exception cond="2 > last_wp_reached_in_route" deroute="to_p1"/> <!-- Deroute back corridor to joe -->
+      <exception cond="last_wp_reached_in_route > 1" deroute="to_p3"/> <!-- Deroute back corridor to home -->
       <call fun="NavSetWaypointHere(WP_HOVER)" loop="false"/>
       <stay wp="HOVER" until="stage_time > 1"/>
     </block>
@@ -200,75 +190,86 @@
       <stay wp="HOVER"/>
     </block>
 
-    <!-- Flightpath to joe -->
-    <block group="to_joe" name="line_p1_p2">
+    <block group="Standby" name="Avoid">
+      <go forward="true" wp="AVOID"/>
+      <deroute block="Avoid"/>
+    </block>
+
+
+
+
+    <block group="to_schier" name="to_p1">
+      <set value="1" var="last_wp_reached_in_route"/>
+      <go forward="true" wp="p1"/>
+      <deroute block="line_p1_p2"/>
+    </block>
+
+
+    <!-- Flightpath to Schier -->
+    <block group="to_schier" name="line_p1_p2">
+      <set value="1" var="last_wp_reached_in_route"/>
       <go forward="true" from="p1" hmode="route" wp="p2"/>
       <set value="2" var="last_wp_reached_in_route"/>
+      <deroute block="DecideLandingSchier"/>
+    </block>
+    <block group="to_schier" name="DecideLandingSchier">
+      <exception cond="radio_control.status==RC_OK" deroute="DescendSchier"/>
       <deroute block="line_p2_p3"/>
     </block>
-    <block group="to_joe" name="line_p2_p3">
+
+    <block group="to_schier" name="line_p2_p3">
       <go forward="true" from="p2" hmode="route" wp="p3"/>
       <set value="3" var="last_wp_reached_in_route"/>
       <deroute block="line_p3_p4"/>
     </block>
-    <block group="to_joe" name="line_p3_p4">
-      <go forward="true" from="p3" hmode="route" wp="p4"/>
-      <set value="4" var="last_wp_reached_in_route"/>
-      <deroute block="line_p4_p1"/>
-    </block>
-    <block group="to_joe" name="line_p4_p1">
-      <go forward="true" from="p4" hmode="route" wp="p1"/>
-      <set value="1" var="last_wp_reached_in_route"/>
-      <deroute block="line_p1_p2"/>
-    </block>
 
     <!-- Flightpath from Joe -->
-    <block group="return" name="line_p4_p3">
-      <exception cond="4 > last_wp_reached_in_route" deroute="line_p3_p2"/>
-      <go forward="true" from="p4" hmode="route" wp="p3"/>
+    <block group="from_schier" name="to_p3">
       <set value="3" var="last_wp_reached_in_route"/>
-      <deroute block="line_p3_p2"/>
-    </block>
-    <block group="return" name="line_p3_p2">
-      <exception cond="3 > last_wp_reached_in_route" deroute="line_p2_p1"/>
-      <go forward="true" from="p3" hmode="route" wp="p2"/>
-      <set value="2" var="last_wp_reached_in_route"/>
-      <deroute block="line_p2_p1"/>
-    </block>
-    <block group="return" name="line_p2_p1">
-      <go forward="true" from="p2" hmode="route" wp="p1"/>
-      <set value="1" var="last_wp_reached_in_route"/>
-      <deroute block="Descent"/>
+      <go forward="true" wp="p3"/>
+      <deroute block="line_p3_p4"/>
     </block>
 
-    <block name="EnableVision">
-      <set value="true" var="opa_controller_vision_power"/>
-      <deroute block="Standby"/>
+    <block group="from_schier" name="line_p3_p4">
+      <go forward="true" from="p3" hmode="route" wp="p4"/>
+      <set value="4" var="last_wp_reached_in_route"/>
+      <deroute block="DecideLandingLauw"/>
     </block>
-    <block name="DisableVision">
-      <set value="false" var="opa_controller_vision_power"/>
-      <deroute block="Standby"/>
+
+    <block group="to_schier" name="DecideLandingLauw">
+      <exception cond="radio_control.status==RC_OK" deroute="DescendLauw"/>
+      <deroute block="line_p2_p3"/>
     </block>
 
 
-    <!-- Landing at base-->
-    <block name="Descent">
-      <exception cond="12.0 > stateGetPositionEnu_f()->z" deroute="Descent_slow"/>
-      <call fun="NavSetWaypointHere(WP_TD)" loop="false"/>
-      <call fun="enableKalamosDescent(true)" loop="false"/>
-      <call fun="GuidanceVSetRef(stateGetPositionNed_i()->z, 0, 0)"/>
-      <stay climb="nav_descend_vspeed" vmode="climb" wp="TD"/>
+
+    <!-- Landing at Schier-->
+    <block name="DescendSchier">
+      <exception cond="12.0 > stateGetPositionEnu_f()->z" deroute="DescendSchierSlow"/>
+      <go forward="true" from="p2" hmode="route" wp="TDS"/>
+      <call fun="GuidanceVSetRef(stateGetPositionNed_i()->z, 0, 0)"  loop="false"/>
+      <stay climb="nav_descend_vspeed" vmode="climb" wp="TDS"/>
     </block>
-    <block name="Descent_slow">
-      <exception cond="((0.6 + fabs(stateGetNedToBodyEulers_f()->phi)/2) > k2p_package.height ) && (k2p_package.height > 0.0) && getKalamosReady()" deroute="landing_moment"/>
-      <exception cond="(fabs(stateGetNedToBodyEulers_f()->theta) > 0.6) && ( 2.5 > k2p_package.height) && (!(last_block==IndexOfBlock('Descent_pause')))" deroute="Descent_pause"/>
-      <stay climb="-0.5" vmode="climb" wp="TD"/>
+
+    <block name="DescendSchierSlow">
+      <stay climb="-0.5" vmode="climb" wp="TDS"/>
     </block>
-    <block name="Descent_pause">
-      <exception cond="(0.3 > fabs(stateGetNedToBodyEulers_f()->theta) )" deroute="Descent_pause"/>
-      <stay climb="0.0" vmode="climb" wp="TD" until="stage_time>30"/>
-      <deroute block="Descent_slow"/>
+
+
+    <!-- Landing at Lauw-->
+    <block name="DescendLauw">
+      <exception cond="12.0 > stateGetPositionEnu_f()->z" deroute="DescendLauwSlow"/>
+      <go forward="true" from="p2" hmode="route" wp="TDL"/>
+      <call fun="GuidanceVSetRef(stateGetPositionNed_i()->z, 0, 0)"  loop="false"/>
+      <stay climb="nav_descend_vspeed" vmode="climb" wp="TDL"/>
     </block>
+
+    <block name="DescendLauwSlow">
+      <stay climb="-0.5" vmode="climb" wp="TDL"/>
+    </block>
+
+
+
     <block name="landing_moment">
       <call fun="nav_throttle_curve_set(1)" loop="false"/>
       <attitude pitch="0" roll="0" throttle="0.5" until="stage_time>2" vmode="throttle"/>
@@ -277,8 +278,6 @@
 
     <!-- Landing without GPS -->
     <block name="Descent_noGPS">
-      <set value="true" var="opa_controller_vision_power"/> <!-- Vision power when no gps auto landing -->
-      <call fun="enableKalamosDescent(true)" loop="false"/>
       <exception cond="10.0 > stateGetPositionEnu_f()->z" deroute="Descent_slow_noGPS"/>
       <call fun="nav_set_heading_current()" loop="false"/>
       <call fun="NavSetWaypointHere(WP_TD)" loop="false"/>
@@ -286,7 +285,6 @@
       <attitude pitch="0" roll="0" climb="nav_descend_vspeed" vmode="climb"/>
     </block>
     <block name="Descent_slow_noGPS">
-      <exception cond="((0.6 + fabs(stateGetNedToBodyEulers_f()->phi)/2) > k2p_package.height) && (k2p_package.height > 0.0) && getKalamosReady()" deroute="landing_moment"/>
       <attitude pitch="0" roll="0" climb="-0.5" vmode="climb"/>
     </block>
     <block name="landing_moment_noGPS">
@@ -294,53 +292,10 @@
       <attitude pitch="0" roll="0" throttle="0.5" until="stage_time>2" vmode="throttle"/>
       <deroute block="landed"/>
     </block>
-    <!-- Search for joe -->
-    <block name="search_joe">
-      <call fun="enableKalamosLandingspotSearch(false)" loop="false"/>
-      <call fun="enableKalamosFindJoe(false)" loop="false"/>
-      <call fun="enableKalamosDescent(false)" loop="false"/>
-      <go forward="true" from="p4" hmode="route" wp="j1"/>
-      <stay wp="j1" until="stage_time>4"/>
-      <call fun="enableKalamosFindJoe(true)" loop="false"/>
-      <go wp="j2" hmode="route" from="j1"/>
-      <stay wp="j2" until="stage_time>10"/>
-      <call fun="enableKalamosFindJoe(false)" loop="false"/>
-      <go wp="KALAMOS_LANDING"/>
-      <stay wp="KALAMOS_LANDING" until="stage_time > 30"/>
-      <deroute block="Do_vision_landing"/>
-    </block>
 
-    <!-- Circle in case necessary, to be commanded by operator-->
-    <block name="Circle_around">
-      <go forward="true" from="j1" hmode="route" wp="j2"/>
-      <go forward="true" from="j2" hmode="route" wp="j3"/>
-      <go forward="true" from="j3" hmode="route" wp="j4"/>
-      <go forward="true" from="j4" hmode="route" wp="j1"/>
-    </block>
 
-    <!-- Vision based landing -->
-    <block name="Do_vision_landing">
-      <exception cond="6.0 > stateGetPositionEnu_f()->z" deroute="Descent_slow_remote"/>
-      <call fun="enableKalamosFindJoe(false)" loop="false"/>
-      <call fun="enableKalamosLandingspotSearch(false)" loop="false"/>
-      <call fun="enableKalamosDescent(true)" loop="false"/>
-      <stay climb="land_cmd.z" vmode="climb" wp="KALAMOS_LANDING"/>
-    </block>
-    <block name="Descent_slow_remote">
-      <exception cond="((0.6 + fabs(stateGetNedToBodyEulers_f()->phi)/2) > k2p_package.height ) && (k2p_package.height > 0.0) && getKalamosReady()" deroute="landing_moment_remote"/>
-      <exception cond="(fabs(stateGetNedToBodyEulers_f()->theta) > 0.6) && ( 2.5 > k2p_package.height) && (!(last_block==IndexOfBlock('Descent_pause_remote')))" deroute="Descent_pause_remote"/>
-      <stay climb="-0.5" vmode="climb" wp="KALAMOS_LANDING"/>
-    </block>
-    <block name="Descent_pause_remote">
-      <exception cond="(0.3 > fabs(stateGetNedToBodyEulers_f()->theta) )" deroute="Descent_slow_remote"/>
-      <stay climb="0.0" vmode="climb" wp="KALAMOS_LANDING" until="stage_time>30"/>
-      <deroute block="Descent_slow_remote"/>
-    </block>
-    <block name="landing_moment_remote">
-      <call fun="nav_throttle_curve_set(1)" loop="false"/>
-      <attitude pitch="0" roll="0" throttle="0.5" until="stage_time>2" vmode="throttle"/>
-      <deroute block="landed"/>
-    </block>
+
+
     <block name="landed">
       <call fun="NavKillThrottle()"/>
       <call fun="nav_throttle_curve_set(0)" loop="false"/>
@@ -377,15 +332,13 @@
     </block>
     <block name="DatalinkLoss">
       <!-- If we have another 60 seconds datalink loss fly home through corridor -->
-      <exception cond="block_time>120" deroute="line_p4_p3"/> <!-- fly back home -->
+      <exception cond="block_time>120" deroute="line_p3_p4"/> <!-- fly back home -->
       <!-- If motor temperature becomes higher 100 degrees goto forwared and fly to home in corridor -->
-      <exception cond="temp_c1 > 100" deroute="line_p4_p3"/> <!-- fly back home -->
+      <exception cond="temp_c1 > 100" deroute="line_p3_p4"/> <!-- fly back home -->
       <!-- Set Hover waypoint to current positions and set height -->
       <call fun="NavSetWaypointHere(WP_HOVER)" loop="false"/>
       <call fun="waypoint_set_alt(WP_HOVER,stateGetPositionEnu_f()->z + 20)" loop="false"/>
       <stay wp="HOVER" until="60 > datalink_time"/>
-      <!-- Return to previous block if datalink is OK -->
-      <call fun="ReturnToStartPrevBlock()"/>
 <!-- if the function above did not work, keep in this block -->
       <stay wp="HOVER"/>
     </block>
