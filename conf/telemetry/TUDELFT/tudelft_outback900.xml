@@ -21,7 +21,6 @@
       <message name="FBW_STATUS"             period="2"   phase="0.80"/>
       <message name="MOTOR"                  period="5"   phase="0.90"/>
       <message name="THROTTLE_CURVE"         period="6"   phase="0.95"/>
-      <message name="CHIRP"                  period="0.5" phase="0.30"/>
     </mode>
 
     <mode name="minimum" key_press="m">
