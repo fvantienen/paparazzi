@@ -286,6 +286,11 @@
     <define name="H_X" value="0.5293"/>
     <define name="H_Y" value="0.0971"/>
     <define name="H_Z" value="-0.8429"/>
+<!-- Wadden Islands: by E.v.d.H.
+    <define name="H_X" value="0.377175"/>
+    <define name="H_Y" value="-0.0193374"/>
+    <define name="H_Z" value="0.92594"/>
+-->
   </section>
 
   <section name="STABILIZATION_RATE" prefix="STABILIZATION_RATE_">
