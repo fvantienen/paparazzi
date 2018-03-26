@@ -1,0 +1,281 @@
+<!DOCTYPE flight_plan SYSTEM "../../flight_plan.dtd">
+
+<flight_plan alt="80" ground_alt="0" home_mode_height="80" lat0="52.168141" lon0="4.412520" max_dist_from_home="1200" name="VALK2018" qfu="20" security_height="10">
+  <header>
+#include "autopilot.h"
+#include "guidance/guidance_hybrid.h"
+#include "guidance/guidance_v.h"
+#include "guidance/guidance_h.h"
+#include "subsystems/electrical.h"
+#include "guidance/guidance_indi.h"
+#include "subsystems/navigation/waypoints.h"
+#include "subsystems/datalink/datalink.h"
+#include "modules/sensors/temp_adc.h"
+#include "subsystems/radio_control.h"
+// States
+#define AircraftIsBooting()  LessThan(nav_block,4)
+
+  </header>
+
+<!-- ******************************* WAYPOINTS ***************************** -->
+
+  <waypoints>
+    <waypoint name="HOME" x="0" y="0"/>
+    <waypoint name="TD" x="-10" y="10"/>
+    <waypoint name="MB1" x="211.8" y="-1198.3"/>
+    <waypoint name="MB2" x="-1296.0" y="-213.2"/>
+    <waypoint name="MB3" x="363.8" y="1258.5"/>
+    <waypoint name="MB4" x="961.6" y="-484.0"/>
+    <waypoint name="TDL" x="0.3" y="0.2"/>
+    <waypoint name="TDS" x="23.7" y="-70.5"/>
+    <waypoint name="p1" x="458.6" y="199.3"/>
+    <waypoint name="p2" x="490.4" y="24.5"/>
+    <waypoint name="p3" x="168.3" y="-45.3"/>
+    <waypoint name="p4" x="133.7" y="121.9"/>
+    <waypoint name="CLIMB" x="-119.7" y="114.9"/>
+    <waypoint name="STDBY" x="280.3" y="56.9"/>
+    <waypoint name="AVOID" x="69.7" y="-214.3"/>
+    <waypoint name="HOVER" x="-155.1" y="-275.9"/>
+  </waypoints>
+  <sectors>
+    <sector color="yellow" name="MissionBoundary" type="dynamic">
+      <corner name="MB1"/>
+      <corner name="MB2"/>
+      <corner name="MB3"/>
+      <corner name="MB4"/>
+    </sector>
+  </sectors>
+  <modules>
+    <module name="nav" type="heli_spinup"/>
+  </modules>
+  <exceptions>
+    <exception cond="(!InsideMissionBoundary(GetPosX(), GetPosY()) &&
+      !(AircraftIsBooting()) &&
+      !(nav_block == IndexOfBlock('Geo_init')) &&
+      !(nav_block == IndexOfBlock('HoldingPoint')) &&
+      !(nav_block == IndexOfBlock('failsafe'))
+      )" deroute="failsafe"/>
+    <exception cond="(!GpsFixValid() &&
+      !(IndexOfBlock('Takeoff') > nav_block) &&
+      !(nav_block >= IndexOfBlock('landed')) &&
+      !(nav_block == IndexOfBlock('GpsLoss')) &&
+      !(nav_block == IndexOfBlock('Descent_noGPS')) &&
+      !(nav_block == IndexOfBlock('Descent_slow_noGPS')) &&
+      !(nav_block == IndexOfBlock('landing_moment_noGPS')) &&
+      !(nav_block == IndexOfBlock('failsafe')) &&
+      (autopilot_in_flight == true) )" deroute="GpsLoss"/>
+    <exception cond="(datalink_time > 180 &&
+      !(IndexOfBlock('Takeoff') > nav_block) &&
+      !(nav_block >= IndexOfBlock('landed')) &&
+      !(nav_block == IndexOfBlock('GpsLoss')) &&
+      !(nav_block == IndexOfBlock('inert')) &&
+      !(nav_block == IndexOfBlock('failsafe')) &&
+      (autopilot_in_flight == true) )" deroute="DatalinkLoss"/>
+    <exception cond="((outback_hybrid_mode == HB_FORWARD) &&
+      (12.0 > stateGetAirspeed_f()) &&
+      has_transitioned &&
+      (autopilot_in_flight == true) &&
+      !(nav_block == IndexOfBlock('Hover_here')) )" deroute="Hover_here"/>
+  </exceptions>
+  <blocks>
+
+    <!-- Initialization (No Geofence check, No datalink check, No RPM check, No stall check) -->
+    <block name="Wait_GPS">
+      <set value="true" var="opa_controller_vision_power"/> <!-- Power on the Kalamos -->
+      <call fun="NavKillThrottle()"/>
+      <call fun="nav_throttle_curve_set(0)" loop="false"/>
+      <while cond="!GpsFixValid()"/>
+    </block>
+    <block name="Geo_init">
+      <while cond="LessThan(NavBlockTime(), 10)"/>
+      <call fun="nav_throttle_curve_set(0)" loop="false"/>
+      <call fun="NavSetAltitudeReferenceHere()"/>
+      <call fun="NavSetGroundReferenceHere()"/>
+      <call_once fun="nav_set_heading_current()" />
+    </block>
+    <block name="HoldingPoint">
+      <set value="false" var="opa_controller_vision_power"/> <!-- Poweroff the Kalamos -->
+      <call fun="NavKillThrottle()"/>
+      <call fun="nav_throttle_curve_set(0)" loop="false"/>
+      <call fun="set_wind_heading_to_current90()" loop="false"/> <!-- Set heading based on wind -->
+      <manual pitch="0" roll="0" throttle="0" until="FALSE" vmode="throttle" yaw="0"/>
+    </block>
+    <block group="TO" name="Start_Lauw" strip_button="Start_Lauw">
+      <set value="1" var="last_wp_reached_in_route"/>
+      <deroute block="Start_Engine"/>
+    </block>
+    <block group="TO" name="Start_Schier" strip_button="Start_Schier">
+      <set value="3" var="last_wp_reached_in_route"/>
+      <deroute block="Start_Engine"/>
+    </block>
+    <block group="TO" name="Start_Engine" strip_button="Start_Engine">
+      <call fun="nav_throttle_curve_set(0)" loop="false"/>
+      <call fun="nav_heli_spinup_setup(3, 0.07)" loop="false"/>
+      <call fun="NavResurrect()"/>
+      <call fun="nav_heli_spinup_run()"/>
+      <call fun="nav_throttle_curve_set(1)" loop="false"/>
+      <manual pitch="0" roll="0" throttle="0" until="stage_time>6" vmode="throttle" yaw="0"/>
+    </block>
+    <block name="Hold_Attitude">
+      <exception cond="1200 > throttle_curve.rpm_meas" deroute="Start_Engine"/>
+      <call fun="nav_throttle_curve_set(1)" loop="false"/>
+      <call fun="nav_set_heading_current()" loop="false"/>
+      <manual pitch="0" roll="0" throttle="0" until="stage_time>1" vmode="throttle" yaw="0"/>
+    </block>
+    <block name="Takeoff">
+      <exception cond="stateGetPositionEnu_f()->z > 4.0" deroute="Climb"/>
+      <call fun="nav_throttle_curve_set(1)" loop="false"/>
+      <attitude pitch="0" roll="0" throttle="0.83" until="stage_time>2" vmode="throttle"/>
+    </block>
+    <block name="Climb">
+      <exception cond="stateGetPositionEnu_f()->z > 50.0" deroute="decide_there_or_back"/>
+      <call fun="NavSetWaypointHere(WP_CLIMB)" loop="false"/>
+      <call fun="nav_set_heading_current()" loop="false"/>
+      <set value="RadOfDeg(35)" var="guidance_indi_max_bank"/>
+      <call fun="GuidanceVSetRef(stateGetPositionNed_i()->z - POS_BFP_OF_REAL(5.0), -SPEED_BFP_OF_REAL(3.0), 0)"/>
+      <stay climb="nav_climb_vspeed" vmode="climb" wp="CLIMB" until="stateGetPositionEnu_f()->z > 20.0"/>
+      <set value="GUIDANCE_H_MAX_BANK" var="guidance_indi_max_bank"/>
+      <stay climb="nav_climb_vspeed" vmode="climb" wp="CLIMB"/>
+    </block>
+    <block name="decide_there_or_back">
+      <exception cond="2 > last_wp_reached_in_route" deroute="to_p1"/> <!-- Deroute back corridor to joe -->
+      <exception cond="last_wp_reached_in_route > 1" deroute="to_p3"/> <!-- Deroute back corridor to home -->
+      <call fun="NavSetWaypointHere(WP_HOVER)" loop="false"/>
+      <stay wp="HOVER" until="stage_time > 1"/>
+    </block>
+
+    <!-- Safety blocks -->
+    <block group="Safe" name="Standby" strip_button="Standby" >
+      <set value="GUIDANCE_H_MAX_BANK" var="guidance_indi_max_bank"/>
+      <stay wp="STDBY"/>
+    </block>
+    <block group="Safe" name="Hover_here"  strip_button="Hover_Here">
+      <call fun="waypoint_set_alt(WP_HOVER,stateGetPositionEnu_f()->z)" loop="false"/>
+      <call fun="NavSetWaypointHere(WP_HOVER)" loop="false"/>
+      <stay wp="HOVER"/>
+    </block>
+    <block group="Safe" name="Avoid" strip_button="ToAvoid">
+      <go forward="true" wp="AVOID"/>
+      <stay wp="AVOID"/>
+      <deroute block="Avoid"/>
+    </block>
+    <block group="to_schier" name="to_p1">
+      <set value="1" var="last_wp_reached_in_route"/>
+      <go forward="true" wp="p1"/>
+      <deroute block="line_p1_p2"/>
+    </block>
+    <block group="to_schier" name="line_p1_p2" strip_button="2Schier">
+      <set value="1" var="last_wp_reached_in_route"/>
+      <go forward="true" from="p1" hmode="route" wp="p2"/>
+      <set value="2" var="last_wp_reached_in_route"/>
+      <deroute block="DecideLandingSchier"/>
+    </block>
+    <block group="to_schier" name="DecideLandingSchier">
+      <exception cond="radio_control.status==RC_OK" deroute="DescendSchier"/>
+      <deroute block="line_p2_p3"/>
+    </block>
+    <block group="to_schier" name="line_p2_p3">
+      <go forward="true" from="p2" hmode="route" wp="p3"/>
+      <set value="3" var="last_wp_reached_in_route"/>
+      <deroute block="line_p3_p4"/>
+    </block>
+    <block group="to_schier" name="to_p3">
+      <set value="3" var="last_wp_reached_in_route"/>
+      <go forward="true" wp="p3"/>
+      <deroute block="line_p3_p4"/>
+    </block>
+    <block group="to_schier" name="line_p3_p4" strip_button="2Lauw">
+      <go forward="true" from="p3" hmode="route" wp="p4"/>
+      <set value="4" var="last_wp_reached_in_route"/>
+      <deroute block="DescendLauw"/>
+    </block>
+    <block group="land" name="DescendSchier" strip_button="ForceLandSchier">
+      <exception cond="12.0 > stateGetPositionEnu_f()->z" deroute="DescendSchierSlow"/>
+      <stay wp="TDS"/>
+      <call fun="GuidanceVSetRef(stateGetPositionNed_i()->z, 0, 0)"  loop="false"/>
+      <stay climb="nav_descend_vspeed" vmode="climb" wp="TDS"/>
+    </block>
+    <block name="DescendSchierSlow">
+      <stay climb="-0.5" vmode="climb" wp="TDS"/>
+    </block>
+    <block group="land" name="DescendLauw" strip_button="ForceLandLauw">
+      <exception cond="12.0 > stateGetPositionEnu_f()->z" deroute="DescendLauwSlow"/>
+      <set value="1" var="last_wp_reached_in_route"/>
+      <go forward="true" from="p4" hmode="route" wp="TDL"/>
+      <call fun="GuidanceVSetRef(stateGetPositionNed_i()->z, 0, 0)"  loop="false"/>
+      <stay climb="nav_descend_vspeed" vmode="climb" wp="TDL"/>
+    </block>
+    <block name="DescendLauwSlow">
+      <stay climb="-0.5" vmode="climb" wp="TDL"/>
+    </block>
+    <block group="Safe" name="LandHere" strip_button="LandHere">
+      <exception cond="12.0 > stateGetPositionEnu_f()->z" deroute="LandHereSlow"/>
+      <call fun="nav_set_heading_current()" loop="false"/>
+      <call fun="NavSetWaypointHere(WP_TD)" loop="false"/>
+      <call fun="GuidanceVSetRef(stateGetPositionNed_i()->z, 0, 0)" loop="false"/>
+      <stay climb="nav_descend_vspeed" vmode="climb" wp="TD"/>
+    </block>
+    <block name="LandHereSlow">
+      <stay climb="-0.5" vmode="climb" wp="TD"/>
+    </block>
+    <block name="landing_moment" group="land" strip_button="Moment">
+      <call fun="nav_throttle_curve_set(1)" loop="false"/>
+      <attitude pitch="0" roll="0" throttle="0.5" until="stage_time>2" vmode="throttle"/>
+      <deroute block="landed"/>
+    </block>
+    <block name="Descent_noGPS">
+      <exception cond="10.0 > stateGetPositionEnu_f()->z" deroute="Descent_slow_noGPS"/>
+      <call fun="nav_set_heading_current()" loop="false"/>
+      <call fun="NavSetWaypointHere(WP_TD)" loop="false"/>
+      <call fun="GuidanceVSetRef(stateGetPositionNed_i()->z, 0, 0)"/>
+      <attitude pitch="0" roll="0" climb="nav_descend_vspeed" vmode="climb"/>
+    </block>
+    <block name="Descent_slow_noGPS">
+      <attitude pitch="0" roll="0" climb="-0.5" vmode="climb"/>
+    </block>
+    <block name="landing_moment_noGPS">
+      <call fun="nav_throttle_curve_set(1)" loop="false"/>
+      <attitude pitch="0" roll="0" throttle="0.5" until="stage_time>2" vmode="throttle"/>
+      <deroute block="landed"/>
+    </block>
+    <block name="landed">
+      <call fun="NavKillThrottle()"/>
+      <call fun="nav_throttle_curve_set(0)" loop="false"/>
+      <set value="false" var="opa_controller_vision_power"/>
+      <attitude pitch="0" roll="0" throttle="0" until="stage_time>5" vmode="throttle"/>
+    </block>
+    <block name="inert">
+      <call fun="NavKillThrottle()"/>
+      <call fun="NavOpaDisarm(true)"/>
+      <attitude pitch="0" roll="0" throttle="0" until="stage_time>2" vmode="throttle"/>
+      <attitude pitch="0" roll="0" throttle="0" until="electrical.vsupply>220" vmode="throttle"/>
+    </block>
+    <block name="wait_minute">
+      <call fun="NavKillThrottle()"/>
+      <attitude pitch="0" roll="0" throttle="0" until="(stage_time>60) && GpsFixValid()" vmode="throttle"/>
+      <deroute block="Start_Engine"/>
+    </block>
+    <block name="GpsLoss">
+      <exception cond="2.0 > stateGetPositionEnu_f()->z" deroute="landing_moment_noGPS"/>
+      <exception cond="GpsFixValid() && (20.0 > stateGetPositionEnu_f()->z)" deroute="Hover_here"/>
+      <exception cond="block_time>20" deroute="Descent_noGPS"/>
+      <call fun="nav_throttle_curve_set(1)" loop="false"/>
+      <attitude climb="nav_descend_vspeed" pitch="0" roll="0" until="GpsFixValid() && (stateGetPositionEnu_f()->z > 20.0)" vmode="climb"/>
+      <call fun="ReturnToStartPrevBlock()"/>
+    </block>
+    <block name="DatalinkLoss">
+      <exception cond="block_time>120" deroute="line_p3_p4"/>
+      <exception cond="temp_c1 > 100" deroute="line_p3_p4"/>
+      <call fun="NavSetWaypointHere(WP_HOVER)" loop="false"/>
+      <call fun="waypoint_set_alt(WP_HOVER,stateGetPositionEnu_f()->z + 20)" loop="false"/>
+      <stay wp="HOVER" until="60 > datalink_time"/>
+      <stay wp="HOVER"/>
+    </block>
+    <block name="failsafe">
+      <call fun="NavKillThrottle()"/>
+      <call fun="NavSetFailsafe"/>
+      <call fun="INTERMCU_SET_CMD_STATUS(INTERMCU_CMD_FAILSAFE)" loop="false"/>
+      <attitude pitch="0" roll="0" throttle="0" until="FALSE" vmode="throttle"/>
+    </block>
+  </blocks>
+</flight_plan>
