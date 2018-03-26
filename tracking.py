@@ -18,11 +18,13 @@ UPDATE_INTERVAL = 2
 
 class TrackingFrame(object):
     def message_recv(self, ac_id, msg):
-        if msg.name == "GPS_INT":
-            self.data['acid'] = ac_id
-            self.data['fix'] = int(msg['fix'])
-            self.data['lat'] = float(msg['lat']) / 10000000.0
-            self.data['lon'] = float(msg['lon']) / 10000000.0
+        if msg.name == "FLIGHT_PARAM":
+            self.data['acid'] = msg['ac_id'].replace('replay','')
+            self.data['fix'] = 3
+            self.data['alt'] = float(msg['alt'])
+            self.data['lat'] = float(msg['lat'])
+            self.data['lon'] = float(msg['long'])
+            print(self.data)
         if msg.name == "ROTORCRAFT_STATUS":
         #    print(msg)
             self.data['inflight'] = int(msg['ap_in_flight']);
