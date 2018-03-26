@@ -143,7 +143,8 @@ class IridiumProtocol(protocol.Protocol):
   # Handle the 'CPIN' message in thread
   def _handle_cpin(self,data):
     if not self.wait_for_ok():
-      return
+      #return
+      pass
 
     if data == 'SIM PIN1':
       self.transmit_cmd_ok("AT+CPIN=\"%s\"" % self.cpin1)
