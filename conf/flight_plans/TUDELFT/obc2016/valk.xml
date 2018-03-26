@@ -1,6 +1,6 @@
 <!DOCTYPE flight_plan SYSTEM "../../flight_plan.dtd">
 
-<flight_plan alt="80" ground_alt="0" home_mode_height="80" lat0="52.168141" lon0="4.412520" max_dist_from_home="1200" name="VALK2018" qfu="20" security_height="10">
+<flight_plan alt="50" ground_alt="0" home_mode_height="50" lat0="52.168141" lon0="4.412520" max_dist_from_home="1200" name="VALK2018" qfu="20" security_height="10">
   <header>
 #include "autopilot.h"
 #include "guidance/guidance_hybrid.h"
