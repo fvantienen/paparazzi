@@ -252,7 +252,6 @@
     <!-- Landing at Schier-->
     <block name="DescendSchier" group="land" strip_button="ForceLandSchier">
       <exception cond="12.0 > stateGetPositionEnu_f()->z" deroute="DescendSchierSlow"/>
-      <stay wp="TDS"/>
       <call fun="GuidanceVSetRef(stateGetPositionNed_i()->z, 0, 0)"  loop="false"/>
       <stay climb="nav_descend_vspeed" vmode="climb" wp="TDS"/>
     </block>
