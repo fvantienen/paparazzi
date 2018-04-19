@@ -26,7 +26,6 @@
     <waypoint name="MB2" x="-1296.0" y="-213.2"/>
     <waypoint name="MB3" x="363.8" y="1258.5"/>
     <waypoint name="MB4" x="961.6" y="-484.0"/>
-    <waypoint name="TDL" x="0.3" y="0.2"/>
     <waypoint name="TDS" x="23.7" y="-70.5"/>
     <waypoint name="p1" x="458.6" y="199.3"/>
     <waypoint name="p2" x="490.4" y="24.5"/>
@@ -128,7 +127,7 @@
       <attitude pitch="0" roll="0" throttle="0.83" until="stage_time>2" vmode="throttle"/>
     </block>
     <block name="Climb">
-      <exception cond="stateGetPositionEnu_f()->z > 50.0" deroute="decide_there_or_back"/>
+      <exception cond="stateGetPositionEnu_f()->z > 50.0" deroute="to_p1"/>
       <call fun="NavSetWaypointHere(WP_CLIMB)" loop="false"/>
       <call fun="nav_set_heading_current()" loop="false"/>
       <set value="RadOfDeg(35)" var="guidance_indi_max_bank"/>
@@ -136,12 +135,6 @@
       <stay climb="nav_climb_vspeed" vmode="climb" wp="CLIMB" until="stateGetPositionEnu_f()->z > 20.0"/>
       <set value="GUIDANCE_H_MAX_BANK" var="guidance_indi_max_bank"/>
       <stay climb="nav_climb_vspeed" vmode="climb" wp="CLIMB"/>
-    </block>
-    <block name="decide_there_or_back">
-      <exception cond="2 > last_wp_reached_in_route" deroute="to_p1"/> <!-- Deroute back corridor to joe -->
-      <exception cond="last_wp_reached_in_route > 1" deroute="to_p3"/> <!-- Deroute back corridor to home -->
-      <call fun="NavSetWaypointHere(WP_HOVER)" loop="false"/>
-      <stay wp="HOVER" until="stage_time > 1"/>
     </block>
 
     <!-- Safety blocks -->
@@ -162,33 +155,12 @@
     <block group="to_schier" name="to_p1">
       <set value="1" var="last_wp_reached_in_route"/>
       <go forward="true" wp="p1"/>
-      <deroute block="line_p1_p2"/>
-    </block>
-    <block group="to_schier" name="line_p1_p2" strip_button="2Schier">
-      <set value="1" var="last_wp_reached_in_route"/>
-      <go forward="true" from="p1" hmode="route" wp="p2"/>
-      <set value="2" var="last_wp_reached_in_route"/>
-      <deroute block="DecideLandingSchier"/>
-    </block>
-    <block group="to_schier" name="DecideLandingSchier">
-      <exception cond="radio_control.status==RC_OK" deroute="DescendSchier"/>
-      <deroute block="line_p2_p3"/>
-    </block>
-    <block group="to_schier" name="line_p2_p3">
-      <go forward="true" from="p2" hmode="route" wp="p3"/>
-      <set value="3" var="last_wp_reached_in_route"/>
-      <deroute block="line_p3_p4"/>
-    </block>
-    <block group="to_schier" name="to_p3">
-      <set value="3" var="last_wp_reached_in_route"/>
+      <go forward="true" wp="p2"/>
       <go forward="true" wp="p3"/>
-      <deroute block="line_p3_p4"/>
+      <go forward="true" wp="p4"/>
+      <deroute block="to_p1"/>
     </block>
-    <block group="to_schier" name="line_p3_p4" strip_button="2Lauw">
-      <go forward="true" from="p3" hmode="route" wp="p4"/>
-      <set value="4" var="last_wp_reached_in_route"/>
-      <deroute block="DescendLauw"/>
-    </block>
+
     <block group="land" name="DescendSchier" strip_button="ForceLandSchier">
       <exception cond="12.0 > stateGetPositionEnu_f()->z" deroute="DescendSchierSlow"/>
       <stay wp="TDS"/>
@@ -197,16 +169,6 @@
     </block>
     <block name="DescendSchierSlow">
       <stay climb="-0.5" vmode="climb" wp="TDS"/>
-    </block>
-    <block group="land" name="DescendLauw" strip_button="ForceLandLauw">
-      <exception cond="12.0 > stateGetPositionEnu_f()->z" deroute="DescendLauwSlow"/>
-      <set value="1" var="last_wp_reached_in_route"/>
-      <go forward="true" from="p4" hmode="route" wp="TDL"/>
-      <call fun="GuidanceVSetRef(stateGetPositionNed_i()->z, 0, 0)"  loop="false"/>
-      <stay climb="nav_descend_vspeed" vmode="climb" wp="TDL"/>
-    </block>
-    <block name="DescendLauwSlow">
-      <stay climb="-0.5" vmode="climb" wp="TDL"/>
     </block>
     <block group="Safe" name="LandHere" strip_button="LandHere">
       <exception cond="12.0 > stateGetPositionEnu_f()->z" deroute="LandHereSlow"/>
@@ -264,8 +226,8 @@
       <call fun="ReturnToStartPrevBlock()"/>
     </block>
     <block name="DatalinkLoss">
-      <exception cond="block_time>120" deroute="line_p3_p4"/>
-      <exception cond="temp_c1 > 100" deroute="line_p3_p4"/>
+      <exception cond="block_time>120" deroute="Standby"/>
+      <exception cond="temp_c1 > 100" deroute="Standby"/>
       <call fun="NavSetWaypointHere(WP_HOVER)" loop="false"/>
       <call fun="waypoint_set_alt(WP_HOVER,stateGetPositionEnu_f()->z + 20)" loop="false"/>
       <stay wp="HOVER" until="60 > datalink_time"/>
