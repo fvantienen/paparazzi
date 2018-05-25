@@ -31,6 +31,7 @@
   <periodic fun="sys_id_chirp_run()" freq="60" autorun="TRUE"/>
 
   <makefile>
+    <define name="USE_SYS_ID_CHIRP" value="true"/>
     <define name="CHIRP_EXPONENTIAL" value="true"/>
     <define name="CHIRP_FADEIN" value="true"/>
     <file name="random.c"/>

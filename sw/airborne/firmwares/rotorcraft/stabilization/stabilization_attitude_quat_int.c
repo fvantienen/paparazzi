@@ -320,11 +320,13 @@ void stabilization_attitude_run(bool enable_integrator)
   stabilization_cmd[COMMAND_PITCH] = cmd_pitch;
 
   // Add chirp system identification values
+#if USE_SYS_ID_CHIRP
   stabilization_cmd[COMMAND_ROLL] += current_chirp_values[0];
   stabilization_cmd[COMMAND_PITCH] += current_chirp_values[1];
   stabilization_cmd[COMMAND_YAW] += current_chirp_values[2];
   stabilization_cmd[COMMAND_ELEVATOR] += current_chirp_values[3];
   stabilization_cmd[COMMAND_AILERON] += current_chirp_values[4];
+#endif
 
   /* bound the result */
   BoundAbs(stabilization_cmd[COMMAND_ROLL], MAX_PPRZ);
