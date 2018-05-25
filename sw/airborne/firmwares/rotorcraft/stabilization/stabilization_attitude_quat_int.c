@@ -306,6 +306,8 @@ void stabilization_attitude_run(bool enable_integrator)
 
 #if USE_LIGHT_BLADES
   float compensation_angle_p = 0.9042;//(radio_control.values[8]+9600.0)/(2*9600.0)*1.2472;
+#elif USE_TMOTOR_BLADES
+  float compensation_angle_p = 0;
 #else
   float compensation_angle_p = 0.733;//(radio_control.values[8]+9600.0)/(2*9600.0)*1.2472;
 #endif
