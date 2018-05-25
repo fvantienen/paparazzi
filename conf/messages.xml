@@ -392,10 +392,20 @@
     <field name="alt" type="int32" unit="mm" alt_unit="m">Height above Mean Sea Level (geoid)</field>
   </message>
 
-  <message name="CHRONO" id="48">
-    <field name="tag"  type="uint8"/>
-    <field name="time" type="uint32" unit="us"/>
-  </message>
+    <message name= "ALPHA_ESC" id = "48">
+      <description>Live data consisting of various Alpha ESC output values</description>
+      <field name = "bale_no" type="uint16" unit="pprz"/>
+      <field name = "rx_throttle" type="uint16" unit="pprz"/>
+      <field name = "output_throttle" type="uint16" unit="pprz"/>
+      <field name = "rpm" type="uint16" unit="rpm"/>
+      <field name = "voltage" type="uint16" unit="1e1V" alt_unit="V"  alt_unit_coef="0.1"/>
+      <field name = "busbar_current" type="int16" unit="64A" alt_unit="A" alt_unit_coef = "0.015625"/>
+      <field name = "phase_wire_current" type="int16" unit="64A" alt_unit="A" alt_unit_coef = "0.015625"/>
+      <field name="capacitor_temp"      type="uint8" unit="dC"/>
+      <field name="mosfet_temp"      type="uint8" unit="dC"/>
+      <field name="status_code"   type="uint16" unit="pprz"/>
+      <field name="verify_code"   type="uint16" unit="pprz"/>
+    </message>
 
   <message name="WP_MOVED_ENU" id="49">
     <field name="wp_id" type="uint8"/>
@@ -2086,7 +2096,6 @@
      <field name="value" type="uint16"/>
    </message>
 
- <!--233 is free -->
    <message name="PX4FLOW" id="233">
      <!--field name="time_usec" type="uint64"/--> <!-- uint64 not supported yet -->
      <field name="sensor_id" type="uint8"/>

@@ -1,0 +1,27 @@
+<!DOCTYPE module SYSTEM "module.dtd">
+
+<module name="Alpha_ESC">
+  <doc>
+    <description>Transfers telemetry data  from T-motor Alpha ESC to the autopilot and if you wish groundstation</description>
+    <configure name="ALPHA_ESC_PORT" value="UART1" description="Set to which UART the ESC sewrial stream pin is connected to"/>
+    <configure name="ALPHA_ESC_BAUD" value="19200" description="Sets the baudrate of the UART"/>
+  </doc>
+  <header>
+    <file name="alpha_esc.h" dir="modules/esc"/>
+  </header>
+  <init fun="alpha_esc_init()"/>
+  <event fun="alpha_esc_event()"/>
+  <makefile>
+      <!-- Configure default UART port and baudrate -->
+    <configure name="ALPHA_ESC_PORT" default="UART1" case="upper|lower"/>
+    <configure name="ALPHA_ESC_BAUD" default="B19200"/>
+
+    <!-- Enable UART and set baudrate -->
+    <define name="USE_$(ALPHA_ESC_PORT_UPPER)"/>
+    <define name="USE_$(ALPHA_ESC_PORT_UPPER)_TX" value="FALSE"/>
+    <define name="$(ALPHA_ESC_PORT_UPPER)_BAUD" value="$(ALPHA_ESC_BAUD)"/>
+    <define name="ALPHA_ESC_PORT" value="$(ALPHA_ESC_PORT_LOWER)"/>
+    <file name="alpha_esc.c" dir="modules/esc"/>
+    <file name="pprz_transport.c" dir="pprzlink/src"/>
+  </makefile>
+</module>
