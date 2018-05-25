@@ -43,9 +43,14 @@ Note(22/11/2017): New Tmotor delftAcopter
       <module name="opa_controller"/>
       <module name="mag_pitot_uart"/>
       <module name="pwm_meas"/>
-      <module name="rpm_sensor"/>
       <module name="gain_scheduling"/>
-      <module name="kalamos_uart"/>
+      <module name="rpm_sensor">
+        <define name="RPM_PULSE_PER_RND" value="21"/>
+      </module>
+      <module name="esc_alpha">
+        <configure name="ALPHA_ESC_PORT" value="UART4"/>
+        <configure name="ALPHA_ESC_BAUD" value="19200"/>
+      </module>
 
       <module name="geo_mag"/>
       <module name="air_data">
@@ -88,7 +93,7 @@ Note(22/11/2017): New Tmotor delftAcopter
       <define name="RC_LOST_FBW_MODE" value="FBW_MODE_FAILSAFE"/><!-- Switch to Failsafe or to Autopilot on RC loss? -->
       <define name="RC_LOST_IN_AUTO_FBW_MODE" value="FBW_MODE_AUTO"/><!-- Switch to Failsafe with a working autopilot on RC loss? -->
       <define name="AP_LOST_FBW_MODE" value="FBW_MODE_MANUAL"/><!-- Switch to Failsafe or to Manual on AP loss? -->
-      <define name="RADIO_FBW_MODE" value="7"/><!-- Switch to Desactivate AP -->
+      <define name="RADIO_FBW_MODE" value="7"/><!-- Switch to Deactivate AP -->
     </target>
   </firmware>
 
@@ -102,13 +107,13 @@ Note(22/11/2017): New Tmotor delftAcopter
 
   <servos driver="Pwm">
      <servo name="THROTTLE" no="0" min="1000" neutral="1000" max="2000"/>
-     <servo name="SW_BACK" no="1" min="1988" neutral="1535" max="1050"/> <!-- Checked 22/11/2017-->
-     <servo name="SW_LEFTFRONT" no="2" min="1010" neutral="1460" max="1932"/> <!-- Checked 22/11/2017-->
-     <servo name="SW_RIGHTFRONT" no="3" min="1999" neutral="1502" max="1067"/> <!-- Checked 22/11/2017-->
-     <servo name="TAIL_LEFT" no="4" min="1100" neutral="1500" max="1900"/>
-     <servo name="TAIL_RIGHT" no="5" min="1100" neutral="1500" max="1900"/>
-     <servo name="AIL_LEFTLOW" no="6" min="1060" neutral="1460" max="1860"/>
-     <servo name="AIL_RIGHTLOW" no="7" min="1140" neutral="1540" max="1940"/>
+     <servo name="SW_BACK" no="1" min="1900" neutral="1500" max="1100"/>
+     <servo name="SW_LEFTFRONT" no="2" min="1100" neutral="1500" max="1900"/>
+     <servo name="SW_RIGHTFRONT" no="3" min="1900" neutral="1500" max="1100"/>
+     <servo name="TAIL_LEFT" no="4" min="1900" neutral="1500" max="1100"/>
+     <servo name="TAIL_RIGHT" no="5" min="1900" neutral="1500" max="1100"/>
+     <servo name="AIL_LEFTLOW" no="6" min="1100" neutral="1500" max="1900"/>
+     <servo name="AIL_RIGHTLOW" no="7" min="1090" neutral="1490" max="1890"/>
      <servo name="AIL_LEFTUP" no="8" min="1100" neutral="1500" max="1900"/>
      <servo name="AIL_RIGHTUP" no="9" min="1100" neutral="1500" max="1900"/>
   </servos>
@@ -125,9 +130,12 @@ Note(22/11/2017): New Tmotor delftAcopter
 
   <rc_commands>
     <set command="THRUST" value="@THROTTLE"/>
+    <set command="COLLECTIVE" value="@THROTTLE-MAX_PPRZ"/>
     <set command="ROLL" value="@ROLL"/>
     <set command="PITCH" value="@PITCH"/>
     <set command="YAW" value="@YAW"/>
+    <set command="ELEVATOR" value="@PITCH"/>
+    <set command="AILERON" value="@ROLL"/>
   </rc_commands>
 
   <commands>
@@ -136,18 +144,20 @@ Note(22/11/2017): New Tmotor delftAcopter
     <axis name="PITCH" failsafe_value="0"/>
     <axis name="YAW" failsafe_value="0"/>
     <axis name="COLLECTIVE" failsafe_value="-9600"/>
+    <axis name="ELEVATOR" failsafe_value="0" />
+    <axis name="AILERON" failsafe_value="0" />
   </commands>
 
   <section name="MIXING" prefix="SW_MIXING_">
     <define name="TYPE" value="HR120"/>
     <define name="TRIM_ROLL" value="0"/>
-    <define name="TRIM_PITCH" value="-682"/>
+    <define name="TRIM_PITCH" value="0"/>
     <define name="TRIM_COLL" value="0"/>
   </section>
 
   <section name="THROTTLE_CURVE" prefix="THROTTLE_CURVE_">
-    <define name="RPM_FB_P" value="5.0"/>
-    <define name="RPM_FB_I" value="5.0"/>
+    <define name="RPM_FB_P" value="3.0"/>
+    <define name="RPM_FB_I" value="3.0"/>
   </section>
 
   <command_laws>
@@ -163,52 +173,25 @@ Note(22/11/2017): New Tmotor delftAcopter
     <set servo="SW_RIGHTFRONT" value="swashplate_mixing.commands[SW_RIGHTFRONT]"/>
     <set servo="TAIL_LEFT" value="(Or($th_hold, $forward_curve)? 0 : (-@YAW - @THRUST*0.25) )"/>
     <set servo="TAIL_RIGHT" value="(Or($th_hold, $forward_curve)? 0 : (-@YAW - @THRUST*0.25) )"/>
-    <set servo="AIL_LEFTLOW" value=" 1*@PITCH + 1.5*@YAW"/>
-    <set servo="AIL_RIGHTLOW" value="-1*@PITCH + 1.5*@YAW"/>
-    <set servo="AIL_LEFTUP" value=" 1*@PITCH + 1.5*@YAW"/>
-    <set servo="AIL_RIGHTUP" value="-1*@PITCH + 1.5*@YAW"/>
+    <set servo="AIL_LEFTLOW" value=" 1*@ELEVATOR + 1.5*@AILERON"/>
+    <set servo="AIL_RIGHTLOW" value="-1*@ELEVATOR + 1.5*@AILERON"/>
+    <set servo="AIL_LEFTUP" value=" 1*@ELEVATOR + 1.5*@AILERON"/>
+    <set servo="AIL_RIGHTUP" value="-1*@ELEVATOR + 1.5*@AILERON"/>
   </command_laws>
 
-  <!-- v3 Pitch RODS black laminated props with straight angle root and 25deg blade-grip handles: 52mm top links 65mm bottom links -->
+  <!-- T-Motor 190kv with 26.2 inch prop -->
   <heli_curves>
     <curve throttle="0,6000,0,0,0" collective="-9600,-8150,-6700,-5250,-3800"/>
-    <curve throttle="5000,6500,8000" rpm="1650,1650,1650" collective="-9600,-6500,-2300"/><!-- 1 blue bat: -5650 collective with 8000 throttle FF with 1650 RPM -->
+    <curve throttle="5000,6500,8000" rpm="2300,2300,2300" collective="-9600,-6500,-2300"/>
     <curve throttle="8600,8600,8600,8600,9600" collective="-9600,-7300,-5000,-2300,500"/>
   </heli_curves>
-
-  <!-- RPM to PPRZ calculation (governer low, fixed RPM) Castle Creations BEC-->
-  <!-- RPM * 0.000214141414 + 1.2841 = ms -->
-  <!-- 1500 RPM: 1.602ms    1.602 - 1.1 = 0.502ms    9600 / 800 * 502 = 6024 PPRZ -->
-  <!-- 1650 RPM: 1.641ms    1.641 - 1.1 = 0.541ms    9600 / 800 * 541 = 6492 PPRZ -->
-  <!-- 1800 RPM: 1.672ms    1.672 - 1.1 = 0.572ms    9600 / 800 * 572 = 6864 PPRZ -->
-
-  <!-- v2 Pitch RODS black laminated props with straight angle root and straight blade-grip handles: 63mm top links 65mm bottom links -->
-  <!--heli_curves>
-    <curve throttle="0,6492,6492" collective="-5000,-2500,0"/>
-    <curve throttle="6492,6492,6492" collective="-5000,-2700,1500"/>
-    <curve throttle="6492,6492,6024" collective="-5000,-2700,3500"/>
-  </heli_curves-->
-
-  <!-- v1 Pitch RODS black laminated props with twisted angle root and straight blade-grip handles: 52mm top links 65mm bottom links -->
-  <!--heli_curves>
-    <curve throttle="0,6492,6492" collective="-7500,-5000,-2500"/>
-    <curve throttle="6492,6492,6492" collective="-7500,-5200,-1000"/>
-    <curve throttle="6492,6492,6024" collective="-7500,-5200,2000"/>
-  </heli_curves-->
-
-  <!-- v0 Pitch RODS white symmetric props: 56mm top links 65mm bottom links -->
-  <!--heli_curves>
-    <curve throttle="0,6024,6024" collective="0,2000,4000"/>
-    <curve throttle="6024,6024,6024" collective="0,2000,4000"/>
-    <curve throttle="6492,6492,6492" collective="0,2000,4000"/>
-  </heli_curves-->
 
   <section name="MISC">
     <define name="NAV_CLIMB_VSPEED" value="3.0"/>
     <define name="NAV_DESCEND_VSPEED" value="-1.5"/>
     <define name="NO_RC_THRUST_LIMIT" value="TRUE"/>
     <define name="MilliAmpereOfAdc(_adc)" value="(DefaultMilliAmpereOfAdc(_adc) + 417 - 2000)"/>
-    <define name="USE_LIGHT_BLADES" value="FALSE"/>
+    <define name="USE_TMOTOR_BLADES" value="TRUE"/>
     <define name="OUTBACK_P_ON_Q_COUPLING_LIGHT" value="0.0"/>
     <define name="OUTBACK_P_ON_Q_COUPLING_HEAVY" value="6.0"/>
     <define name="OUTBACK_Q_ON_P_COUPLING" value="0.0"/>
