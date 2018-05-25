@@ -35,6 +35,12 @@ static struct FirstOrderLowPass rpm_lp;
 #define RPM_FILTER_TAU RPM_SENSOR_PERIODIC_PERIOD
 #endif
 
+/* Default pulses per round */
+#ifndef RPM_PULSE_PER_RND
+#define RPM_PULSE_PER_RND 14
+#endif
+PRINT_CONFIG_VAR(RPM_PULSE_PER_RND)
+
 
 #if PERIODIC_TELEMETRY
 #include "subsystems/datalink/telemetry.h"

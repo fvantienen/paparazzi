@@ -28,11 +28,6 @@
 
 #include "std.h"
 
-/* Default pulses per round */
-#ifndef RPM_PULSE_PER_RND
-#define RPM_PULSE_PER_RND 14
-#endif
-
 extern void rpm_sensor_init(void);
 extern void rpm_sensor_periodic(void);
 extern uint16_t rpm_sensor_get_rpm(void);
