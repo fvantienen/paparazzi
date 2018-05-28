@@ -76,6 +76,8 @@ struct FloatRates stabilization_rate_fb_cmd;
 
 #if USE_LIGHT_BLADES
 float p_on_q_coupling = OUTBACK_P_ON_Q_COUPLING_LIGHT;
+#elif USE_TMOTOR_BLADES
+float p_on_q_coupling = OUTBACK_P_ON_Q_COUPLING_TMOTOR;
 #else
 float p_on_q_coupling = OUTBACK_P_ON_Q_COUPLING_HEAVY;
 #endif

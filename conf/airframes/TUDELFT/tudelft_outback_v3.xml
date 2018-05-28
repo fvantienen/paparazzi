@@ -193,6 +193,7 @@ Note(22/11/2017): New Tmotor delftAcopter
     <define name="MilliAmpereOfAdc(_adc)" value="(DefaultMilliAmpereOfAdc(_adc) + 417 - 2000)"/>
     <define name="USE_TMOTOR_BLADES" value="TRUE"/>
     <define name="OUTBACK_P_ON_Q_COUPLING_LIGHT" value="0.0"/>
+    <define name="OUTBACK_P_ON_Q_COUPLING_TMOTOR" value="0.0"/>
     <define name="OUTBACK_P_ON_Q_COUPLING_HEAVY" value="6.0"/>
     <define name="OUTBACK_Q_ON_P_COUPLING" value="0.0"/>
     <define name="OUTBACK_GROUND_PITCH_CONTROL_GAIN" value="70000.0"/>
