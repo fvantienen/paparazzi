@@ -262,7 +262,7 @@ void stabilization_rate_run(bool in_flight)
 #if USE_LIGHT_BLADES
   float compensation_angle_p = 0.9042;//(radio_control.values[8]+9600.0)/(2*9600.0)*1.2472;
 #elif USE_TMOTOR_BLADES
-  float compensation_angle_p = 0;
+  float compensation_angle_p = 0.9042;
 #else
   float compensation_angle_p = 0.733;//(radio_control.values[8]+9600.0)/(2*9600.0)*1.2472;
 #endif
