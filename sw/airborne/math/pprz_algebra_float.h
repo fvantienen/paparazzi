@@ -395,6 +395,11 @@ static inline void float_quat_wrap_shortest(struct FloatQuat *q)
 extern void float_quat_comp(struct FloatQuat *a2c, struct FloatQuat *a2b, struct FloatQuat *b2c);
 
 /** Composition (multiplication) of two quaternions.
+ * a2c = inv(a2b) comp inv(b2c) , aka  a2c = inv(a2b) * inv(b2c)
+ */
+extern void float_quat_inv_comp_inv(struct FloatQuat *a2c, struct FloatQuat *a2b, struct FloatQuat *b2c);
+
+/** Composition (multiplication) of two quaternions.
  * a2b = a2c comp_inv b2c , aka  a2b = a2c * inv(b2c)
  */
 extern void float_quat_comp_inv(struct FloatQuat *a2b, struct FloatQuat *a2c, struct FloatQuat *b2c);

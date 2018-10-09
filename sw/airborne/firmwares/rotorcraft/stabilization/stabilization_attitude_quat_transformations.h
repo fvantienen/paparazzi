@@ -35,4 +35,7 @@ extern void quat_from_rpy_cmd_f(struct FloatQuat *quat, struct FloatEulers *rpy)
 extern void quat_from_earth_cmd_i(struct Int32Quat *quat, struct Int32Vect2 *cmd, int32_t heading);
 extern void quat_from_earth_cmd_f(struct FloatQuat *quat, struct FloatVect2 *cmd, float heading);
 
+extern void quat_tilt_twist_i(struct Int32Quat *meas, struct Int32Quat *ref, struct Int32Vect3 *err);
+extern void quat_tilt_twist_f(struct FloatQuat *meas, struct FloatQuat *ref, struct FloatVect3 *err);
+
 #endif

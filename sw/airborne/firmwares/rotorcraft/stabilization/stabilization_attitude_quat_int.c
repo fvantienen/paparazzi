@@ -227,6 +227,7 @@ static void attitude_run_fb(int32_t fb_commands[], struct Int32AttitudeGains *ga
 
 }
 
+#include<stdio.h>
 void stabilization_attitude_run(bool enable_integrator)
 {
 
@@ -249,6 +250,14 @@ void stabilization_attitude_run(bool enable_integrator)
   /* wrap it in the shortest direction       */
   int32_quat_wrap_shortest(&att_err);
   int32_quat_normalize(&att_err);
+
+  struct Int32Vect3 test_v;
+  quat_tilt_twist_i(att_quat, &att_ref_quat_i.quat, &test_v);
+  fprintf(stderr, "%4.4f %4.4f %4.4f \t|\t %4.4f %4.4f %4.4f\r\n", QUAT1_FLOAT_OF_BFP(att_err.qx), QUAT1_FLOAT_OF_BFP(att_err.qy), QUAT1_FLOAT_OF_BFP(att_err.qz), QUAT1_FLOAT_OF_BFP(test_v.x), QUAT1_FLOAT_OF_BFP(test_v.y), QUAT1_FLOAT_OF_BFP(test_v.z));
+  att_err.qx = test_v.x;
+  att_err.qy = test_v.y;
+  att_err.qz = test_v.z;
+
 
   /*  rate error                */
   const struct Int32Rates rate_ref_scaled = {

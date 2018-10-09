@@ -325,6 +325,14 @@ void float_quat_comp(struct FloatQuat *a2c, struct FloatQuat *a2b, struct FloatQ
   a2c->qz = a2b->qi * b2c->qz + a2b->qx * b2c->qy - a2b->qy * b2c->qx + a2b->qz * b2c->qi;
 }
 
+void float_quat_inv_comp_inv(struct FloatQuat *a2c, struct FloatQuat *a2b, struct FloatQuat *b2c)
+{
+  a2c->qi =  a2b->qi * b2c->qi - a2b->qx * b2c->qx - a2b->qy * b2c->qy - a2b->qz * b2c->qz;
+  a2c->qx = -a2b->qi * b2c->qx - a2b->qx * b2c->qi + a2b->qy * b2c->qz - a2b->qz * b2c->qy;
+  a2c->qy = -a2b->qi * b2c->qy - a2b->qx * b2c->qz - a2b->qy * b2c->qi + a2b->qz * b2c->qx;
+  a2c->qz = -a2b->qi * b2c->qz + a2b->qx * b2c->qy - a2b->qy * b2c->qx - a2b->qz * b2c->qi;
+}
+
 void float_quat_comp_inv(struct FloatQuat *a2b, struct FloatQuat *a2c, struct FloatQuat *b2c)
 {
   a2b->qi =  a2c->qi * b2c->qi + a2c->qx * b2c->qx + a2c->qy * b2c->qy + a2c->qz * b2c->qz;
