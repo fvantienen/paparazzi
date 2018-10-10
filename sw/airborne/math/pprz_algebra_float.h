@@ -319,6 +319,8 @@ extern void float_rmat_of_eulers_312(struct FloatRMat *rm, struct FloatEulers *e
 #define float_rmat_of_eulers float_rmat_of_eulers_321
 
 extern void float_rmat_of_quat(struct FloatRMat *rm, struct FloatQuat *q);
+extern void float_rmat_of_quat_inv(struct FloatRMat *rm, struct FloatQuat *q);
+
 /** in place first order integration of a rotation matrix */
 extern void float_rmat_integrate_fi(struct FloatRMat *rm, struct FloatRates *omega, float dt);
 extern float float_rmat_reorthogonalize(struct FloatRMat *rm);

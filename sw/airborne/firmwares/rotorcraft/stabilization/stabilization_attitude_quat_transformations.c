@@ -148,6 +148,7 @@ void quat_tilt_twist_i(struct Int32Quat *meas, struct Int32Quat *ref, struct Int
   err->z = QUAT1_BFP_OF_REAL(err_f.z);
 }
 
+#include<stdio.h>
 void quat_tilt_twist_f(struct FloatQuat *meas, struct FloatQuat *ref, struct FloatVect3 *err) {
   struct FloatRMat meas_r, ref_r;
   struct FloatVect3 meas_tv, ref_tv;
@@ -155,10 +156,12 @@ void quat_tilt_twist_f(struct FloatQuat *meas, struct FloatQuat *ref, struct Flo
 
   QUAT_INVERT(meas_i, *meas);
   QUAT_INVERT(ref_i, *ref);
+  float_quat_normalize(&meas_i);
+  float_quat_normalize(&ref_i);
 
   // Convert to rotation matrixes
-  float_rmat_of_quat(&meas_r, &meas_i);
-  float_rmat_of_quat(&ref_r, &ref_i);
+  float_rmat_of_quat_inv(&meas_r, &meas_i);
+  float_rmat_of_quat_inv(&ref_r, &ref_i);
 
   // Get the thrust vectors
   struct FloatVect3 z_vec = {0.0f, 0.0f, 1.0f};
@@ -174,7 +177,7 @@ void quat_tilt_twist_f(struct FloatQuat *meas, struct FloatQuat *ref, struct Flo
   float tv_dot = acosf(tv_dot1);
   float tv_cross_norm = float_vect3_norm(&tv_cross);
 
-  if(fabs(tv_cross_norm) <= FLT_EPSILON|| fabs(tv_dot) <= FLT_EPSILON) {
+  if(fabs(tv_cross_norm) <= FLT_EPSILON || fabs(tv_dot) <= FLT_EPSILON) {
     tv_cross.x = 0.0f;
     tv_cross.y = 0.0f;
     tv_cross.z = 1.0f;
@@ -182,21 +185,23 @@ void quat_tilt_twist_f(struct FloatQuat *meas, struct FloatQuat *ref, struct Flo
   } else {
     VECT3_SDIV(tv_cross, tv_cross, tv_cross_norm);
   }
+  fprintf(stderr, "(%4.4f, %4.4f, %4.4f)\t%4.4f\r\n", tv_cross.x, tv_cross.y, tv_cross.z, tv_dot);
 
   // Calculate quaternion tilt error
   struct FloatQuat tv_q, tilt_q1, tilt_q;
   float_quat_of_axis_angle(&tv_q, &tv_cross, tv_dot);
+  float_quat_normalize(&tv_q);
   float_quat_inv_comp(&tilt_q1, &meas_i, &tv_q);
   float_quat_comp(&tilt_q, &tilt_q1, &meas_i);
 
   // Calculate the quaternion twist error
   struct FloatQuat twist_q1, twist_q;
-  float_quat_inv_comp_inv(&twist_q1, &tv_q, &meas_i);
+  float_quat_inv_comp_inv(&twist_q1, &tilt_q, &meas_i);
   float_quat_comp(&twist_q, &twist_q1, &ref_i);
 
   // Set the output
-  err->x = tilt_q.qx;
-  err->y = tilt_q.qy;
-  err->z = twist_q.qz;
-  BoundAbs(err->z, 0.5f);
+  err->x = -tilt_q.qx;
+  err->y = -tilt_q.qy;
+  err->z = -twist_q.qz;
+  //BoundAbs(err->z, 0.5f);
 }
