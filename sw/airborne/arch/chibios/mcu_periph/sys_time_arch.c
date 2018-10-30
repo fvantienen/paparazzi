@@ -100,15 +100,13 @@ void sys_time_usleep(uint32_t us)
     chSysPolledDelayX(US2RTC(STM32_HCLK, us));
     chSysEnable();
   } else {
-    uint64_t wait_st = ((uint64_t)us * CH_CFG_ST_FREQUENCY) / 1000000UL;
-    chThdSleep((systime_t)wait_st);
+    chThdSleep(TIME_US2I(us));
   }
 }
 
 void sys_time_msleep(uint16_t ms)
 {
-  uint64_t wait_st = ((uint64_t)ms * CH_CFG_ST_FREQUENCY) / 1000UL;
-  chThdSleep((systime_t)wait_st);
+  chThdSleep(TIME_MS2I(ms));
 }
 
 void sys_time_ssleep(uint8_t s)
@@ -138,9 +136,9 @@ static void sys_tick_handler(void)
   /* max time is 2^32 / CH_CFG_ST_FREQUENCY, i.e. around 10 days at 10kHz */
   uint32_t sec = sys_time.nb_tick / CH_CFG_ST_FREQUENCY;
 #ifdef SYS_TIME_LED
-  //if (sec > sys_time.nb_sec) {
-  //  LED_TOGGLE(SYS_TIME_LED);
-  //}
+  if (sec > sys_time.nb_sec) {
+    LED_TOGGLE(SYS_TIME_LED);
+  }
 #endif
   sys_time.nb_sec = sec;
   sys_time.nb_sec_rem = sys_time.nb_tick - sys_time_ticks_of_sec(sys_time.nb_sec);

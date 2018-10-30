@@ -19,7 +19,7 @@ MCU=cortex-m7
 
 ## FPU on F7
 USE_FPU=hard
-USE_FPU_OPT= -mfpu=fpv4-sp-d16 -fsingle-precision-constant
+USE_FPU_OPT= -mfpu=fpv5-sp-d16 -fsingle-precision-constant
 
 USE_LTO=yes
 
@@ -56,7 +56,7 @@ endif
 
 # default flash mode is via usb dfu bootloader
 # possibilities: DFU-UTIL, SWD, STLINK
-FLASH_MODE ?= DFU-UTIL
+FLASH_MODE ?= SWD
 
 HAS_LUFTBOOT = FALSE
 

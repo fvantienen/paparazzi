@@ -41,7 +41,7 @@
 #define STM32_PLS                           STM32_PLS_LEV0
 #define STM32_BKPRAM_ENABLE                 FALSE
 #define STM32_HSI_ENABLED                   TRUE
-#define STM32_LSI_ENABLED                   TRUE
+#define STM32_LSI_ENABLED                   FALSE
 #define STM32_HSE_ENABLED                   TRUE
 #define STM32_LSE_ENABLED                   FALSE
 #define STM32_CLOCK48_REQUIRED              TRUE
@@ -54,10 +54,10 @@
 #define STM32_HPRE                          STM32_HPRE_DIV1
 #define STM32_PPRE1                         STM32_PPRE1_DIV4
 #define STM32_PPRE2                         STM32_PPRE2_DIV2
-#define STM32_RTCSEL                        STM32_RTCSEL_LSI
-#define STM32_RTCPRE_VALUE                  8
+#define STM32_RTCSEL                        STM32_RTCSEL_NOCLOCK
+#define STM32_RTCPRE_VALUE                  25
 #define STM32_MCO1SEL                       STM32_MCO1SEL_HSE
-#define STM32_MCO1PRE                       STM32_MCO1PRE_DIV4
+#define STM32_MCO1PRE                       STM32_MCO1PRE_DIV1
 #define STM32_MCO2SEL                       STM32_MCO2SEL_SYSCLK
 #define STM32_MCO2PRE                       STM32_MCO2PRE_DIV4
 #define STM32_I2SSRC                        STM32_I2SSRC_PLLI2S
@@ -69,7 +69,7 @@
 #define STM32_PLLSAIP_VALUE                 4
 #define STM32_PLLSAIQ_VALUE                 4
 #define STM32_PLLSAIR_VALUE                 4
-#define STM32_PLLSAIDIVR                    STM32_PLLSAIDIVR_OFF
+#define STM32_PLLSAIDIVR_VALUE              2
 #define STM32_SAI1SEL                       STM32_SAI1SEL_OFF
 #define STM32_SAI2SEL                       STM32_SAI2SEL_OFF
 #define STM32_USART1SEL                     STM32_USART1SEL_PCLK2
@@ -85,7 +85,7 @@
 #define STM32_I2C3SEL                       STM32_I2C3SEL_PCLK1
 #define STM32_I2C4SEL                       STM32_I2C4SEL_PCLK1
 #define STM32_LPTIM1SEL                     STM32_LPTIM1SEL_PCLK1
-#define STM32_CECSEL                        STM32_CECSEL_HSIDIV488
+#define STM32_CECSEL                        STM32_CECSEL_LSE
 #define STM32_CK48MSEL                      STM32_CK48MSEL_PLL
 #define STM32_SDMMCSEL                      STM32_SDMMCSEL_PLL48CLK
 #define STM32_SRAM2_NOCACHE                 FALSE
@@ -410,7 +410,7 @@
  * UART driver system settings.
  */
 #define STM32_UART_USE_USART1               FALSE /* DMA OK */
-#define STM32_UART_USE_USART2               FALSE /* NO DMA AVAIL */
+#define STM32_UART_USE_USART2               TRUE /* NO DMA AVAIL */
 #define STM32_UART_USE_USART3               FALSE /* DMA OK */
 #define STM32_UART_USE_UART4                FALSE /* NO DMA AVAIL */
 #define STM32_UART_USE_UART5                FALSE /* NO DMA AVAIL */
@@ -452,7 +452,7 @@
 /*
  * USB driver system settings.
  */
-#define STM32_USB_USE_OTG1                  FALSE
+#define STM32_USB_USE_OTG1                  TRUE
 #define STM32_USB_USE_OTG2                  FALSE
 #define STM32_USB_OTG1_IRQ_PRIORITY         14
 #define STM32_USB_OTG2_IRQ_PRIORITY         14
@@ -465,7 +465,7 @@
 /*
  * SDC driver system settings.
  */
-#define STM32_SDC_USE_SDMMC1                FALSE
+#define STM32_SDC_USE_SDMMC1                TRUE
 #define STM32_SDC_SDMMC_UNALIGNED_SUPPORT   TRUE
 #define STM32_SDC_SDMMC_WRITE_TIMEOUT       250
 #define STM32_SDC_SDMMC_READ_TIMEOUT        25
