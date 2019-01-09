@@ -30,7 +30,10 @@
     </module>
     <module name="telemetry"     type="xbee_api"/>
     <module name="imu"           type="lisa_mx_v2.1"/>
-    <module name="gps"           type="ublox"/>
+    <module name="gps"           type="ublox">
+      <configure name="GPS_BAUD" value="B57600"/>
+    </module>
+    <module name="gps"           type="ubx_ucenter"/>
     <module name="stabilization" type="int_quat"/>
     <module name="stabilization" type="rate"/>
     <module name="ahrs"          type="float_mlkf"/>
@@ -38,6 +41,10 @@
 
     <module name="geo_mag"/>
     <module name="air_data"/>
+
+    <define name="USE_ADC_3" value="1"/>
+    <define name="USE_ADC_5" value="0"/>
+    <define name="ADC_CHANNEL_VSUPPLY" value="ADC_3"/>
   </firmware>
 
   <servos driver="Pwm">
@@ -71,6 +78,9 @@
     <define name="NAV_CLIMB_VSPEED" value="2.5"/>
     <define name="NAV_DESCEND_VSPEED" value="-1.0"/>
     <define name="NO_RC_THRUST_LIMIT" value="TRUE"/>
+
+    <!-- Configure Voltage measurement -->
+    <define name="VoltageOfAdc(adc)" value="(0.00688 * adc)"/>
   </section>
 
   <section name="IMU" prefix="IMU_">
@@ -190,10 +200,10 @@
   </section>
 
   <section name="BAT">
-    <define name="CATASTROPHIC_BAT_LEVEL" value="9.3" unit="V"/>
-    <define name="CRITIC_BAT_LEVEL" value="9.6" unit="V"/>
-    <define name="LOW_BAT_LEVEL" value="10.1" unit="V"/>
-    <define name="MAX_BAT_LEVEL" value="12.4" unit="V"/>
+    <define name="CATASTROPHIC_BAT_LEVEL" value="12.4" unit="V"/>
+    <define name="CRITIC_BAT_LEVEL" value="12.8" unit="V"/>
+    <define name="LOW_BAT_LEVEL" value="13.5" unit="V"/>
+    <define name="MAX_BAT_LEVEL" value="17.2" unit="V"/>
   </section>
 
 </airframe>
