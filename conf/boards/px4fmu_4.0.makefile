@@ -39,6 +39,7 @@ SYS_TIME_LED       ?= 1
 #
 # default UART configuration (RC receiver, telemetry modem, GPS)
 #
+SBUS_PORT ?= UART6
 RADIO_CONTROL_SPEKTRUM_PRIMARY_PORT   ?= UART6
 #RADIO_CONTROL_SPEKTRUM_SECONDARY_PORT   ?= UART7
 
