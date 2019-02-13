@@ -66,7 +66,7 @@
 #define MS5611_ADC_READ         0x00 // Read converted value
 #define MS5611_SOFT_RESET       0x1E // Reset command
 #define MS5611_PROM_READ        0xA0 // Start reading PROM
-#define MS5611_START_CONV_D1    MS5611_REG_D1OSR4096 /* we use OSR=4096 for maximum resolution */
-#define MS5611_START_CONV_D2    MS5611_REG_D2OSR4096 /* we use OSR=4096 for maximum resolution */
+#define MS5611_START_CONV_D1    MS5611_REG_D1OSR1024 /* we use OSR=4096 for maximum resolution */
+#define MS5611_START_CONV_D2    MS5611_REG_D2OSR1024 /* we use OSR=4096 for maximum resolution */
 
 #endif /* MS5611_REGS_H */
