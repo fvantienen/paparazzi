@@ -33,7 +33,7 @@ EXT_DIR=$(PAPARAZZI_SRC)/sw/ext
 include $(PAPARAZZI_SRC)/conf/Makefile.arm-embedded-toolchain
 
 
-all: libopencm3 luftboot chibios fatfs libsbp mavlink TRICAL hacl-c key_generator rustlink
+all: libopencm3 luftboot chibios fatfs libsbp mavlink TRICAL hacl-c key_generator rustlink ecl
 
 # update (and init if needed) all submodules
 update_submodules:
@@ -76,6 +76,8 @@ chibios: chibios.update
 TRICAL: TRICAL.update
 
 fatfs: fatfs.update
+
+ecl: ecl.update
 
 mavlink: mavlink.update mavlink.build
 
