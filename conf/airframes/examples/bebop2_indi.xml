@@ -22,13 +22,8 @@
     <module name="imu" type="bebop"/>
     <module name="gps" type="ublox"/>
     <module name="stabilization" type="indi_simple"/>
-    <module name="ahrs" type="int_cmpl_quat">
-      <configure name="USE_MAGNETOMETER" value="TRUE"/>
-      <define name="AHRS_USE_GPS_HEADING" value="FALSE"/>
-    </module>
-    <module name="ins" type="extended"/>
+    <module name="ins" type="ekf2"/>
     
-    <module name="geo_mag"/>
     <module name="air_data"/>
     <module name="send_imu_mag_current"/>
     <module name="gps" type="ubx_ucenter"/>
@@ -75,26 +70,12 @@
 
   <section name="IMU" prefix="IMU_">
     <!-- Magneto calibration -->
-    <define name="MAG_X_NEUTRAL" value="18"/>
-    <define name="MAG_Y_NEUTRAL" value="46"/>
-    <define name="MAG_Z_NEUTRAL" value="202"/>
-    <define name="MAG_X_SENS" value="8.32441255621" integer="16"/>
-    <define name="MAG_Y_SENS" value="8.25720085664" integer="16"/>
-    <define name="MAG_Z_SENS" value="8.60009819293" integer="16"/>
-  </section>
-
-  <!-- local magnetic field -->
-  <!-- http://wiki.paparazziuav.org/wiki/Subsystem/ahrs#Local_Magnetic_Field -->
-  <section name="AHRS" prefix="AHRS_">
-    <!-- values used if no GPS fix, on 3D fix is update by geo_mag module -->
-    <!-- Toulouse -->
-    <!--define name="H_X" value="0.513081"/>
-    <define name="H_Y" value="-0.00242783"/>
-    <define name="H_Z" value="0.858336"/-->
-    <!-- Delft -->
-    <define name="H_X" value="0.3892503"/>
-    <define name="H_Y" value="0.0017972"/>
-    <define name="H_Z" value="0.9211303"/>
+    <define name="MAG_X_NEUTRAL" value="43"/>
+    <define name="MAG_Y_NEUTRAL" value="-158"/>
+    <define name="MAG_Z_NEUTRAL" value="-60"/>
+    <define name="MAG_X_SENS" value="9.634617169213797" integer="16"/>
+    <define name="MAG_Y_SENS" value="9.533565350784713" integer="16"/>
+    <define name="MAG_Z_SENS" value="9.93017104911088" integer="16"/>
   </section>
 
   <section name="INS" prefix="INS_">
