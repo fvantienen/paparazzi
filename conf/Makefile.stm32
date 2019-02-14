@@ -47,7 +47,7 @@ OPT ?= s
 DEBUG_FLAGS ?= -ggdb3
 
 CSTANDARD   ?= -std=gnu99
-CXXSTANDARD ?= -std=c++98
+CXXSTANDARD ?= -std=c++0x
 CINCS = $(INCLUDES) -I$(PAPARAZZI_SRC)/sw/include
 
 # input files
@@ -145,6 +145,7 @@ CFLAGS += -DPPRZLINK_UNALIGNED_ACCESS=1
 
 # C++ only flags
 CXXFLAGS += $(CXXSTANDARD)
+CXXFLAGS += -I. -I./$(ARCH) -I../ext/libopencm3/include $(INCLUDES)
 CXXFLAGS += -pipe -fshow-column -ffast-math
 CXXFLAGS += -ffunction-sections -fdata-sections
 CXXFLAGS += $($(TARGET).CXXFLAGS)
@@ -154,6 +155,7 @@ AFLAGS  = -ahls -mapcs-32
 AFLAGS += -mcpu=$(MCU) -mthumb
 AFLAGS += -x assembler-with-cpp -Wa,-adhlns=$(OBJDIR)/$(<:.S=.lst)
 
+#-lc -specs=nosys.specs
 LDFLAGS += -L../ext/libopencm3/lib
 LDFLAGS += -T$(LDSCRIPT) -nostartfiles -O$(OPT) -mthumb -mcpu=$(MCU)
 LDFLAGS += $(BOARD_LDFLAGS)

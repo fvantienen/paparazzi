@@ -15,10 +15,11 @@
     <define name="INS_TYPE_H" value="subsystems/ins/ins_ekf2.h" type="string"/>
     <file name="ins.c" dir="subsystems"/>
     <file name="ins_ekf2.cpp" dir="subsystems/ins"/>
-
+    <file name="pprz_syscalls.c" dir="$(PAPARAZZI_SRC)/sw/airborne"/>
+    <file name="pprz_syscalls_cpp.cpp" dir="$(PAPARAZZI_SRC)/sw/airborne"/>
 
     <include name="$(PAPARAZZI_SRC)/sw/ext/ecl/"/>
-    <define name="POSIX_SHARED" value="true"/>
+    <define name="__PAPARAZZI" value="true"/>
     <define name="ECL_STANDALONE" value="true"/>
     <define name="USE_MAGNETOMETER" value="true"/>
 
@@ -40,7 +41,7 @@
     <file name="vel_pos_fusion.cpp" dir="ecl/EKF"/>
     <file name="gps_yaw_fusion.cpp" dir="ecl/EKF"/>
     <raw>
-      ap.CXXFLAGS += -I../ext/matrix -I../ext/ecl -Wno-deprecated-declarations -Wno-enum-compare -Wno-missing-field-initializers -Wno-unused-parameter
+      ap.CXXFLAGS += -I../ext/matrix -I../ext/ecl -D_USE_MATH_DEFINES -Wno-deprecated-declarations -Wno-enum-compare -Wno-missing-field-initializers -Wno-unused-parameter
     </raw>
   </makefile>
 </module>
