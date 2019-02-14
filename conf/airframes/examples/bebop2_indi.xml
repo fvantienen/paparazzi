@@ -4,7 +4,7 @@
 
   <firmware name="rotorcraft">
     <target name="ap" board="bebop2">
-      <define name="STABILIZATION_INDI_G2_R" value="0.20"/>
+      <define name="STABILIZATION_INDI_G2_R" value="0.2784"/>
     </target>
 
     <target name="nps" board="pc">
@@ -70,12 +70,19 @@
 
   <section name="IMU" prefix="IMU_">
     <!-- Magneto calibration -->
-    <define name="MAG_X_NEUTRAL" value="43"/>
-    <define name="MAG_Y_NEUTRAL" value="-158"/>
-    <define name="MAG_Z_NEUTRAL" value="-60"/>
-    <define name="MAG_X_SENS" value="9.634617169213797" integer="16"/>
-    <define name="MAG_Y_SENS" value="9.533565350784713" integer="16"/>
-    <define name="MAG_Z_SENS" value="9.93017104911088" integer="16"/>
+    <define name="MAG_X_NEUTRAL" value="286"/>
+    <define name="MAG_Y_NEUTRAL" value="-156"/>
+    <define name="MAG_Z_NEUTRAL" value="-275"/>
+    <define name="MAG_X_SENS" value="7.074334106912319" integer="16"/>
+    <define name="MAG_Y_SENS" value="7.069181442728008" integer="16"/>
+    <define name="MAG_Z_SENS" value="7.411815536475566" integer="16"/>
+
+    <define name="ACCEL_X_NEUTRAL" value="13"/>
+    <define name="ACCEL_Y_NEUTRAL" value="-35"/>
+    <define name="ACCEL_Z_NEUTRAL" value="-142"/>
+    <define name="ACCEL_X_SENS" value="2.451190043441431" integer="16"/>
+    <define name="ACCEL_Y_SENS" value="2.4279769877645214" integer="16"/>
+    <define name="ACCEL_Z_SENS" value="2.4250404934392824" integer="16"/>
   </section>
 
   <section name="INS" prefix="INS_">
@@ -114,9 +121,9 @@
 
   <section name="STABILIZATION_ATTITUDE_INDI" prefix="STABILIZATION_INDI_">
     <!-- control effectiveness -->
-    <define name="G1_P" value="0.05"/>
-    <define name="G1_Q" value="0.025"/>
-    <define name="G1_R" value="0.0022"/>
+    <define name="G1_P" value="0.0390"/>
+    <define name="G1_Q" value="0.0473"/>
+    <define name="G1_R" value="0.00122"/>
 
     <!-- For the bebop2 we need to filter the roll rate due to the dampers -->
     <define name="FILTER_ROLL_RATE" value="FALSE"/><!-- Set to TRUE when flying without locked dampers -->

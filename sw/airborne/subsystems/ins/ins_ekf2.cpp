@@ -333,7 +333,7 @@ void ins_ekf2_update(void)
     body_rates.r = ekf2.gyro.r - gyro_bias[2];
 
     //Publish to state
-    stateSetBodyRates_f(&body_rates);
+    //stateSetBodyRates_f(&body_rates);
 
     /* Get the position */
     float pos_f[3] = {};
@@ -416,6 +416,9 @@ static void gyro_cb(uint8_t __attribute__((unused)) sender_id,
 
   // Rotate with respect to Body To IMU
   float_rmat_transp_ratemult(&ekf2.gyro, body_to_imu_rmat, &imu_rate);
+
+  // TODO FIXME publish rates
+  stateSetBodyRates_f(&ekf2.gyro);
 
   // Calculate the Gyro interval
   if(ekf2.gyro_stamp > 0) {
