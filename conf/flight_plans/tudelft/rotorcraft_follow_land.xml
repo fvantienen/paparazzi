@@ -46,8 +46,8 @@
       <stay pre_call="waypoint_set_xy_i(WP_FOLLOW, POS_BFP_OF_REAL(WaypointX(WP_SHIP)), POS_BFP_OF_REAL(WaypointY(WP_SHIP)+3))" wp="FOLLOW"/>
     </block>
     <block name="descend_follow">
-      <exception cond="NavDetectGround()" deroute="Holding point"/>
-      <exception cond="!nav_is_in_flight()" deroute="landed"/>
+      <!--exception cond="NavDetectGround()" deroute="Holding point"/-->
+      <!--exception cond="!nav_is_in_flight()" deroute="landed"/-->
       <call_once fun="NavStartDetectGround()"/>
       <stay pre_call="waypoint_set_xy_i(WP_FOLLOW, POS_BFP_OF_REAL(WaypointX(WP_SHIP)), POS_BFP_OF_REAL(WaypointY(WP_SHIP)+3))" climb="nav_descend_vspeed" vmode="climb" wp="FOLLOW"/>
     </block>
