@@ -125,74 +125,6 @@ struct ekf2_t {
 };
 static struct ekf2_t ekf2;  ///< Local EKF INS description
 
-#if EKF2_LOGGING
-/* Log EKF output to a file */
-static void ins_ekf2_log_output(void) {
-   /*// states and ekf output Log
-  uint32_t timestamp;
-  float states[32] = {};
-  float covariances[28] = {};
-  float vel_pos_innov[6] = {};
-  float mag_innov[3] = {};
-  float heading_innov;
-  float vel_pos_innov_var[6] = {};
-  float mag_innov_var[3] = {};
-  float heading_innov_var;
-  timestamp = get_sys_time_usec();
-  ekf.get_state_delayed(states);
-  ekf.get_covariances(covariances);
-  ekf.get_vel_pos_innov(vel_pos_innov);
-  ekf.get_mag_innov(mag_innov);
-  ekf.get_heading_innov(&heading_innov);
-  ekf.get_vel_pos_innov_var(vel_pos_innov_var);
-  ekf.get_mag_innov_var(mag_innov_var);
-  ekf.get_heading_innov_var(&heading_innov_var);
-  int s_len = 32;
-  int c_len = 28;
-  int v_len = 6;
-  int m_len =3;
-  int i;
-  char log_msg[512000], number[50];
-  snprintf(log_msg, 512000, "%d",timestamp);
-  for(i=0; i < s_len; i++)
-  {
-      snprintf(number, 50, ",%.10f", states[i]);
-      strcat(log_msg, number);
-  }
-  for(i=0; i < c_len; i++)
-  {
-      snprintf(number, 50, ",%.10f", covariances[i]);
-      strcat(log_msg, number);
-  }
-  for(i=0; i < v_len; i++)
-  {
-      snprintf(number, 50, ",%.10f", vel_pos_innov[i]);
-      strcat(log_msg, number);
-  }
-  for(i=0; i < m_len; i++)
-  {
-      snprintf(number, 50, ",%.10f", mag_innov[i]);
-      strcat(log_msg, number);
-  }
-  snprintf(number, 50, ",%.10f", heading_innov);
-  strcat(log_msg, number);
-  for(i=0; i < v_len; i++)
-  {
-      snprintf(number, 50, ",%.10f", vel_pos_innov_var[i]);
-      strcat(log_msg, number);
-  }
-  for(i=0; i < m_len; i++)
-  {
-      snprintf(number, 50, ",%.10f", mag_innov_var[i]);
-      strcat(log_msg, number);
-  }
-  snprintf(number, 50, ",%.10f", heading_innov_var);
-  strcat(log_msg, number);
-  fprintf(file_logger, "%s\n", log_msg);
-   */
-}
-#endif
-
 #if PERIODIC_TELEMETRY
 #include "subsystems/datalink/telemetry.h"
 
@@ -257,42 +189,6 @@ void ins_ekf2_init(void)
   register_periodic_telemetry(DefaultPeriodic, PPRZ_MSG_ID_INS_Z, send_ins_z);
   register_periodic_telemetry(DefaultPeriodic, PPRZ_MSG_ID_INS_REF, send_ins_ref);
 #endif
-
-    /*/set filename for log file
-    char filename[512];
-    int i;
-    sprintf(filename, "%s/ekf_log.csv", STRINGIFY(FILE_LOGGER_PATH));
-    //open the log file
-    file_logger = fopen(filename, "w");
-    if (file_logger != NULL) {
-        fprintf(file_logger, "Timestamp,");
-        for(i=0; i < 32; i++)
-        {
-            fprintf(file_logger, "States_%d,", i);
-        }
-        for(i=0; i < 28; i++)
-        {
-            fprintf(file_logger, "Covariances_%d,", i);
-        }
-        for(i=0; i < 6; i++)
-        {
-            fprintf(file_logger, "vel_pos_innov_%d,", i);
-        }
-        for(i=0; i < 3; i++)
-        {
-            fprintf(file_logger, "mag_innov_%d,", i);
-        }
-        fprintf(file_logger, "heading_innov,");
-        for(i=0; i < 6; i++)
-        {
-            fprintf(file_logger, "vel_pos_innov_var_%d,", i);
-        }
-        for(i=0; i < 3; i++)
-        {
-            fprintf(file_logger, "mag_innov_var_%d,", i);
-        }
-        fprintf(file_logger, "heading_innov_var\n");
-    }*/
 
   /*
    * Subscribe to scaled IMU measurements and attach callbacks
@@ -380,11 +276,6 @@ void ins_ekf2_update(void)
     lla_ref.lon = ekf_origin.lon_rad * 180.0 / M_PI *1e7; // Reference point longitude in degrees
     lla_ref.alt = ref_alt * 1000.0;
     ltp_def_from_lla_i(&ekf2.ltp_def, &lla_ref);
-
-#if EKF2_LOGGING
-    /* Log EKF output to a file */
-    ins_ekf2_log_output(void);
-#endif
   }
 
   ekf2.got_imu_data = false;

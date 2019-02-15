@@ -27,8 +27,9 @@ UBX GPS / HMC58XX mag (drotek)
     <!-- Actuators are automatically chosen according to board-->
     <module name="imu" type="chimera"/>
     <configure name="USE_MAGNETOMETER" value="FALSE"/>
-    <module name="ahrs" type="float_dcm"/>
-    <module name="ins" type="alt_float"/>
+    <!--module name="ahrs" type="float_dcm"/-->
+    <module name="ins" type="ekf2">
+    </module>
     <module name="control" type="new"/>
     <module name="navigation"/>
     <!-- Sensors -->
