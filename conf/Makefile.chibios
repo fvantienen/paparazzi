@@ -229,7 +229,7 @@ ECPPSRC = $(filter %.cpp, $($(TARGET).srcs))
 
 # C++ sources that can be compiled in ARM or THUMB mode depending on the global
 # setting.
-CPPSRC =
+CPPSRC = $(CHIBIOS)/os/various/cpp_wrappers/syscalls_cpp.cpp
 
 # C sources to be compiled in ARM mode regardless of the global setting.
 # NOTE: Mixing ARM and THUMB mode enables the -mthumb-interwork compiler
@@ -311,6 +311,9 @@ CPPWARN = -Wall -Wextra
 
 # List all user C define here, like -D_DEBUG=1
 UDEFS = $($(TARGET).CFLAGS) $(USER_CFLAGS) $(BOARD_CFLAGS)
+
+# List all extra user CPP define here
+UPDEFS = $($(TARGET).CXXFLAGS)
 
 # Define ASM defines here
 UADEFS = $($(TARGET).CFLAGS) $(USER_CFLAGS) $(BOARD_CFLAGS)
