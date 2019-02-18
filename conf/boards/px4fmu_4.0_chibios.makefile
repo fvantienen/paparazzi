@@ -29,7 +29,7 @@ PROJECT = $(TARGET)
 
 # Project specific files and paths (see Makefile.chibios for details)
 CHIBIOS_BOARD_PLATFORM = STM32F4xx/platform.mk
-CHIBIOS_BOARD_LINKER = STM32F407xG.ld
+CHIBIOS_BOARD_LINKER = STM32F427xT.ld
 CHIBIOS_BOARD_STARTUP = startup_stm32f4xx.mk
 
 # In this case we dont have LUFTBOOT but PX4_BOOTLOADER, but in order
@@ -56,7 +56,8 @@ PX4_BL_PORT ?= "/dev/serial/by-id/usb-3D_Robotics_PX4_BL_FMU_v4.x_0-if00"
 #
 # default LED configuration
 #
-RADIO_CONTROL_LED  ?= 3
+SDLOG_LED          ?= 3
+RADIO_CONTROL_LED  ?= none
 BARO_LED           ?= none
 AHRS_ALIGNER_LED   ?= 2
 GPS_LED            ?= none

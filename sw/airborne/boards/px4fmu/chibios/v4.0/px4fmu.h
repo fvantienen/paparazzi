@@ -378,17 +378,28 @@
 #endif
 
 /**
- *
- * Kludge for SD_LOG
+ * SDIO
  */
-#define GPIOA_OTG_FS_VBUS           9
-
-#define GPIOD_SDIO_CMD               2
-#define GPIOC_SDIO_D0                8
-#define GPIOC_SDIO_D1                9
-#define GPIOC_SDIO_D2               10
-#define GPIOC_SDIO_D3               11
-#define GPIOC_SDIO_CK               12
+#define SDIO_D0_PORT GPIOC
+#define SDIO_D0_PIN GPIO8
+#define SDIO_D1_PORT GPIOC
+#define SDIO_D1_PIN GPIO9
+#define SDIO_D2_PORT GPIOC
+#define SDIO_D2_PIN GPIO10
+#define SDIO_D3_PORT GPIOC
+#define SDIO_D3_PIN GPIO11
+#define SDIO_CK_PORT GPIOC
+#define SDIO_CK_PIN GPIO12
+#define SDIO_CMD_PORT GPIOD
+#define SDIO_CMD_PIN GPIO2
+#define SDIO_AF 12
+// bat monitoring for file closing
+#define SDLOG_BAT_ADC ADCD1
+#define SDLOG_BAT_CHAN AD1_1_CHANNEL
+// usb led status
+#define SDLOG_USB_LED 3
+#define SDLOG_USB_VBUS_PORT GPIOA
+#define SDLOG_USB_VBUS_PIN GPIO9
 
 /*
  * Actuators for fixedwing

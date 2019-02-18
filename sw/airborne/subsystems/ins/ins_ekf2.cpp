@@ -79,12 +79,6 @@ PRINT_CONFIG_VAR(INS_EKF2_MAG_ID)
 #endif
 PRINT_CONFIG_VAR(INS_EKF2_GPS_ID)
 
-/* default opticflow velocity measurement to use in INS */
-#ifndef INS_EKF2_VEL_ID
-#define INS_EKF2_VEL_ID ABI_BROADCAST
-#endif
-PRINT_CONFIG_VAR(INS_EKF2_VEL_ID)
-
 /* All registered ABI events */
 static abi_event sonar_ev;
 static abi_event baro_ev;
@@ -93,7 +87,6 @@ static abi_event accel_ev;
 static abi_event mag_ev;
 static abi_event gps_ev;
 static abi_event body_to_imu_ev;
-static abi_event opticflow_ekf_ev;
 
 /* All ABI callbacks */
 static void sonar_cb(uint8_t sender_id, uint32_t stamp, float distance);
@@ -103,7 +96,6 @@ static void accel_cb(uint8_t sender_id, uint32_t stamp, struct Int32Vect3 *accel
 static void mag_cb(uint8_t sender_id, uint32_t stamp, struct Int32Vect3 *mag);
 static void gps_cb(uint8_t sender_id, uint32_t stamp, struct GpsState *gps_s);
 static void body_to_imu_cb(uint8_t sender_id, struct FloatQuat *q_b2i_f);
-static void opticflow_ekf_cb(uint8_t sender_id, uint32_t stamp, float flow_x_integral, float flow_y_integral, uint8_t quality, float gyro_x_integral, float gyro_y_integral, float gyro_z_integral, uint32_t timespan);
 
 static Ekf ekf;           ///< EKF class itself
 parameters *ekf2_params;  ///< The EKF parameters
@@ -119,6 +111,7 @@ struct ekf2_t {
   bool accel_valid;
 
   struct LtpDef_i ltp_def;
+  bool ltp_initialized;
 
   struct OrientationReps body_to_imu;
   bool got_imu_data;
@@ -127,6 +120,23 @@ static struct ekf2_t ekf2;  ///< Local EKF INS description
 
 #if PERIODIC_TELEMETRY
 #include "subsystems/datalink/telemetry.h"
+
+static void send_ins_ekf2(struct transport_tx* trans, struct link_device *dev)
+{
+  uint16_t gps_check_status, filter_fault_status, soln_status;
+  uint32_t control_mode;
+  ekf.get_gps_check_status(&gps_check_status);
+  ekf.get_filter_fault_status(&filter_fault_status);
+  ekf.get_control_mode(&control_mode);
+  ekf.get_ekf_soln_status(&soln_status);
+
+  uint16_t innov_test_status;
+  float mag, vel, pos, hgt, tas, hagl, beta;
+  ekf.get_innovation_test_status(&innov_test_status, &mag, &vel, &pos, &hgt, &tas, &hagl, &beta);
+  pprz_msg_send_INS_EKF2(trans, dev, AC_ID,
+                        &control_mode, &filter_fault_status, &gps_check_status, &soln_status,
+                        &innov_test_status, &mag, &vel, &pos, &hgt, &tas, &hagl, &beta);
+}
 
 static void send_ins(struct transport_tx *trans, struct link_device *dev)
 {
@@ -145,10 +155,12 @@ static void send_ins_z(struct transport_tx *trans, struct link_device *dev)
 static void send_ins_ref(struct transport_tx *trans, struct link_device *dev)
 {
     float qfe = 101325.0; //TODO: this is qnh not qfe?
-    pprz_msg_send_INS_REF(trans, dev, AC_ID,
-                          &ekf2.ltp_def.ecef.x, &ekf2.ltp_def.ecef.y, &ekf2.ltp_def.ecef.z,
-                          &ekf2.ltp_def.lla.lat, &ekf2.ltp_def.lla.lon, &ekf2.ltp_def.lla.alt,
-                          &ekf2.ltp_def.hmsl, &qfe);
+    if (ekf2.ltp_initialized) {
+      pprz_msg_send_INS_REF(trans, dev, AC_ID,
+                            &ekf2.ltp_def.ecef.x, &ekf2.ltp_def.ecef.y, &ekf2.ltp_def.ecef.z,
+                            &ekf2.ltp_def.lla.lat, &ekf2.ltp_def.lla.lon, &ekf2.ltp_def.lla.alt,
+                            &ekf2.ltp_def.hmsl, &qfe);
+    }
 }
 #endif
 
@@ -157,6 +169,7 @@ void ins_ekf2_init(void)
 {
   /* Get the ekf parameters */
   ekf2_params = ekf.getParamHandle();
+  //ekf2_params->fusion_mode = MASK_USE_GPS;
   //ekf2_params->fusion_mode = MASK_USE_GPS; //MASK_USE_OF uses only optic flow, use both for fusion
   //ekf2_params->mag_declination_source = MASK_USE_GEO_DECL;
     /*
@@ -166,7 +179,7 @@ void ins_ekf2_init(void)
 #define MASK_FUSE_DECL      (1<<2)  // set to true if the declination is always fused as an observation to constrain drift when 3-axis fusion is performed
      */
   //ekf2_params->mag_fusion_type = MAG_FUSE_TYPE_HEADING;
-  ekf2_params->gps_check_mask = 21;
+  ekf2_params->gps_check_mask = 0;
   /*not initialized in common.h*///ekf2_params->ev_innov_gate = 5.0f;
 
   /* Initialize struct */
@@ -176,15 +189,16 @@ void ins_ekf2_init(void)
   ekf2.accel_valid = false;
   ekf2.got_imu_data = false;
 
-/*#if USE_INS_NAV_INIT
-  ins_init_origin_i_from_flightplan(&ins_int.ltp_def);
-  ins_int.ltp_initialized = true;
+#if USE_INS_NAV_INIT
+  ins_init_origin_i_from_flightplan(&ekf2.ltp_def);
+  ekf2.ltp_initialized = true;
 #else
-  ins_int.ltp_initialized  = false;
-#endif*/
+  ekf2.ltp_initialized  = false;
+#endif
 
 
 #if PERIODIC_TELEMETRY
+  register_periodic_telemetry(DefaultPeriodic, PPRZ_MSG_ID_INS_EKF2, send_ins_ekf2);
   register_periodic_telemetry(DefaultPeriodic, PPRZ_MSG_ID_INS, send_ins);
   register_periodic_telemetry(DefaultPeriodic, PPRZ_MSG_ID_INS_Z, send_ins_z);
   register_periodic_telemetry(DefaultPeriodic, PPRZ_MSG_ID_INS_REF, send_ins_ref);
@@ -200,7 +214,6 @@ void ins_ekf2_init(void)
   AbiBindMsgIMU_MAG_INT32(INS_EKF2_MAG_ID, &mag_ev, mag_cb);
   AbiBindMsgGPS(INS_EKF2_GPS_ID, &gps_ev, gps_cb);
   AbiBindMsgBODY_TO_IMU_QUAT(ABI_BROADCAST, &body_to_imu_ev, body_to_imu_cb);
-  //AbiBindMsgOPTICAL_FLOW_EKF(ABI_BROADCAST, &opticflow_ekf_ev, opticflow_ekf_cb);
 }
 
 /* Update the INS state */
@@ -221,18 +234,18 @@ void ins_ekf2_update(void)
     stateSetNedToBodyQuat_f(&ltp_to_body_quat);
 
     /* Get the Body rates */
-    struct FloatRates body_rates;
-    float gyro_bias[3] = {};
-    ekf.get_gyro_bias(gyro_bias);
-    body_rates.p = ekf2.gyro.p - gyro_bias[0];
-    body_rates.q = ekf2.gyro.q - gyro_bias[1];
-    body_rates.r = ekf2.gyro.r - gyro_bias[2];
+    // struct FloatRates body_rates;
+    // float gyro_bias[3] = {};
+    // ekf.get_gyro_bias(gyro_bias);
+    // body_rates.p = ekf2.gyro.p - gyro_bias[0];
+    // body_rates.q = ekf2.gyro.q - gyro_bias[1];
+    // body_rates.r = ekf2.gyro.r - gyro_bias[2];
 
     //Publish to state
     //stateSetBodyRates_f(&body_rates);
 
     /* Get the position */
-    float pos_f[3] = {};
+    float pos_f[3];
     struct NedCoor_f pos;
     ekf.get_position(pos_f);
     pos.x = pos_f[0];
@@ -243,7 +256,7 @@ void ins_ekf2_update(void)
     stateSetPositionNed_f(&pos);
 
     /* Get the velocity */
-    float vel_f[3] = {};
+    float vel_f[3];
     struct NedCoor_f speed;
     ekf.get_velocity(vel_f);
     speed.x = vel_f[0];
@@ -265,17 +278,24 @@ void ins_ekf2_update(void)
     stateSetAccelNed_f(&accel);
 
     // Get local origin
-    // Position of local NED origin in GPS / WGS84 frame
-    struct map_projection_reference_s ekf_origin = {};
-    float ref_alt;
-    struct LlaCoor_i lla_ref;
-    uint64_t timestamp_orig;
-    // true if position (x, y) is valid and has valid global reference (ref_lat, ref_lon)
-    ekf.get_ekf_origin(&timestamp_orig, &ekf_origin, &ref_alt);
-    lla_ref.lat = ekf_origin.lat_rad * 180.0 / M_PI *1e7; // Reference point latitude in degrees
-    lla_ref.lon = ekf_origin.lon_rad * 180.0 / M_PI *1e7; // Reference point longitude in degrees
-    lla_ref.alt = ref_alt * 1000.0;
-    ltp_def_from_lla_i(&ekf2.ltp_def, &lla_ref);
+    if(!ekf2.ltp_initialized) {
+      // Position of local NED origin in GPS / WGS84 frame
+      struct map_projection_reference_s ekf_origin = {};
+      float ref_alt;
+      struct LlaCoor_i lla_ref;
+      uint64_t timestamp_orig;
+
+      // true if position (x, y) is valid and has valid global reference (ref_lat, ref_lon)
+      bool ekf_origin_valid = ekf.get_ekf_origin(&timestamp_orig, &ekf_origin, &ref_alt);
+      if(ekf_origin_valid) {
+        lla_ref.lat = ekf_origin.lat_rad * 180.0 / M_PI *1e7; // Reference point latitude in degrees
+        lla_ref.lon = ekf_origin.lon_rad * 180.0 / M_PI *1e7; // Reference point longitude in degrees
+        lla_ref.alt = ref_alt * 1000.0;
+        ltp_def_from_lla_i(&ekf2.ltp_def, &lla_ref);
+        stateSetLocalOrigin_i(&ekf2.ltp_def);
+        ekf2.ltp_initialized = true;
+      }
+    }
   }
 
   ekf2.got_imu_data = false;
@@ -425,32 +445,35 @@ static void gps_cb(uint8_t sender_id __attribute__((unused)),
   ekf.setGpsData(stamp, &gps_msg);
 }
 
-/* Update INS based on Optical flow information */
-/*static void opticflow_ekf_cb(uint8_t sender_id,
-                             uint32_t stamp,
-                             float flow_x_integral,
-                             float flow_y_integral,
-                             uint8_t quality,
-                             float gyro_x_integral,
-                             float gyro_y_integral,
-                             float gyro_z_integral,
-                             uint32_t timespan)
-{
-  flow_message flow;
-  flow.flowdata(0) = flow_x_integral;      // accumulated optical flow in radians around x axis
-  flow.flowdata(1) = flow_y_integral;
-  flow.quality = quality;
-  flow.gyrodata(0) = gyro_x_integral;
-  flow.gyrodata(1) = gyro_y_integral;
-  flow.gyrodata(2) = gyro_z_integral;
-  flow.dt = timespan;
-
-  ekf.setOpticalFlowData(stamp, &flow);
-}*/
-
 /* Save the Body to IMU information */
 static void body_to_imu_cb(uint8_t sender_id __attribute__((unused)),
                            struct FloatQuat *q_b2i_f)
 {
   orientationSetQuat_f(&ekf2.body_to_imu, q_b2i_f);
+}
+
+void * operator new(size_t size)
+{
+    if (size < 1) {
+        size = 1;
+    }
+    return(calloc(size, 1));
+}
+
+void operator delete(void *p)
+{
+    if (p) free(p);
+}
+
+void * operator new[](size_t size)
+{
+    if (size < 1) {
+        size = 1;
+    }
+    return(calloc(size, 1));
+}
+
+void operator delete[](void * ptr)
+{
+    if (ptr) free(ptr);
 }

@@ -27,14 +27,14 @@
     <module name="actuators"     type="pwm">
       <define name="SERVO_HZ"    value="400"/>
     </module>
-    <module name="telemetry"     type="xbee_api">
+    <module name="telemetry"     type="transparent">
       <configure name="MODEM_PORT" value="UART2"/> <!--  Telem1 on pixracer -->
       <configure name="MODEM_BAUD" value="B57600"/>
     </module>
     <module name="imu" type="mpu9250_spi">
       <configure name="IMU_MPU9250_SPI_DEV" value="spi1"/>
       <configure name="IMU_MPU9250_SPI_SLAVE_IDX" value="SPI_SLAVE2"/>
-      <define name="IMU_MPU9250_READ_MAG" value="FALSE"/>
+      <define name="IMU_MPU9250_READ_MAG" value="TRUE"/>
     </module>
     <module name="gps"           type="ublox">
       <configure name="GPS_BAUD" value="B57600"/>
@@ -42,17 +42,18 @@
     <module name="gps"           type="ubx_ucenter"/>
     <module name="stabilization" type="int_quat"/>
     <module name="stabilization" type="rate"/>
-    <module name="ahrs"          type="float_cmpl_quat">
-      <define name="AHRS_ICQ_MAG_ID" value="MAG_LIS3MDL_SENDER_ID" />
-      <configure name="USE_MAGNETOMETER" value="TRUE"/>
-    </module>
-    <module name="ins"           type="hff"/>
-    <module name="mag_lis3mdl">
+    <module name="ins"           type="ekf2"/>
+    <!--module name="mag_lis3mdl">
       <define name="MODULE_LIS3MDL_UPDATE_AHRS" value="TRUE"/>
       <configure name="MAG_LIS3MDL_I2C_DEV" value="i2c1"/>
-    </module>
+    </module-->
 
-    <module name="geo_mag"/>
+    <!-- Logger -->
+    <module name="tlsf"/>
+    <module name="pprzlog"/>
+    <module name="logger" type="sd_chibios"/>
+    <module name="flight_recorder"/>
+
     <module name="air_data"/>
     <module name="send_imu_mag_current"/>
   </firmware>
@@ -111,17 +112,24 @@
     <define name="ACCEL_Y_SENS" value="4.85140885386" integer="16"/>
     <define name="ACCEL_Z_SENS" value="4.89977338537" integer="16"/-->
 
-    <define name="MAG_X_CURRENT_COEF" value="9.037571651280377"/>
+    <!--define name="MAG_X_CURRENT_COEF" value="9.037571651280377"/>
     <define name="MAG_Y_CURRENT_COEF" value="-4.490670308897883"/>
-    <define name="MAG_Z_CURRENT_COEF" value="30.7029351308597"/>
+    <define name="MAG_Z_CURRENT_COEF" value="30.7029351308597"/-->
 
     <!-- replace this with your own calibration -->
-    <define name="MAG_X_NEUTRAL" value="-869"/>
-    <define name="MAG_Y_NEUTRAL" value="1796"/>
-    <define name="MAG_Z_NEUTRAL" value="-2172"/>
-    <define name="MAG_X_SENS" value="0.8299525860375181" integer="16"/>
-    <define name="MAG_Y_SENS" value="0.7789606395788745" integer="16"/>
-    <define name="MAG_Z_SENS" value="0.8084531109878482" integer="16"/>
+    <!--define name="MAG_X_NEUTRAL" value="2197"/>
+    <define name="MAG_Y_NEUTRAL" value="1460"/>
+    <define name="MAG_Z_NEUTRAL" value="288"/>
+    <define name="MAG_X_SENS" value="0.621654140011012" integer="16"/>
+    <define name="MAG_Y_SENS" value="0.5993861893464758" integer="16"/>
+    <define name="MAG_Z_SENS" value="0.6238423840038542" integer="16"/-->
+    <define name="MAG_X_NEUTRAL" value="26"/>
+    <define name="MAG_Y_NEUTRAL" value="32"/>
+    <define name="MAG_Z_NEUTRAL" value="143"/>
+    <define name="MAG_X_SENS" value="7.891481623127505" integer="16"/>
+    <define name="MAG_Y_SENS" value="8.144089259820777" integer="16"/>
+    <define name="MAG_Z_SENS" value="8.186555447435524" integer="16"/>
+
 
     <define name="BODY_TO_IMU_PHI"   value="0" unit="deg"/>
     <define name="BODY_TO_IMU_THETA" value="0." unit="deg"/>

@@ -16,7 +16,6 @@
     <file name="ins.c" dir="subsystems"/>
     <file name="ins_ekf2.cpp" dir="subsystems/ins"/>
     <file name="pprz_syscalls.c" dir="$(PAPARAZZI_SRC)/sw/airborne"/>
-    <file name="pprz_syscalls_cpp.cpp" dir="$(PAPARAZZI_SRC)/sw/airborne"/>
 
     <include name="$(PAPARAZZI_SRC)/sw/ext/ecl/"/>
     <define name="__PAPARAZZI" value="true"/>
