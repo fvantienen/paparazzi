@@ -1,6 +1,6 @@
 <!DOCTYPE flight_plan SYSTEM "../flight_plan.dtd">
 
-<flight_plan alt="10" ground_alt="0" home_mode_height="10" lat0="52.168141" lon0="4.412520" max_dist_from_home="1000" name="VALK2018" qfu="20" security_height="3">
+<flight_plan alt="10" ground_alt="0" home_mode_height="10" lat0="52.168141" lon0="4.412520" max_dist_from_home="100000" name="VALK2018" qfu="20" security_height="3">
   <header>
 #include "autopilot.h"
   </header>
@@ -10,12 +10,15 @@
     <waypoint name="FOLLOW" x="60.5" y="13.5"/>
     <waypoint name="CLIMB" x="49" y="-2.5"/>
     <waypoint name="STDBY" x="50" y="14.5"/>
-    <waypoint name="p1" x="49" y="24"/>
+    <!--waypoint name="p1" x="49" y="24"/>
     <waypoint name="p2" x="56.5" y="6"/>
     <waypoint name="p3" x="62" y="28"/>
-    <waypoint name="p4" x="69.5" y="11"/>
+    <waypoint name="p4" x="69.5" y="11"/-->
     <waypoint name="TD" x="47.5" y="7.5"/>
   </waypoints>
+  <modules>
+    <module name="follow_me"/>
+  </modules>
   <blocks>
     <block name="Wait GPS">
       <call_once fun="NavKillThrottle()"/>
@@ -42,16 +45,25 @@
     <block name="Standby" strip_button="Standby" strip_icon="home.png">
       <stay wp="STDBY"/>
     </block>
+
     <block name="stay_follow">
       <stay pre_call="waypoint_set_xy_i(WP_FOLLOW, POS_BFP_OF_REAL(WaypointX(WP_SHIP)), POS_BFP_OF_REAL(WaypointY(WP_SHIP)+3))" wp="FOLLOW"/>
     </block>
     <block name="descend_follow">
       <!--exception cond="NavDetectGround()" deroute="Holding point"/-->
       <!--exception cond="!nav_is_in_flight()" deroute="landed"/-->
-      <call_once fun="NavStartDetectGround()"/>
+      <!--call_once fun="NavStartDetectGround()"/-->
       <stay pre_call="waypoint_set_xy_i(WP_FOLLOW, POS_BFP_OF_REAL(WaypointX(WP_SHIP)), POS_BFP_OF_REAL(WaypointY(WP_SHIP)+3))" climb="nav_descend_vspeed" vmode="climb" wp="FOLLOW"/>
     </block>
-    <block name="stay_p1">
+
+    <block name="follow_module">
+      <stay pre_call="follow_me_set_wp(WP_FOLLOW)" wp="FOLLOW"/>
+    </block>
+    <block name="follow_module_land">
+      <stay pre_call="follow_me_set_wp(WP_FOLLOW)" climb="nav_descend_vspeed" vmode="climb" wp="FOLLOW"/>
+    </block>
+
+    <!--block name="stay_p1">
       <stay wp="p1"/>
     </block>
     <block name="go_p2">
@@ -80,7 +92,7 @@
         <heading alt="WaypointAlt(WP_p1)" course="90 * $i" until="stage_time > 3"/>
       </for>
       <deroute block="Standby"/>
-    </block>
+    </block-->
     <block name="land here" strip_button="Land Here" strip_icon="land-right.png">
       <call_once fun="NavSetWaypointHere(WP_TD)"/>
     </block>

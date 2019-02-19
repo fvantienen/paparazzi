@@ -32,6 +32,7 @@
 #include "EKF/ekf.h"
 #include "math/pprz_isa.h"
 #include "mcu_periph/sys_time.h"
+#include "autopilot.h"
 
 #if defined SITL && USE_NPS
 //#include "nps_fdm.h"
@@ -219,6 +220,9 @@ void ins_ekf2_init(void)
 /* Update the INS state */
 void ins_ekf2_update(void)
 {
+  /* Set EKF settings */
+  ekf.set_in_air_status(autopilot_in_flight());
+
   /* Update the EKF */
   if(ekf2.got_imu_data && ekf.update()) {
     /* Get the attitude */
