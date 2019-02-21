@@ -65,6 +65,9 @@
 #endif
 
 // CUR_SENS
+#ifndef USE_ADC_2
+#define USE_ADC_2 2
+#endif
 #if USE_ADC_2
 #define AD1_2_CHANNEL ADC_CHANNEL_IN3
 #define ADC_2 AD1_2
@@ -85,7 +88,13 @@
 #define ADC_CHANNEL_VSUPPLY ADC_1
 #endif
 
+/* Allow to define another ADC for Current measurement in the airframe file */
+#ifndef ADC_CHANNEL_CURRENT
+#define ADC_CHANNEL_CURRENT ADC_2
+#endif
+
 #define DefaultVoltageOfAdc(adc) (0.006185*adc)
+#define MilliAmpereOfAdc(adc)((float)adc) * (3.3f / 4096.0f) * (90.0f / 5.0f) //FIXME: verify
 
 /*
  * PWM defines TODO

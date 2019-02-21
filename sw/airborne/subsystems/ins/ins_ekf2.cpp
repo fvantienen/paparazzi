@@ -118,6 +118,7 @@ struct ekf2_t {
   bool got_imu_data;
 };
 static struct ekf2_t ekf2;  ///< Local EKF INS description
+FloatVect3 vel1, vel2;
 
 #if PERIODIC_TELEMETRY
 #include "subsystems/datalink/telemetry.h"
@@ -136,7 +137,7 @@ static void send_ins_ekf2(struct transport_tx* trans, struct link_device *dev)
   ekf.get_innovation_test_status(&innov_test_status, &mag, &vel, &pos, &hgt, &tas, &hagl, &beta);
   pprz_msg_send_INS_EKF2(trans, dev, AC_ID,
                         &control_mode, &filter_fault_status, &gps_check_status, &soln_status,
-                        &innov_test_status, &mag, &vel, &pos, &hgt, &tas, &hagl, &beta);
+                        &innov_test_status, &mag, &vel1.x, &vel1.y, &vel1.z, &vel2.x, &vel2.y, &vel2.z);
 }
 
 static void send_ins(struct transport_tx *trans, struct link_device *dev)
@@ -179,8 +180,8 @@ void ins_ekf2_init(void)
 #define MASK_SAVE_GEO_DECL  (1<<1)  // set to true to set the EKF2_MAG_DECL parameter to the value returned by the geo library
 #define MASK_FUSE_DECL      (1<<2)  // set to true if the declination is always fused as an observation to constrain drift when 3-axis fusion is performed
      */
-  //ekf2_params->mag_fusion_type = MAG_FUSE_TYPE_HEADING;
-  ekf2_params->gps_check_mask = 0;
+  ekf2_params->mag_fusion_type = MAG_FUSE_TYPE_HEADING;
+  //ekf2_params->gps_check_mask = 0;
   /*not initialized in common.h*///ekf2_params->ev_innov_gate = 5.0f;
 
   /* Initialize struct */
@@ -406,9 +407,9 @@ static void mag_cb(uint8_t __attribute__((unused)) sender_id,
 
   // Convert Magnetometer information to float and to radius 0.2f
   MAGS_FLOAT_OF_BFP(mag_gauss, *mag);
-  mag_gauss.x *= 0.2f;
-  mag_gauss.y *= 0.2f;
-  mag_gauss.z *= 0.2f;
+  mag_gauss.x *= 0.4f;
+  mag_gauss.y *= 0.4f;
+  mag_gauss.z *= 0.4f;
 
   // Rotate with respect to Body To IMU
   float_rmat_transp_vmult(&mag_body, body_to_imu_rmat, &mag_gauss);
@@ -428,11 +429,19 @@ static void gps_cb(uint8_t sender_id __attribute__((unused)),
                    uint32_t stamp,
                    struct GpsState *gps_s)
 {
+  struct NedCoor_i gps_speed_cm_s_ned;
+  ned_of_ecef_vect_i(&gps_speed_cm_s_ned, &ekf2.ltp_def, &gps_s->ecef_vel);
+  vel1.x = (gps_speed_cm_s_ned.x) / 100.;
+  vel1.y = (gps_speed_cm_s_ned.y) / 100.;
+  vel1.z = (gps_speed_cm_s_ned.z) / 100.;
+
   struct gps_message gps_msg = {};
   gps_msg.time_usec = stamp;
   gps_msg.lat = gps_s->lla_pos.lat;
   gps_msg.lon = gps_s->lla_pos.lon;
   gps_msg.alt = gps_s->hmsl;
+  gps_msg.yaw = NAN;
+  gps_msg.yaw_offset = NAN;
   gps_msg.fix_type = gps_s->fix;
   gps_msg.eph = gps_s->hacc / 1000.0;
   gps_msg.epv = gps_s->vacc / 1000.0;
@@ -445,6 +454,10 @@ static void gps_cb(uint8_t sender_id __attribute__((unused)),
   gps_msg.nsats = gps_s->num_sv;
   //TODO add gdop to gps topic
   gps_msg.gdop = 0.0f;
+
+  vel2.x = gps_msg.vel_ned[0];
+  vel2.y = gps_msg.vel_ned[1];
+  vel2.z = gps_msg.vel_ned[2];
 
   ekf.setGpsData(stamp, &gps_msg);
 }
