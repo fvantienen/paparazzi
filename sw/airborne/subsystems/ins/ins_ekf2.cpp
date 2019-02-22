@@ -490,7 +490,17 @@ void * operator new[](size_t size)
     return(calloc(size, 1));
 }
 
+void operator delete(void * ptr, unsigned int size)
+{
+    if (ptr) free(ptr);
+}
+
 void operator delete[](void * ptr)
+{
+    if (ptr) free(ptr);
+}
+
+void operator delete[](void * ptr, unsigned int size)
 {
     if (ptr) free(ptr);
 }
