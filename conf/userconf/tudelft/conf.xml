@@ -286,6 +286,7 @@
   />
   <aircraft
    name="Mentor"
+<<<<<<< Updated upstream
    ac_id="4"
    airframe="airframes/tudelft/mentor.xml"
    radio="radios/crossfire_sbus.xml"
@@ -295,6 +296,16 @@
    settings_modules="modules/nav_basic_fw.xml modules/guidance_energy.xml modules/stabilization_attitude_fw.xml modules/air_data.xml modules/ahrs_int_cmpl_quat.xml modules/gps_ubx_ucenter.xml modules/gps.xml modules/imu_common.xml"
    gui_color="white"
    release="997fa535902c4d8f73bc34c02c862652cd47cae5"
+=======
+   ac_id="19"
+   airframe="airframes/tudelft/mentor.xml"
+   radio="radios/crossfire_sbus.xml"
+   telemetry="telemetry/default_fixedwing.xml"
+   flight_plan="flight_plans/bvlos_ehr8.xml"
+   settings="settings/fixedwing_basic.xml"
+   settings_modules="modules/nav_basic_fw.xml modules/guidance_energy.xml modules/stabilization_attitude_fw.xml modules/air_data.xml modules/ahrs_int_cmpl_quat.xml modules/gps_ubx_ucenter.xml modules/gps.xml modules/imu_common.xml"
+   gui_color="blue"
+>>>>>>> Stashed changes
   />
   <aircraft
    name="MentorEnergy"
@@ -307,6 +318,28 @@
    settings_modules="modules/digital_cam.xml modules/light.xml modules/gps_ubx_ucenter.xml modules/geo_mag.xml modules/air_data.xml modules/gps.xml modules/nav_basic_fw.xml modules/guidance_energy.xml modules/stabilization_attitude_fw.xml modules/ahrs_int_cmpl_quat.xml modules/imu_common.xml"
    gui_color="white"
    release="997fa535902c4d8f73bc34c02c862652cd47cae5"
+  />
+  <aircraft
+   name="NedDrone"
+   ac_id="4"
+   airframe="airframes/tudelft/neddrone_new.xml"
+   radio="radios/crossfire_sbus.xml"
+   telemetry="telemetry/default_rotorcraft.xml"
+   flight_plan="flight_plans/nedderdrone_takeoff.xml"
+   settings="settings/rotorcraft_basic.xml"
+   settings_modules="modules/follow_me.xml modules/guidance_hybrid.xml modules/lidar_tfmini.xml modules/gain_scheduling.xml modules/air_data.xml modules/ins_ekf2.xml modules/stabilization_rate.xml modules/stabilization_int_quat.xml modules/nav_basic_rotorcraft.xml modules/guidance_rotorcraft.xml modules/gps_ubx_ucenter.xml modules/gps.xml modules/imu_common.xml"
+   gui_color="blue"
+  />
+  <aircraft
+   name="NedDroneCan"
+   ac_id="14"
+   airframe="airframes/tudelft/neddrone_can.xml"
+   radio="radios/crossfire_sbus.xml"
+   telemetry="telemetry/default_rotorcraft.xml"
+   flight_plan="flight_plans/nedderdrone_takeoff.xml"
+   settings="settings/rotorcraft_basic.xml"
+   settings_modules="modules/follow_me.xml modules/ctrl_windtunnel.xml modules/guidance_hybrid.xml modules/gain_scheduling.xml modules/air_data.xml modules/airspeed_ms45xx_i2c.xml modules/ins_ekf2.xml modules/stabilization_rate.xml modules/stabilization_int_quat.xml modules/nav_basic_rotorcraft.xml modules/guidance_rotorcraft.xml modules/gps_ubx_ucenter.xml modules/gps.xml modules/imu_common.xml"
+   gui_color="blue"
   />
   <aircraft
    name="Quadplane"
@@ -340,9 +373,9 @@
    telemetry="telemetry/default_fixedwing_imu_9k6.xml"
    flight_plan="flight_plans/versatile.xml"
    settings="settings/fixedwing_basic.xml settings/estimation/ins_neutrals.xml settings/control/tune_agr_climb.xml"
+   settings_modules="modules/digital_cam.xml modules/light.xml modules/gps.xml modules/nav_basic_fw.xml modules/guidance_basic_fw.xml modules/stabilization_attitude_fw.xml"
    gui_color="#b748fe64fe64"
    release="46b814ea46496cfc3f6a874bb5013db1a350bfcf"
-   settings_modules="modules/digital_cam.xml modules/light.xml modules/gps.xml modules/nav_basic_fw.xml modules/guidance_basic_fw.xml modules/stabilization_attitude_fw.xml"
   />
   <aircraft
    name="Splash"
@@ -361,9 +394,9 @@
    airframe="airframes/tudelft/splash3.xml"
    radio="radios/crossfire_sbus.xml"
    telemetry="telemetry/default_rotorcraft.xml"
-   flight_plan="flight_plans/rotorcraft_basic.xml"
+   flight_plan="flight_plans/tudelft/rotorcraft_follow_land.xml"
    settings="settings/rotorcraft_basic.xml"
-   settings_modules="modules/air_data.xml modules/lidar_tfmini.xml modules/stabilization_rate.xml modules/stabilization_int_quat.xml modules/nav_basic_rotorcraft.xml modules/guidance_rotorcraft.xml modules/gps_ubx_ucenter.xml modules/gps.xml modules/imu_common.xml"
+   settings_modules="modules/follow_me.xml modules/air_data.xml modules/lidar_tfmini.xml modules/ins_ekf2.xml modules/stabilization_rate.xml modules/stabilization_int_quat.xml modules/nav_basic_rotorcraft.xml modules/guidance_rotorcraft.xml modules/gps_ubx_ucenter.xml modules/gps.xml modules/imu_common.xml"
    gui_color="blue"
   />
   <aircraft

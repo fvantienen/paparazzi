@@ -1,20 +1,24 @@
-<!DOCTYPE flight_plan SYSTEM "flight_plan.dtd">
+<!DOCTYPE flight_plan SYSTEM "../flight_plan.dtd">
 
-<flight_plan alt="85" ground_alt="0" lat0="43 33 50.83" lon0="1 28 52.61" max_dist_from_home="50000" name="Rotorcraft Basic (Enac)" security_height="2">
+<flight_plan alt="10" ground_alt="0" home_mode_height="10" lat0="52.168141" lon0="4.412520" max_dist_from_home="100000" name="VALK2018" qfu="20" security_height="3">
   <header>
 #include "autopilot.h"
   </header>
   <waypoints>
     <waypoint name="HOME" x="0.0" y="0.0"/>
-    <waypoint name="CLIMB" x="0.0" y="5.0"/>
-    <waypoint name="STDBY" x="-2.0" y="-5.0"/>
-    <waypoint name="p1" x="3.6" y="-13.9"/>
-    <waypoint name="p2" x="27.5" y="-48.2"/>
-    <waypoint name="p3" x="16.7" y="-19.6"/>
-    <waypoint name="p4" x="13.7" y="-40.7"/>
-    <waypoint name="CAM" x="-20" y="-50" height="2."/>
-    <waypoint name="TD" x="5.6" y="-10.9"/>
+    <waypoint name="SHIP" x="53" y="11"/>
+    <waypoint name="FOLLOW" x="60.5" y="13.5"/>
+    <waypoint name="CLIMB" x="49" y="-2.5"/>
+    <waypoint name="STDBY" x="50" y="14.5"/>
+    <!--waypoint name="p1" x="49" y="24"/>
+    <waypoint name="p2" x="56.5" y="6"/>
+    <waypoint name="p3" x="62" y="28"/>
+    <waypoint name="p4" x="69.5" y="11"/-->
+    <waypoint name="TD" x="47.5" y="7.5"/>
   </waypoints>
+  <modules>
+    <module name="follow_me"/>
+  </modules>
   <blocks>
     <block name="Wait GPS">
       <call_once fun="NavKillThrottle()"/>
@@ -23,7 +27,7 @@
     <block name="Geo init">
       <while cond="LessThan(NavBlockTime(), 10)"/>
       <call_once fun="NavSetGroundReferenceHere()"/>
-      <!--<call_once fun="NavSetAltitudeReferenceHere()"/>-->
+      <call_once fun="NavSetAltitudeReferenceHere()"/>
     </block>
     <block name="Holding point">
       <call_once fun="NavKillThrottle()"/>
@@ -34,33 +38,40 @@
       <attitude pitch="0" roll="0" throttle="0" vmode="throttle" until="FALSE"/>
     </block>
     <block name="Takeoff" strip_button="Takeoff" strip_icon="takeoff.png">
-      <exception cond="stateGetPositionEnu_f() @DEREF z @GT 2.0" deroute="Standby"/>
+      <exception cond="stateGetPositionEnu_f()->z > 8.0" deroute="follow_module"/>
       <call_once fun="NavSetWaypointHere(WP_CLIMB)"/>
       <stay vmode="climb" climb="nav_climb_vspeed" wp="CLIMB"/>
     </block>
+
     <block name="Standby" strip_button="Standby" strip_icon="home.png">
-      <set var="force_forward_flight" value="FALSE"/>
       <stay wp="STDBY"/>
     </block>
-    <block name="stay_p1">
-      <set var="force_forward_flight" value="FALSE"/>
+
+    <block name="follow_module">
+      <stay pre_call="follow_me_set_wp(WP_FOLLOW, 0)" wp="FOLLOW"/>
+    </block>
+    <block name="follow_module_diag">
+      <stay pre_call="follow_me_set_wp(WP_FOLLOW, follow_me_diag_speed)" wp="FOLLOW"/>
+    </block>
+    <block name="follow_module_land">
+      <stay pre_call="follow_me_set_wp(WP_FOLLOW, follow_me_diag_speed*0.5)" climb="nav_descend_vspeed * 0.5" vmode="climb" wp="FOLLOW"/>
+    </block>
+
+    <!--block name="stay_p1">
       <stay wp="p1"/>
     </block>
     <block name="go_p2">
-      <set var="force_forward_flight" value="TRUE"/>
       <call_once fun="nav_set_heading_deg(90)"/>
       <go wp="p2"/>
       <deroute block="stay_p1"/>
     </block>
     <block name="line_p1_p2">
-      <set var="force_forward_flight" value="TRUE"/>
       <go from="p1" hmode="route" wp="p2"/>
       <stay wp="p2" until="stage_time>10"/>
       <go from="p2" hmode="route" wp="p1"/>
       <deroute block="stay_p1"/>
     </block>
     <block name="route">
-      <set var="force_forward_flight" value="TRUE"/>
       <go from="p1" hmode="route" wp="p3"/>
       <go from="p3" hmode="route" wp="p4"/>
       <go from="p4" hmode="route" wp="p1"/>
@@ -75,10 +86,7 @@
         <heading alt="WaypointAlt(WP_p1)" course="90 * $i" until="stage_time > 3"/>
       </for>
       <deroute block="Standby"/>
-    </block>
-    <block name="circle CAM" pre_call="nav_set_heading_towards_waypoint(WP_CAM)">
-      <circle radius="nav_radius" wp="CAM"/>
-    </block>
+    </block-->
     <block name="land here" strip_button="Land Here" strip_icon="land-right.png">
       <call_once fun="NavSetWaypointHere(WP_TD)"/>
     </block>
@@ -86,9 +94,9 @@
       <go wp="TD"/>
     </block>
     <block name="flare">
-      <exception cond="NavDetectGround()" deroute="Holding point"/>
-      <exception cond="!nav_is_in_flight()" deroute="landed"/>
-      <call_once fun="NavStartDetectGround()"/>
+      <!--exception cond="NavDetectGround()" deroute="Holding point"/-->
+      <!--exception cond="!nav_is_in_flight()" deroute="landed"/-->
+      <!--call_once fun="NavStartDetectGround()"/-->
       <stay climb="nav_descend_vspeed" vmode="climb" wp="TD"/>
     </block>
     <block name="landed">
