@@ -106,7 +106,9 @@ enum Mpu60x0Type {
   ICM20600,
   ICM20608,
   ICM20602,
-  ICM20689
+  ICM20649,
+  ICM20689,
+  ICM20948,
 };
 
 enum Mpu60x0ConfStatus {

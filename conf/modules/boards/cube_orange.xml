@@ -1,0 +1,16 @@
+<!DOCTYPE module SYSTEM "../module.dtd">
+
+<module name="cube_orange" dir="boards">
+  <doc>
+    <description>
+      Specific configuration for Cube Orange with ChibiOS
+    </description>
+  </doc>
+  <dep>
+    <depends>spi_master,baro_ms5611_i2c</depends>
+  </dep>
+  <makefile target="!sim|nps|fbw">
+    <configure name="MS5611_I2C_DEV" value="i2c1"/>
+    <define name="MS5611_TYPE_MS5607" value="TRUE"/>
+  </makefile>
+</module>

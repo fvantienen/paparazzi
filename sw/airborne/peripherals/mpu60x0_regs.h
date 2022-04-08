@@ -120,7 +120,9 @@
 #define ICM20600_WHOAMI_REPLY       0x11
 #define ICM20608_WHOAMI_REPLY       0xAF
 #define ICM20602_WHOAMI_REPLY       0x12
+#define ICM20649_WHOAMI_REPLY       0xE1
 #define ICM20689_WHOAMI_REPLY       0x98
+#define ICM20948_WHOAMI_REPLY       0xEA
 
 // Bit positions
 #define MPU60X0_I2C_BYPASS_EN       1

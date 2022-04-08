@@ -84,7 +84,9 @@ void mpu60x0_spi_start_configure(struct Mpu60x0_Spi *mpu)
          mpu->rx_buf[1] == ICM20600_WHOAMI_REPLY ||
          mpu->rx_buf[1] == ICM20608_WHOAMI_REPLY ||
          mpu->rx_buf[1] == ICM20602_WHOAMI_REPLY ||
-         mpu->rx_buf[1] == ICM20689_WHOAMI_REPLY)) {
+         mpu->rx_buf[1] == ICM20649_WHOAMI_REPLY ||
+         mpu->rx_buf[1] == ICM20689_WHOAMI_REPLY ||
+         mpu->rx_buf[1] == ICM20948_WHOAMI_REPLY)) {
 
       if (mpu->rx_buf[1] == MPU60X0_WHOAMI_REPLY) {
         mpu->config.type = MPU60X0;
@@ -94,8 +96,12 @@ void mpu60x0_spi_start_configure(struct Mpu60x0_Spi *mpu)
         mpu->config.type = ICM20608;
       } else if (mpu->rx_buf[1] == ICM20602_WHOAMI_REPLY) {
         mpu->config.type = ICM20602;
+      } else if (mpu->rx_buf[1] == ICM20649_WHOAMI_REPLY) {
+        mpu->config.type = ICM20649;
       } else if (mpu->rx_buf[1] == ICM20689_WHOAMI_REPLY) {
         mpu->config.type = ICM20689;
+      } else if (mpu->rx_buf[1] == ICM20948_WHOAMI_REPLY) {
+        mpu->config.type = ICM20948;
       }
 
       mpu->config.init_status++;

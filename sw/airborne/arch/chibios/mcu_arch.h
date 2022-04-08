@@ -61,6 +61,11 @@ static inline void mcu_deep_sleep(void)
   PWR->CR1 &= ~(PWR_CR1_PDDS | PWR_CR1_LPDS);
   /* set LPDS and clear  */
   PWR->CR1 |= (PWR_CR1_LPDS | PWR_CR1_CSBF);
+#elif defined STM32H7
+  /* clear LPDS */
+  PWR->CR1 &= ~PWR_CR1_LPDS;
+  /* set LPDS */
+  PWR->CR1 |= PWR_CR1_LPDS;
 #endif
 
   /* Setup the deepsleep mask */
