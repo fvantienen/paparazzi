@@ -284,6 +284,10 @@ static void handle_spi_thd(struct spi_periph *p)
 
   SPIConfig spi_cfg = {
     false, // no circular buffer
+#if defined(HAL_LLD_SELECT_SPI_V2) 
+    false, // no slave mode
+    NULL, // no callback
+#endif
     NULL, // no callback
     spi_resolve_slave_port(t->slave_idx),
     spi_resolve_slave_pin(t->slave_idx),

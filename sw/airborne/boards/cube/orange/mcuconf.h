@@ -54,9 +54,10 @@
 /*
  * Memory attributes settings.
  */
+#define STM32_NOCACHE_ENABLE                TRUE
 #define STM32_NOCACHE_MPU_REGION            MPU_REGION_6
-#define STM32_NOCACHE_SRAM1_SRAM2           FALSE
-#define STM32_NOCACHE_SRAM3                 TRUE
+#define STM32_NOCACHE_RBAR                  0x24000000U
+#define STM32_NOCACHE_RASR                  MPU_RASR_SIZE_32K
 
 /*
  * PWR system settings.
@@ -115,7 +116,7 @@
 #define STM32_PLL3_DIVM_VALUE               6
 #define STM32_PLL3_DIVN_VALUE               72
 #define STM32_PLL3_FRACN_VALUE              0
-#define STM32_PLL3_DIVP_VALUE               3
+#define STM32_PLL3_DIVP_VALUE               2
 #define STM32_PLL3_DIVQ_VALUE               6
 #define STM32_PLL3_DIVR_VALUE               9
 
@@ -148,7 +149,7 @@
 #define STM32_CKPERSEL                      STM32_CKPERSEL_HSE_CK
 #define STM32_SDMMCSEL                      STM32_SDMMCSEL_PLL1_Q_CK
 #define STM32_QSPISEL                       STM32_QSPISEL_PLL2_R_CK
-#define STM32_FMCSEL                        STM32_QSPISEL_HCLK
+#define STM32_FMCSEL                        STM32_FMCSEL_HCLK
 #define STM32_SWPSEL                        STM32_SWPSEL_PCLK1
 #define STM32_FDCANSEL                      STM32_FDCANSEL_PLL1_Q_CK
 #define STM32_DFSDM1SEL                     STM32_DFSDM1SEL_PCLK2
@@ -393,9 +394,9 @@
 #define STM32_SDC_USE_SDMMC1                TRUE
 #define STM32_SDC_USE_SDMMC2                FALSE
 #define STM32_SDC_SDMMC_UNALIGNED_SUPPORT   TRUE
-#define STM32_SDC_SDMMC_WRITE_TIMEOUT       250
-#define STM32_SDC_SDMMC_READ_TIMEOUT        25
-#define STM32_SDC_SDMMC_CLOCK_DELAY         10
+#define STM32_SDC_SDMMC_WRITE_TIMEOUT       1000000
+#define STM32_SDC_SDMMC_READ_TIMEOUT        1000000
+#define STM32_SDC_SDMMC_CLOCK_DELAY         20
 #define STM32_SDC_SDMMC_PWRSAV              TRUE
 
 /*
@@ -567,7 +568,8 @@
 #define STM32_WSPI_QUADSPI1_PRESCALER_VALUE ((STM32_QSPICLK / HAL_QSPI1_CLK) - 1)
 #define STM32_WSPI_QUADSPI1_MDMA_CHANNEL    STM32_MDMA_CHANNEL_ID_ANY
 #define STM32_WSPI_QUADSPI1_MDMA_PRIORITY   1
-#define STM32_WSPI_MDMA_ERROR_HOOK(qspip)   osalSysHalt("MDMA failure")
+#define STM32_WSPI_MDMA_ERROR_HOOK(wspip)   osalSysHalt("MDMA failure")
+
 /*
   sdlog message buffer and queue configuration
  */
