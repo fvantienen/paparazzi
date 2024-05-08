@@ -607,7 +607,7 @@ void rotwing_state_free_processor(void)
   struct FloatVect2 pos_error_norm;
   VECT2_COPY(pos_error_norm, pos_error);
   float_vect2_normalize(&pos_error_norm);
-  float speed_to_target = (pos_error_norm.x * groundspeed->x + pos_error_norm.y * groundspeed->y);
+  //float speed_to_target = (pos_error_norm.x * groundspeed->x + pos_error_norm.y * groundspeed->y);
   float dist_to_target = sqrtf(nav_rotorcraft_base.goto_wp.dist2_to_wp);
   float max_speed_decel2 = fabsf(2.f * dist_to_target * nav_max_deceleration_sp); // dist_to_wp can only be positive, but just in case
   float max_speed_decel = sqrtf(max_speed_decel2);
@@ -704,6 +704,18 @@ static void rotwing_state_feedback_cb(uint8_t __attribute__((unused)) sender_id,
         rotwing_state_hover_rpm[3] = feedback_msg->rpm;
       }
     }
+  }
+}
+
+bool rotwing_state_hover_motors_running(void) {
+  // Check if hover motors are running
+  if (rotwing_state_hover_rpm[0] > ROTWING_HOV_MOT_OFF_RPM_TH
+      && rotwing_state_hover_rpm[1] > ROTWING_HOV_MOT_OFF_RPM_TH
+      && rotwing_state_hover_rpm[2] > ROTWING_HOV_MOT_OFF_RPM_TH
+      && rotwing_state_hover_rpm[3] > ROTWING_HOV_MOT_OFF_RPM_TH) {
+    return true;
+  } else {
+    return false;
   }
 }
 
